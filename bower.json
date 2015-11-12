@@ -1,0 +1,15 @@
+{
+  "name": "prozorro",
+  "description": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "resources/vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "bootstrap": "~3.3.5"
+  }
+}
