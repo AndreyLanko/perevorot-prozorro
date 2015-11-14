@@ -11,11 +11,15 @@
 |
 */
 
-Route::get('/', 'WelcomeController@index');
+#Route::get('/', 'WelcomeController@index');
 
-Route::get('home', 'HomeController@index');
+Route::get('/', 'HomeController@index');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
+
+Route::get('json/combined', 'JsonController@combined');
+Route::get('json/parsed', 'JsonController@parsed');
+Route::get('json/raw', 'JsonController@raw');
