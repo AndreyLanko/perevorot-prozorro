@@ -28,7 +28,8 @@ elixir(function(mix) {
   mix.scripts([
       'js/vendor/jquery.js',
       'js/vendor/bootstrap.js',
-      'js/vendor/selectize.js',
+      'js/libs/selectize.js',
+      'js/blocks/**/*.js',
       'js/app.js'
     ],
     'public/assets/js/app.js',

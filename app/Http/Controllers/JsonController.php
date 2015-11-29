@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use Cache;
+use Input;
 
 class JsonController extends Controller
 {
