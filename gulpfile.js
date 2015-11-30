@@ -37,7 +37,7 @@ elixir(function(mix) {
   );
 
 	mix.less([
-		'vendor/selectize/selectize.less',
+		'vendor/selectize/selectize.default.less',
 		'app.less'
 	], 'public/assets/css/app.css');
 });
