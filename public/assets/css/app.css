@@ -101,8 +101,19 @@
 .selectize-control {
   position: relative;
 }
+.selectize-control .selectize-control {
+  display: inline-block;
+}
+.selectize-control.subinput {
+  padding-left: 5px;
+}
+.selectize-control.subinput .selectize-input {
+  padding-top: 0;
+  padding-bottom: 0;
+}
 .selectize-dropdown,
 .selectize-input,
+.selectize-input .block-date input,
 .selectize-input input {
   color: #303030;
   font-family: inherit;
@@ -110,11 +121,17 @@
   line-height: 18px;
   -webkit-font-smoothing: inherit;
 }
+.selectize-input .selectize-input input {
+  color: #fff;
+}
 .selectize-input,
 .selectize-control.single .selectize-input.input-active {
   background: #fff;
   cursor: text;
   display: inline-block;
+}
+.selectize-control.multi .selectize-input [data-value] {
+  box-shadow: none;
 }
 .selectize-input {
   border: 1px solid #d0d0d0;
@@ -125,7 +142,7 @@
   position: relative;
   z-index: 1;
   box-sizing: border-box;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+  /*.selectize-box-shadow(@selectize-shadow-input);*/
   border-radius: 3px;
 }
 .selectize-control.multi .selectize-input.has-items {
@@ -221,8 +238,9 @@
   overflow: hidden;
 }
 .selectize-dropdown [data-selectable] .highlight {
-  background: rgba(125, 168, 208, 0.2);
-  border-radius: 1px;
+  /*background: @selectize-color-highlight;
+			.selectize-border-radius(1px);*/
+  text-decoration: underline;
 }
 .selectize-dropdown [data-selectable],
 .selectize-dropdown .optgroup-header {
@@ -246,10 +264,64 @@
 .selectize-dropdown .create {
   color: rgba(48, 48, 48, 0.5);
 }
+.block .selectize-control.subinput.single {
+  min-width: 0px;
+}
 .selectize-dropdown-content {
   overflow-y: auto;
   overflow-x: hidden;
   max-height: 200px;
+}
+.selectize-control.subinput .selectize-dropdown-content div[data-value] {
+  border-radius: 0;
+  background: none;
+  text-shadow: none;
+}
+.selectize-input .block .selectize-control.subinput .selectize-input {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.selectize-input .block .selectize-control.subinput .selectize-input.has-items {
+  padding: 0;
+}
+.selectize-input .block .selectize-control.subinput .selectize-input [data-value] {
+  margin: 0;
+  border: none;
+  box-shadow: none;
+  text-shadow: none;
+}
+.selectize-control .selectize-input .block .selectize-input {
+  box-shadow: none;
+  border: none;
+}
+.selectize-control .selectize-input .block.block-dkpp .selectize-input {
+  background: transparent;
+}
+.selectize-input .block .selectize-control.subinput .selectize-input.has-items {
+  border: none;
+  box-shadow: none;
+}
+.selectize-control.multi .selectize-input > div.block,
+.selectize-control.plugin-remove_button [data-value] a.remove {
+  border: none;
+}
+.selectize-control.plugin-remove_button [data-value] .remove {
+  line-height: 16px;
+}
+.selectize-control.plugin-remove_button .block-date .remove {
+  line-height: 20px;
+}
+.selectize-input .block .selectize-control.subinput .selectize-input [data-value] {
+  padding-top: 0;
+  padding-bottom: 0;
+  border-radius: 0;
+}
+.selectize-control.multi .selectize-input .selectize-dropdown-content [data-value].active {
+  background: #ccc;
+}
+.selectize-control.multi .selectize-input .block {
+  padding-top: 1px;
+  padding-bottom: 1px;
 }
 .selectize-control.single .selectize-input,
 .selectize-control.single .selectize-input input {
@@ -287,6 +359,13 @@
 .selectize-control .selectize-input.disabled {
   opacity: 0.5;
   background-color: #fafafa;
+}
+.selectize-control.single .selectize-input:after {
+  right: 0;
+  border-color: #fff transparent transparent transparent;
+}
+.selectize-control.single .selectize-input.dropdown-active:after {
+  border-color: transparent transparent #fff transparent;
 }
 .selectize-control.multi .selectize-input.has-items {
   padding-left: 5px;

@@ -26,22 +26,33 @@
 	}
 	
 	.block-query{
-		background-color: #068930 !important;
+		background-color: #002F2F !important;
 		background-image: none !important;
 	}
 
-	.block-cpv{
-		background-color: #888 !important;
+	.block-cpv,
+	.selectize-control .selectize-input .block.block-cpv .selectize-input,
+	.selectize-input .block-cpv .selectize-control.subinput .selectize-input.has-items,
+	.selectize-input .block-cpv .selectize-control.subinput .selectize-input [data-value]  {
+		background-color: #046380 !important;
 		background-image: none !important;
 	}
 
-	.block-region{
-		background-color: #FF0049 !important;
+	.block-region,
+	.selectize-control .selectize-input .block.block-region .selectize-input,
+	.selectize-input .block-region .selectize-control.subinput .selectize-input [data-value] {
+		background-color: #A7A37E !important;
 		background-image: none !important;
 	}
 
 	.block-date{
-		background-color: #FFCC00 !important;
+		background-color: #006F82 !important;
+		background-image: none !important;
+	}
+	.block-dkpp,
+	.selectize-input .block-dkpp .selectize-control.subinput .selectize-input.has-items,
+	.selectize-input .block-dkpp .selectize-control.subinput .selectize-input [data-value] {
+		background-color: #b30c0c !important;
 		background-image: none !important;
 	}
 	.query_input{
@@ -51,7 +62,7 @@
 		width:100%;
 	}
 	
-	/**/
+	/*
 	.block .name{
 
 	}
@@ -72,9 +83,8 @@
 		box-shadow: none!important;
 	}
 	.block .selectize-input input{
-		/*width:90%!important;*/
 		color:#FFF;
-	}
+	}*/
 </style>
 <input id="query" class="query_input" type="text" autocomplete="off" data-js="form" placeholder="Назва товару, код товару, назва або ЄДРПОУ компанії, дата або що завгодно ще...">
 <div id="suggest" style="display:none;position:fixed;background:#FFF;width:500px;top:60px;left:0px;padding:5px;"></div>
