@@ -7,6 +7,7 @@
 	
 		var query_types={
 			order: 400,
+			self: this,
 			prefix: 'date',
 			name: 'Дата начала приема предложений',/*
 				{
@@ -31,16 +32,19 @@
 					'autoclose': true,
 					'format': 'dd.mm.yyyy'
 				});
+				
+				block.find('.block-date-picker').on('rangeSelected', function(date) {
+					APP.utils.query();
+					INPUT.focus();
+				});
 
-                datepair = new Datepair(block.find('.block-date-picker')[0], {
-					'defaultDateDelta': 1
+                var datepair = new Datepair(block.find('.block-date-picker')[0], {
+					'defaultDateDelta': 1,
 				});
 
 				var tooltip=block.find('.block-date-tooltip');
 
 				block.find('.block-key').html(tooltip.find('div:first').html());
-
-				APP.utils.query();
 
 				block.find('.block-date-arrow').click(function(e){
 					e.preventDefault();
