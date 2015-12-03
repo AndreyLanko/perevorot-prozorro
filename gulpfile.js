@@ -18,6 +18,12 @@ gulp.task("copyfiles", function() {
   gulp.src("resources/vendor/selectize/dist/js/standalone/selectize.js")
     .pipe(gulp.dest("resources/assets/js/vendor/"));
 
+  gulp.src("resources/vendor/datepair.js/dist/datepair.js")
+    .pipe(gulp.dest("resources/assets/js/vendor/"));
+
+  gulp.src("resources/vendor/datepair.js/dist/jquery.datepair.js")
+    .pipe(gulp.dest("resources/assets/js/vendor/"));
+
   gulp.src("resources/vendor/selectize/dist/less/**")
     .pipe(gulp.dest("resources/assets/less/vendor/selectize"));
 
@@ -28,6 +34,10 @@ elixir(function(mix) {
   mix.scripts([
       'js/vendor/jquery.js',
       'js/vendor/bootstrap.js',
+      'js/libs/bootstrap-datepicker.js',
+      'js/libs/jquery.timepicker.js',
+      'js/vendor/datepair.js',
+      'js/vendor/jquery.datepair.js',
       'js/libs/selectize.js',
       'js/blocks/**/*.js',
       'js/app.js'
@@ -35,6 +45,11 @@ elixir(function(mix) {
     'public/assets/js/app.js',
     'resources/assets'
   );
+
+	  mix.styles([
+	    "libs/bootstrap-datepicker.standalone.css",
+	    "app.css",
+	  ],'public/assets/css/site.css');
 
 	mix.less([
 		'vendor/selectize/selectize.default.less',

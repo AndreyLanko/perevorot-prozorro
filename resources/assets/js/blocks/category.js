@@ -3,25 +3,25 @@
 
 	var json;
 
-	var BLOCK = function(){
+	var BLOCK = function(){	
 		var _block;
 	
 		var query_types={
-			order: 600,
-			prefix: 'region',
-			name: 'Регіон',
-			button_name: 'Регіон',
+			order: 100,
+			prefix: 'category',
+			name: 'Категорія',
+			button_name: 'Категорія',
 			pattern_search: /^(.*?)$/,
 			//pattern_exact: /^\d{1,8}-\d{1}$/,
-			template: $('#block-region'),
+			template: $('#block-category'),
 			json: {
-				check: '/form/check/region'
+				check: '/form/check/category'
 			},
 			load: function(){
 				if(!json){
 					$.ajax({
 						method: 'POST',
-						url: '/form/data/region',
+						url: '/form/data/category',
 						dataType: 'json',
 						headers: APP.utils.csrf(),
 						success: function(response){
@@ -57,6 +57,7 @@
 					},
 					onInitialize: function(){
 						this.open();
+
 						this.$control_input.val(input_query);
 						this.$control_input.trigger('update');
 						this.$control_input.focus();
@@ -72,17 +73,17 @@
 						_block.removeClass('no-results');
 					}					
 				});
-				
+
 				return this;
 			},
 			result: function(){
 				return _block.find('[data-value]').data('value');
-			}		
-		}
-		
+			}
+		};
+	
 		return query_types;
 	}
 
-	window.query_types=window.query_types||[];	
+	window.query_types=window.query_types||[];
 	window.query_types.push(BLOCK);
 })();

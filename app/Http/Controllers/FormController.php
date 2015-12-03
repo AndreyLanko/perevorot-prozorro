@@ -9,7 +9,9 @@ class FormController extends Controller
 		'cpv',
 		'dkpp',
 		'edrpou',
-		'region'
+		'region',
+		'category',
+		'proceduretype'
 	];
 
 	public function search($type=false)
@@ -90,7 +92,8 @@ class FormController extends Controller
 	{		
 		$data = Cache::remember('cpv_data', 60, function() use ($lang)
 		{
-			$raw=json_decode(file_get_contents('http://standards.openprocurement.org/classifiers/cpv/'.$lang.'.json'), TRUE);
+			//$raw=json_decode(file_get_contents('http://standards.openprocurement.org/classifiers/cpv/'.$lang.'.json'), TRUE);
+			$raw=json_decode(file_get_contents('./sources/'.$lang.'.json'), TRUE);
 			$data=[];
 			
 			foreach($raw as $id=>$name)
@@ -152,4 +155,32 @@ class FormController extends Controller
 			['id'=>'26', 'name'=>'Київ']
 		];
 	}
+
+	private function get_category_data()
+	{
+		return [
+			['id'=>'1', 'name'=>'Category 1'],
+			['id'=>'2', 'name'=>'Category 2'],
+			['id'=>'3', 'name'=>'Category 3'],
+		];
+	}
+
+	private function get_proceduretype_data()
+	{
+		return [
+			['id'=>'1', 'name'=>'Procedure type 1'],
+			['id'=>'2', 'name'=>'Procedure type 2'],
+			['id'=>'3', 'name'=>'Procedure type 3'],
+		];
+	}
+
+	private function get_edrpou_data()
+	{
+		return [
+			['id'=>'11111', 'name'=>'Company name 1'],
+			['id'=>'22222', 'name'=>'Company name 2'],
+			['id'=>'33333', 'name'=>'Company name 3'],
+		];
+	}
+
 }

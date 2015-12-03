@@ -1222,32 +1222,17 @@
 			self.$control_input    = $control_input;
 			self.$dropdown         = $dropdown;
 			self.$dropdown_content = $dropdown_content;
-
+	
 			$dropdown.on('mouseenter', '[data-selectable]', function() { return self.onOptionHover.apply(self, arguments); });
 			$dropdown.on('mousedown click', '[data-selectable]', function() { return self.onOptionSelect.apply(self, arguments); });
-
-			watchChildEvent($control, 'mousedown', '*:not(input)', function(e) {
-				if(!$(e.target).is('.subinput')){
-					return self.onItemSelect.apply(self, arguments);
-				}
-			});
-
+			watchChildEvent($control, 'mousedown', '*:not(input)', function() { return self.onItemSelect.apply(self, arguments); });
 			autoGrow($control_input);
-
+	
 			$control.on({
-				mousedown : function(e) {
-					if(!$(e.target).is('.subinput')){
-						return self.onMouseDown.apply(self, arguments);
-					}
-				},
-				click     : function(e) {
-					if(!$(e.target).is('.subinput')){
-						return self.onClick.apply(self, arguments);
-					}
-				}
+				mousedown : function() { return self.onMouseDown.apply(self, arguments); },
+				click     : function() { return self.onClick.apply(self, arguments); }
 			});
 	
-
 			$control_input.on({
 				mousedown : function(e) { e.stopPropagation(); },
 				keydown   : function() { return self.onKeyDown.apply(self, arguments); },
@@ -1258,7 +1243,7 @@
 				focus     : function() { self.ignoreBlur = false; return self.onFocus.apply(self, arguments); },
 				paste     : function() { return self.onPaste.apply(self, arguments); }
 			});
-
+	
 			$document.on('keydown' + eventNS, function(e) {
 				self.isCmdDown = e[IS_MAC ? 'metaKey' : 'ctrlKey'];
 				self.isCtrlDown = e[IS_MAC ? 'altKey' : 'ctrlKey'];
@@ -1292,7 +1277,7 @@
 			$window.on('mousemove' + eventNS, function() {
 				self.ignoreHover = false;
 			});
-
+	
 			// store original children and tab index so that they can be
 			// restored when the destroy() method is called.
 			this.revertSettings = {
@@ -1727,13 +1712,20 @@
 		 */
 		onOptionSelect: function(e) {
 			var value, $target, $option, self = this;
-	
+
 			if (e.preventDefault) {
 				e.preventDefault();
 				e.stopPropagation();
 			}
 	
 			$target = $(e.currentTarget);
+
+			if($target.is(':checkbox')){
+				$target.prop('checked', !$target.is(':checked'));
+
+				return true;
+			}
+
 			if ($target.hasClass('create')) {
 				self.createItem(null, function() {
 					if (self.settings.closeAfterSelect) {
@@ -2429,7 +2421,7 @@
 		 * @return {object}
 		 */
 		getAdjacentOption: function($option, direction) {
-			var $options = this.$dropdown.find('[data-selectable]');
+			var $options = this.$dropdown.find('[data-selectable]').not('input[type="checkbox"]');
 			var index    = $options.index($option) + direction;
 	
 			return index >= 0 && index < $options.length ? $options.eq(index) : $();
@@ -2504,11 +2496,11 @@
 					if (inputMode === 'single') self.close();
 					return;
 				}
-
+	
 				if (!self.options.hasOwnProperty(value)) return;
 				if (inputMode === 'single') self.clear(silent);
 				if (inputMode === 'multi' && self.isFull()) return;
-
+	
 				$item = $(self.render('item', self.options[value]));
 				wasFull = self.isFull();
 				self.items.splice(self.caretPos, 0, value);
@@ -2538,7 +2530,7 @@
 					}
 	
 					self.updatePlaceholder();
-					self.trigger('item_add', self.options[value], $item);
+					self.trigger('item_add', value, $item);
 					self.updateOriginalInput({silent: silent});
 				}
 			});
@@ -2608,12 +2600,10 @@
 				triggerDropdown = true;
 			}
 	
-			/*perevorot
 			if (!self.canCreate(input)) {
 				callback();
 				return false;
 			}
-			*/
 	
 			self.lock();
 	
@@ -3667,9 +3657,7 @@
 					if (index >= 0 && index < this.items.length) {
 						option = this.options[this.items[index]];
 						if (this.deleteSelection(e)) {
-							//this.setTextboxValue(options.text.apply(this, [option]));
-							var value=options.text.apply(this, [option]);
-							this.setTextboxValue($(value).find('.exact_value').html());
+							this.setTextboxValue(options.text.apply(this, [option]));
 							this.refreshOptions(true);
 						}
 						e.preventDefault();
@@ -3680,7 +3668,6 @@
 			};
 		})();
 	});
-	
 
 	return Selectize;
 }));

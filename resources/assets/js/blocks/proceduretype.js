@@ -7,21 +7,21 @@
 		var _block;
 	
 		var query_types={
-			order: 600,
-			prefix: 'region',
-			name: 'Регіон',
-			button_name: 'Регіон',
+			order: 700,
+			prefix: 'proceduretype',
+			name: 'Тип процедури',
+			button_name: 'Тип процедури',
 			pattern_search: /^(.*?)$/,
 			//pattern_exact: /^\d{1,8}-\d{1}$/,
-			template: $('#block-region'),
+			template: $('#block-proceduretype'),
 			json: {
-				check: '/form/check/region'
+				check: '/form/check/proceduretype'
 			},
 			load: function(){
 				if(!json){
 					$.ajax({
 						method: 'POST',
-						url: '/form/data/region',
+						url: '/form/data/proceduretype',
 						dataType: 'json',
 						headers: APP.utils.csrf(),
 						success: function(response){
@@ -63,7 +63,7 @@
 					},
 					onType: function(text){
 						_block[!this.currentResults.items.length?'addClass':'removeClass']('no-results');
-					},					
+					},
 					onChange: function(value){
 						INPUT.focus();
 						APP.utils.query();
@@ -77,7 +77,7 @@
 			},
 			result: function(){
 				return _block.find('[data-value]').data('value');
-			}		
+			}
 		}
 		
 		return query_types;

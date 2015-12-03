@@ -11,6 +11,7 @@
   "dependencies": {
     "jquery": "~2.1.4",
     "bootstrap": "~3.3.5",
-    "selectize": "~0.12.1"
+    "selectize": "~0.12.1",
+    "datepair.js": "0.4.14"
   }
 }

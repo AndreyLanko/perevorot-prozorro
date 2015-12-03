@@ -5,15 +5,15 @@
 		var _block;
 	
 		var query_types={
-			order: 300,
-			prefix: 'dkpp',
-			name: 'ДКПП-код',
-			button_name: 'ДКПП-код',
+			order: 500,
+			prefix: 'edrpou',
+			name: 'ЄДРПОУ замовника',
+			button_name: 'ЄДРПОУ замовника',
 			pattern_search: /^(.*?)$/,
 			pattern_exact: /^\d{1,9}$/,
-			template: $('#block-dkpp'),
+			template: $('#block-edrpou'),
 			json: {
-				check: '/form/check/dkpp'
+				check: '/form/check/edrpou'
 			},
 			init: function(input_query, block){
 				var input=block.find('select');
@@ -38,7 +38,7 @@
 						}
 	
 						$.ajax({
-							url: '/form/search/dkpp',
+							url: '/form/search/edrpou',
 							type: 'POST',
 							dataType: 'json',
 							headers: APP.utils.csrf(),
@@ -85,7 +85,7 @@
 			result: function(){
 				return _block.find('[data-value]').data('value');
 			}
-		};
+		}
 		
 		return query_types;
 	}
