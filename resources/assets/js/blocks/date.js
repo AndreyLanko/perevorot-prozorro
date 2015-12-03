@@ -24,8 +24,9 @@
 			pattern_exact: /^\d{1,2}.\d{1,2}-\d{2,4}$/,
 			template: $('#block-date'),
 			init: function(data, block){
-				INPUT.focus();
-
+				//INPUT.focus();
+				_block=block;
+				
 				block.find('.block-date-picker .date').datepicker({
 					'autoclose': true,
 					'format': 'dd.mm.yyyy'
@@ -34,9 +35,9 @@
                 datepair = new Datepair(block.find('.block-date-picker')[0], {
 					'defaultDateDelta': 1
 				});
+
 				var tooltip=block.find('.block-date-tooltip');
 
-				block.find('.date:first').focus();
 				block.find('.block-key').html(tooltip.find('div:first').html());
 
 				APP.utils.query();
@@ -55,10 +56,18 @@
 					tooltip.hide();
 				});
 
+				block.find('.date:first').focus();
+
 				return this;
 			},
 			result: function(){
-				return datepair;
+				var out=[];
+
+				_block.find('.date').each(function(){
+					out.push($(this).attr('class').replace(' ', '-')+'[]='+$(this).val());
+				});
+				
+				return out.join('&');
 			}
 		}
 		

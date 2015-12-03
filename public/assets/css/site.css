@@ -705,4 +705,88 @@
 .selectize-dropdown.single .selectize-dropdown-content:before {
 	display: none;
 }
+/*dates*/
+.block-date-arrow {
+	position: absolute;
+    left: 10px;
+    top: 7px;
+    color: black;
+}
+.block-date-arrow:hover, .block-date-arrow:active, .block-date-arrow:focus {
+	text-decoration: none;
+	color: black;
+}
+.dateselect .block-key {
+	margin-left: 18px;
+}
+.block-date-picker {
+	float: left;
+}
+.block-date-picker input {
+	background: none;
+    border: none;
+    border-bottom: 1px solid black;
+    font-weight: bold;
+    line-height: 1.2;
+    color: #303030;
+    font-size: 13px;
+    width: 78px;
+    padding: 0 5px;
+    border-radius: 0px;
+}
+.block-date-picker input:focus {
+	outline:0;
+}
+.datepicker.dropdown-menu {
+	top: 100px;
+}
+.datepicker.datepicker-dropdown{
+	margin-top:18px;
+}
+.block-date-tooltip {
+	display: none;
+    visibility: visible;
+    width: 200px !important;
+    top: 19px;
+    left: 0px;
+    border-color: #b8b8b8;
+    top: 35px!important;
+    min-width: 200px;
+    background: #fff;
+    border-top: 1px solid #b8b8b8;
+    position: absolute;
+    z-index: 10;
+    border: 1px solid #d0d0d0;
+    background: #fff;
+    margin: -1px 0 0 0;
+    border-top: 0 none;
+    box-sizing: border-box;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 3px 3px;
+    color: #303030;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 18px;
+    -webkit-font-smoothing: inherit;
+    overflow: hidden;
+}
+.block-date-tooltip div {
+	position: relative;
+	padding: 5px 8px;
+	cursor: pointer;
+    overflow: hidden;
+    color: #303030;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 18px;
+    -webkit-font-smoothing: inherit;
+    box-sizing: border-box;
+}
+.block-date-tooltip div:hover {
+	background-color: #f5fafd;
+    color: #495c68;
+}
+.block.block-date {
+	min-width: 378px;
+}
 /*# sourceMappingURL=site.css.map */
