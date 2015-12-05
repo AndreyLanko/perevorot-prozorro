@@ -76,6 +76,11 @@
 							this.$control_input.trigger('update');
 							this.$control_input.focus();
 						}
+						/*
+						$(document).on('keyup', '.selectize-input input', function(e){
+							console.log(e.keyCode);
+						});
+						*/
 					},
 					onChange: function(value){
 						INPUT.focus();

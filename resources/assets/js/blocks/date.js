@@ -3,8 +3,22 @@
 
 	var BLOCK = function(){
 		var _block,
-			datepair;
+			datepair,
+			pattern=/^(0[1-9]|1\d|2\d|3[01])\.(0[1-9]|1[0-2])\.(19|20)\d{2}$/,
+			format='dd.mm.yyyy';
 	
+		var is_valid=function(){
+			var out=0;
+
+			_block.find('.date').each(function(){
+				if(pattern.test($(this).val())){
+					out++;
+				}
+			});
+			
+			return out==2;
+		};
+
 		var query_types={
 			order: 400,
 			self: this,
@@ -22,7 +36,7 @@
 			*/
 			button_name: 'Дати',
 			pattern_search: /^(\d*?)$/,
-			pattern_exact: /^\d{1,2}.\d{1,2}-\d{2,4}$/,
+			pattern_exact: pattern,
 			template: $('#block-date'),
 			init: function(data, block){
 				//INPUT.focus();
@@ -30,12 +44,20 @@
 				
 				block.find('.block-date-picker .date').datepicker({
 					'autoclose': true,
-					'format': 'dd.mm.yyyy'
+					'format': format
 				});
 				
-				block.find('.block-date-picker').on('rangeSelected', function(date) {
-					APP.utils.query();
-					INPUT.focus();
+				block.find('.block-date-picker .date').inputmask({
+					alias: 'dd.mm.yyyy',
+					placeholder: 'дд.мм.рррр'
+				});
+
+				block.find('.block-date-picker').on('rangeSelected', function(date){
+					if(is_valid()) {
+						$('.datepicker').hide();
+						APP.utils.query();
+						INPUT.focus();
+					}
 				});
 
                 var datepair = new Datepair(block.find('.block-date-picker')[0], {
