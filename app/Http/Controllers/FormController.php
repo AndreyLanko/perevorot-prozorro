@@ -10,7 +10,8 @@ class FormController extends Controller
 		'dkpp',
 		'edrpou',
 		'region',
-		'proceduretype'
+		'proceduretype',
+		'status'
 	];
 
 	public function search($type=false)
@@ -161,6 +162,15 @@ class FormController extends Controller
 			['id'=>'1', 'name'=>'Procedure type 1'],
 			['id'=>'2', 'name'=>'Procedure type 2'],
 			['id'=>'3', 'name'=>'Procedure type 3'],
+		];
+	}
+
+	private function get_status_data()
+	{
+		return [
+			['id'=>'1', 'name'=>'Статус 1'],
+			['id'=>'2', 'name'=>'Статус 2'],
+			['id'=>'3', 'name'=>'Статус 3'],
 		];
 	}
 

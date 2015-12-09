@@ -79,4 +79,10 @@
 	</div>
 </script>
 
+<script id="block-status" type="text/x-jquery-tmpl">
+	<div class="block block-status">
+		<span class="block-key">Статус</span><select />
+	</div>
+</script>
+
 @endsection
