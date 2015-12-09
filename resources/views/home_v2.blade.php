@@ -69,7 +69,7 @@
 
 <script id="block-edrpou" type="text/x-jquery-tmpl">
 	<div class="block block-edrpou">
-		<span class="block-key">ЄДРПОУ замовника</span><select />
+		<span class="block-key">Замовник</span><select />
 	</div>
 </script>
 
