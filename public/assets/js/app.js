@@ -21881,16 +21881,15 @@ var APP,
 						});
 	
 						$('#server_query').val(SEARCH_QUERY.join('&'));
-	return;
+						
+						$('#result').html('Завантаження...');
+
 						$.ajax({
-							url: "//aws3.tk/search",
+							url: '//aws3.tk/search?'+SEARCH_QUERY.join('&'),
 							dataType: "json",
-							data: {
-								q: SEARCH_QUERY.join('&'),
-							},
 							success: function(response){
 								var out=[];
-	
+								
 								for(var ii=0;ii<response.res.length;ii++){
 									var item=response.res[ii];
 									var it=[];
@@ -21903,8 +21902,12 @@ var APP,
 	
 									out.push('<h4>'+item._source.title+'</h4>'+it.join('')+(item._source.tenderPeriod?'<div>'+item._source.tenderPeriod.startDate+'—'+item._source.tenderPeriod.endDate+'</div>':''));
 								};
-								
-								$('#result').html(out.join(''));							
+	
+								if(response.res.length){
+									$('#result').html(out.join(''));
+								}else{
+									$('#result').html('Жодних результатiв');
+								}
 							}
 						});
 					}, 300);

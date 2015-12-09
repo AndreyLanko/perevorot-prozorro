@@ -132,11 +132,7 @@ class FormController extends Controller
 
 	private function get_status_data($lang='uk')
 	{
-		return [
-			['id'=>'1', 'name'=>'Статус 1'],
-			['id'=>'2', 'name'=>'Статус 2'],
-			['id'=>'3', 'name'=>'Статус 3'],
-		];
+		return $this->json('status', $lang);
 	}
 
 	private function get_tid_data($lang='uk')
@@ -150,11 +146,6 @@ class FormController extends Controller
 
 	private function get_edrpou_data($lang='uk')
 	{
-		return [
-			['id'=>'11111', 'name'=>'Company name 1'],
-			['id'=>'22222', 'name'=>'Company name 2'],
-			['id'=>'33333', 'name'=>'Company name 3'],
-		];
+		return $this->json('edrpou', $lang);
 	}
-
 }

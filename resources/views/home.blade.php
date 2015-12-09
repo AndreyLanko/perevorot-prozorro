@@ -17,7 +17,8 @@
 
 <input type="text" id="server_query" style="position:fixed;left:0px;bottom:0px;width:100%">
 
-<div id="result" style="display:none;padding:70px 20px 40px 20px"></div>
+<div id="result" style="padding:20px 20px 40px 10px;">
+</div>
 
 
 <script id="helper-suggest" type="text/x-jquery-tmpl">
