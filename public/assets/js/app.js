@@ -20743,95 +20743,6 @@ if (typeof jQuery === 'undefined') {
 
 	var json;
 
-	var BLOCK = function(){	
-		var _block;
-	
-		var query_types={
-			order: 100,
-			prefix: 'category',
-			name: 'Категорія',
-			button_name: 'Категорія',
-			pattern_search: /^(.*?)$/,
-			//pattern_exact: /^\d{1,8}-\d{1}$/,
-			template: $('#block-category'),
-			json: {
-				check: '/form/check/category'
-			},
-			load: function(){
-				if(!json){
-					$.ajax({
-						method: 'POST',
-						url: '/form/data/category',
-						dataType: 'json',
-						headers: APP.utils.csrf(),
-						success: function(response){
-							json=response;
-						}
-					});
-				}
-			},
-			init: function(input_query, block){
-				var input=block.find('select');
-	
-				_block=block;
-	
-				input.selectize({
-					options: json,
-					openOnFocus: true,
-					closeAfterSelect: true,
-					maxItems: 1,
-					maxOptions: 50,
-					labelField: 'name',
-					valueField: 'id',
-					searchField: [
-						'name',
-						'id'
-					],
-					render:{
-						option: function(item, escape) {
-							return '<div>'+item.name+'</div>';
-						},
-						item: function(item, escape) {
-							return '<div>'+item.name+'</div>';
-						}
-					},
-					onInitialize: function(){
-						this.open();
-
-						this.$control_input.val(input_query);
-						this.$control_input.trigger('update');
-						this.$control_input.focus();
-					},
-					onType: function(text){
-						_block[!this.currentResults.items.length?'addClass':'removeClass']('no-results');
-					},					
-					onChange: function(value){
-						INPUT.focus();
-						APP.utils.query();
-					},
-					onBlur: function(){
-						_block.removeClass('no-results');
-					}					
-				});
-
-				return this;
-			},
-			result: function(){
-				return _block.find('[data-value]').data('value');
-			}
-		};
-	
-		return query_types;
-	}
-
-	window.query_types=window.query_types||[];
-	window.query_types.push(BLOCK);
-})();
-(function(){
-	'use strict';
-
-	var json;
-
 	var BLOCK = function(){
 		var _block;
 	
@@ -21201,8 +21112,8 @@ if (typeof jQuery === 'undefined') {
 		var query_types={
 			order: 500,
 			prefix: 'edrpou',
-			name: 'ЄДРПОУ замовника',
-			button_name: 'ЄДРПОУ замовника',
+			name: 'Замовник',
+			button_name: 'Замовник',
 			pattern_search: /^(.*?)$/,
 			pattern_exact: /^\d{1,9}$/,
 			template: $('#block-edrpou'),

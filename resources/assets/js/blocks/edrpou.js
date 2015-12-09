@@ -7,8 +7,8 @@
 		var query_types={
 			order: 500,
 			prefix: 'edrpou',
-			name: 'ЄДРПОУ замовника',
-			button_name: 'ЄДРПОУ замовника',
+			name: 'Замовник',
+			button_name: 'Замовник',
 			pattern_search: /^(.*?)$/,
 			pattern_exact: /^\d{1,9}$/,
 			template: $('#block-edrpou'),

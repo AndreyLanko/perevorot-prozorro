@@ -34,12 +34,6 @@
 	</div>
 </script>
 
-<script id="block-category" type="text/x-jquery-tmpl">
-	<div class="block block-category">
-		<span class="block-key">Категорія</span><select />
-	</div>
-</script>
-
 <script id="block-cpv" type="text/x-jquery-tmpl">
 	<div class="block block-cpv">
 		<button class="none">Вибрати&nbsp;(<span></span>)</button>

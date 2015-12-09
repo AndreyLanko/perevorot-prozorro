@@ -10,7 +10,6 @@ class FormController extends Controller
 		'dkpp',
 		'edrpou',
 		'region',
-		'category',
 		'proceduretype'
 	];
 
@@ -153,15 +152,6 @@ class FormController extends Controller
 			['id'=>'24', 'name'=>'Чернівецька'],
 			['id'=>'25', 'name'=>'Чернігівська'],
 			['id'=>'26', 'name'=>'Київ']
-		];
-	}
-
-	private function get_category_data()
-	{
-		return [
-			['id'=>'1', 'name'=>'Category 1'],
-			['id'=>'2', 'name'=>'Category 2'],
-			['id'=>'3', 'name'=>'Category 3'],
 		];
 	}
 
