@@ -11,7 +11,8 @@ class FormController extends Controller
 		'edrpou',
 		'region',
 		'proceduretype',
-		'status'
+		'status',
+		'tid'
 	];
 
 	public function search($type=false)
@@ -171,6 +172,15 @@ class FormController extends Controller
 			['id'=>'1', 'name'=>'Статус 1'],
 			['id'=>'2', 'name'=>'Статус 2'],
 			['id'=>'3', 'name'=>'Статус 3'],
+		];
+	}
+
+	private function get_tid_data()
+	{
+		return [
+			['id'=>'1', 'name'=>'1'],
+			['id'=>'2', 'name'=>'2'],
+			['id'=>'3', 'name'=>'3'],
 		];
 	}
 
