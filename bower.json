@@ -12,6 +12,7 @@
     "bootstrap": "~3.3.5",
     "datepair.js": "0.4.14",
     "jquery": "~2.1.4",
+    "jquery-auto-grow-input": "*",
     "jquery.inputmask": "~3.2.5",
     "selectize": "~0.12.1"
   }

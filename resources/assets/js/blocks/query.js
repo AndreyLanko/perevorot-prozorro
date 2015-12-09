@@ -2,7 +2,8 @@
 	'use strict';
 
 	var BLOCK = function(){
-		var _input_query;
+		var _input,
+			_value;
 		
 		var query_types={
 			order: 0,
@@ -11,7 +12,19 @@
 			pattern_search: /^(.*?)$/,
 			template: $('#block-query'),
 			init: function(input_query, block){
-				_input_query=input_query;
+				_input=block.find('input');
+				_value=input_query;
+
+				_input.autoGrowInput({
+					minWidth: 20,
+					comfortZone: 0
+				});
+
+				_input.keyup(function(){
+					_value=_input.val();
+
+					APP.utils.query();
+				});
 
 				INPUT.focus();
 				APP.utils.query();
@@ -19,7 +32,7 @@
 				return this;	
 			},
 			result: function(){
-				return _input_query;
+				return _value;
 			}
 		};
 

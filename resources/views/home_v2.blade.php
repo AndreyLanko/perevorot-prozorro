@@ -30,7 +30,7 @@
 
 <script id="block-query" type="text/x-jquery-tmpl">
 	<div class="block block-query">
-		<span class="block-key">Ключове слово</span>{value}
+		<span class="block-key">Ключове слово</span><input type="text" value="{value}">
 	</div>
 </script>
 

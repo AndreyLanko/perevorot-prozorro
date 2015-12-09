@@ -36,6 +36,9 @@ gulp.task("copyfiles", function() {
   gulp.src("resources/vendor/jquery.inputmask/dist/inputmask/jquery.inputmask.js")
     .pipe(gulp.dest("resources/assets/js/vendor/"));
 
+  gulp.src("resources/vendor/jquery-auto-grow-input/jquery.auto-grow-input.js")
+    .pipe(gulp.dest("resources/assets/js/vendor/"));
+
 });
 
 elixir(function(mix) {
@@ -50,6 +53,7 @@ elixir(function(mix) {
       'js/vendor/inputmask.js',
       'js/vendor/inputmask.date.extensions.js',
       'js/vendor/jquery.inputmask.js',
+      'js/vendor/jquery.auto-grow-input.js',
       'js/libs/selectize.js',
       'js/blocks/**/*.js',
       'js/app.js'

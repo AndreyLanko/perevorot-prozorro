@@ -789,4 +789,18 @@
 .block.block-date {
 	min-width: 378px;
 }
+.block-query input[type="text"] {
+	display: inline-block;
+	width: auto;
+	background-color: transparent;
+	border: none;
+	border-bottom: 1px solid #000;
+	font-weight: bold;
+	line-height: 16px;
+	font-size: 13px;
+	outline: none;
+}
+.block-query .block-key {
+	display: inline-block;
+}
 /*# sourceMappingURL=site.css.map */
