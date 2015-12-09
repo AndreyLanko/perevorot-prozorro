@@ -21066,7 +21066,7 @@ if (typeof jQuery === 'undefined') {
 			order: 300,
 			prefix: 'dkpp',
 			name: 'ДКПП-код',
-			button_name: 'ДКПП-код',
+			button_name: 'ДКПП-код (архив)',
 			pattern_search: /^(.*?)$/,
 			pattern_exact: /^\d{1,9}$/,
 			template: $('#block-dkpp'),
