@@ -20862,19 +20862,18 @@ if (typeof jQuery === 'undefined') {
 		
 							this.$control_input.val(input_query);
 							this.$control_input.trigger('update');
-							this.$control_input.focus();
+							
+							if(input_query==''){
+								this.$dropdown.hide();
+							}
 						}
-						/*
-						$(document).on('keyup', '.selectize-input input', function(e){
-							console.log(e.keyCode);
-						});
-						*/
 					},
 					onChange: function(value){
 						INPUT.focus();
 						APP.utils.query();
 					},
 					onType: function(text){
+						this.$dropdown.show();
 						_block[!this.currentResults.items.length?'addClass':'removeClass']('no-results');
 					},
       				onDropdownOpen: function(){
