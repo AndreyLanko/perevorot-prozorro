@@ -73,8 +73,8 @@
 	</div>
 </script>
 
-<script id="block-proceduretype" type="text/x-jquery-tmpl">
-	<div class="block block-proceduretype">
+<script id="block-procedure" type="text/x-jquery-tmpl">
+	<div class="block block-procedure">
 		<span class="block-key">Тип процедури</span><select />
 	</div>
 </script>

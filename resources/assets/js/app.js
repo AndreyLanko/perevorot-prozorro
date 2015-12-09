@@ -198,7 +198,7 @@ var APP,
 
 								if(typeof result === 'object'){
 									SEARCH_QUERY.push(result.join('&'));
-								}else{
+								}else if(result){
 									SEARCH_QUERY.push(type+'='+result);
 								}
 							}

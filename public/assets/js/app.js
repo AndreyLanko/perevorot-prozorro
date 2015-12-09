@@ -20938,7 +20938,9 @@ if (typeof jQuery === 'undefined') {
 				return this;	
 			},
 			result: function(){
-				return _block.find('[data-value]').data('value');
+				var value=_block.find('[data-value]').data('value');
+
+				return value!='' ? value : false;
 			}
 		};
 		
@@ -21047,11 +21049,13 @@ if (typeof jQuery === 'undefined') {
 				return this;
 			},
 			result: function(){
-				var out=[];
+				var out=false;
 
 				if(pattern.test(date_start.val()) && pattern.test(date_end.val())){
-					out.push('date_start='+date_start.val());
-					out.push('date_end='+date_end.val());
+					out=[
+						'date_start='+date_start.val(),
+						'date_end='+date_end.val()
+					];
 				}
 				
 				return out;
@@ -21151,7 +21155,9 @@ if (typeof jQuery === 'undefined') {
 				return this;
 			},
 			result: function(){
-				return _block.find('[data-value]').data('value');
+				var value=_block.find('[data-value]').data('value');
+
+				return value!='' ? value : false;
 			}
 		};
 		
@@ -21246,7 +21252,9 @@ if (typeof jQuery === 'undefined') {
 				return this;
 			},
 			result: function(){
-				return _block.find('[data-value]').data('value');
+				var value=_block.find('[data-value]').data('value');
+
+				return value!='' ? value : false;
 			}
 		}
 		
@@ -21266,20 +21274,20 @@ if (typeof jQuery === 'undefined') {
 	
 		var query_types={
 			order: 700,
-			prefix: 'proceduretype',
+			prefix: 'procedure',
 			name: 'Тип процедури',
 			button_name: 'Тип процедури',
 			pattern_search: /^(.*?)$/,
 			//pattern_exact: /^\d{1,8}-\d{1}$/,
-			template: $('#block-proceduretype'),
+			template: $('#block-procedure'),
 			json: {
-				check: '/form/check/proceduretype'
+				check: '/form/check/procedure'
 			},
 			load: function(){
 				if(!json){
 					$.ajax({
 						method: 'POST',
-						url: '/form/data/proceduretype',
+						url: '/form/data/procedure',
 						dataType: 'json',
 						headers: APP.utils.csrf(),
 						success: function(response){
@@ -21334,7 +21342,9 @@ if (typeof jQuery === 'undefined') {
 				return this;
 			},
 			result: function(){
-				return _block.find('[data-value]').data('value');
+				var value=_block.find('[data-value]').data('value');
+
+				return value!='' ? value : false;
 			}
 		}
 		
@@ -21466,7 +21476,9 @@ if (typeof jQuery === 'undefined') {
 				return this;
 			},
 			result: function(){
-				return _block.find('[data-value]').data('value');
+				var value=_block.find('[data-value]').data('value');
+
+				return value!='' ? value : false;
 			}		
 		}
 		
@@ -21554,7 +21566,9 @@ if (typeof jQuery === 'undefined') {
 				return this;
 			},
 			result: function(){
-				return _block.find('[data-value]').data('value');
+				var value=_block.find('[data-value]').data('value');
+
+				return value!='' ? value : false;
 			}		
 		}
 		
@@ -21648,7 +21662,9 @@ if (typeof jQuery === 'undefined') {
 				return this;
 			},
 			result: function(){
-				return _block.find('[data-value]').data('value');
+				var value=_block.find('[data-value]').data('value');
+
+				return value!='' ? value : false;
 			}
 		};
 		
@@ -21858,7 +21874,7 @@ var APP,
 
 								if(typeof result === 'object'){
 									SEARCH_QUERY.push(result.join('&'));
-								}else{
+								}else if(result){
 									SEARCH_QUERY.push(type+'='+result);
 								}
 							}

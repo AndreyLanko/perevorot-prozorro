@@ -10,7 +10,7 @@ class FormController extends Controller
 		'dkpp',
 		'edrpou',
 		'region',
-		'proceduretype',
+		'procedure',
 		'status',
 		'tid'
 	];
@@ -89,12 +89,11 @@ class FormController extends Controller
         ], JSON_UNESCAPED_UNICODE);			
 	}
 
-	private function get_cpv_data($lang='uk')
-	{		
-		$data = Cache::remember('cpv_data', 60, function() use ($lang)
+	private function json($source, $lang)
+	{
+		$data = Cache::remember('data_'.$source.'_'.$lang, 60, function() use ($lang, $source)
 		{
-			//$raw=json_decode(file_get_contents('http://standards.openprocurement.org/classifiers/cpv/'.$lang.'.json'), TRUE);
-			$raw=json_decode(file_get_contents('./sources/'.$lang.'.json'), TRUE);
+			$raw=json_decode(file_get_contents('./sources/'.$lang.'/'.$source.'.json'), TRUE);
 			$data=[];
 			
 			foreach($raw as $id=>$name)
@@ -108,65 +107,30 @@ class FormController extends Controller
 		    return $data;
 		});
 
-		return $data;	
+		return $data;
 	}
-
-	private function get_dkpp_data()
+	
+	private function get_cpv_data($lang='uk')
 	{
-		return [
-			['id'=>'1', 'name'=>'Продукція сільського господарства, мисливства та пов\'язані з цим послуги'],
-			['id'=>'2', 'name'=>'Вугілля кам\'яне та буре вугілля (лігніт)'],
-			['id'=>'3', 'name'=>'Продукти харчові'],
-			['id'=>'4', 'name'=>'Енергія електрична, газ, пара та кондиційоване повітря'],
-			['id'=>'5', 'name'=>'Вода природна; послуги щодо обробляння та постачання води'],
-			['id'=>'6', 'name'=>'Будівлі та будування будівель'],
-			['id'=>'7', 'name'=>'Послуги водного транспорту'],
-			['id'=>'8', 'name'=>'Послуги повітряного транспорту'],
-			['id'=>'9', 'name'=>'Спирт спирт спирт']
-		];
+		return $this->json('cpv', $lang);
 	}
 
-	private function get_region_data()
+	private function get_dkpp_data($lang='uk')
 	{
-		return [
-			['id'=>'1', 'name'=>'Вінницька'],
-			['id'=>'2', 'name'=>'Волинська'],
-			['id'=>'3', 'name'=>'Дніпропетровська'],
-			['id'=>'4', 'name'=>'Донецька'],
-			['id'=>'5', 'name'=>'Житомирська'],
-			['id'=>'6', 'name'=>'Закарпатська'],
-			['id'=>'7', 'name'=>'Запорізька'],
-			['id'=>'8', 'name'=>'Івано-Франківська'],
-			['id'=>'9', 'name'=>'Київська'],
-			['id'=>'10', 'name'=>'Кіровоградська'],
-			['id'=>'11', 'name'=>'Луганська'],
-			['id'=>'12', 'name'=>'Львівська'],
-			['id'=>'13', 'name'=>'Миколаївська'],
-			['id'=>'14', 'name'=>'Одеська'],
-			['id'=>'15', 'name'=>'Полтавська'],
-			['id'=>'16', 'name'=>'Рівненська'],
-			['id'=>'17', 'name'=>'Сумська'],
-			['id'=>'18', 'name'=>'Тернопільська'],
-			['id'=>'20', 'name'=>'Харківська'],
-			['id'=>'21', 'name'=>'Херсонська'],
-			['id'=>'22', 'name'=>'Хмельницька'],
-			['id'=>'23', 'name'=>'Черкаська'],
-			['id'=>'24', 'name'=>'Чернівецька'],
-			['id'=>'25', 'name'=>'Чернігівська'],
-			['id'=>'26', 'name'=>'Київ']
-		];
+		return $this->json('dkpp', $lang);
 	}
 
-	private function get_proceduretype_data()
+	private function get_region_data($lang='uk')
 	{
-		return [
-			['id'=>'1', 'name'=>'Procedure type 1'],
-			['id'=>'2', 'name'=>'Procedure type 2'],
-			['id'=>'3', 'name'=>'Procedure type 3'],
-		];
+		return $this->json('region', $lang);
 	}
 
-	private function get_status_data()
+	private function get_procedure_data($lang='uk')
+	{
+		return $this->json('procedure', $lang);
+	}
+
+	private function get_status_data($lang='uk')
 	{
 		return [
 			['id'=>'1', 'name'=>'Статус 1'],
@@ -175,7 +139,7 @@ class FormController extends Controller
 		];
 	}
 
-	private function get_tid_data()
+	private function get_tid_data($lang='uk')
 	{
 		return [
 			['id'=>'1', 'name'=>'1'],
@@ -184,7 +148,7 @@ class FormController extends Controller
 		];
 	}
 
-	private function get_edrpou_data()
+	private function get_edrpou_data($lang='uk')
 	{
 		return [
 			['id'=>'11111', 'name'=>'Company name 1'],

@@ -97,11 +97,13 @@
 				return this;
 			},
 			result: function(){
-				var out=[];
+				var out=false;
 
 				if(pattern.test(date_start.val()) && pattern.test(date_end.val())){
-					out.push('date_start='+date_start.val());
-					out.push('date_end='+date_end.val());
+					out=[
+						'date_start='+date_start.val(),
+						'date_end='+date_end.val()
+					];
 				}
 				
 				return out;

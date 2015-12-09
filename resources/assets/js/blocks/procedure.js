@@ -8,20 +8,20 @@
 	
 		var query_types={
 			order: 700,
-			prefix: 'proceduretype',
+			prefix: 'procedure',
 			name: 'Тип процедури',
 			button_name: 'Тип процедури',
 			pattern_search: /^(.*?)$/,
 			//pattern_exact: /^\d{1,8}-\d{1}$/,
-			template: $('#block-proceduretype'),
+			template: $('#block-procedure'),
 			json: {
-				check: '/form/check/proceduretype'
+				check: '/form/check/procedure'
 			},
 			load: function(){
 				if(!json){
 					$.ajax({
 						method: 'POST',
-						url: '/form/data/proceduretype',
+						url: '/form/data/procedure',
 						dataType: 'json',
 						headers: APP.utils.csrf(),
 						success: function(response){
@@ -76,7 +76,9 @@
 				return this;
 			},
 			result: function(){
-				return _block.find('[data-value]').data('value');
+				var value=_block.find('[data-value]').data('value');
+
+				return value!='' ? value : false;
 			}
 		}
 		

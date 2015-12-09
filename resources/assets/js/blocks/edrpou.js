@@ -83,7 +83,9 @@
 				return this;
 			},
 			result: function(){
-				return _block.find('[data-value]').data('value');
+				var value=_block.find('[data-value]').data('value');
+
+				return value!='' ? value : false;
 			}
 		}
 		
