@@ -194,7 +194,13 @@ var APP,
 								type=block.prefix;
 
 							if(typeof block.result === 'function'){
-								SEARCH_QUERY.push(type+'='+block.result());
+								var result=block.result();
+
+								if(typeof result === 'object'){
+									SEARCH_QUERY.push(result.join('&'));
+								}else{
+									SEARCH_QUERY.push(type+'='+result);
+								}
 							}
 						});
 	

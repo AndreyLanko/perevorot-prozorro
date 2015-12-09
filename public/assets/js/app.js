@@ -20954,21 +20954,10 @@ if (typeof jQuery === 'undefined') {
 
 	var BLOCK = function(){
 		var _block,
-			datepair,
 			pattern=/^(0[1-9]|1\d|2\d|3[01])\.(0[1-9]|1[0-2])\.(19|20)\d{2}$/,
+			date_start,
+			date_end,
 			format='dd.mm.yyyy';
-	
-		var is_valid=function(){
-			var out=0;
-
-			_block.find('.date').each(function(){
-				if(pattern.test($(this).val())){
-					out++;
-				}
-			});
-			
-			return out==2;
-		};
 
 		var query_types={
 			order: 400,
@@ -20990,32 +20979,53 @@ if (typeof jQuery === 'undefined') {
 			pattern_exact: pattern,
 			template: $('#block-date'),
 			init: function(data, block){
-				//INPUT.focus();
 				_block=block;
 				
-				block.find('.block-date-picker .date').datepicker({
+				var dates=block.find('.block-date-picker .date'),
+					ever=false,
+					datepair=block.find('.block-date-picker'),
+					tooltip=block.find('.block-date-tooltip');
+
+				date_start=$(dates[0]);
+				date_end=$(dates[1]);
+
+                new Datepair(datepair[0]);
+
+				dates.datepicker({
 					'autoclose': true,
 					'format': format
 				});
 				
-				block.find('.block-date-picker .date').inputmask({
+				dates.inputmask({
 					alias: 'dd.mm.yyyy',
 					placeholder: 'дд.мм.рррр'
 				});
 
-				block.find('.block-date-picker').on('rangeSelected', function(date){
-					if(is_valid()) {
-						$('.datepicker').hide();
-						APP.utils.query();
+				date_end.on('focus', function(){
+					ever=true;
+				});
+
+				dates.on('blur', function(){
+					dates.each(function(){
+						if($(this).val()!='' && !$(this).inputmask("isComplete")){
+							$(this).datepicker('update', '');
+						}
+					});
+
+					APP.utils.query();
+				})
+
+				datepair.on('rangeSelected', function(date){
+					if(pattern.test(date_start.val()) && pattern.test(date_end.val()) && ever){
 						INPUT.focus();
+					}else if(pattern.test(date_start.val())){
+						$('.datepicker').hide();
+						date_end.focus();
+					}else if(pattern.test(date_end.val())){
+						$('.datepicker').hide();
+						date_start.focus();
 					}
 				});
-
-                var datepair = new Datepair(block.find('.block-date-picker')[0], {
-					'defaultDateDelta': 1,
-				});
-
-				var tooltip=block.find('.block-date-tooltip');
 
 				block.find('.block-key').html(tooltip.find('div:first').html());
 
@@ -21040,11 +21050,12 @@ if (typeof jQuery === 'undefined') {
 			result: function(){
 				var out=[];
 
-				_block.find('.date').each(function(){
-					out.push($(this).attr('class').replace(' ', '-')+'[]='+$(this).val());
-				});
+				if(pattern.test(date_start.val()) && pattern.test(date_end.val())){
+					out.push('date_start='+date_start.val());
+					out.push('date_end='+date_end.val());
+				}
 				
-				return out.join('&');
+				return out;
 			}
 		}
 		
@@ -21844,7 +21855,13 @@ var APP,
 								type=block.prefix;
 
 							if(typeof block.result === 'function'){
-								SEARCH_QUERY.push(type+'='+block.result());
+								var result=block.result();
+
+								if(typeof result === 'object'){
+									SEARCH_QUERY.push(result.join('&'));
+								}else{
+									SEARCH_QUERY.push(type+'='+result);
+								}
 							}
 						});
 	
