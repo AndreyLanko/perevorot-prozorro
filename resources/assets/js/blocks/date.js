@@ -27,9 +27,9 @@
 			pattern_search: /^(\d*?)$/,
 			pattern_exact: pattern,
 			template: $('#block-date'),
-			init: function(data, block){
+			init: function(input_query, block){
 				_block=block;
-				
+
 				var dates=block.find('.block-date-picker .date'),
 					ever=false,
 					datepair=block.find('.block-date-picker'),
@@ -38,7 +38,10 @@
 				date_start=$(dates[0]);
 				date_end=$(dates[1]);
 
-                new Datepair(datepair[0]);
+				if(input_query){
+					date_start.val(input_query);
+					setCaretPosition(date_start[0], 3);
+				}
 
 				dates.datepicker({
 					'autoclose': true,
@@ -48,10 +51,6 @@
 				dates.inputmask({
 					alias: 'dd.mm.yyyy',
 					placeholder: 'дд.мм.рррр'
-				});
-
-				date_end.on('focus', function(){
-					ever=true;
 				});
 
 				dates.on('blur', function(){
@@ -64,16 +63,41 @@
 					APP.utils.query();
 				})
 
-				datepair.on('rangeSelected', function(date){
-					if(pattern.test(date_start.val()) && pattern.test(date_end.val()) && ever){
-						INPUT.focus();
-					}else if(pattern.test(date_start.val())){
+				date_start.on('changeDate', function(date){
+					if(!pattern.test(date_start.val())){
+						return;
+					}
+
+					date_end.datepicker("setStartDate", date_start.datepicker("getDate"));
+
+					if(!pattern.test(date_end.val())){
 						$('.datepicker').hide();
-						date_end.val('');
 						date_end.focus();
-					}else if(pattern.test(date_end.val())){
+					}
+					
+					if(pattern.test(date_start.val()) && pattern.test(date_end.val())){
+						$('.datepicker').hide();
+						INPUT.focus();
+					}
+				});
+
+				date_end.on('changeDate', function(date){
+					if(!pattern.test(date_end.val())){
+						return;
+					}
+
+					date_start.datepicker("setEndDate", date_end.datepicker("getDate"));
+
+					if(!pattern.test(date_start.val())){
 						$('.datepicker').hide();
 						date_start.focus();
+
+						return;
+					}
+
+					if(pattern.test(date_start.val()) && pattern.test(date_end.val())){
+						$('.datepicker').hide();
+						INPUT.focus();
 					}
 				});
 
@@ -112,6 +136,24 @@
 		}
 		
 		return query_types;
+	}
+	
+	function setCaretPosition(elem, caretPos) {
+	    if(elem != null) {
+	        if(elem.createTextRange) {
+	            var range = elem.createTextRange();
+	            range.move('character', caretPos);
+	            range.select();
+	        }
+	        else {
+	            if(elem.selectionStart) {
+	                elem.focus();
+	                elem.setSelectionRange(caretPos, caretPos);
+	            }
+	            else
+	                elem.focus();
+	        }
+	    }
 	}
 
 	window.query_types=window.query_types||[];	
