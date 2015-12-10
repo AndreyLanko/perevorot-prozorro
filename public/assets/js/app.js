@@ -21021,6 +21021,7 @@ if (typeof jQuery === 'undefined') {
 						INPUT.focus();
 					}else if(pattern.test(date_start.val())){
 						$('.datepicker').hide();
+						date_end.val('');
 						date_end.focus();
 					}else if(pattern.test(date_end.val())){
 						$('.datepicker').hide();
