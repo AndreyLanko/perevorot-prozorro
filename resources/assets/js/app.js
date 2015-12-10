@@ -9,6 +9,7 @@
  */
 var APP,
 	INPUT,
+	SEARCH_BUTTON,
 	BLOCKS,
 	SEARCH_QUERY,
 	SEARCH_QUERY_TIMEOUT,
@@ -44,6 +45,7 @@ var APP,
 
 					INPUT=_self;
 					BLOCKS=$('#blocks');
+					SEARCH_BUTTON=$('#search_button');
 					
 					setInterval(function(){
 						if(input_query!=INPUT.val()){
@@ -69,6 +71,10 @@ var APP,
 						INPUT.focus();
 					}, 500);
 
+					SEARCH_BUTTON.click(function(){
+						APP.utils.query();
+					});
+					
 					BLOCKS.click(function(e){
 						if($(e.target).closest('.block').length){
 							return;
@@ -203,9 +209,16 @@ var APP,
 								}
 							}
 						});
-	
+
 						$('#server_query').val(SEARCH_QUERY.join('&'));
-						
+						SEARCH_BUTTON.prop('disabled', SEARCH_QUERY.length?'':'disabled')
+
+						if(!SEARCH_QUERY.length){
+							$('#result').html('');
+
+							return;
+						}
+
 						$('#result').html('Завантаження...');
 
 						$.ajax({

@@ -621,10 +621,19 @@
 .delete:hover {
 	text-decoration: none;
 }
-.more:hover,
-.more:focus {
+.more{
 	text-decoration: none;	
 	color: #fff;
+	box-shadow: none;
+	border: none;
+	outline: none;	
+}
+.more:hover,
+.more:focus {
+	opacity: .8;
+}
+.more:disabled{
+	opacity: .3;
 }
 .block .selectize-dropdown [data-selectable] .highlight,
 .highlight {
@@ -701,6 +710,10 @@
 }
 .buttons button:not(:last-child) {
 	margin-right: 10px;
+}
+.buttons button:hover,
+.buttons button:focus{
+	opacity: .8;
 }
 .selectize-dropdown.single .selectize-dropdown-content:before {
 	display: none;

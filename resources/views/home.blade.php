@@ -7,7 +7,7 @@
 	<div class="blocks-wr">
 		<div id="blocks" class="blocks clearfix">
 			<input id="query" class="query_input no_blocks" type="text" autocomplete="off" data-js="form" data-placeholder="Назва товару, код товару, назва або ЄДРПОУ компанії, дата або що завгодно ще...">
-			<a href="" class="more">Шукати</a>
+			<button id="search_button" class="more" disabled>Шукати</button>
 		</div>
 		<div id="suggest" class="suggest"></div>
 	</div>
