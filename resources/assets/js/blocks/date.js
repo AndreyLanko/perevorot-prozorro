@@ -24,7 +24,7 @@
 			}
 			*/
 			button_name: 'Дати',
-			pattern_search: /^(\d*?)$/,
+			pattern_search: /^(.*?)$/,
 			pattern_exact: pattern,
 			template: $('#block-date'),
 			init: function(input_query, block){
@@ -38,21 +38,23 @@
 				date_start=$(dates[0]);
 				date_end=$(dates[1]);
 
-				if(input_query){
-					date_start.val(input_query);
-					setCaretPosition(date_start[0], 3);
-				}
-
 				dates.datepicker({
 					'autoclose': true,
 					'format': format
 				});
-				
+
 				dates.inputmask({
 					alias: 'dd.mm.yyyy',
 					placeholder: 'дд.мм.рррр'
 				});
 
+				if(input_query){
+					date_start.val(input_query);
+					setCaretPosition(date_start[0], 3);
+
+					date_start.datepicker('update');
+				}
+				
 				dates.on('blur', function(){
 					dates.each(function(){
 						if($(this).val()!='' && !$(this).inputmask("isComplete")){
