@@ -21015,10 +21015,15 @@ if (typeof jQuery === 'undefined') {
 					comfortZone: 0
 				});
 
-				_input.keyup(function(){
-					_value=_input.val();
-
-					APP.utils.query();
+				_input.keyup(function(e){
+					if(e.keyCode==KEY_RETURN){
+						INPUT.focus();
+						APP.utils.query();
+					}else{
+						_value=_input.val();
+	
+						APP.utils.query();
+					}
 				});
 
 				INPUT.focus();
@@ -21338,10 +21343,15 @@ if (typeof jQuery === 'undefined') {
 					comfortZone: 0
 				});
 
-				_input.keyup(function(){
-					_value=_input.val();
-
-					APP.utils.query();
+				_input.keyup(function(e){
+					if(e.keyCode==KEY_RETURN){
+						INPUT.focus();
+						APP.utils.query();
+					}else{
+						_value=_input.val();
+	
+						APP.utils.query();
+					}
 				});
 
 				if(_value){
