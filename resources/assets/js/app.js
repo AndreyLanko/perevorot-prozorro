@@ -226,9 +226,9 @@ var APP,
 							dataType: "json",
 							success: function(response){
 								var out=[];
-								
-								for(var ii=0;ii<response.res.length;ii++){
-									var item=response.res[ii];
+
+								for(var ii=0;ii<response.res.hits.length;ii++){
+									var item=response.res.hits[ii];
 									var it=[];
 	
 									if(item._source.items && item._source.items.length){
@@ -240,7 +240,7 @@ var APP,
 									out.push('<h4>'+item._source.title+'</h4>'+it.join('')+(item._source.tenderPeriod?'<div>'+item._source.tenderPeriod.startDate+'—'+item._source.tenderPeriod.endDate+'</div>':''));
 								};
 	
-								if(response.res.length){
+								if(response.res.hits.length){
 									$('#result').html(out.join(''));
 								}else{
 									$('#result').html('Жодних результатiв');
