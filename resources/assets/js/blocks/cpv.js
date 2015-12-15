@@ -151,7 +151,8 @@
 			},
 			result: function(){
 				var value=_block.find('[data-value]').data('value');
-
+				value=value.split('-')[0].replace(/0+$/, '');
+				
 				return value!='' ? value : false;
 			}
 		};
