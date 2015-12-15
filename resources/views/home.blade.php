@@ -87,8 +87,8 @@
 </script>
 
 <script id="block-tid" type="text/x-jquery-tmpl">
-	<div class="block block-status">
-		<span class="block-key">№ закупівлі</span><select />
+	<div class="block block-tid">
+		<span class="block-key">№ закупівлі</span><input type="text" value="{value}">
 	</div>
 </script>
 

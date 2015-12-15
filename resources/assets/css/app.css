@@ -296,7 +296,8 @@
 .block.block-date {
 	min-width: 378px;
 }
-.block-query input[type="text"] {
+.block-query input[type="text"],
+.block-tid input[type="text"] {
 	display: inline-block;
 	width: auto;
 	background-color: transparent;

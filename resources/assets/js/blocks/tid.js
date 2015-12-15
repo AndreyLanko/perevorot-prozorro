@@ -2,89 +2,43 @@
 	'use strict';
 
 	var BLOCK = function(){
-		var _block;
+		var _input,
+			_value;
 	
 		var query_types={
 			order: 300,
 			prefix: 'tid',
 			name: '№ закупівлі',
 			button_name: '№ закупівлі',
-			pattern_search: /^(.*?)$/,
+			pattern_search: /^(.*?)$/, //UA-2015-09-04-000137
 			pattern_exact: /^\d{1,9}$/,
 			template: $('#block-tid'),
-			json: {
-				check: '/form/check/tid'
-			},
 			init: function(input_query, block){
-				var input=block.find('select');
-	
-				_block=block;
-	
-				input.selectize({
-					options: [],
-					openOnFocus: true,
-					closeAfterSelect: true,
-					maxItems: 1,
-					maxOptions: 50,
-					labelField: 'id',
-					valueField: 'id',
-					searchField: [
-						'id'
-					],
-					load: function(query, callback) {
-						if (!query.length){
-							return callback();
-						}
-	
-						$.ajax({
-							url: '/form/search/tid',
-							type: 'POST',
-							dataType: 'json',
-							headers: APP.utils.csrf(),
-							data: {
-								query: query
-							},
-							error: function() {
-								callback();
-							},
-							success: function(res) {
-								callback(res);
-							}
-						});
-					},
-					render:{
-						option: function(item, escape) {
-							return '<div>№'+item.id+'</div>';
-						},
-						item: function(item, escape) {
-							return '<div>'+item.id+'</div>';
-						}
-					},
-					onBlur: function(){
-						_block.removeClass('no-results');
-					},
-					onLoad: function(data){
-						_block[data && !data.length?'addClass':'removeClass']('no-results');
-					},
-					onInitialize: function(){
-						this.$control_input.val(input_query);
-						this.$control_input.keyup();
-	
-						this.open();
-						this.focus();
-					},
-					onChange: function(value){
-						INPUT.focus();
-						APP.utils.query();
-					}
+				_input=block.find('input');
+				_value=input_query;
+
+				_input.autoGrowInput({
+					minWidth: 20,
+					comfortZone: 0
 				});
-				
-				return this;
+
+				_input.keyup(function(){
+					_value=_input.val();
+
+					APP.utils.query();
+				});
+
+				if(_value){
+					INPUT.focus();
+				}else{
+					_input.focus();
+				}
+				APP.utils.query();
+
+				return this;	
 			},
 			result: function(){
-				var value=_block.find('[data-value]').data('value');
-
-				return value!='' ? value : false;
+				return _value;
 			}
 		};
 		
