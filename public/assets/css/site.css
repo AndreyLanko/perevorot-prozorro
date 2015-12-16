@@ -715,6 +715,9 @@
 .buttons button:focus{
 	opacity: .8;
 }
+.buttons button:disabled {
+	opacity: .5;
+}
 .selectize-dropdown.single .selectize-dropdown-content:before {
 	display: none;
 }
@@ -799,8 +802,15 @@
 	background-color: #f5fafd;
     color: #495c68;
 }
+.block-date-tooltip div.active{
+	background-color: #dae9f2;
+    color: #495c68;
+}
+.block-date-tooltip div.disabled{
+    color: #EEE;
+}
 .block.block-date {
-	min-width: 378px;
+	/*min-width: 378px;*/
 }
 .block-query input[type="text"],
 .block-tid input[type="text"] {
@@ -817,4 +827,5 @@
 .block-query .block-key {
 	display: inline-block;
 }
+
 /*# sourceMappingURL=site.css.map */

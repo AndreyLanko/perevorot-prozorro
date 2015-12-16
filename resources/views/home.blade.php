@@ -51,10 +51,7 @@
 <script id="block-date" type="text/x-jquery-tmpl">
 	<div class="block block-date dateselect">
 		<a href class="block-date-arrow">▼</a>
-		<div class="block-date-tooltip none">
-			<div>Період проведення торгів</div>
-			<div>Період прийому пропозицій</div>
-		</div>
+		<div class="block-date-tooltip"></div>
 		<span class="block-key"></span>
 		<div class="block-date-picker">
 			<input class="date start" type="text">—<input class="date end" class="text">

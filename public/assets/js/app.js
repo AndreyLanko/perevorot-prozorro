@@ -20544,6 +20544,8 @@ if (typeof jQuery === 'undefined') {
 	window.query_types=window.query_types||[];
 	window.query_types.push(BLOCK);
 })();
+var DATE_SELECTED=[];
+
 (function(){
 	'use strict';
 
@@ -20552,23 +20554,38 @@ if (typeof jQuery === 'undefined') {
 			pattern=/^(0[1-9]|1\d|2\d|3[01])\.(0[1-9]|1[0-2])\.(19|20)\d{2}$/,
 			date_start,
 			date_end,
-			format='dd.mm.yyyy';
+			format='dd.mm.yyyy',
+			date_types={
+				tender: 'Дата приема предложений',
+				enquiry: 'Дата периода уточнений',
+				auction: 'Дата аукциона',
+				award: 'Дата квалификации'				
+			},
+			current_date_type;
+
+		var check_disabled=function(){
+			DATE_SELECTED=[];
+					
+			$('.block-date-tooltip div').each(function(){
+				var self=$(this);
+				if(self.is('.active')){
+					DATE_SELECTED.push(self.data('date_type'));
+				}
+			});
+			
+			$('.block-date-tooltip div:not(.active)').removeClass('disabled').each(function(){
+				var self=$(this);
+				if(DATE_SELECTED.indexOf(self.data('date_type'))>=0){
+					self.addClass('disabled');
+				}
+			});
+		}
 
 		var query_types={
 			order: 400,
 			self: this,
 			prefix: 'date',
-			name: 'Дата начала приема предложений',/*
-				{
-				enquiryPeriod_startDate: 'Дата начала периода уточнений',
-				enquiryPeriod_endDate: 'Дата завершения периода уточнений',
-				tenderPeriod_startDate: 'Дата начала приема предложений',
-				tenderPeriod_endDate: 'Дата завершения приема предложений',
-				auctionPeriod_startDate: 'Дата начала аукциона',
-				auctionPeriod_endDate: 'Дата завершения аукциона',
-				awardPeriod_startDate: 'Дата начала квалификации'				
-			}
-			*/
+			name: 'Дата начала приема предложений',
 			button_name: 'Дати',
 			pattern_search: /^(.*?)$/,
 			pattern_exact: pattern,
@@ -20649,10 +20666,16 @@ if (typeof jQuery === 'undefined') {
 					}
 				});
 
-				block.find('.block-key').html(tooltip.find('div:first').html());
-
+				$(document).click(function(e){
+					if(!$(e.target).closest('.block-date').length){
+						$('.block-date-tooltip').hide();
+					}
+				});
+				
 				block.find('.block-date-arrow').click(function(e){
 					e.preventDefault();
+
+					$('.block-date-tooltip').hide();
 					tooltip.show();
 				});
 
@@ -20660,22 +20683,90 @@ if (typeof jQuery === 'undefined') {
 					tooltip.hide();
 				});
 
+				$.each(date_types, function(date_type, date_name){
+					var div=$('<div/>');
+
+					if(DATE_SELECTED.indexOf(date_type)>=0){
+						div.addClass('disabled');
+					}
+
+					div.data('date_type', date_type);
+					div.html(date_name);
+
+					tooltip.append(div);
+				});
+				
 				tooltip.find('div').click(function(){
-					block.find('.block-key').html($(this).html());
+					var self=$(this),
+						date_type=self.data('date_type');
+
+					if(self.is('.disabled') || self.is('.active')){
+						return;
+					}
+
+					block.find('.block-key').html(self.html());
+
+					tooltip.find('div').removeClass('active');
+					self.addClass('active');
+
+					check_disabled();
 					tooltip.hide();
+					
+					current_date_type=date_type;
+					
+					APP.utils.query();
 				});
 
-				block.find('.date:first').focus();
+				tooltip.find('div:not(.disabled):first').click();
+				date_start.focus();
 
 				return this;
+			},
+			after_remove: function(){
+				if($('.block.block-date').length<Object.size(date_types)){
+					$('#buttons button').each(function(){
+						if($(this).data('block_type')==query_types.prefix){
+							$(this).removeAttr('disabled');
+						}
+					});
+				}
+
+				check_disabled();
+			},
+			after_add: function(){
+				if($('.block.block-date').length==Object.size(date_types)){
+					$('#buttons button').each(function(){
+						if($(this).data('block_type')==query_types.prefix){
+							$(this).attr('disabled', 'disabled');
+						}
+					})					
+				}
+			},
+			suggest_item: function(row, input_query){
+				var suggest_name;
+
+				$.each(date_types, function(type, name){
+					if(!suggest_name && DATE_SELECTED.indexOf(type)==-1){
+						suggest_name=name;
+					}
+				});
+
+				if(suggest_name){
+					row=row.replace(/\{name\}/, suggest_name);
+					row=row.replace(/\{value\}/, input_query);
+					
+					return row;
+				}
+
+				return false;
 			},
 			result: function(){
 				var out=false;
 
 				if(pattern.test(date_start.val()) && pattern.test(date_end.val())){
 					out=[
-						'date_start='+date_start.val(),
-						'date_end='+date_end.val()
+						current_date_type+'_start='+date_start.val(),
+						current_date_type+'_end='+date_end.val()
 					];
 				}
 				
@@ -20706,6 +20797,14 @@ if (typeof jQuery === 'undefined') {
 
 	window.query_types=window.query_types||[];	
 	window.query_types.push(BLOCK);
+
+	Object.size = function(obj) {
+	    var size = 0, key;
+	    for (key in obj) {
+	        if (obj.hasOwnProperty(key)) size++;
+	    }
+	    return size;
+	};
 })();
 
 
@@ -21387,7 +21486,7 @@ var APP,
 	INPUT,
 	SEARCH_BUTTON,
 	BLOCKS,
-	SEARCH_QUERY,
+	SEARCH_QUERY=[],
 	SEARCH_QUERY_TIMEOUT,
 
 	IS_MAC = /Mac/.test(navigator.userAgent),
@@ -21548,13 +21647,22 @@ var APP,
 					$document.on('click', '#blocks a.delete', function(e){
 						e.preventDefault();
 
-						var block=$(this).closest('.block');
+						var block=$(this).closest('.block'),
+							after_remove;
 
 						if(typeof block.data('block').remove === 'function'){
 							block.data('block').remove();
 						}
 						
+						if(typeof block.data('block').after_remove === 'function'){
+							after_remove=block.data('block').after_remove;
+						}
+						
 						block.remove();
+
+						if(after_remove){
+							after_remove();
+						}
 
 						APP.utils.callback.remove();
 
@@ -21671,7 +21779,11 @@ var APP,
 						}else{
 							INPUT.focus();
 						}
-
+						
+						if(typeof block.after_add === 'function'){
+							block.after_add();
+						}						
+						
 						template.data('block', block);
 
 						INPUT.val('');
@@ -21762,36 +21874,42 @@ var APP,
 							$.each(blocks, function(index, block){
 								row=$('#helper-suggest').clone().html();
 
-								row=row.replace(/\{name\}/, block.name);
-								row=row.replace(/\{value\}/, input_query);
-	
-								item=$(row);
-
-								if(input_query && block.json && block.json.check){
-									$.ajax({
-										method: 'POST',
-										url: block.json.check,
-										dataType: 'json',
-										headers: APP.utils.csrf(),
-										data: {
-											query: input_query
-										},
-										success: APP.utils.callback.check(item)
-									});
+								if(typeof block.suggest_item=='function'){
+									row=block.suggest_item(row, input_query);
 								}else{
-									item.removeClass('none');
+									row=row.replace(/\{name\}/, block.name);
+									row=row.replace(/\{value\}/, input_query);
 								}
 
-								item.data('input_query', input_query);
-								item.data('block_type', block.prefix);
-
-								item.click(function(e){
-									e.preventDefault();
-
-									APP.utils.block.add($(this));
-								});
-
-								$('#suggest').append(item);
+								if(row){
+									item=$(row);
+	
+									if(input_query && block.json && block.json.check){
+										$.ajax({
+											method: 'POST',
+											url: block.json.check,
+											dataType: 'json',
+											headers: APP.utils.csrf(),
+											data: {
+												query: input_query
+											},
+											success: APP.utils.callback.check(item)
+										});
+									}else{
+										item.removeClass('none');
+									}
+	
+									item.data('input_query', input_query);
+									item.data('block_type', block.prefix);
+	
+									item.click(function(e){
+										e.preventDefault();
+	
+										APP.utils.block.add($(this));
+									});
+	
+									$('#suggest').append(item);
+								}
 							});
 
 							$('#suggest a:first').addClass('selected');

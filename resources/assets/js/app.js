@@ -11,7 +11,7 @@ var APP,
 	INPUT,
 	SEARCH_BUTTON,
 	BLOCKS,
-	SEARCH_QUERY,
+	SEARCH_QUERY=[],
 	SEARCH_QUERY_TIMEOUT,
 
 	IS_MAC = /Mac/.test(navigator.userAgent),
@@ -172,13 +172,22 @@ var APP,
 					$document.on('click', '#blocks a.delete', function(e){
 						e.preventDefault();
 
-						var block=$(this).closest('.block');
+						var block=$(this).closest('.block'),
+							after_remove;
 
 						if(typeof block.data('block').remove === 'function'){
 							block.data('block').remove();
 						}
 						
+						if(typeof block.data('block').after_remove === 'function'){
+							after_remove=block.data('block').after_remove;
+						}
+						
 						block.remove();
+
+						if(after_remove){
+							after_remove();
+						}
 
 						APP.utils.callback.remove();
 
@@ -295,7 +304,11 @@ var APP,
 						}else{
 							INPUT.focus();
 						}
-
+						
+						if(typeof block.after_add === 'function'){
+							block.after_add();
+						}						
+						
 						template.data('block', block);
 
 						INPUT.val('');
@@ -386,36 +399,42 @@ var APP,
 							$.each(blocks, function(index, block){
 								row=$('#helper-suggest').clone().html();
 
-								row=row.replace(/\{name\}/, block.name);
-								row=row.replace(/\{value\}/, input_query);
-	
-								item=$(row);
-
-								if(input_query && block.json && block.json.check){
-									$.ajax({
-										method: 'POST',
-										url: block.json.check,
-										dataType: 'json',
-										headers: APP.utils.csrf(),
-										data: {
-											query: input_query
-										},
-										success: APP.utils.callback.check(item)
-									});
+								if(typeof block.suggest_item=='function'){
+									row=block.suggest_item(row, input_query);
 								}else{
-									item.removeClass('none');
+									row=row.replace(/\{name\}/, block.name);
+									row=row.replace(/\{value\}/, input_query);
 								}
 
-								item.data('input_query', input_query);
-								item.data('block_type', block.prefix);
-
-								item.click(function(e){
-									e.preventDefault();
-
-									APP.utils.block.add($(this));
-								});
-
-								$('#suggest').append(item);
+								if(row){
+									item=$(row);
+	
+									if(input_query && block.json && block.json.check){
+										$.ajax({
+											method: 'POST',
+											url: block.json.check,
+											dataType: 'json',
+											headers: APP.utils.csrf(),
+											data: {
+												query: input_query
+											},
+											success: APP.utils.callback.check(item)
+										});
+									}else{
+										item.removeClass('none');
+									}
+	
+									item.data('input_query', input_query);
+									item.data('block_type', block.prefix);
+	
+									item.click(function(e){
+										e.preventDefault();
+	
+										APP.utils.block.add($(this));
+									});
+	
+									$('#suggest').append(item);
+								}
 							});
 
 							$('#suggest a:first').addClass('selected');
