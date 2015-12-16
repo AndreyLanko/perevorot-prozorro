@@ -39,6 +39,9 @@ gulp.task("copyfiles", function() {
   gulp.src("resources/vendor/jquery-auto-grow-input/jquery.auto-grow-input.js")
     .pipe(gulp.dest("resources/assets/js/vendor/"));
 
+  gulp.src("resources/vendor/history.js/scripts/bundled-uncompressed/html4+html5/jquery.history.js")
+    .pipe(gulp.dest("resources/assets/js/vendor/"));
+
 });
 
 elixir(function(mix) {
@@ -48,8 +51,7 @@ elixir(function(mix) {
       'js/vendor/bootstrap.js',
       'js/libs/bootstrap-datepicker.js',
       'js/libs/jquery.timepicker.js',
-      //'js/vendor/datepair.js',
-      //'js/vendor/jquery.datepair.js',
+      'js/vendor/jquery.history.js',
       'js/vendor/inputmask.js',
       'js/vendor/inputmask.date.extensions.js',
       'js/vendor/jquery.inputmask.js',

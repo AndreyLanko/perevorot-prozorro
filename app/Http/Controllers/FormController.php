@@ -2,8 +2,10 @@
 
 use Cache;
 use Input;
+use View;
+use Illuminate\Routing\Controller as BaseController;
 
-class FormController extends Controller
+class FormController extends BaseController
 {
 	var $blocks=[
 		'cpv',
@@ -15,7 +17,49 @@ class FormController extends Controller
 		'tid'
 	];
 
-	public function search($type=false)
+	var $api='http://aws3.tk/search';
+
+	public function search()
+	{
+		$out=[];
+		$query=Input::get('query');
+
+		if($query)
+		{
+			$json=$this->getSearchResults($query);
+			$data=json_decode($json);
+
+			if(!empty($data->res->hits))
+			{
+				$out=[
+					'html'=>View::make('pages.results')->with('total', $data->res->total)->with('items', $data->res->hits)->render()
+				];
+			}
+		}
+
+		return response()->json($out, 200, [
+            'Content-Type' => 'application/json; charset=UTF-8',
+            'charset' => 'UTF-8'
+        ], JSON_UNESCAPED_UNICODE);
+	}
+
+	public function getSearchResults($query)
+	{
+		//file_get_contents($this->api.'?'.implode('&', $query))
+		$ch = curl_init();
+
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_URL, $this->api.'?'.implode('&', $query));
+
+		$result=curl_exec($ch);
+
+		curl_close($ch);
+
+		return $result;
+	}
+	
+	public function autocomplete($type=false)
 	{
 		$out=0;
 

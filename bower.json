@@ -11,6 +11,7 @@
   "dependencies": {
     "bootstrap": "~3.3.5",
     "datepair.js": "0.4.14",
+    "history.js": "~1.8.0",
     "jquery": "~2.1.4",
     "jquery-auto-grow-input": "*",
     "jquery.inputmask": "~3.2.5",

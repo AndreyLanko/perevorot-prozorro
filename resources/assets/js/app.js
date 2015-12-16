@@ -231,9 +231,16 @@ var APP,
 						$('#result').html('Завантаження...');
 
 						$.ajax({
-							url: '//aws3.tk/search?'+SEARCH_QUERY.join('&'),
+							url: '/form/search?',
+							data: {
+								query: SEARCH_QUERY
+							},
+							method: 'post',
+							headers: APP.utils.csrf(),
 							dataType: "json",
 							success: function(response){
+								$('#result').html(response.html);
+								return;
 								var out=[];
 
 								for(var ii=0;ii<response.res.hits.length;ii++){

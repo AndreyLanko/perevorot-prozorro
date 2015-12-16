@@ -38,7 +38,7 @@
 						}
 	
 						$.ajax({
-							url: '/form/search/edrpou',
+							url: '/form/autocomplete/edrpou',
 							type: 'POST',
 							dataType: 'json',
 							headers: APP.utils.csrf(),

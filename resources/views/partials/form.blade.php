@@ -1,7 +1,3 @@
-@extends('app')
-
-@section('content')
-
 <div class="wrapper">
 
 	<div class="blocks-wr">
@@ -88,5 +84,3 @@
 		<span class="block-key">№ закупівлі</span><input type="text" value="{value}">
 	</div>
 </script>
-
-@endsection

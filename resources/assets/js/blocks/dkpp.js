@@ -38,7 +38,7 @@
 						}
 	
 						$.ajax({
-							url: '/form/search/dkpp',
+							url: '/form/autocomplete/dkpp',
 							type: 'POST',
 							dataType: 'json',
 							headers: APP.utils.csrf(),

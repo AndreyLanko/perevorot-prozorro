@@ -38,7 +38,7 @@
 						}
 	
 						$.ajax({
-							url: '/form/search/tid',
+							url: '/form/autocomplete/tid',
 							type: 'POST',
 							dataType: 'json',
 							headers: APP.utils.csrf(),
