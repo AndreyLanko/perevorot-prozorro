@@ -78,32 +78,50 @@ class PageController extends BaseController
 	{
 		$json=$this->getSearchResults(['tid='.$id]);
 		$item=false;
+		$error=false;
 
 		if($json)
 		{
 			$data=json_decode($json);
 
-			if(!empty($data->res->hits[0]))
+			if(empty($data->error))
 			{
-				$item=$data->res->hits[0];
+				if(!empty($data->res->hits[0]))
+				{
+					$item=$data->res->hits[0];
+				}
 			}
+			else
+				$error=$data->error;
 		}
 
-		return view('pages/tender')->with('item', $item);
+		return view('pages/tender')->with('item', $item)->with('error', $error);
 	}
 
 	public function getSearchResults($query)
 	{
 		//file_get_contents($this->api.'?'.implode('&', $query))
-		$ch = curl_init();
+		$url=$this->api.'?'.implode('&', $query);
+		$header=get_headers($url)[0];
 
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_URL, $this->api.'?'.implode('&', $query));
-
-		$result=curl_exec($ch);
-
-		curl_close($ch);
+		if(strpos($header, '200 OK')!==false)
+		{
+			$ch=curl_init();
+	
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_URL, $url);
+	
+			$result=curl_exec($ch);
+	
+			curl_close($ch);
+		}
+		else
+		{
+			$result=json_encode([
+				'error'=>$header
+			], JSON_UNESCAPED_UNICODE);
+		}
 
 		return $result;
 	}	
