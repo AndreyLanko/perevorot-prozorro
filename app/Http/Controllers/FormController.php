@@ -50,6 +50,23 @@ class FormController extends BaseController
 
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+		foreach($query as $k=>$q)
+		{
+			if(substr($q, 0, 5)=='date[')
+			{
+				$one_date=str_replace(['date[', ']='], ['', '='], $q);
+				$one_date=preg_split('/(=|—)/', $one_date);
+
+				if(sizeof($one_date)==3)
+				{
+					$query[$k]=$one_date[0].'Start='.$this->convert_date($one_date[1]).'&'.$one_date[0].'End='.$this->convert_date($one_date[2]);
+				}
+				else
+					unset($query[$k]);
+			}
+		}
+
 		curl_setopt($ch, CURLOPT_URL, $this->api.'?'.implode('&', $query));
 
 		$result=curl_exec($ch);
@@ -58,7 +75,14 @@ class FormController extends BaseController
 
 		return $result;
 	}
-	
+
+	private function convert_date($date)
+	{
+		$out=new \DateTime($date);
+		
+		return $out->format('Y-m-d');
+	}
+
 	public function autocomplete($type=false)
 	{
 		$out=0;

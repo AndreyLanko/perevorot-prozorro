@@ -16,7 +16,8 @@
 				check: '/form/check/dkpp'
 			},
 			init: function(input_query, block){
-				var input=block.find('select');
+				var input=block.find('select'),
+					preselected_value=block.data('preselected_value');
 	
 				_block=block;
 	
@@ -68,11 +69,25 @@
 						_block[data && !data.length?'addClass':'removeClass']('no-results');
 					},
 					onInitialize: function(){
-						this.$control_input.val(input_query);
-						this.$control_input.keyup();
-	
-						this.open();
-						this.focus();
+						if(preselected_value){
+							var preselected=INPUT.data('preselected');
+
+							if(preselected[query_types.prefix] && preselected[query_types.prefix][preselected_value]) {
+								this.addOption({
+									id: preselected_value,
+									name: preselected[query_types.prefix][preselected_value]
+								});
+
+								this.setValue(preselected_value);
+								this.blur();
+							}
+						}else{
+							this.$control_input.val(input_query);
+							this.$control_input.keyup();
+		
+							this.open();
+							this.focus();
+						}
 					},
 					onChange: function(value){
 						INPUT.focus();

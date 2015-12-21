@@ -31,7 +31,8 @@
 				}
 			},
 			init: function(input_query, block){
-				var input=block.find('select');
+				var input=block.find('select'),
+					preselected_value=block.data('preselected_value');
 	
 				_block=block;
 	
@@ -56,10 +57,26 @@
 						}
 					},
 					onInitialize: function(){
-						this.open();
-						this.$control_input.val(input_query);
-						this.$control_input.trigger('update');
-						this.$control_input.focus();
+						if(preselected_value){
+							var preselected=INPUT.data('preselected');
+
+							if(preselected[query_types.prefix] && preselected[query_types.prefix][preselected_value]) {
+								this.addOption({
+									id: preselected_value,
+									name: preselected[query_types.prefix][preselected_value]
+								});
+
+								this.setValue(preselected_value);
+								this.blur();
+							}
+						}else{
+							this.open();
+
+							this.$control_input.val(input_query);
+							this.$control_input.trigger('update');
+
+							this.$control_input.focus();
+						}
 					},
 					onType: function(text){
 						_block[!this.currentResults.items.length?'addClass':'removeClass']('no-results');

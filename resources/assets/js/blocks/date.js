@@ -50,7 +50,8 @@ var DATE_SELECTED=[];
 				var dates=block.find('.block-date-picker .date'),
 					ever=false,
 					datepair=block.find('.block-date-picker'),
-					tooltip=block.find('.block-date-tooltip');
+					tooltip=block.find('.block-date-tooltip'),
+					preselected_value=block.data('preselected_value');
 
 				date_start=$(dates[0]);
 				date_end=$(dates[1]);
@@ -170,9 +171,23 @@ var DATE_SELECTED=[];
 					
 					APP.utils.query();
 				});
+				
+				if(preselected_value){
+					tooltip.find('div').each(function(){
+						var self=$(this);
+						
+						if(self.data('date_type')==preselected_value.type && !self.is('.disabled')){
+							self.click();
+						}
+					});
 
-				tooltip.find('div:not(.disabled):first').click();
-				date_start.focus();
+					date_start.val(preselected_value.value[0]);
+					date_end.val(preselected_value.value[1]);
+					INPUT.focus();
+				}else{
+					tooltip.find('div:not(.disabled):first').click();
+					date_start.focus();
+				}
 
 				return this;
 			},
@@ -218,12 +233,9 @@ var DATE_SELECTED=[];
 				var out=false;
 
 				if(pattern.test(date_start.val()) && pattern.test(date_end.val())){
-					out=[
-						current_date_type+'_start='+date_start.val(),
-						current_date_type+'_end='+date_end.val()
-					];
+					out=[query_types.prefix+'['+current_date_type+']='+date_start.val()+'—'+date_end.val()];
 				}
-				
+
 				return out;
 			}
 		}

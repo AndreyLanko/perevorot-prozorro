@@ -23710,6 +23710,7 @@ if (typeof JSON !== 'object') {
 				var input=block.find('select'),
 					button=block.find('button'),
 					preselected_value=block.data('preselected_value'),
+					multi_value=block.data('multi_value'),
 					checked_options;
 
 				var dropdown,
@@ -23740,8 +23741,20 @@ if (typeof JSON !== 'object') {
 						}
 					},
 					onInitialize: function(){
-						if(preselected_value){
-							this.setValue(preselected_value);
+						if(multi_value){
+							this.setValue(multi_value);
+						}else if(preselected_value){
+							var preselected=INPUT.data('preselected');
+
+							if(preselected[query_types.prefix] && preselected[query_types.prefix][preselected_value]) {
+								this.addOption({
+									id: preselected_value,
+									name: preselected[query_types.prefix][preselected_value]
+								});
+
+								this.setValue(preselected_value);
+								this.blur();
+							}
 						}else{
 							this.open();
 		
@@ -23789,14 +23802,14 @@ if (typeof JSON !== 'object') {
 		
 								checked_options=checked_options.slice(1);
 							}
-		
+
 							$.each(checked_options, function(i){
 								var self=$(this);
 			
 								self.data('input_query', '');
 								self.data('block_type', query_types.prefix);
 
-								self.data('preselected_value', self.val());
+								self.data('multi_value', self.val());
 			
 								APP.utils.block.add(self);
 							});
@@ -23825,7 +23838,7 @@ if (typeof JSON !== 'object') {
 			result: function(){
 				var value=_block.find('[data-value]').data('value');
 				value=value.split('-')[0].replace(/0+$/, '');
-				
+value=_block.find('[data-value]').data('value');
 				return value!='' ? value : false;
 			}
 		};
@@ -23888,7 +23901,8 @@ var DATE_SELECTED=[];
 				var dates=block.find('.block-date-picker .date'),
 					ever=false,
 					datepair=block.find('.block-date-picker'),
-					tooltip=block.find('.block-date-tooltip');
+					tooltip=block.find('.block-date-tooltip'),
+					preselected_value=block.data('preselected_value');
 
 				date_start=$(dates[0]);
 				date_end=$(dates[1]);
@@ -24008,9 +24022,23 @@ var DATE_SELECTED=[];
 					
 					APP.utils.query();
 				});
+				
+				if(preselected_value){
+					tooltip.find('div').each(function(){
+						var self=$(this);
+						
+						if(self.data('date_type')==preselected_value.type && !self.is('.disabled')){
+							self.click();
+						}
+					});
 
-				tooltip.find('div:not(.disabled):first').click();
-				date_start.focus();
+					date_start.val(preselected_value.value[0]);
+					date_end.val(preselected_value.value[1]);
+					INPUT.focus();
+				}else{
+					tooltip.find('div:not(.disabled):first').click();
+					date_start.focus();
+				}
 
 				return this;
 			},
@@ -24056,12 +24084,9 @@ var DATE_SELECTED=[];
 				var out=false;
 
 				if(pattern.test(date_start.val()) && pattern.test(date_end.val())){
-					out=[
-						current_date_type+'_start='+date_start.val(),
-						current_date_type+'_end='+date_end.val()
-					];
+					out=[query_types.prefix+'['+current_date_type+']='+date_start.val()+'—'+date_end.val()];
 				}
-				
+
 				return out;
 			}
 		}
@@ -24118,7 +24143,8 @@ var DATE_SELECTED=[];
 				check: '/form/check/dkpp'
 			},
 			init: function(input_query, block){
-				var input=block.find('select');
+				var input=block.find('select'),
+					preselected_value=block.data('preselected_value');
 	
 				_block=block;
 	
@@ -24170,11 +24196,25 @@ var DATE_SELECTED=[];
 						_block[data && !data.length?'addClass':'removeClass']('no-results');
 					},
 					onInitialize: function(){
-						this.$control_input.val(input_query);
-						this.$control_input.keyup();
-	
-						this.open();
-						this.focus();
+						if(preselected_value){
+							var preselected=INPUT.data('preselected');
+
+							if(preselected[query_types.prefix] && preselected[query_types.prefix][preselected_value]) {
+								this.addOption({
+									id: preselected_value,
+									name: preselected[query_types.prefix][preselected_value]
+								});
+
+								this.setValue(preselected_value);
+								this.blur();
+							}
+						}else{
+							this.$control_input.val(input_query);
+							this.$control_input.keyup();
+		
+							this.open();
+							this.focus();
+						}
 					},
 					onChange: function(value){
 						INPUT.focus();
@@ -24215,7 +24255,8 @@ var DATE_SELECTED=[];
 				check: '/form/check/edrpou'
 			},
 			init: function(input_query, block){
-				var input=block.find('select');
+				var input=block.find('select'),
+					preselected_value=block.data('preselected_value');
 	
 				_block=block;
 	
@@ -24267,11 +24308,25 @@ var DATE_SELECTED=[];
 						_block[data && !data.length?'addClass':'removeClass']('no-results');
 					},
 					onInitialize: function(){
-						this.$control_input.val(input_query);
-						this.$control_input.keyup();
-	
-						this.open();
-						this.focus();
+						if(preselected_value){
+							var preselected=INPUT.data('preselected');
+
+							if(preselected[query_types.prefix] && preselected[query_types.prefix][preselected_value]) {
+								this.addOption({
+									id: preselected_value,
+									name: preselected[query_types.prefix][preselected_value]
+								});
+
+								this.setValue(preselected_value);
+								this.blur();
+							}
+						}else{
+							this.$control_input.val(input_query);
+							this.$control_input.keyup();
+		
+							this.open();
+							this.focus();
+						}
 					},
 					onChange: function(value){
 						INPUT.focus();
@@ -24327,7 +24382,8 @@ var DATE_SELECTED=[];
 				}
 			},
 			init: function(input_query, block){
-				var input=block.find('select');
+				var input=block.find('select'),
+					preselected_value=block.data('preselected_value');
 	
 				_block=block;
 	
@@ -24352,10 +24408,26 @@ var DATE_SELECTED=[];
 						}
 					},
 					onInitialize: function(){
-						this.open();
-						this.$control_input.val(input_query);
-						this.$control_input.trigger('update');
-						this.$control_input.focus();
+						if(preselected_value){
+							var preselected=INPUT.data('preselected');
+
+							if(preselected[query_types.prefix] && preselected[query_types.prefix][preselected_value]) {
+								this.addOption({
+									id: preselected_value,
+									name: preselected[query_types.prefix][preselected_value]
+								});
+
+								this.setValue(preselected_value);
+								this.blur();
+							}
+						}else{
+							this.open();
+
+							this.$control_input.val(input_query);
+							this.$control_input.trigger('update');
+
+							this.$control_input.focus();
+						}
 					},
 					onType: function(text){
 						_block[!this.currentResults.items.length?'addClass':'removeClass']('no-results');
@@ -24398,13 +24470,10 @@ var DATE_SELECTED=[];
 			pattern_search: /^(.*?)$/,
 			template: $('#block-query'),
 			init: function(input_query, block){
+				var preselected_value=block.data('preselected_value');
+
 				_input=block.find('input');
 				_value=input_query;
-
-				_input.autoGrowInput({
-					minWidth: 20,
-					comfortZone: 0
-				});
 
 				_input.keyup(function(e){
 					if(e.keyCode==KEY_RETURN){
@@ -24415,6 +24484,18 @@ var DATE_SELECTED=[];
 	
 						APP.utils.query();
 					}
+				});
+
+				if(preselected_value){
+					_input.val(decodeURI(preselected_value));
+
+					_value=_input.val();
+					_input.keyup();
+				}
+
+				_input.autoGrowInput({
+					minWidth: 20,
+					comfortZone: 0
 				});
 
 				INPUT.focus();
@@ -24466,7 +24547,8 @@ var DATE_SELECTED=[];
 				}
 			},
 			init: function(input_query, block){
-				var input=block.find('select');
+				var input=block.find('select'),
+					preselected_value=block.data('preselected_value');
 	
 				_block=block;
 	
@@ -24491,10 +24573,26 @@ var DATE_SELECTED=[];
 						}
 					},
 					onInitialize: function(){
-						this.open();
-						this.$control_input.val(input_query);
-						this.$control_input.trigger('update');
-						this.$control_input.focus();
+						if(preselected_value){
+							var preselected=INPUT.data('preselected');
+
+							if(preselected[query_types.prefix] && preselected[query_types.prefix][preselected_value]) {
+								this.addOption({
+									id: preselected_value,
+									name: preselected[query_types.prefix][preselected_value]
+								});
+
+								this.setValue(preselected_value);
+								this.blur();
+							}
+						}else{
+							this.open();
+
+							this.$control_input.val(input_query);
+							this.$control_input.trigger('update');
+
+							this.$control_input.focus();
+						}
 					},
 					onType: function(text){
 						_block[!this.currentResults.items.length?'addClass':'removeClass']('no-results');
@@ -24556,7 +24654,8 @@ var DATE_SELECTED=[];
 				}
 			},
 			init: function(input_query, block){
-				var input=block.find('select');
+				var input=block.find('select'),
+					preselected_value=block.data('preselected_value');
 	
 				_block=block;
 	
@@ -24581,10 +24680,26 @@ var DATE_SELECTED=[];
 						}
 					},
 					onInitialize: function(){
-						this.open();
-						this.$control_input.val(input_query);
-						this.$control_input.trigger('update');
-						this.$control_input.focus();
+						if(preselected_value){
+							var preselected=INPUT.data('preselected');
+
+							if(preselected[query_types.prefix] && preselected[query_types.prefix][preselected_value]) {
+								this.addOption({
+									id: preselected_value,
+									name: preselected[query_types.prefix][preselected_value]
+								});
+
+								this.setValue(preselected_value);
+								this.blur();
+							}
+						}else{
+							this.open();
+
+							this.$control_input.val(input_query);
+							this.$control_input.trigger('update');
+							
+							this.$control_input.focus();
+						}
 					},
 					onType: function(text){
 						_block[!this.currentResults.items.length?'addClass':'removeClass']('no-results');
@@ -24726,13 +24841,10 @@ var DATE_SELECTED=[];
 			pattern_exact: /^\d{1,9}$/,
 			template: $('#block-tid'),
 			init: function(input_query, block){
+				var preselected_value=block.data('preselected_value');
+
 				_input=block.find('input');
 				_value=input_query;
-
-				_input.autoGrowInput({
-					minWidth: 20,
-					comfortZone: 0
-				});
 
 				_input.keyup(function(e){
 					if(e.keyCode==KEY_RETURN){
@@ -24745,11 +24857,24 @@ var DATE_SELECTED=[];
 					}
 				});
 
+				if(preselected_value){
+					_input.val(decodeURI(preselected_value));
+
+					_value=_input.val();
+					_input.keyup();
+				}
+
+				_input.autoGrowInput({
+					minWidth: 20,
+					comfortZone: 0
+				});
+
 				if(_value){
 					INPUT.focus();
 				}else{
 					_input.focus();
 				}
+
 				APP.utils.query();
 
 				return this;	
@@ -24782,6 +24907,7 @@ var APP,
 	SEARCH_QUERY_TIMEOUT,
 
 	IS_MAC = /Mac/.test(navigator.userAgent),
+	IS_HISTORY = (window.History ? window.History.enabled : false),
 
 	KEY_BACKSPACE = 8,
 	KEY_UP = 38,
@@ -24813,7 +24939,7 @@ var APP,
 					INPUT=_self;
 					BLOCKS=$('#blocks');
 					SEARCH_BUTTON=$('#search_button');
-					
+
 					setInterval(function(){
 						if(input_query!=INPUT.val()){
 							input_query=INPUT.val();
@@ -24833,8 +24959,12 @@ var APP,
 					}, 100);
 
 					setTimeout(function(){
-						INPUT.val('');//03000000-1
-						INPUT.attr('placeholder', INPUT.data('placeholder'));
+						INPUT.val('');
+
+						if(!INPUT.data('preselected')){
+							INPUT.attr('placeholder', INPUT.data('placeholder'));
+						}
+
 						INPUT.focus();
 					}, 500);
 
@@ -24961,9 +25091,56 @@ var APP,
 						INPUT.focus();
 						APP.utils.query();
 					});
+
+					APP.utils.history.bind();
+					APP.utils.history.init();
 				}
 			},
 			utils: {
+				history: {
+					bind: function(){
+						if (IS_HISTORY){
+							window.History.Adapter.bind(window, 'statechange', function(){
+								var state = window.History.getState();
+							});
+						}
+					},
+					init: function(){
+						var search=location.search;
+
+						if(search && search.indexOf('=')>0){
+							search=search.substring(1).split('&');
+
+							for(var i=0;i<search.length;i++){
+								var param=search[i].split('=');
+								if(param[0] && param[1]){
+
+									if(param[0].indexOf('date[')>=0){
+										param[1]={
+											type: param[0].match(/\[(.*?)\]/)[1],
+											value: decodeURI(param[1]).split('—')
+										};
+
+										param[0]='date';
+									}
+
+									var button=$('<div/>');
+
+									button.data('input_query', '');
+									button.data('block_type', param[0]);
+									button.data('preselected_value', param[1]);
+
+									APP.utils.block.add(button);
+								}
+							}
+						}
+					},
+					push: function(){
+						if (IS_HISTORY){
+							window.History.pushState(null, document.title, '/search/'+(SEARCH_QUERY.length ? '?'+SEARCH_QUERY.join('&') : ''));
+						}
+					}
+				},
 				query: function(){
 					clearTimeout(SEARCH_QUERY_TIMEOUT);
 
@@ -24989,6 +25166,8 @@ var APP,
 						$('#server_query').val(SEARCH_QUERY.join('&'));
 						SEARCH_BUTTON.prop('disabled', SEARCH_QUERY.length?'':'disabled')
 
+						APP.utils.history.push();
+
 						if(!SEARCH_QUERY.length){
 							$('#result').html('');
 
@@ -25006,25 +25185,8 @@ var APP,
 							headers: APP.utils.csrf(),
 							dataType: "json",
 							success: function(response){
-								$('#result').html(response.html);
-								return;
-								var out=[];
-
-								for(var ii=0;ii<response.res.hits.length;ii++){
-									var item=response.res.hits[ii];
-									var it=[];
-	
-									if(item._source.items && item._source.items.length){
-										for(var i=0;i<item._source.items.length;i++){
-											it.push('<div>'+item._source.items[i].classification.description+' #'+item._source.items[i].classification.id+'</div>')
-										};
-									}
-	
-									out.push('<h4>'+item._source.title+'</h4>'+it.join('')+(item._source.tenderPeriod?'<div>'+item._source.tenderPeriod.startDate+'—'+item._source.tenderPeriod.endDate+'</div>':''));
-								};
-	
-								if(response.res.hits.length){
-									$('#result').html(out.join(''));
+								if(response.html){
+									$('#result').html(response.html);
 								}else{
 									$('#result').html('Жодних результатiв');
 								}
@@ -25066,6 +25228,10 @@ var APP,
 
 						if(self.data('preselected_value')){
 							template.data('preselected_value', self.data('preselected_value'));
+						}
+
+						if(self.data('multi_value')){
+							template.data('multi_value', self.data('multi_value'));
 						}
 
 						template.append('<a href="" class="delete">×</a>');

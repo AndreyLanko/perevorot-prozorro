@@ -12,13 +12,10 @@
 			pattern_search: /^(.*?)$/,
 			template: $('#block-query'),
 			init: function(input_query, block){
+				var preselected_value=block.data('preselected_value');
+
 				_input=block.find('input');
 				_value=input_query;
-
-				_input.autoGrowInput({
-					minWidth: 20,
-					comfortZone: 0
-				});
 
 				_input.keyup(function(e){
 					if(e.keyCode==KEY_RETURN){
@@ -29,6 +26,18 @@
 	
 						APP.utils.query();
 					}
+				});
+
+				if(preselected_value){
+					_input.val(decodeURI(preselected_value));
+
+					_value=_input.val();
+					_input.keyup();
+				}
+
+				_input.autoGrowInput({
+					minWidth: 20,
+					comfortZone: 0
 				});
 
 				INPUT.focus();

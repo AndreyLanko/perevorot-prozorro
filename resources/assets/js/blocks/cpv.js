@@ -37,6 +37,7 @@
 				var input=block.find('select'),
 					button=block.find('button'),
 					preselected_value=block.data('preselected_value'),
+					multi_value=block.data('multi_value'),
 					checked_options;
 
 				var dropdown,
@@ -67,8 +68,20 @@
 						}
 					},
 					onInitialize: function(){
-						if(preselected_value){
-							this.setValue(preselected_value);
+						if(multi_value){
+							this.setValue(multi_value);
+						}else if(preselected_value){
+							var preselected=INPUT.data('preselected');
+
+							if(preselected[query_types.prefix] && preselected[query_types.prefix][preselected_value]) {
+								this.addOption({
+									id: preselected_value,
+									name: preselected[query_types.prefix][preselected_value]
+								});
+
+								this.setValue(preselected_value);
+								this.blur();
+							}
 						}else{
 							this.open();
 		
@@ -116,14 +129,14 @@
 		
 								checked_options=checked_options.slice(1);
 							}
-		
+
 							$.each(checked_options, function(i){
 								var self=$(this);
 			
 								self.data('input_query', '');
 								self.data('block_type', query_types.prefix);
 
-								self.data('preselected_value', self.val());
+								self.data('multi_value', self.val());
 			
 								APP.utils.block.add(self);
 							});
@@ -152,7 +165,7 @@
 			result: function(){
 				var value=_block.find('[data-value]').data('value');
 				value=value.split('-')[0].replace(/0+$/, '');
-				
+value=_block.find('[data-value]').data('value');
 				return value!='' ? value : false;
 			}
 		};
