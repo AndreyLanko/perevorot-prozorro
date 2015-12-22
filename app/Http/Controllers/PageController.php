@@ -7,7 +7,7 @@ use Request;
 
 class PageController extends BaseController
 {
-	var $api='http://aws3.tk/search';
+	var $api='http://prozorro.aws3.tk/search';
 
 	public function home()
 	{
@@ -86,9 +86,9 @@ class PageController extends BaseController
 
 			if(empty($data->error))
 			{
-				if(!empty($data->res->hits[0]))
+				if(!empty($data->items[0]))
 				{
-					$item=$data->res->hits[0];
+					$item=$data->items[0];
 				}
 			}
 			else

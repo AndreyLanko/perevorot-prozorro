@@ -17,7 +17,7 @@ class FormController extends BaseController
 		'tid'
 	];
 
-	var $api='http://aws3.tk/search';
+	var $api='http://prozorro.aws3.tk/search';
 
 	public function search()
 	{
@@ -29,10 +29,10 @@ class FormController extends BaseController
 			$json=$this->getSearchResults($query);
 			$data=json_decode($json);
 
-			if(!empty($data->res->hits))
+			if(!empty($data->items))
 			{
 				$out=[
-					'html'=>View::make('pages.results')->with('total', $data->res->total)->with('items', $data->res->hits)->render()
+					'html'=>View::make('pages.results')->with('total', $data->total)->with('items', $data->items)->render()
 				];
 			}
 		}
@@ -60,7 +60,7 @@ class FormController extends BaseController
 
 				if(sizeof($one_date)==3)
 				{
-					$query[$k]=$one_date[0].'Start='.$this->convert_date($one_date[1]).'&'.$one_date[0].'End='.$this->convert_date($one_date[2]);
+					$query[$k]=$one_date[0].'_start='.$this->convert_date($one_date[1]).'&'.$one_date[0].'_end='.$this->convert_date($one_date[2], new \DateInterval('P1D'));
 				}
 				else
 					unset($query[$k]);
@@ -76,9 +76,12 @@ class FormController extends BaseController
 		return $result;
 	}
 
-	private function convert_date($date)
+	private function convert_date($date, $add=false)
 	{
 		$out=new \DateTime($date);
+		
+		if($add)
+			$out->add($add);
 		
 		return $out->format('Y-m-d');
 	}
