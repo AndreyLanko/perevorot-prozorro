@@ -6,12 +6,12 @@
 			<div class="search-form--filter">
 				<div class="result-all">{{number_format($total, 0, '', ' ')}} підходящі закупівлі</div>
 				<ul class="nav navbar-nav inline-navbar search-form--filter--filter-records">
-					<li><a href="#">Додані сьогодні</a> (?)</li>
-					<li><a href="#">Уточнення</a> (?)</li>
-					<li><a href="#">Подання пропозицій</a> (?)</li>
-					<li><a href="#">Аукціон</a> (?)</li>
-					<li><a href="#">Кваліфікація</a> (?)</li>
-					<li><a href="#">Завершені</a> (?)</li>
+					<li><a href="">Додані сьогодні</a> (?)</li>
+					<li><a href="">Уточнення</a> (?)</li>
+					<li><a href="">Подання пропозицій</a> (?)</li>
+					<li><a href="">Аукціон</a> (?)</li>
+					<li><a href="">Кваліфікація</a> (?)</li>
+					<li><a href="">Завершені</a> (?)</li>
 				</ul>
 			</div>
 		</div>

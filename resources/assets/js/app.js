@@ -11,6 +11,7 @@ var APP,
 	INPUT,
 	SEARCH_BUTTON,
 	BLOCKS,
+	INITED=false,
 	SEARCH_QUERY=[],
 	SEARCH_QUERY_TIMEOUT,
 
@@ -242,6 +243,8 @@ var APP,
 								}
 							}
 						}
+
+						INITED=true;
 					},
 					push: function(){
 						if (IS_HISTORY){
@@ -250,6 +253,10 @@ var APP,
 					}
 				},
 				query: function(){
+					if(!INITED){
+						return false;
+					}
+
 					clearTimeout(SEARCH_QUERY_TIMEOUT);
 
 					SEARCH_QUERY_TIMEOUT=setTimeout(function(){
