@@ -1,18 +1,4 @@
 @foreach ($items as $item)
-	{{--<div class="row-result">
-		<div class="col-md-8">
-			<h4 class="result-title"><a href="/tender/{{$item->tenderID}}/">{{$item->title}}</a></h4>
-			<div><b>{{$item->tenderID}}</b></div>
-			<div><i>{{$item->description}}</i></div>
-		</div>
-		<div class="col-md-4">
-			<h4 class="amount"><span class="amount-number">{{$item->value->amount}} </span>{{$item->value->currency}}</h4>--}}
-			{{--dump($item)--}}
-			{{--@if (!empty($item->tenderPeriod->startDate))
-				<div class="result-date">{{date('d.m.Y', strtotime($item->tenderPeriod->startDate))}} — {{date('d.m.Y', strtotime($item->tenderPeriod->endDate))}}</div>
-			@endif
-		</div>
-	</div>--}}
 	<div class="items-list">
 		<div class="container">
 			<div class="items-list--item clearfix">
@@ -43,6 +29,11 @@
 						<a href="]" title="Delete"><i class="sprite-close-blue">Delete</i></a>
 						<div class="items-list--item--price">{{number_format($item->value->amount, 0, '', ' ')}} <span class="uah">{{$item->value->currency}}</span></div>
 						<div class="items-list--item--date"><strong>Дата:</strong> ?12-12-2016</div>
+						{{--
+							@if (!empty($item->tenderPeriod->startDate))
+								<div class="result-date">{{date('d.m.Y', strtotime($item->tenderPeriod->startDate))}} — {{date('d.m.Y', strtotime($item->tenderPeriod->endDate))}}</div>
+							@endif
+						--}}
 					</div>
 				</div>
 				{{--

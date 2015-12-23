@@ -21,6 +21,7 @@ class FormController extends BaseController
 
 	public function search()
 	{
+/*
 		$out=[];
 		$query=Input::get('query');
 
@@ -36,11 +37,31 @@ class FormController extends BaseController
 				];
 			}
 		}
+*/
+		$html=$this->getSearchResultsHtml(Input::get('query'));
 
-		return response()->json($out, 200, [
+		return response()->json(($html ? ['html'=>$html] : []), 200, [
             'Content-Type' => 'application/json; charset=UTF-8',
             'charset' => 'UTF-8'
         ], JSON_UNESCAPED_UNICODE);
+	}
+	
+	public function getSearchResultsHtml($query)
+	{
+		$out=false;
+
+		if($query)
+		{
+			$json=$this->getSearchResults($query);
+			$data=json_decode($json);
+
+			if(!empty($data->items))
+			{
+				$out=View::make('pages.results')->with('total', $data->total)->with('items', $data->items)->render();
+			}
+		}
+
+		return $out;
 	}
 
 	public function getSearchResults($query)

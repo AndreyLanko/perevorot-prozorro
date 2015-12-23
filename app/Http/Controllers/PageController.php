@@ -42,7 +42,23 @@ class PageController extends BaseController
 			}
 		}
 
-		return view('pages/search')->with('preselected_values', json_encode($preselected_values, JSON_UNESCAPED_UNICODE));
+		$result='';
+
+		if(Input::get())
+		{
+			$query=[];
+			
+			foreach(Input::get() as $key=>$one)
+			{
+				$query[]=$key.'='.$one;
+			}
+				
+			$result=app('App\Http\Controllers\FormController')->getSearchResultsHtml($query);
+		}
+
+		return view('pages/search')
+				->with('preselected_values', json_encode($preselected_values, JSON_UNESCAPED_UNICODE))
+				->with('result', $result);
 	}
 	
 	private function get_value($source, $search_value)
