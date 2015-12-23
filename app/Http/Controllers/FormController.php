@@ -65,6 +65,12 @@ class FormController extends BaseController
 				else
 					unset($query[$k]);
 			}
+			else
+			{
+				$url=explode('=', $q, 2);
+
+				$query[$k]=$url[0].'='.str_replace([' '], ['+'], $url[1]);
+			}
 		}
 
 		curl_setopt($ch, CURLOPT_URL, $this->api.'?'.implode('&', $query));
