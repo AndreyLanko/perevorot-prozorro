@@ -7,8 +7,6 @@ use Request;
 
 class PageController extends BaseController
 {
-	var $api='http://prozorro.aws3.tk/search';
-
 	public function home()
 	{
 		return view('pages/search');
@@ -117,7 +115,7 @@ class PageController extends BaseController
 	public function getSearchResults($query)
 	{
 		//file_get_contents($this->api.'?'.implode('&', $query))
-		$url=$this->api.'?'.implode('&', $query);
+		$url=Config::get('prozorro.API').'?'.implode('&', $query);
 		$header=get_headers($url)[0];
 
 		if(strpos($header, '200 OK')!==false)

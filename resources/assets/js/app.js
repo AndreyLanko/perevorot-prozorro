@@ -29,6 +29,12 @@ var APP,
 		color:'#6dc8eb',
 		lines: 15,
 		width: 2
+	},
+	
+	spin_options_light={
+		color:'#fff',
+		lines: 15,
+		width: 2
 	};
 
 (function(window, undefined){
@@ -50,6 +56,31 @@ var APP,
 						e.preventDefault();
 						$(this).closest('.description-wr').toggleClass('open');
 					});
+					
+					_self.on('click', '.show-more', function(e){
+						e.preventDefault();
+
+						$('.show-more').addClass('loading').spin(spin_options_light);
+
+						$.ajax({
+							url: '/form/search/',
+							data: {
+								query: APP.utils.get_query(),
+								start: $('.show-more').data('start')
+							},
+							method: 'post',
+							headers: APP.utils.csrf(),
+							dataType: "json",
+							success: function(response){
+								$('.show-more').remove();
+
+								if(response.html){
+									$('#result').append(response.html);
+								}
+							}
+						});
+					});
+						
 				},
 				form: function(_self){
 					var timeout,
@@ -263,6 +294,27 @@ var APP,
 						}
 					}
 				},
+				get_query: function(){
+					var out=[];
+						
+					$('.block').each(function(){
+						var self=$(this),
+							block=self.data('block'),
+							type=block.prefix;
+
+						if(typeof block.result === 'function'){
+							var result=block.result();
+
+							if(typeof result === 'object'){
+								out.push(result.join('&'));
+							}else if(result){
+								out.push(type+'='+result);
+							}
+						}
+					});					
+					
+					return out;
+				},
 				query: function(){
 					if(!INITED){
 						return false;
@@ -271,23 +323,7 @@ var APP,
 					clearTimeout(SEARCH_QUERY_TIMEOUT);
 
 					SEARCH_QUERY_TIMEOUT=setTimeout(function(){
-						SEARCH_QUERY=[];
-						
-						$('.block').each(function(){
-							var self=$(this),
-								block=self.data('block'),
-								type=block.prefix;
-
-							if(typeof block.result === 'function'){
-								var result=block.result();
-
-								if(typeof result === 'object'){
-									SEARCH_QUERY.push(result.join('&'));
-								}else if(result){
-									SEARCH_QUERY.push(type+'='+result);
-								}
-							}
-						});
+						SEARCH_QUERY=APP.utils.get_query();
 
 						$('#server_query').val(SEARCH_QUERY.join('&'));
 						SEARCH_BUTTON.prop('disabled', SEARCH_QUERY.length?'':'disabled')
@@ -303,7 +339,7 @@ var APP,
 						$('#search_button').addClass('loading').spin(spin_options);
 
 						$.ajax({
-							url: '/form/search?',
+							url: '/form/search/',
 							data: {
 								query: SEARCH_QUERY
 							},

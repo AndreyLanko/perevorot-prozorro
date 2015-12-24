@@ -111,8 +111,8 @@
 								offset=dropdown.offset();
 
 								button.css({
-									top: offset.top+dropdown.height()-16,
-									left: 37,
+									top: dropdown.height()+button.outerHeight()-5,
+									left: 40,
 									position: 'absolute'
 								});
 								
@@ -165,7 +165,8 @@
 			result: function(){
 				var value=_block.find('[data-value]').data('value');
 				value=value.split('-')[0].replace(/0+$/, '');
-value=_block.find('[data-value]').data('value');
+				value=_block.find('[data-value]').data('value');
+
 				return value!='' ? value : false;
 			}
 		};

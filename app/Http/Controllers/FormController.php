@@ -3,6 +3,7 @@
 use Cache;
 use Input;
 use View;
+use Config;
 use Illuminate\Routing\Controller as BaseController;
 
 class FormController extends BaseController
@@ -17,27 +18,8 @@ class FormController extends BaseController
 		'tid'
 	];
 
-	var $api='http://prozorro.aws3.tk/search';
-
 	public function search()
 	{
-/*
-		$out=[];
-		$query=Input::get('query');
-
-		if($query)
-		{
-			$json=$this->getSearchResults($query);
-			$data=json_decode($json);
-
-			if(!empty($data->items))
-			{
-				$out=[
-					'html'=>View::make('pages.results')->with('total', $data->total)->with('items', $data->items)->render()
-				];
-			}
-		}
-*/
 		$html=$this->getSearchResultsHtml(Input::get('query'));
 
 		return response()->json(($html ? ['html'=>$html] : []), 200, [
@@ -57,7 +39,10 @@ class FormController extends BaseController
 
 			if(!empty($data->items))
 			{
-				$out=View::make('pages.results')->with('total', $data->total)->with('items', $data->items)->render();
+				$out=View::make('pages.results')
+					->with('total', $data->total)
+					->with('start', ((int) Input::get('start') + Config::get('prozorro.page_limit')))
+					->with('items', $data->items)->render();
 			}
 		}
 
@@ -94,7 +79,9 @@ class FormController extends BaseController
 			}
 		}
 
-		curl_setopt($ch, CURLOPT_URL, $this->api.'?'.implode('&', $query));
+		$query[]='start='.Input::get('start');
+
+		curl_setopt($ch, CURLOPT_URL, Config::get('prozorro.API').'?'.implode('&', $query));
 
 		$result=curl_exec($ch);
 
