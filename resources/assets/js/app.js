@@ -63,7 +63,7 @@ var APP,
 						$('.show-more').addClass('loading').spin(spin_options_light);
 
 						$.ajax({
-							url: '/form/search/',
+							url: '/form/search',
 							data: {
 								query: APP.utils.get_query(),
 								start: $('.show-more').data('start')
@@ -76,6 +76,8 @@ var APP,
 
 								if(response.html){
 									$('#result').append(response.html);
+
+									APP.utils.result_highlight(response.highlight);
 								}
 							}
 						});
@@ -285,6 +287,8 @@ var APP,
 							}
 						}
 
+						APP.utils.result_highlight(INPUT.data('highlight'));
+
 						INITED=true;
 					},
 					push: function(){
@@ -338,7 +342,7 @@ var APP,
 						$('#search_button').addClass('loading').spin(spin_options);
 
 						$.ajax({
-							url: '/form/search/',
+							url: '/form/search',
 							data: {
 								query: SEARCH_QUERY
 							},
@@ -350,12 +354,24 @@ var APP,
 								
 								if(response.html){
 									$('#result').html(response.html);
+									
+									APP.utils.result_highlight(response.highlight);
 								}else{
 									$('#result').html('Жодних результатiв');
 								}
 							}
 						});
 					}, 300);
+				},
+				result_highlight: function(words){
+					if(words){
+						$.each(words, function(key, value){
+							$('#result').highlight(value, {
+								element: 'i',
+								className: 'select'
+							});
+						});
+					}
 				},
 				block: {
 					remove: function(e){

@@ -46,7 +46,38 @@ class PageController extends BaseController
 
 		return view('pages/search')
 				->with('preselected_values', json_encode($preselected_values, JSON_UNESCAPED_UNICODE))
+				->with('highlight', json_encode($this->getSearchResultsHightlightArray(Request::server('QUERY_STRING')), JSON_UNESCAPED_UNICODE))
 				->with('result', $result);
+	}
+	
+	public function getSearchResultsHightlightArray($query)
+	{
+		$query_string=$query;
+		$highlight=[];
+
+		if($query_string)
+		{
+			$query_array=explode('&', urldecode($query_string));
+
+			if(sizeof($query_array))
+			{
+				foreach($query_array as $item)
+				{
+					$item=explode('=', $item);
+
+					$source=$item[0];
+					$search_value=$item[1];
+					$highlight[]=$item[1];
+					
+					$value=$this->get_value($source, $search_value);					
+					$highlight[]=$value;
+				}
+			}
+
+			$highlight=array_unique(array_filter($highlight));
+		}		
+
+		return $highlight;
 	}
 	
 	private function get_value($source, $search_value)

@@ -22,7 +22,10 @@ class FormController extends BaseController
 	{
 		$html=$this->getSearchResultsHtml(Input::get('query'));
 
-		return response()->json(($html ? ['html'=>$html] : []), 200, [
+		return response()->json(($html ? [
+			'html'=>$html,
+			'highlight'=>app('App\Http\Controllers\PageController')->getSearchResultsHightlightArray(implode('&', Input::get('query')))
+		] : []), 200, [
             'Content-Type' => 'application/json; charset=UTF-8',
             'charset' => 'UTF-8'
         ], JSON_UNESCAPED_UNICODE);

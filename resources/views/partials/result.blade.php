@@ -7,8 +7,8 @@
 					<a href="/tender/{{$item->tenderID}}/" class="items-list--header"><i class="sprite-mouse-icon"></i>{{$item->title}}</a>
 					<div class="clearfix"></div>
 					<ol class="breadcrumb">
-						<li>?Допорогові торги</li>
-						<li class="marked">?Уточнення</li>
+						<li>Prozorro</li>
+						<li class="marked">{{$item->status}}</li>
 						@if (!empty($item->procuringEntity->address->locality))
 							<li>м. {{$item->procuringEntity->address->locality}}</li>
 						@endif
@@ -42,12 +42,9 @@
 						{{number_format($item->value->amount, 0, '', ' ')}}
 						<span class="uah">{{$item->value->currency}}</span>
 					</div>
-					<div class="items-list--item--date"><strong>Дата:</strong> ?12-12-2016</div>
-					{{--
-						@if (!empty($item->tenderPeriod->startDate))
-							<div class="result-date">{{date('d.m.Y', strtotime($item->tenderPeriod->startDate))}} — {{date('d.m.Y', strtotime($item->tenderPeriod->endDate))}}</div>
-						@endif
-					--}}
+					@if (!empty($item->enquiryPeriod->startDate))
+						<div class="items-list--item--date"><strong>Дата:</strong> {{date('d.m.Y', strtotime($item->enquiryPeriod->startDate))}}</div>
+					@endif
 				</div>
 			</div>
 			{{--
