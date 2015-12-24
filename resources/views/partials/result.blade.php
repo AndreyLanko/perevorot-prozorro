@@ -13,11 +13,11 @@
 							<li>м. {{$item->procuringEntity->address->locality}}</li>
 						@endif
 					</ol>
-					<div class="description-wr{{mb_strlen($item->description)>350?' croped':' open'}}">
+					<div class="description-wr{{mb_strlen($item->description)>280?'':' open'}}">
 						@if ($item->description)
 							<div class="description"><p>{{$item->description}}</p></div>
 						@endif
-						@if (mb_strlen($item->description)>350)
+						@if (mb_strlen($item->description)>280)
 							<a class="search-form--open" href="">
 								<i class="sprite-arrow-right"></i>
 								<span>розгорнути</span>

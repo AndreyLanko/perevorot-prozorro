@@ -25407,7 +25407,7 @@ var APP,
 						e.preventDefault();
 						$(this).closest('.description-wr').toggleClass('open');
 					});
-					
+
 					_self.on('click', '.show-more', function(e){
 						e.preventDefault();
 
@@ -25431,7 +25431,6 @@ var APP,
 							}
 						});
 					});
-						
 				},
 				form: function(_self){
 					var timeout,
