@@ -4,6 +4,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Input;
 use Cache;
 use Request;
+use Config;
 
 class PageController extends BaseController
 {
@@ -16,10 +17,11 @@ class PageController extends BaseController
 	{
 		$preselected_values=[];
 		$query_string=Request::server('QUERY_STRING');
+		$result='';
 
 		if($query_string)
 		{
-			$query_array=explode('&', $query_string);
+			$query_array=explode('&', urldecode($query_string));
 
 			if(sizeof($query_array))
 			{
@@ -38,20 +40,8 @@ class PageController extends BaseController
 						$preselected_values[$source][]=$search_value;
 				}
 			}
-		}
 
-		$result='';
-
-		if(Input::get())
-		{
-			$query=[];
-			
-			foreach(Input::get() as $key=>$one)
-			{
-				$query[]=$key.'='.$one;
-			}
-				
-			$result=app('App\Http\Controllers\FormController')->getSearchResultsHtml($query);
+			$result=app('App\Http\Controllers\FormController')->getSearchResultsHtml($query_array);
 		}
 
 		return view('pages/search')

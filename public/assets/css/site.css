@@ -5,49 +5,49 @@
  * Improvements by Andrew Rowls
  * Licensed under the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  */
-/*---fonts---*/
+/*---fonts---
 @font-face {
   font-family: 'Agora_Sans_Pro_Regular';
-  src: url('../fonts/pfagorasanspro-reg-webfont/pfagorasanspro-reg-webfont.eot'); /* IE9 Compat Modes */
-  src: url('../fonts/pfagorasanspro-reg-webfont/pfagorasanspro-reg-webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('../fonts/pfagorasanspro-reg-webfont/pfagorasanspro-reg-webfont.woff') format('woff'), /* Modern Browsers */
-       url('../fonts/pfagorasanspro-reg-webfont/pfagorasanspro-reg-webfont.ttf')  format('truetype'), /* Safari, Android, iOS */
-       url('../fonts/pfagorasanspro-reg-webfont/pfagorasanspro-reg-webfont.svg#bd84302afc188f9ad9c8d957abb7b455') format('svg'); /* Legacy iOS */
+  src: url('../fonts/pfagorasanspro-reg-webfont/pfagorasanspro-reg-webfont.eot'); 
+  src: url('../fonts/pfagorasanspro-reg-webfont/pfagorasanspro-reg-webfont.eot?#iefix') format('embedded-opentype'), 
+       url('../fonts/pfagorasanspro-reg-webfont/pfagorasanspro-reg-webfont.woff') format('woff'), 
+       url('../fonts/pfagorasanspro-reg-webfont/pfagorasanspro-reg-webfont.ttf')  format('truetype'), 
+       url('../fonts/pfagorasanspro-reg-webfont/pfagorasanspro-reg-webfont.svg#bd84302afc188f9ad9c8d957abb7b455') format('svg'); 
        
   font-style:   normal;
   font-weight:  400;
 }
 @font-face {
   font-family: 'Agora_Sans_Pro_Light';
-  src: url('../fonts/pfagorasanspro-light-webfont/pfagorasanspro-light-webfont.eot'); /* IE9 Compat Modes */
-  src: url('../fonts/pfagorasanspro-light-webfont/pfagorasanspro-light-webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('../fonts/pfagorasanspro-light-webfont/pfagorasanspro-light-webfont.woff') format('woff'), /* Modern Browsers */
-       url('../fonts/pfagorasanspro-light-webfont/pfagorasanspro-light-webfont.ttf')  format('truetype'), /* Safari, Android, iOS */
-       url('../fonts/pfagorasanspro-light-webfont/pfagorasanspro-light-webfont.svg#1ff30969d0e06c008086dd8c47bb9e3e') format('svg'); /* Legacy iOS */
+  src: url('../fonts/pfagorasanspro-light-webfont/pfagorasanspro-light-webfont.eot'); 
+  src: url('../fonts/pfagorasanspro-light-webfont/pfagorasanspro-light-webfont.eot?#iefix') format('embedded-opentype'), 
+       url('../fonts/pfagorasanspro-light-webfont/pfagorasanspro-light-webfont.woff') format('woff'), 
+       url('../fonts/pfagorasanspro-light-webfont/pfagorasanspro-light-webfont.ttf')  format('truetype'), 
+       url('../fonts/pfagorasanspro-light-webfont/pfagorasanspro-light-webfont.svg#1ff30969d0e06c008086dd8c47bb9e3e') format('svg'); 
        
   font-style:   normal;
   font-weight:  200;
 }
 @font-face {
   font-family: 'Agora_Sans_Pro_Medium';
-  src: url('../fonts/pfagorasanspro-medium-webfont/pfagorasanspro-medium-webfont.eot'); /* IE9 Compat Modes */
-  src: url('../fonts/pfagorasanspro-medium-webfont/pfagorasanspro-medium-webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('../fonts/pfagorasanspro-medium-webfont/pfagorasanspro-medium-webfont.woff') format('woff'), /* Modern Browsers */
-       url('../fonts/pfagorasanspro-medium-webfont/pfagorasanspro-medium-webfont.ttf')  format('truetype'), /* Safari, Android, iOS */
-       url('../fonts/pfagorasanspro-medium-webfont/pfagorasanspro-medium-webfont.svg#68b939805a3982035b285cec4bf633ac') format('svg'); /* Legacy iOS */
+  src: url('../fonts/pfagorasanspro-medium-webfont/pfagorasanspro-medium-webfont.eot'); 
+  src: url('../fonts/pfagorasanspro-medium-webfont/pfagorasanspro-medium-webfont.eot?#iefix') format('embedded-opentype'), 
+       url('../fonts/pfagorasanspro-medium-webfont/pfagorasanspro-medium-webfont.woff') format('woff'), 
+       url('../fonts/pfagorasanspro-medium-webfont/pfagorasanspro-medium-webfont.ttf')  format('truetype'), 
+       url('../fonts/pfagorasanspro-medium-webfont/pfagorasanspro-medium-webfont.svg#68b939805a3982035b285cec4bf633ac') format('svg');
        
   font-style:   normal;
   font-weight:  400;
-}
-body, .row .search-form--filter--show-type li a {
-	font-family: 'Agora_Sans_Pro_Regular', Arial, Helvetica, sans-serif;
+}*/
+body, .row .search-form--filter--show-type li a, .price-description {
+	font-family: /*'Agora_Sans_Pro_Regular',*/ Arial, Helvetica, sans-serif;
 }
 .amount, .main-result .breadcrumb, strong, .result-date-text,
 .search-form--filter--show-type li a, .items-list--item--price, .row .search-form--filter--show-type li a.active  {
-	font-family: 'Agora_Sans_Pro_Medium', Arial, Helvetica, sans-serif;
+	font-family: /*'Agora_Sans_Pro_Medium',*/ Arial, Helvetica, sans-serif;
 }
 .search-form h1 {
-	font-family: 'Agora_Sans_Pro_Light', Arial, Helvetica, sans-serif;
+	font-family: /*'Agora_Sans_Pro_Light',*/ Arial, Helvetica, sans-serif;
 }
 /*--------*/
 .datepicker {
@@ -899,10 +899,12 @@ body {
 .row {
 	margin-right: -15px;
     margin-left: -15px;
-	overflow: hidden;
 }
 .result .container .row {
 	max-width: 1170px;
+}
+.result > .container .row {
+	overflow: hidden;
 }
 .amount {
 	text-transform: lowercase;
@@ -1097,7 +1099,8 @@ body {
     padding-top: 15px;
 }
 .items-list .items-list--item .items-list--item--price .uah {
-    font-size: 0.6em;
+    /*font-size: 0.6em;*/
+    font-size: 16px;
 }
 .search-form--filter--show-type li {
     display: inline-block;
@@ -1113,8 +1116,29 @@ body {
     color: #fff;
 }
 .row .items-list--item--price {
-	font-size: 56px;
+	font-size: 2.5em;
+	line-height: .8;
     color: #66be59;
+}
+.uah {
+	display: inline-block;
+	margin-top: 5px;
+	color: #66be59;
+}
+.items-list--item .favorite,
+.items-list--item .price-delete {
+	position: absolute;
+	top: 0;
+}
+.items-list--item .favorite {
+	right: 60px;
+	background: none;
+}
+.items-list--item .relative {
+	position: relative;
+}
+.items-list--item .price-delete {
+	right: 15px;
 }
 .items-list--item--date {
     padding-top: 12px;
@@ -1384,6 +1408,17 @@ a:hover .sprite-pen-icon, .active .sprite-pen-icon, .sprite-pen-icon-a {
     padding: 15px;
     font-size: 1.14em;
     outline: none;
+}
+.select {
+	display: inline-block;
+	background-color: yellow; 
+}
+.price-description {
+	display: block;
+	margin-bottom: 10px;
+	font-size: .321em;
+	color: #66be59;
+	text-transform: lowercase;
 }
 @media (min-width: 768px) {
 	.nav-justified>li {

@@ -1,11 +1,12 @@
 @if ($start<=Config::get('prozorro.page_limit'))
-	<div class="search-form-wr"><a class="search-form--save" href=""><i class="sprite-arrow-right"></i>Зберегти пошуковий запит</a></div>
+	{{--<div class="search-form-wr"><a class="search-form--save" href=""><i class="sprite-arrow-right"></i>Зберегти пошуковий запит</a></div>--}}
 	
 	<div class="container">
 		<div class="row">
 			<div class="col-md-8">
 				<div class="search-form--filter">
 					<div class="result-all">Знайдено закупівель: {{number_format($total, 0, '', ' ')}}</div>
+					{{--
 					<ul class="nav navbar-nav inline-navbar search-form--filter--filter-records">
 						<li><a href="">Додані сьогодні</a> (?)</li>
 						<li><a href="">Уточнення</a> (?)</li>
@@ -14,6 +15,7 @@
 						<li><a href="">Кваліфікація</a> (?)</li>
 						<li><a href="">Завершені</a> (?)</li>
 					</ul>
+					--}}
 				</div>
 			</div>
 			<div class="col-md-4">

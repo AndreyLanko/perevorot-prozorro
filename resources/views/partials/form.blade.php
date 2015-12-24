@@ -2,13 +2,15 @@
 	<div class="main-search">
 		<div class="container">		
 			<h1>Пошук тендера</h1>
-			<div class="search-form--category">
-				<ul class="nav navbar-nav inline-navbar">
-					<li><a class="active" href="">Тендери</a></li>
-					<li><a href="">Планові закупівлі</a></li>
-				</ul>
-				<div class="clearfix"></div>
-			</div>
+			{{--
+				<div class="search-form--category">
+					<ul class="nav navbar-nav inline-navbar">
+						<li><a class="active" href="">Тендери</a></li>
+						<li><a href="">Плани закупівлі</a></li>
+					</ul>
+					<div class="clearfix"></div>
+				</div>
+			--}}
 			
 			<div class="blocks-wr">
 				<div id="blocks" class="blocks clearfix">
@@ -21,7 +23,7 @@
 				<div class="nav navbar-nav inline-navbar">
 					<div id="buttons" class="buttons"></div>
 				</div>
-				<a href="" class="pull-right">Як прискорити роботу?</a>
+				<a href="" class="pull-right">Як користуватись пошуком?</a>
 			</div>
 		</div>
 	</div>

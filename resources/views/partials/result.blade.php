@@ -1,7 +1,7 @@
 <div class="items-list">
 	<div class="container">
 		<div class="items-list--item clearfix">
-			<div class="row">
+			<div class="row clearfix">
 				<div class="col-md-8">
 					{{--dump($item)--}}
 					<a href="/tender/{{$item->tenderID}}/" class="items-list--header"><i class="sprite-mouse-icon"></i>{{$item->title}}</a>
@@ -13,11 +13,11 @@
 							<li>м. {{$item->procuringEntity->address->locality}}</li>
 						@endif
 					</ol>
-					<div class="description-wr{{mb_strlen($item->description)>280?'':' open'}}">
+					<div class="description-wr{{mb_strlen($item->description)>350?' croped':' open'}}">
 						@if ($item->description)
 							<div class="description"><p>{{$item->description}}</p></div>
 						@endif
-						@if (mb_strlen($item->description)>280)
+						@if (mb_strlen($item->description)>350)
 							<a class="search-form--open" href="">
 								<i class="sprite-arrow-right"></i>
 								<span>розгорнути</span>
@@ -32,11 +32,16 @@
 					@endif
 					<div class="items-list--tem-id"><strong>ID:</strong> {{$item->tenderID}}</div>
 				</div>
-				<div class="col-md-4">	
-					<a href="#" title="Add to favorite"><i class="sprite-star">Favorite icon</i></a>
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<a href="]" title="Delete"><i class="sprite-close-blue">Delete</i></a>
-					<div class="items-list--item--price">{{number_format($item->value->amount, 0, '', ' ')}} <span class="uah">{{$item->value->currency}}</span></div>
+				<div class="col-md-4 relative">	
+					{{--
+					<a href="" title="Add to favorite" class="favorite"><i class="sprite-star">Favorite icon</i></a>
+					<a href="" title="Delete" class="price-delete"><i class="sprite-close-blue">Delete</i></a>
+					--}}
+					<div class="items-list--item--price">
+						<span class="price-description">Очікувана вартість</span>
+						{{number_format($item->value->amount, 0, '', ' ')}}
+						<span class="uah">{{$item->value->currency}}</span>
+					</div>
 					<div class="items-list--item--date"><strong>Дата:</strong> ?12-12-2016</div>
 					{{--
 						@if (!empty($item->tenderPeriod->startDate))
