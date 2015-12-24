@@ -23,8 +23,13 @@ var APP,
 	KEY_DOWN = 40,
 	KEY_ESC = 27,
 	KEY_RETURN = 13,
-	KEY_CMD = IS_MAC ? 91 : 17;
-
+	KEY_CMD = IS_MAC ? 91 : 17,
+	
+	spin_options={
+		color:'#6dc8eb',
+		lines: 15,
+		width: 2
+	};
 
 (function(window, undefined){
 	'use strict';
@@ -40,6 +45,12 @@ var APP,
 			},
 
 			js: {
+				search_result: function(_self){
+					_self.on('click', '.search-form--open', function(e){
+						e.preventDefault();
+						$(this).closest('.description-wr').toggleClass('open');
+					});
+				},
 				form: function(_self){
 					var timeout,
 						input_query='',
@@ -289,7 +300,7 @@ var APP,
 							return;
 						}
 
-						$('#result').html('Завантаження...');
+						$('#search_button').addClass('loading').spin(spin_options);
 
 						$.ajax({
 							url: '/form/search?',
@@ -300,6 +311,8 @@ var APP,
 							headers: APP.utils.csrf(),
 							dataType: "json",
 							success: function(response){
+								$('#search_button').removeClass('loading').spin(false);
+								
 								if(response.html){
 									$('#result').html(response.html);
 								}else{

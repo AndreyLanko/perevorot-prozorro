@@ -42,6 +42,12 @@ gulp.task("copyfiles", function() {
   gulp.src("resources/vendor/history.js/scripts/bundled-uncompressed/html4+html5/jquery.history.js")
     .pipe(gulp.dest("resources/assets/js/vendor/"));
 
+  gulp.src("resources/vendor/spin.js/spin.js")
+    .pipe(gulp.dest("resources/assets/js/vendor/"));
+
+  gulp.src("resources/vendor/spin.js/jquery.spin.js")
+    .pipe(gulp.dest("resources/assets/js/vendor/"));
+
 });
 
 elixir(function(mix) {
@@ -56,6 +62,8 @@ elixir(function(mix) {
       'js/vendor/inputmask.date.extensions.js',
       'js/vendor/jquery.inputmask.js',
       'js/vendor/jquery.auto-grow-input.js',
+      'js/vendor/spin.js',
+      'js/vendor/jquery.spin.js',
       'js/libs/selectize.js',
       'js/blocks/**/*.js',
       'js/app.js'

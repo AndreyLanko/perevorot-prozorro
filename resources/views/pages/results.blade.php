@@ -1,10 +1,10 @@
-<a class="search-form--save" href=""><i class="sprite-arrow-right"></i> Зберегти пошуковий запит</a>
+<div class="search-form-wr"><a class="search-form--save" href=""><i class="sprite-arrow-right"></i>Зберегти пошуковий запит</a></div>
 
 <div class="container">
 	<div class="row">
 		<div class="col-md-8">
 			<div class="search-form--filter">
-				<div class="result-all">{{number_format($total, 0, '', ' ')}} підходящі закупівлі</div>
+				<div class="result-all">Знайдено закупівель: {{number_format($total, 0, '', ' ')}}</div>
 				<ul class="nav navbar-nav inline-navbar search-form--filter--filter-records">
 					<li><a href="">Додані сьогодні</a> (?)</li>
 					<li><a href="">Уточнення</a> (?)</li>
@@ -30,4 +30,6 @@
 	</div>
 </div>
 
-@include('partials.result')
+@foreach ($items as $item)
+	@include('partials.result')
+@endforeach
