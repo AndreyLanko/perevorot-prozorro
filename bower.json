@@ -15,6 +15,7 @@
     "jquery": "~2.1.4",
     "jquery-auto-grow-input": "*",
     "jquery.inputmask": "~3.2.5",
-    "selectize": "~0.12.1"
+    "selectize": "~0.12.1",
+    "spin.js": "~2.3.2"
   }
 }

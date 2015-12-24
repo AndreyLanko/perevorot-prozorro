@@ -25,7 +25,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="main-result">	
+	<div class="main-result" data-js="search_result">	
 		<div id="result" class="result">@if (!empty($result)){!!$result!!}@endif</div>
 	</div>
 </div>
