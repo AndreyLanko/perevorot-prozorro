@@ -42,8 +42,14 @@ class FormController extends BaseController
 
 			if(!empty($data->items))
 			{
+				$dataStatus=[];
+
+				foreach($this->get_status_data() as $one)
+					$dataStatus[$one['id']]=$one['name'];
+
 				$out=View::make('pages.results')
 					->with('total', $data->total)
+					->with('dataStatus', $dataStatus)
 					->with('start', ((int) Input::get('start') + Config::get('prozorro.page_limit')))
 					->with('items', $data->items)->render();
 			}
