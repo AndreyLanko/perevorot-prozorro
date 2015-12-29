@@ -10,7 +10,7 @@
 						<li>Prozorro</li>
 						<li class="marked">{{$dataStatus[$item->status]}}</li>
 						@if (!empty($item->procuringEntity->address->locality))
-							<li>м. {{$item->procuringEntity->address->locality}}</li>
+							<li>{{$item->procuringEntity->address->locality}}</li>
 						@endif
 					</ol>
 					<div class="description-wr{{mb_strlen($item->description)>350?' croped':' open'}}">

@@ -5,51 +5,6 @@
  * Improvements by Andrew Rowls
  * Licensed under the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  */
-/*---fonts---
-@font-face {
-  font-family: 'Agora_Sans_Pro_Regular';
-  src: url('../fonts/pfagorasanspro-reg-webfont/pfagorasanspro-reg-webfont.eot'); 
-  src: url('../fonts/pfagorasanspro-reg-webfont/pfagorasanspro-reg-webfont.eot?#iefix') format('embedded-opentype'), 
-       url('../fonts/pfagorasanspro-reg-webfont/pfagorasanspro-reg-webfont.woff') format('woff'), 
-       url('../fonts/pfagorasanspro-reg-webfont/pfagorasanspro-reg-webfont.ttf')  format('truetype'), 
-       url('../fonts/pfagorasanspro-reg-webfont/pfagorasanspro-reg-webfont.svg#bd84302afc188f9ad9c8d957abb7b455') format('svg'); 
-       
-  font-style:   normal;
-  font-weight:  400;
-}
-@font-face {
-  font-family: 'Agora_Sans_Pro_Light';
-  src: url('../fonts/pfagorasanspro-light-webfont/pfagorasanspro-light-webfont.eot'); 
-  src: url('../fonts/pfagorasanspro-light-webfont/pfagorasanspro-light-webfont.eot?#iefix') format('embedded-opentype'), 
-       url('../fonts/pfagorasanspro-light-webfont/pfagorasanspro-light-webfont.woff') format('woff'), 
-       url('../fonts/pfagorasanspro-light-webfont/pfagorasanspro-light-webfont.ttf')  format('truetype'), 
-       url('../fonts/pfagorasanspro-light-webfont/pfagorasanspro-light-webfont.svg#1ff30969d0e06c008086dd8c47bb9e3e') format('svg'); 
-       
-  font-style:   normal;
-  font-weight:  200;
-}
-@font-face {
-  font-family: 'Agora_Sans_Pro_Medium';
-  src: url('../fonts/pfagorasanspro-medium-webfont/pfagorasanspro-medium-webfont.eot'); 
-  src: url('../fonts/pfagorasanspro-medium-webfont/pfagorasanspro-medium-webfont.eot?#iefix') format('embedded-opentype'), 
-       url('../fonts/pfagorasanspro-medium-webfont/pfagorasanspro-medium-webfont.woff') format('woff'), 
-       url('../fonts/pfagorasanspro-medium-webfont/pfagorasanspro-medium-webfont.ttf')  format('truetype'), 
-       url('../fonts/pfagorasanspro-medium-webfont/pfagorasanspro-medium-webfont.svg#68b939805a3982035b285cec4bf633ac') format('svg');
-       
-  font-style:   normal;
-  font-weight:  400;
-}*/
-body, .row .search-form--filter--show-type li a, .price-description {
-	font-family: /*'Agora_Sans_Pro_Regular',*/ Arial, Helvetica, sans-serif;
-}
-.amount, .main-result .breadcrumb, strong, .result-date-text,
-.search-form--filter--show-type li a, .items-list--item--price, .row .search-form--filter--show-type li a.active  {
-	font-family: /*'Agora_Sans_Pro_Medium',*/ Arial, Helvetica, sans-serif;
-}
-.search-form h1 {
-	font-family: /*'Agora_Sans_Pro_Light',*/ Arial, Helvetica, sans-serif;
-}
-/*--------*/
 .datepicker {
   padding: 4px;
   -webkit-border-radius: 4px;
@@ -547,6 +502,52 @@ body, .row .search-form--filter--show-type li a, .price-description {
 .datepicker.dropdown-menu td,
 .datepicker.datepicker-inline td {
   padding: 4px 5px;
+}
+
+/*---fonts---
+@font-face {
+  font-family: 'Agora_Sans_Pro_Regular';
+  src: url('../fonts/pfagorasanspro-reg-webfont/pfagorasanspro-reg-webfont.eot'); 
+  src: url('../fonts/pfagorasanspro-reg-webfont/pfagorasanspro-reg-webfont.eot?#iefix') format('embedded-opentype'), 
+       url('../fonts/pfagorasanspro-reg-webfont/pfagorasanspro-reg-webfont.woff') format('woff'), 
+       url('../fonts/pfagorasanspro-reg-webfont/pfagorasanspro-reg-webfont.ttf')  format('truetype'), 
+       url('../fonts/pfagorasanspro-reg-webfont/pfagorasanspro-reg-webfont.svg#bd84302afc188f9ad9c8d957abb7b455') format('svg'); 
+       
+  font-style:   normal;
+  font-weight:  400;
+}
+@font-face {
+  font-family: 'Agora_Sans_Pro_Light';
+  src: url('../fonts/pfagorasanspro-light-webfont/pfagorasanspro-light-webfont.eot'); 
+  src: url('../fonts/pfagorasanspro-light-webfont/pfagorasanspro-light-webfont.eot?#iefix') format('embedded-opentype'), 
+       url('../fonts/pfagorasanspro-light-webfont/pfagorasanspro-light-webfont.woff') format('woff'), 
+       url('../fonts/pfagorasanspro-light-webfont/pfagorasanspro-light-webfont.ttf')  format('truetype'), 
+       url('../fonts/pfagorasanspro-light-webfont/pfagorasanspro-light-webfont.svg#1ff30969d0e06c008086dd8c47bb9e3e') format('svg'); 
+       
+  font-style:   normal;
+  font-weight:  200;
+}
+@font-face {
+  font-family: 'Agora_Sans_Pro_Medium';
+  src: url('../fonts/pfagorasanspro-medium-webfont/pfagorasanspro-medium-webfont.eot'); 
+  src: url('../fonts/pfagorasanspro-medium-webfont/pfagorasanspro-medium-webfont.eot?#iefix') format('embedded-opentype'), 
+       url('../fonts/pfagorasanspro-medium-webfont/pfagorasanspro-medium-webfont.woff') format('woff'), 
+       url('../fonts/pfagorasanspro-medium-webfont/pfagorasanspro-medium-webfont.ttf')  format('truetype'), 
+       url('../fonts/pfagorasanspro-medium-webfont/pfagorasanspro-medium-webfont.svg#68b939805a3982035b285cec4bf633ac') format('svg');
+       
+  font-style:   normal;
+  font-weight:  400;
+}*/
+
+body, .row .search-form--filter--show-type li a, .price-description {
+	font-family: /*'Agora_Sans_Pro_Regular',*/ Arial, Helvetica, sans-serif;
+}
+.amount, .main-result .breadcrumb, strong, .result-date-text,
+.search-form--filter--show-type li a, .items-list--item--price, .row .search-form--filter--show-type li a.active  {
+	font-family: /*'Agora_Sans_Pro_Medium',*/ Arial, Helvetica, sans-serif;
+}
+.search-form h1 {
+	font-family: /*'Agora_Sans_Pro_Light',*/ Arial, Helvetica, sans-serif;
 }
 
 .none{
@@ -1424,22 +1425,38 @@ a:hover .sprite-pen-icon, .active .sprite-pen-icon, .sprite-pen-icon-a {
 	.nav-justified>li {
 	    display: table-cell;
 	    width: 1%;
-	}
-}
-@media (min-width: 768px) {
+	 }
 	.navbar-nav {
 	    float: left;
 	    margin: 0;
 	}
-}
-@media (min-width: 768px) {
 	.navbar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand {
 	    margin-left: -15px;
 	}
-}
-@media (min-width: 768px) {
 	.navbar-nav>li {
 	    float: left;
+	}
+	
+	.col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
+	    float: left;
+	}
+	.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+	    position: relative;
+	    min-height: 1px;
+	    padding-left: 15px;
+	    padding-right: 15px;
+	}
+	.col-sm-3 {
+	    width: 25%;
+	}
+	.col-sm-4 {
+	    width: 33.33333333%;
+	}
+	.col-sm-6 {
+	    width: 50%;
+	}
+	.col-sm-9 {
+	    width: 75%;
 	}
 }
 
@@ -1452,7 +1469,15 @@ a:hover .sprite-pen-icon, .active .sprite-pen-icon, .sprite-pen-icon-a {
 		width: 33.33333333%;
 	}
 	.col-md-8 {
-		width: 66.66666667%	}
+		width: 66.66666667%	
+	}
+	.col-md-push-8 {
+	    left: 66.66666667%;
+	}
+	.col-md-pull-4 {
+	    right: 33.33333333%;
+	}
+
 }
 
 @media (min-width: 1200px) {
@@ -1482,3 +1507,449 @@ a:hover .sprite-pen-icon, .active .sprite-pen-icon, .sprite-pen-icon-a {
 		padding-bottom: 10px;
 	}
 }
+/*-----one-tender-----*/
+.tender .tender--head {
+    padding: 50px 0;
+}
+.gray-bg {
+    background: #f0f5f2;
+}
+.tender .tender--head .container {
+    position: relative;
+}
+.tender .tender--head .tender--head--title {
+    font-size: 1.71em;
+}
+.tender .tender--head .breadcrumb_custom {
+    margin: 30px 0;
+}
+.gray-bg .breadcrumb_custom a {
+    background: #fff;
+}
+.gray-bg .breadcrumb_custom a.active {
+    background: #a5df9d;
+}
+.gray-bg .breadcrumb_custom a:before {
+    border-color: transparent transparent transparent #f0f5f2;
+    _border-color: #000000 #000000 #000000 #f0f5f2;
+}
+.gray-bg .breadcrumb_custom a:after {
+    border-color: transparent transparent transparent #fff;
+    _border-color: #000000 #000000 #000000 #fff;
+}
+.gray-bg .breadcrumb_custom a.active:after {
+    border-color: transparent transparent transparent #a5df9d;
+}
+.tender .tender--head .tender--head--company {
+    font-size: 1.5em;
+    padding-bottom: 25px;
+}
+.tender .tender--head .tender--head--inf {
+    font-size: 1.14em;
+}
+.marked {
+    background-color: #a2dd9b;
+    display: inline-block;
+    padding: 0 5px;
+}
+.tender .tender--menu {
+    position: absolute;
+    background: #fff;
+    border: 2px solid #ededed;
+    border-bottom: 5px solid #ededed;
+    right: 0;
+    font-size: 1.28em;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+.sprite-arrow-left {
+    background-position: -0px -468px;
+    width: 21px;
+    height: 21px;
+    margin-bottom: 3px;
+}
+.tender .tender--menu .blue-btn {
+    margin: 15px 0;
+}
+.tender .tender--menu .nav.nav-list {
+    border-top: 1px solid #ededed;
+    margin: 0 -15px;
+    padding: 0 15px;
+}
+.blue-btn {
+    padding: 12px 28px;
+    background: #6dc8eb;
+    color: #fff;
+    display: inline-block;
+}
+.blue-btn:hover {
+    color: #fff;
+}
+.nav-list.nav > li {
+    padding: 10px 0;
+}
+.nav-list.nav > li > a:hover, .nav-list.nav > li > a:active, .nav-list.nav > li > a:focus {
+    background: none;
+}
+.sprite-star {
+    background-position: -26px -394px;
+    width: 17px;
+    height: 17px;
+    margin-bottom: 3px;
+}
+.sprite-close-blue {
+    background-position: -28px -360px;
+    width: 17px;
+    height: 17px;
+    margin-bottom: 3px;
+}
+.sprite-warning {
+    background-position: -0px -507px;
+    width: 18px;
+    height: 18px;
+    margin-bottom: 3px;
+}
+.tender .tender--menu .nav.nav-list {
+    border-top: 1px solid #ededed;
+    margin: 0 -15px;
+    padding: 0 15px;
+}
+.tender .tender--menu .nav.nav-list.last {
+    border-bottom: 1px solid #ededed;
+    margin-bottom: 30px;
+}
+.nav-list.nav > li > a {
+    padding: 0;
+    display: inline-block;
+}
+.sprite-print {
+    background-position: -0px -489px;
+    width: 18px;
+    height: 18px;
+    margin-bottom: 3px;
+}
+.sprite-download {
+    background-position: -21px -468px;
+    width: 18px;
+    height: 18px;
+    margin-bottom: 3px;
+}
+.sprite-share {
+    background-position: -18px -504px;
+    width: 18px;
+    height: 21px;
+    margin-bottom: 3px;
+}
+.sprite-link {
+    background-position: -21px -486px;
+    width: 18px;
+    height: 18px;
+    margin-bottom: 3px;
+}
+.sprite-zip {
+    background-position: -0px -525px;
+    width: 21px;
+    height: 21px;
+}
+.tender .tender--description {
+    font-size: 1.14em;
+}
+.border-bottom {
+    border-bottom: 2px solid #ededed;
+}
+.margin-bottom {
+    margin-bottom: 15px;
+}
+.sprite-arrow-down {
+    background-position: 0 -388px;
+    width: 26px;
+    height: 26px;
+}
+.tender .tender--description .tender--description--text {
+    text-align: justify;
+    margin-bottom: 10px;
+}
+.tender .tender--description .tender--description--number, .tender .tender--description .tender--description--cost {
+    font-size: 1.125em;
+    text-align: center;
+}
+.gray-bg.padding {
+    padding: 15px;
+}
+.blue {
+    color: #24a7d3;
+}
+.green {
+    color: #66be59;
+}
+.tender .tender--description .tender--description--cost--number {
+    font-size: 1.875em;
+}
+.tender .tender--customer {
+    width: 100%;
+}
+.tender .tender--customer td, .tender .tender--customer th {
+    float: left;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    vertical-align: top;
+}
+table td[class*=col-], table th[class*=col-] {
+    position: static;
+    display: table-cell;
+    float: none;
+}
+.tender .tender--platforms .tender--platforms--list .item {
+    float: left;
+    width: 12.5%;
+    text-align: center;
+    margin-top: 30px;
+    height: 180px;
+    padding: 0 10px;
+}
+.tender .tender--platforms .tender--platforms--list .item img {
+    width: 100%;
+}
+.tender .more {
+	position: relative;
+	top: 0;
+	left: 0;
+	right: 0;
+    text-align: center;
+    display: block;
+    width: auto;
+    height: auto;
+    background-image: none;
+    color: #1689b3;
+    text-transform: none;
+}
+.tender .more .sprite-arrow-down {
+    background-position: 0 -388px;
+    width: 26px;
+    height: 26px;
+}
+.tender .tender--offers {
+    font-size: 1.125em;
+}
+.tender .tender--offers .nav a {
+    font-size: 0.777em;
+}
+.tender .tender--complaint {
+    font-size: 1.125em;
+}
+.table>caption+thead>tr:first-child>td, .table>caption+thead>tr:first-child>th, .table>colgroup+thead>tr:first-child>td, .table>colgroup+thead>tr:first-child>th, .table>thead:first-child>tr:first-child>td, .table>thead:first-child>tr:first-child>th {
+    border-top: 0;
+}
+.table > thead > tr > th {
+    border-bottom: none;
+    background: #d5ecf3;
+    font-weight: normal;
+    vertical-align: middle;
+    text-align: center;
+}
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+.table-striped > tbody > tr:nth-of-type(2n) {
+    background: #f0f5f2;
+}
+.table-striped > tbody > tr:nth-of-type(2n+1) {
+    background: none;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+}
+.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+    border-top: none;
+}
+.tender .tender--complaint .table a {
+    font-size: 0.777em;
+}
+.tender .tender--description {
+    font-size: 1.14em;
+}
+.tender--simmilar .tender--simmilar--item.active {
+    position: absolute;
+    z-index: 2;
+    background: #fff;
+    border: 2px solid #ededed;
+    border-right: 5px solid #ededed;
+    border-bottom: 5px solid #ededed;
+}
+.tender--simmilar .tender--simmilar--item {
+    position: relative;
+    font-size: 0.875em;
+}
+.tender--simmilar .tender--simmilar--item--control {
+    position: absolute;
+    right: 15px;
+}
+.tender--simmilar .tender--simmilar--item .tender--simmilar--item--cost {
+    font-size: 2.57em;
+}
+.tender--simmilar .tender--simmilar--item a.title {
+    font-size: 1.285em;
+    display: block;
+}
+.tender--simmilar .tender--legend {
+    padding: 30px 0 0;
+}
+.tender--simmilar .tender--simmilar--item.active .tender--simmilar--item--hidden-part {
+    display: block;
+}
+.tender--simmilar .tender--simmilar--text {
+    margin-top: 30px;
+}
+.tender .sprite-arrow-right {
+    background-position: 0 -414px;
+    width: 21px;
+    height: 21px;
+}
+.tender--simmilar .tender--simmilar--item--hidden-part {
+    display: none;
+}
+.footer {
+    font-size: 1.142em;
+    margin-bottom: 0;
+    border: none;
+    padding-top: 30px;
+    margin-top: 50px;
+}
+.footer .nav > li {
+    padding: 5px 0;
+}
+.footer a {
+    color: #999;
+}
+.footer a:hover, .footer a:active, .footer a:focus {
+    color: #666;
+}
+.nav-justified.inline-navbar.nav > li {
+    float: none;
+    display: table-cell;
+}
+.sprite-social2-fb {
+    background-position: 0 0;
+    width: 46px;
+    height: 46px;
+}
+.sprite-social2-g {
+    background-position: 0 -46px;
+    width: 46px;
+    height: 46px;
+}
+.sprite-social2-tw {
+    background-position: 0 -138px;
+    width: 46px;
+    height: 46px;
+}
+.sprite-social2-in {
+    background-position: 0 -92px;
+    width: 46px;
+    height: 46px;
+}
+html, body {
+	height: 100%;
+}
+.wrapper-main {
+	min-height: 100%;
+}
+.footer {
+	height: 326px;
+	margin-top: -326px;
+}
+.last {
+	padding-bottom: 326px;
+}
+.footer .nav-justified a {
+    padding: 0;
+    text-align: left;
+}
+.footer .footer--copyright {
+    background: #54a8c7;
+    color: #fff;
+    line-height: 20px;
+    padding: 15px 0;
+}
+.tender .col-sm-6, .tender .col-sm-4 {
+	padding-right: 15px;
+    padding-left: 15px;
+} 
+@media (max-width: 991px) {
+	.tender .tender--platforms .tender--platforms--list .item {
+	    float: left;
+	    width: 25%;
+	}
+	.footer {
+		height: 829px;
+		margin-top: -829px;
+	}
+	.last {
+		padding-bottom: 829px;
+	}
+}
+@media (max-width: 763px) {
+	.footer {
+		height: 834px;
+		margin-top: -834px;
+	}
+	.last {
+		padding-bottom: 834px;
+	}
+}
+@media (max-width: 582px) {
+	.footer {
+		height: 854px;
+		margin-top: -854px;
+	}
+	.last {
+		padding-bottom: 854px;
+	}
+}
+@media (max-width: 450px) {
+	.tender .tender--platforms .tender--platforms--list .item {
+	    float: left;
+	    width: 50%;
+	}
+}
+@media (max-width: 769px) {
+	.tender .tender--menu {
+	    position: relative;
+	}
+	.tender--simmilar .tender--simmilar--item.active {
+	    position: relative;
+	}
+	.nav-justified.inline-navbar.nav {
+	    display: table;
+	}
+	.footer {
+		height: 834px;
+		margin-top: -834px;
+	}
+	.last {
+		padding-bottom: 834px;
+	}
+}
+.tender .search-form--open {
+	margin-bottom: 0;
+	cursor: pointer;
+}
+.img-wr {
+	height: 123px;
+	display: table-cell;
+    vertical-align: middle;
+}
+.description {
+	margin-bottom: 10px;
+}
+.tender .description {
+	margin-bottom: 0;
+}
+.col-md-pull-4.description-wr {
+	margin-bottom: 10px;
+}
+/*# sourceMappingURL=site.css.map */

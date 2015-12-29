@@ -224,7 +224,7 @@ class FormController extends BaseController
 		return $this->json('procedure', $lang);
 	}
 
-	private function get_status_data($lang='uk')
+	public function get_status_data($lang='uk')
 	{
 		return $this->json('status', $lang);
 	}

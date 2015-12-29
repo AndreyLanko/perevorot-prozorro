@@ -130,7 +130,19 @@ class PageController extends BaseController
 				$error=$data->error;
 		}
 
-		return view('pages/tender')->with('item', $item)->with('error', $error);
+		$platforms=Config::get('platforms');
+		shuffle($platforms);
+
+		$dataStatus=[];
+
+		foreach(app('App\Http\Controllers\FormController')->get_status_data() as $one)
+			$dataStatus[$one['id']]=$one['name'];
+
+		return view('pages/tender')
+				->with('item', $item)
+				->with('dataStatus', $dataStatus)
+				->with('platforms', $platforms)
+				->with('error', $error);
 	}
 
 	public function getSearchResults($query)

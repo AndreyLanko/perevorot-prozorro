@@ -25552,6 +25552,12 @@ var APP,
 			},
 
 			js: {
+				tender: function(_self){
+					_self.on('click', '.search-form--open', function(e){
+						e.preventDefault();
+						$(this).closest('.description-wr').toggleClass('open');
+					});
+				},
 				search_result: function(_self){
 					_self.on('click', '.search-form--open', function(e){
 						e.preventDefault();
