@@ -17,6 +17,7 @@
     "jquery.inputmask": "~3.2.5",
     "selectize": "~0.12.1",
     "spin.js": "~2.3.2",
-    "jquery-highlight": "~3.3.0"
+    "jquery-highlight": "~3.3.0",
+    "jquery-sticky": "~1.0.3"
   }
 }

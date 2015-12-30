@@ -45,16 +45,67 @@ var APP,
 
 	APP = (function(){
 
+		var viewport = function () {
+			var e = window, a = 'inner';
+			if (!('innerWidth' in window )) {
+				a = 'client';
+				e = document.documentElement || document.body;
+			}
+			return {width: e[a + 'Width'], height: e[a + 'Height']};
+		};
+
 		return {
 			common: function(){
 				$('html').removeClass('no-js');
 			},
 
 			js: {
+				tender_menu_fixed: function(_self){
+					_self.sticky({
+						topSpacing: _self.position().top-15,
+						responsiveWidth: true,
+						bottomSpacing: $(document).height()-$('.tender--platforms').offset().top+_self.find('.tender--menu').height()+10
+					});
+				},
 				tender: function(_self){
 					_self.on('click', '.search-form--open', function(e){
 						e.preventDefault();
+
 						$(this).closest('.description-wr').toggleClass('open');
+					});
+					
+					_self.find('.blue-btn').click(function(e){
+						e.preventDefault();
+
+						$('html, body').animate({
+							scrollTop: $('.tender--platforms').position().top
+						}, 500);
+					});
+					
+					$('a.document-link').click(function(e){
+						e.preventDefault();
+
+						$('.tender--offers.documents').hide();
+						$('.tender--offers.documents[data-id='+$(this).data('id')+']').show();
+
+						$('.overlay').addClass('open');
+					});
+
+					$('.overlay-close').click(function(e){
+						e.preventDefault();
+
+						$('.overlay').removeClass('open');
+					});
+					
+					$(document).keydown(function(e){
+						if($('.overlay').is('.open')){
+							switch (e.keyCode){
+								case KEY_ESC:
+									$('.overlay-close').click();
+									return;
+								break;
+							}
+						}
 					});
 				},
 				search_result: function(_self){

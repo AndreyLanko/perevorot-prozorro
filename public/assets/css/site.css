@@ -1554,13 +1554,27 @@ a:hover .sprite-pen-icon, .active .sprite-pen-icon, .sprite-pen-icon-a {
 }
 .tender .tender--menu {
     position: absolute;
+    max-width: 293px;
     background: #fff;
     border: 2px solid #ededed;
     border-bottom: 5px solid #ededed;
     right: 0;
     font-size: 1.28em;
-    padding-top: 25px;
-    padding-bottom: 25px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    z-index: 10;
+}
+.word-break {
+	word-break: break-word;
+}
+.back-tender {
+	display: inline-block;
+	margin-bottom: 15px;
+}
+.tender_menu_fixed {
+	width: 1170px;
+	margin: 0 auto;
+	z-index: 10;
 }
 .sprite-arrow-left {
     background-position: -0px -468px;
@@ -1569,7 +1583,7 @@ a:hover .sprite-pen-icon, .active .sprite-pen-icon, .sprite-pen-icon-a {
     margin-bottom: 3px;
 }
 .tender .tender--menu .blue-btn {
-    margin: 15px 0;
+    margin: 0 0 15px;
 }
 .tender .tender--menu .nav.nav-list {
     border-top: 1px solid #ededed;
@@ -1951,5 +1965,101 @@ html, body {
 }
 .col-md-pull-4.description-wr {
 	margin-bottom: 10px;
+}
+/*----tender--offers documents---*/
+.overlay-documents {
+	display: none;
+}
+.overlay.open {
+	display: block;
+}
+.tender--offers .document-link {
+	font-size: 0.87em;
+}
+.overlay {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+    text-align: center;
+    height: 100%;
+    overflow-y: scroll;
+    background-color: rgba(0,0,0,0.85);
+    cursor: default;
+    z-index: 1000;
+}
+.overlay-box {
+	position: relative;
+	width: 560px;
+	max-width: 85%;
+    margin: 70px auto;
+    padding: 30px;
+    display: inline-block;
+    text-align: left;    
+    vertical-align: middle;
+	background-color: #fff;
+}
+.document-info {
+	padding: 10px 0;
+	font-size: .7em;
+	overflow: hidden;
+}
+.document-date,
+.document-name {
+	width: 50%;
+}
+.document-name {
+	float: left;
+}
+.document-date {
+	float: right;
+	text-align: right;
+}
+.overlay-title {
+	margin-bottom: 5px;
+	margin-top: 5px;
+	font-size: .7em;
+	font-weight: bold;
+}
+.tender--offers.documents last-child .document-info {
+	margin-bottom: 40px;
+}
+.tender--offers.documents:first-child .overlay-title:first-child {
+	margin-top: 0;
+}
+.overlay-box {
+	position: relative;
+	z-index: 10;
+}
+.overlay-box .overlay-close {
+	position: absolute;
+	top: 20px;
+	right: 16px;
+	width: 40px;
+	height: 40px;
+	text-align: center;
+	cursor: pointer;
+}
+.overlay-box .overlay-close .sprite-close-grey {
+	margin-top: 12px;
+	background-position: 0px -450px;
+    width: 17px;
+    height: 17px;
+}
+.overlay-close-layout {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 9;
+}
+.blue-btn:focus {
+	color: #fff;
+	text-decoration: none;
+}
+.blue-btn:hover {
+	text-decoration: underline;
 }
 /*# sourceMappingURL=site.css.map */
