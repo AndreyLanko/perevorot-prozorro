@@ -2062,4 +2062,7 @@ html, body {
 .blue-btn:hover {
 	text-decoration: underline;
 }
+.table-striped td {
+	font-size: .89em;
+}
 /*# sourceMappingURL=site.css.map */
