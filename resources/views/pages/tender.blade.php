@@ -214,14 +214,18 @@
 							<div class="row">
 								<table class="tender--customer margin-bottom">
 									<tbody>
-										<tr>
-											<td class="col-sm-4"><strong>Назва підприємства:</strong></td>
-											<td class="col-sm-6">{{$item->procuringEntity->identifier->legalName}}</td>
-										</tr>
-										<tr>
-											<td class="col-sm-4"><strong>ЄДРПОУ:</strong></td>
-											<td class="col-sm-6">{{$item->procuringEntity->identifier->id}}</td>
-										</tr>
+										@if (!empty($item->procuringEntity->name))
+											<tr>
+												<td class="col-sm-4"><strong>Назва підприємства:</strong></td>
+												<td class="col-sm-6">{{$item->procuringEntity->name}}</td>
+											</tr>
+										@endif
+										@if (!empty($item->procuringEntity->identifier->id))
+											<tr>
+												<td class="col-sm-4"><strong>ЄДРПОУ:</strong></td>
+												<td class="col-sm-6">{{$item->procuringEntity->identifier->id}}</td>
+											</tr>
+										@endif
 										@if (!empty($item->procuringEntity->contactPoint->url))
 											<tr>
 												<td class="col-sm-4"><strong>Сайт:</strong></td>
