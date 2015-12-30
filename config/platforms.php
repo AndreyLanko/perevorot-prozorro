@@ -23,7 +23,7 @@ return [
 		'href'=>'http://e-tender.biz/?TenderID={tenderID}'
 	],
 	[
-		'name'=>'ПриветМаркет',
+		'name'=>'ПриватМаркет',
 		'slug'=>'privatmarket',
 		'href'=>'https://privatmarket.ua/?TenderID={tenderID}'
 	],
@@ -35,7 +35,7 @@ return [
 	[
 		'name'=>'Держзакупівлі онлайн',
 		'slug'=>'netcast',
-		'href'=>'http://www.dzo.com.ua/ ?TenderID={tenderID}'
+		'href'=>'http://www.dzo.com.ua/?TenderID={tenderID}'
 	]
 
 ];

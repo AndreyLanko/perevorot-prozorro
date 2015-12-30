@@ -140,6 +140,7 @@ class PageController extends BaseController
 
 		return view('pages/tender')
 				->with('item', $item)
+				->with('back', starts_with(Request::server('HTTP_REFERER'), Request::root().'/search') ? Request::server('HTTP_REFERER') : false)
 				->with('dataStatus', $dataStatus)
 				->with('platforms', $platforms)
 				->with('error', $error);
