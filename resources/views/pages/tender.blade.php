@@ -66,11 +66,15 @@
 									<a href=""><i class="sprite-link"></i> Скопіювати посилання</a>
 								</li>
 							</ul>
-							
-							<p><strong>Контакти</strong></p>
-							<p>{{$item->procuringEntity->contactPoint->name}}</p>
-							<small><a href="mailto:{{$item->procuringEntity->contactPoint->email}}" class="word-break">{{$item->procuringEntity->contactPoint->email}}</a></small>
-		
+							@if(!empty($item->procuringEntity->contactPoint->name) || !empty($item->procuringEntity->contactPoint->email))
+								<p><strong>Контакти</strong></p>
+								@if(!empty($item->procuringEntity->contactPoint->name))
+									<p>{{$item->procuringEntity->contactPoint->name}}</p>
+								@endif
+								@if(!empty($item->procuringEntity->contactPoint->email))
+									<small><a href="mailto:{{$item->procuringEntity->contactPoint->email}}" class="word-break">{{$item->procuringEntity->contactPoint->email}}</a></small>
+								@endif
+							@endif
 						</div>
 					</div>
 				</div>
@@ -248,17 +252,14 @@
 											<tr>
 												<td class="col-sm-4"><strong>Контактна особа:</strong></td>
 												<td class="col-sm-6">
-													@if (empty($item->procuringEntity->contactPoint->name))
+													@if (!empty($item->procuringEntity->contactPoint->name))
 														{{$item->procuringEntity->contactPoint->name}}<br>
 													@endif
-													@if (empty($item->procuringEntity->contactPoint->telephone))
+													@if (!empty($item->procuringEntity->contactPoint->telephone))
 														{{$item->procuringEntity->contactPoint->telephone}}<br>
 													@endif
-													@if (empty($item->procuringEntity->contactPoint->email))
+													@if (!empty($item->procuringEntity->contactPoint->email))
 														<a href="mailto:{{$item->procuringEntity->contactPoint->email}}">{{$item->procuringEntity->contactPoint->email}}</a><br>
-													@endif
-													@if (empty($item->procuringEntity->contactPoint->name))
-														<br><a href="mailto:{{$item->procuringEntity->contactPoint->email}}">{{$item->procuringEntity->contactPoint->email}}</a>
 													@endif
 												</td>
 											</tr>
