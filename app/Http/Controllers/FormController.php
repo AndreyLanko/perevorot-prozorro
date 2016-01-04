@@ -68,7 +68,14 @@ class FormController extends BaseController
 
 		foreach($query as $k=>$q)
 		{
-			if(substr($q, 0, 5)=='date[')
+			if(substr($q, 0, 4)=='cpv=')
+			{
+				$url=explode('=', $q, 2);
+				$cpv=explode('-', $url[1]);
+
+				$query[$k]=$url[0].'='.rtrim($cpv[0], '0');
+			}
+			elseif(substr($q, 0, 5)=='date[')
 			{
 				$one_date=str_replace(['date[', ']='], ['', '='], $q);
 				$one_date=preg_split('/(=|—)/', $one_date);
