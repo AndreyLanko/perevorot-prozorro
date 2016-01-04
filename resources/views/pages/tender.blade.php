@@ -82,64 +82,64 @@
 				<div class="row">
 					<div class="col-sm-9">
 						<div class=" margin-bottom">
-						
 							<h3>Опис</h3>
 							<div class="row">
-								
 								<div class="col-md-4 col-md-push-8">
 									<div class="gray-bg padding margin-bottom tender--description--number">
 										Номер тендера:
 										<div class="blue">{{$item->tenderID}}</div>
 									</div>
-	
+									@if (!empty($item->value))
 									<div class="gray-bg padding margin-bottom tender--description--cost">
 										Бюджет закупівель
 										<div class="green tender--description--cost--number">
 											<strong>{{number_format($item->value->amount, 0, '', ' ')}} <span class="small">{{$item->value->currency}}</span></strong>
 										</div>
 									</div>
-								</div>
-								
-								<div class="col-md-8 col-md-pull-4 description-wr croped">
-									<div class="tender--description--text description{{mb_strlen($item->description)>350?' croped':' open'}}">
-										{{$item->description}}
-									</div>
-									@if (mb_strlen($item->description)>350)
-										<a class="search-form--open" href="">
-											<i class="sprite-arrow-right"></i>
-											<span>розгорнути</span>
-											<span>згорнути</span>
-										</a>
 									@endif
 								</div>
+								@if (!empty($item->description))
+									<div class="col-md-8 col-md-pull-4 description-wr croped">
+										<div class="tender--description--text description{{mb_strlen($item->description)>350?' croped':' open'}}">
+											{{$item->description}}
+										</div>
+										@if (mb_strlen($item->description)>350)
+											<a class="search-form--open" href="">
+												<i class="sprite-arrow-right"></i>
+												<span>розгорнути</span>
+												<span>згорнути</span>
+											</a>
+										@endif
+									</div>
+								@endif
 							</div>
 						</div>
 						@if (!empty($item->items))
-						<div class="margin-bottom">
-							<div class="border-bottom">
-								<h3>Позиції</h3>
-								@foreach($item->items as $one)
-									<div class="row">
-										<div class="col-md-4 col-md-push-8">
-											<div class="padding margin-bottom">
-												{{$one->quantity}} шт.
+							<div class="margin-bottom">
+								<div class="border-bottom">
+									<h3>Позиції</h3>
+									@foreach($item->items as $one)
+										<div class="row">
+											<div class="col-md-4 col-md-push-8">
+												<div class="padding margin-bottom">
+													{{$one->quantity}} шт.
+												</div>
+											</div>
+											<div class="col-md-8 col-md-pull-4 description-wr{{mb_strlen($one->description)>350?' croped':' open'}}">
+												<div class="tender--description--text description">
+													{{$one->description}}
+												</div>
+												@if (mb_strlen($one->description)>350)
+													<a class="search-form--open"><i class="sprite-arrow-down"></i>
+														<span>розгорнути</span>
+														<span>згорнути</span>
+													</a>
+												@endif
 											</div>
 										</div>
-										<div class="col-md-8 col-md-pull-4 description-wr{{mb_strlen($one->description)>350?' croped':' open'}}">
-											<div class="tender--description--text description">
-												{{$one->description}}
-											</div>
-											@if (mb_strlen($one->description)>350)
-												<a class="search-form--open"><i class="sprite-arrow-down"></i>
-													<span>розгорнути</span>
-													<span>згорнути</span>
-												</a>
-											@endif
-										</div>
-									</div>
-								@endforeach
+									@endforeach
+								</div>
 							</div>
-						</div>
 						@endif
 						<div class="row">
 							@if (!empty($item->documents))
@@ -188,15 +188,21 @@
 								<h3>Інформація про торги</h3>
 								<div class="gray-bg padding margin-bottom">
 									<ul class="nav nav-list">
-										<li>
-											<strong>Статус:</strong> {{$dataStatus[$item->status]}}
-										</li>
-										<li>
-											<strong>Бюджет:</strong> {{number_format($item->value->amount, 0, '', ' ')}} {{$item->value->currency}}
-										</li>
-										<li>
-											<strong>Мінімальний крок:</strong> {{$item->minimalStep->amount}} {{$item->minimalStep->currency}}
-										</li>
+										@if (!empty($dataStatus[$item->status]))
+											<li>
+												<strong>Статус:</strong> {{$dataStatus[$item->status]}}
+											</li>
+										@endif
+										@if (!empty($item->value->amount))
+											<li>
+												<strong>Бюджет:</strong> {{number_format($item->value->amount, 0, '', ' ')}} {{$item->value->currency}}
+											</li>
+										@endif
+										@if (!empty($item->minimalStep->amount))
+											<li>
+												<strong>Мінімальний крок:</strong> {{$item->minimalStep->amount}} {{$item->minimalStep->currency}}
+											</li>
+										@endif
 										<li>
 											<strong>ID:</strong> <small class="word-break">{{$item->id}}</small>
 										</li>
@@ -214,10 +220,10 @@
 							<div class="row">
 								<table class="tender--customer margin-bottom">
 									<tbody>
-										@if (!empty($item->procuringEntity->name))
+										@if (!empty($item->procuringEntity->identifier->legalName))
 											<tr>
 												<td class="col-sm-4"><strong>Назва підприємства:</strong></td>
-												<td class="col-sm-6">{{$item->procuringEntity->name}}</td>
+												<td class="col-sm-6">{{$item->procuringEntity->identifier->legalName}}</td>
 											</tr>
 										@endif
 										@if (!empty($item->procuringEntity->identifier->id))
@@ -232,25 +238,31 @@
 												<td class="col-sm-6"><a href="{{$item->procuringEntity->contactPoint->url}}" target="_blank">{{$item->procuringEntity->contactPoint->url}}</a></td>
 											</tr>
 										@endif
-										<tr>
-											<td class="col-sm-4"><strong>Адреса:</strong></td>
-											<td class="col-sm-6">{{!empty($item->procuringEntity->address->postalCode) ? $item->procuringEntity->address->postalCode.', ': ''}}{{$item->procuringEntity->address->countryName}}, {{!empty($item->procuringEntity->address->region) ? $item->procuringEntity->address->region.' обл., ' : ''}}{{!empty($item->procuringEntity->address->locality) ? $item->procuringEntity->address->locality.', ' : ''}}{{!empty($item->procuringEntity->address->streetAddress) ? $item->procuringEntity->address->streetAddress : ''}}</td>
-										</tr>
-										<tr>
-											<td class="col-sm-4"><strong>Контактна особа:</strong></td>
-											<td class="col-sm-6">
-												{{$item->procuringEntity->contactPoint->name}}<br>
-												{{$item->procuringEntity->contactPoint->telephone}}<br>
-												@if (empty($item->procuringEntity->contactPoint->name))
-													<a href="mailto:{{$item->procuringEntity->contactPoint->email}}">{{$item->procuringEntity->contactPoint->email}}</a><br>
-												@endif
-												<br>
-												
-												@if (empty($item->procuringEntity->contactPoint->name))
-													<a href="mailto:{{$item->procuringEntity->contactPoint->email}}">{{$item->procuringEntity->contactPoint->email}}</a>
-												@endif
-											</td>
-										</tr>
+										@if (!empty($item->procuringEntity->address))
+											<tr>
+												<td class="col-sm-4"><strong>Адреса:</strong></td>
+												<td class="col-sm-6">{{!empty($item->procuringEntity->address->postalCode) ? $item->procuringEntity->address->postalCode.', ': ''}}{{$item->procuringEntity->address->countryName}}, {{!empty($item->procuringEntity->address->region) ? $item->procuringEntity->address->region.' обл., ' : ''}}{{!empty($item->procuringEntity->address->locality) ? $item->procuringEntity->address->locality.', ' : ''}}{{!empty($item->procuringEntity->address->streetAddress) ? $item->procuringEntity->address->streetAddress : ''}}</td>
+											</tr>
+										@endif
+										@if (!empty($item->procuringEntity->contactPoint))
+											<tr>
+												<td class="col-sm-4"><strong>Контактна особа:</strong></td>
+												<td class="col-sm-6">
+													@if (empty($item->procuringEntity->contactPoint->name))
+														{{$item->procuringEntity->contactPoint->name}}<br>
+													@endif
+													@if (empty($item->procuringEntity->contactPoint->telephone))
+														{{$item->procuringEntity->contactPoint->telephone}}<br>
+													@endif
+													@if (empty($item->procuringEntity->contactPoint->email))
+														<a href="mailto:{{$item->procuringEntity->contactPoint->email}}">{{$item->procuringEntity->contactPoint->email}}</a><br>
+													@endif
+													@if (empty($item->procuringEntity->contactPoint->name))
+														<br><a href="mailto:{{$item->procuringEntity->contactPoint->email}}">{{$item->procuringEntity->contactPoint->email}}</a>
+													@endif
+												</td>
+											</tr>
+										@endif
 									</tbody>
 								</table>
 							</div>
@@ -263,14 +275,14 @@
 					Оберіть один з майданчиків, щоб прийняти участь у аукціоні
 					<div class="tender--platforms--list margin-bottom clearfix">
 						@foreach($platforms as $platform)
-						<div class="item">
-							<div class="img-wr">
-								<a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank">
-									<img src="/assets/images/platforms/{{$platform['slug']}}.png" alt="{{$platform['name']}}" title="{{$platform['name']}}">
-								</a>
+							<div class="item">
+								<div class="img-wr">
+									<a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank">
+										<img src="/assets/images/platforms/{{$platform['slug']}}.png" alt="{{$platform['name']}}" title="{{$platform['name']}}">
+									</a>
+								</div>
+								<a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank">{{$platform['name']}}</a>
 							</div>
-							<a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank">{{$platform['name']}}</a>
-						</div>
 						@endforeach
 					</div>
 					{{--<a href="#" class="more margin-bottom"><i class="sprite-arrow-down"></i> Показати всіх</a>--}}
@@ -293,19 +305,21 @@
 										<td>{{$bid->tenderers[0]->name}}</td>
 										<td>{{number_format($bid->value->amount, 0, '', ' ')}} {{$bid->value->currency}}{{$bid->value->valueAddedTaxIncluded?' з ПДВ':''}}</td>
 										<td>
-											@foreach($item->awards as $award)
-												@if($award->bid_id==$bid->id)
-													@if($award->status=='unsuccessful')
-														Дискваліфіковано
-													@elseif($award->status=='active')
-														Переможець
-													@elseif($award->status=='pending')
-														Очікує рішення
-													@else
-														{{$award->status}}
+											@if (!empty($item->awards))
+												@foreach($item->awards as $award)
+													@if($award->bid_id==$bid->id)
+														@if($award->status=='unsuccessful')
+															Дискваліфіковано
+														@elseif($award->status=='active')
+															Переможець
+														@elseif($award->status=='pending')
+															Очікує рішення
+														@else
+															{{$award->status}}
+														@endif
 													@endif
-												@endif
-											@endforeach
+												@endforeach
+											@endif
 										</td>
 										<td>
 											@if(!empty($bid->documents))
@@ -332,17 +346,19 @@
 											</div>
 										@endforeach
 									@endif
-									@foreach($item->awards as $award)
-										@if($award->bid_id==$bid->id && !empty($award->documents))
-											<h4 class="overlay-title">Рішення відповідальної особи</h4>
-											@foreach($award->documents as $award_document)
-												<div class="document-info">
-													<div class="document-date">{{date('d.m.Y H:i', strtotime($award_document->datePublished))}}</div>
-													<a href="{{$award_document->url}}" target="_blank" class="document-name">{{$award_document->title}}</a>
-												</div>
-											@endforeach
-										@endif
-									@endforeach
+									@if(!empty($item->awards))
+										@foreach($item->awards as $award)
+											@if($award->bid_id==$bid->id && !empty($award->documents))
+												<h4 class="overlay-title">Рішення відповідальної особи</h4>
+												@foreach($award->documents as $award_document)
+													<div class="document-info">
+														<div class="document-date">{{date('d.m.Y H:i', strtotime($award_document->datePublished))}}</div>
+														<a href="{{$award_document->url}}" target="_blank" class="document-name">{{$award_document->title}}</a>
+													</div>
+												@endforeach
+											@endif
+										@endforeach
+									@endif
 								</div>
 							@endforeach
 							<div class="overlay-close"><i class="sprite-close-grey"></i></div>
