@@ -10,10 +10,10 @@ var DATE_SELECTED=[];
 			date_end,
 			format='dd.mm.yyyy',
 			date_types={
-				tender: 'Дата приема предложений',
-				enquiry: 'Дата периода уточнений',
-				auction: 'Дата аукциона',
-				award: 'Дата квалификации'				
+				tender: 'Дата приймання пропозиц',
+				enquiry: 'Дата периоду уточнень',
+				auction: 'Дата аукціону',
+				award: 'Дата кваліфікації'				
 			},
 			current_date_type;
 
@@ -41,7 +41,7 @@ var DATE_SELECTED=[];
 			prefix: 'date',
 			name: 'Дата начала приема предложений',
 			button_name: 'Дати',
-			pattern_search: /^(.*?)$/,
+			pattern_search: pattern,
 			pattern_exact: pattern,
 			template: $('#block-date'),
 			init: function(input_query, block){
@@ -57,8 +57,9 @@ var DATE_SELECTED=[];
 				date_end=$(dates[1]);
 
 				dates.datepicker({
-					'autoclose': true,
-					'format': format
+					autoclose: true,
+					format: format,
+					orientation: 'bottom'
 				});
 
 				dates.inputmask({
@@ -237,6 +238,11 @@ var DATE_SELECTED=[];
 				}
 
 				return out;
+			},
+			validate: function(query){
+				var valid='01.01.2016';
+
+				return pattern.test(query+valid.substr(query.length));
 			}
 		}
 		
