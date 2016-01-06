@@ -4,15 +4,15 @@
 	var json;
 
 	var BLOCK = function(){
-		var _block;
+		var _block,
+			pattern=/^\d{1,8}-\d{1}$/;
 	
 		var query_types={
 			order: 200,
 			prefix: 'cpv',
 			name: 'CPV-код',
 			button_name: 'CPV-код',
-			pattern_search: /^(.*?)$/,
-			pattern_exact: /^\d{1,8}-\d{1}$/,
+			pattern_search: pattern,
 			template: $('#block-cpv'),
 			json: {
 				check: '/form/check/cpv'
@@ -168,9 +168,14 @@
 				value=_block.find('[data-value]').data('value');
 
 				return value!='' ? value : false;
-			}
+			},
+			validate: function(query){
+				var valid='12345678-0';
+
+				return pattern.test(query+valid.substr(query.length));
+			}			
 		};
-		
+
 		return query_types;
 	}
 		

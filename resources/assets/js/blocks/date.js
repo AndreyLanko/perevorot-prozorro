@@ -42,7 +42,6 @@ var DATE_SELECTED=[];
 			name: 'Дата начала приема предложений',
 			button_name: 'Дати',
 			pattern_search: pattern,
-			pattern_exact: pattern,
 			template: $('#block-date'),
 			init: function(input_query, block){
 				_block=block;

@@ -11,8 +11,7 @@
 			prefix: 'region',
 			name: 'Регіон',
 			button_name: 'Регіон',
-			pattern_search: /^(.*?)$/,
-			//pattern_exact: /^\d{1,8}-\d{1}$/,
+			pattern_search: /^([^0-9]*)$/,
 			template: $('#block-region'),
 			json: {
 				check: '/form/check/region'

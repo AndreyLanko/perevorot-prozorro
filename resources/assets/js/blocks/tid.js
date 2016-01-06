@@ -3,6 +3,7 @@
 
 	var BLOCK = function(){
 		var _input,
+			pattern=/^UA\-20\d{2}\-\d{2}\-\d{2}\-\d{6}$/,			
 			_value;
 	
 		var query_types={
@@ -10,8 +11,7 @@
 			prefix: 'tid',
 			name: '№ закупівлі',
 			button_name: '№ закупівлі',
-			pattern_search: /^(.*?)$/, //UA-2015-09-04-000137
-			pattern_exact: /^\d{1,9}$/,
+			pattern_search: pattern,
 			template: $('#block-tid'),
 			init: function(input_query, block){
 				var preselected_value=block.data('preselected_value');
@@ -54,7 +54,12 @@
 			},
 			result: function(){
 				return _value;
-			}
+			},
+			validate: function(query){
+				var valid='UA-2015-01-01-000001';
+
+				return pattern.test(query+valid.substr(query.length));
+			}			
 		};
 		
 		return query_types;
