@@ -1171,6 +1171,9 @@ a:hover .sprite-pen-icon, .active .sprite-pen-icon, .sprite-pen-icon-a {
 .margin-bottom {
     margin-bottom: 15px;
 }
+.margin-bottom-xl {
+    margin-bottom: 40px;
+}
 .sprite-arrow-down {
     background-position: 0 -388px;
     width: 26px;
