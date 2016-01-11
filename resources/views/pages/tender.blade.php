@@ -61,7 +61,7 @@
 								--}}
 								@if ($item->status=='active.enquiries')
 									Аукціон буде запланований після {{date('d.m.Y', strtotime($item->tenderPeriod->startDate))}}
-								@elseif(in_array($item->status, ['active.tendering', 'active.auction', 'active.qualification', 'active.awarded', 'unsuccessful', 'cancelled', 'complete']))
+								@elseif(in_array($item->status, ['active.tendering', 'active.auction', 'active.qualification', 'active.awarded', 'unsuccessful', 'cancelled', 'complete']) && !empty($item->auctionUrl))
 									<li>
 										<a href="{{$item->auctionUrl}}" target="_blank"><i class="sprite-share"></i> Перейти на аукціон</a>
 										@if(in_array($item->status, ['active.tendering', 'active.auction']))
