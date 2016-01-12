@@ -81,6 +81,14 @@ var APP,
 							scrollTop: $('.tender--platforms').position().top
 						}, 500);
 					});
+
+					_self.find('.tender--offers--ancor').click(function(e){
+						e.preventDefault();
+
+						$('html, body').animate({
+							scrollTop: $('.tender--offers').position().top-30
+						}, 500);
+					});
 					
 					$('a.document-link').click(function(e){
 						e.preventDefault();

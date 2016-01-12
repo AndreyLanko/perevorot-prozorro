@@ -36,7 +36,7 @@
 								<a href="{{$back}}" class="back-tender"><i class="sprite-arrow-left"></i> Повернутися до результатів</a>
 							@endif
 							<div class="clearfix"></div>
-							<a href="#" class="blue-btn">Подати пропозицію</a>
+							<a href="" class="blue-btn">Подати пропозицію</a>
 							{{--
 							<ul class="nav nav-list">
 								<li>
@@ -73,6 +73,13 @@
 										@endif
 									</li>
 								@endif
+
+								@if (!empty($item->bids))
+									<li>
+										<a href="" class="tender--offers--ancor"><i class="sprite-props"></i> Отримані пропозиції</a>
+									</li>
+								@endif
+
 								<li>
 									<a href=""><i class="sprite-share"></i> Поділитись</a>
 								</li>
@@ -308,6 +315,7 @@
 					</div>
 					{{--<a href="#" class="more margin-bottom"><i class="sprite-arrow-down"></i> Показати всіх</a>--}}
 				</div>
+
 				@if (!empty($item->bids))
 					<div class="tender--offers margin-bottom-xl">
 						<h3>Отримані пропозиції</h3>
