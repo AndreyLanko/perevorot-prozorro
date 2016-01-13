@@ -11,7 +11,7 @@
 	<div class="tender" data-js="tender">
 		<div class="tender--head gray-bg">
 			<div class="container">
-				<div class="tender--head--title">{{$item->title}}</div>
+				<div class="tender--head--title col-sm-9">{{$item->title}}</div>
 	
 				{{--
 				<div class="breadcrumb_custom clearfix">
@@ -22,7 +22,17 @@
 					<a href="#"><strong>Кваліфікаця:</strong> з 15.07 (пн)</a>
 				</div>
 				--}}
-	
+				<div class="col-md-3 col-sm-3 tender--description--cost--wr">
+					@if (!empty($item->value))
+					<div class="gray-bg padding margin-bottom tender--description--cost">
+						Очікувана вартість
+						<div class="green tender--description--cost--number">
+							<strong>{{number_format($item->value->amount, 0, '', ' ')}} <span class="small">{{$item->value->currency}}</span></strong>
+						</div>
+					</div>
+					@endif
+				</div>
+					
 				<div class="row">
 					<div class="col-sm-9">
 						@if (!empty($item->procuringEntity->name))
@@ -30,6 +40,7 @@
 						@endif
 						<div class="tender--head--inf">Prozorro   <span class="marked">{{$dataStatus[$item->status]}}</span>   @if (!empty($item->procuringEntity->address->locality)){{$item->procuringEntity->address->locality}}@endif</div>
 					</div>
+					
 					<div class="tender_menu_fixed" data-js="tender_menu_fixed">
 						<div class="col-sm-3 tender--menu">
 							@if($back)
@@ -63,13 +74,13 @@
 									Аукціон буде запланований після {{date('d.m.Y', strtotime($item->tenderPeriod->startDate))}}
 								@elseif(in_array($item->status, ['active.tendering', 'active.auction', 'active.qualification', 'active.awarded', 'unsuccessful', 'cancelled', 'complete']) && !empty($item->auctionUrl))
 									<li>
-										<a href="{{$item->auctionUrl}}" target="_blank"><i class="sprite-share"></i> Перейти на аукціон</a>
+										<a href="{{$item->auctionUrl}}" target="_blank"><i class="sprite-hammer"></i> Перейти на аукціон</a>
 										@if(in_array($item->status, ['active.tendering', 'active.auction']))
-											<p>Запланований на {{date('d.m.Y H:i', strtotime($item->auctionPeriod->startDate))}}</p>
+											<p class="tender-date">Запланований на {{date('d.m.Y H:i', strtotime($item->auctionPeriod->startDate))}}</p>
 										@elseif(in_array($item->status, ['active.qualification', 'active.awarded', 'unsuccessful', 'cancelled', 'complete']) && !empty($item->auctionPeriod->endDate))
-											<p>Завершений {{date('d.m.Y H:i', strtotime($item->auctionPeriod->endDate))}}</p>
+											<p class="tender-date">Завершений {{date('d.m.Y H:i', strtotime($item->auctionPeriod->endDate))}}</p>
 										@elseif(in_array($item->status, ['active.qualification', 'active.awarded', 'unsuccessful', 'cancelled', 'complete']))
-											<p>Аукціон не проводився</p>
+											<p class="tender-date">Аукціон не проводився</p>
 										@endif
 									</li>
 								@endif
@@ -119,17 +130,9 @@
 											<div class="blue">{{$item->tenderID}}</div>
 										</div>
 										--}}
-										@if (!empty($item->value))
-										<div class="gray-bg padding margin-bottom tender--description--cost">
-											Очікувана вартість
-											<div class="green tender--description--cost--number">
-												<strong>{{number_format($item->value->amount, 0, '', ' ')}} <span class="small">{{$item->value->currency}}</span></strong>
-											</div>
-										</div>
-										@endif
 									</div>
 									@if (!empty($item->description))
-										<div class="col-md-8 col-md-pull-4 description-wr croped">
+										<div class="col-md-12 description-wr croped">
 											<div class="tender--description--text description{{mb_strlen($item->description)>350?' croped':' open'}}">
 												{{$item->description}}
 											</div>
@@ -177,15 +180,33 @@
 									<h3>Документація</h3>
 									<div class="gray-bg padding margin-bottom">
 										<ul class="nav nav-list">
-											@foreach ($item->documents as $document)
-												<li>
-													{{date('d.m.Y', strtotime($document->dateModified))}}<br>
-													<a href="{{$document->url}}" target="_blank" class="word-break">{{$document->title}}</a>
-												</li>
+											@foreach ($item->documents as $k=>$document)
+												@if($k<5)
+													<li>
+														{{date('d.m.Y', strtotime($document->dateModified))}}<br>
+														<a href="{{$document->url}}" target="_blank" class="word-break">{{$document->title}}</a>
+													</li>
+												@endif
 											@endforeach
 											{{--<li><a href="#"><i class="sprite-zip"></i> Зберегти усі документи архівом</a></li>--}}
 										</ul>
-										
+										@if(sizeof($item->documents)>5)
+											<a href="" class="documents-all">Всі документи </a><span class="all-number">({{sizeof($item->documents)}})</span>
+										@endif
+										<div class="overlay overlay-documents-all">
+											<div class="overlay-close overlay-close-layout"></div>
+											<div class="overlay-box">
+												<div class="tender--offers documents" data-id="e059392ff4204074bfd76bf56cca7c74" style="display: block;">
+													<h4 class="overlay-title">Документація</h4>
+													@foreach ($item->documents as $k=>$document)
+														<div class="document-info">
+															<div class="document-date">{{date('d.m.Y H:i', strtotime($document->dateModified))}}</div>
+															<a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
+														</div>
+													@endforeach																																													</div>
+													<div class="overlay-close"><i class="sprite-close-grey"></i></div>
+												</div>
+										</div>
 									</div>
 								</div>
 								@endif
@@ -233,16 +254,24 @@
 													<strong>Мінімальний крок:</strong><br>{{$item->minimalStep->amount}} {{$item->minimalStep->currency}}
 												</li>
 											@endif
-											{{--
-											<li>
-												<strong>ID:</strong> <small class="word-break">{{$item->id}}</small>
-											</li>
-											--}}
 											<li>
 												<strong>Номер тендеру:</strong><br>
 												{{$item->tenderID}}
 											</li>
 										</ul>
+										<a href="" class="info-all">Додаткова інформація</a></span>
+										<div class="overlay overlay-info-all">
+											<div class="overlay-close overlay-close-layout"></div>
+											<div class="overlay-box">
+												<div class="tender--offers documents" data-id="e059392ff4204074bfd76bf56cca7c74" style="display: block;">
+													<h4 class="overlay-title">Інформація про торги</h4>
+													<div class="document-info">
+														ID
+														<div class="document-date">{{$item->id}}</div>
+													</div>																																																							</div>
+												<div class="overlay-close"><i class="sprite-close-grey"></i></div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>

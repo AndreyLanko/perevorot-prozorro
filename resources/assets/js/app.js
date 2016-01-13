@@ -62,9 +62,9 @@ var APP,
 			js: {
 				tender_menu_fixed: function(_self){
 					_self.sticky({
-						topSpacing: _self.position().top-15,
+						topSpacing: _self.position().top-80,
 						responsiveWidth: true,
-						bottomSpacing: $(document).height()-$('.tender--platforms').offset().top+_self.find('.tender--menu').height()+10
+						bottomSpacing: $(document).height()-$('.tender--platforms').offset().top+_self.find('.tender--menu').height()+30
 					});
 				},
 				tender: function(_self){
@@ -86,17 +86,29 @@ var APP,
 						e.preventDefault();
 
 						$('html, body').animate({
-							scrollTop: $('.tender--offers').position().top-30
+							scrollTop: $('.tender--offers.margin-bottom-xl').position().top-30
 						}, 500);
 					});
-					
+
+					$('a.documents-all').click(function(e){
+						e.preventDefault();
+
+						$('.overlay-documents-all').addClass('open');
+					});
+
+					$('a.info-all').click(function(e){
+						e.preventDefault();
+
+						$('.overlay-info-all').addClass('open');
+					});
+
 					$('a.document-link').click(function(e){
 						e.preventDefault();
 
 						$('.tender--offers.documents').hide();
 						$('.tender--offers.documents[data-id='+$(this).data('id')+']').show();
 
-						$('.overlay').addClass('open');
+						$('.overlay-documents').addClass('open');
 					});
 
 					$('.overlay-close').click(function(e){

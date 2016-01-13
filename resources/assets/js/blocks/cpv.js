@@ -61,7 +61,7 @@
 					],
 					render:{
 						option: function(item, escape) {
-							return '<div><input type="checkbox" data-selectable value="'+item.id+'">'+item.name+' #'+item.id+'</div>';
+							return '<div><input type="checkbox" data-selectable value="'+item.id+'"><span class="ch"></span>'+item.name+' #'+item.id+'</div>';
 						},
 						item: function(item, escape) {
 							return '<div>'+item.id+' — '+item.name.trunc(40)+'</div>';
@@ -106,7 +106,8 @@
 							var checked_options=_block.find('input[type="checkbox"]:checked');
 			
 							button[checked_options.length?'show':'hide']();
-	
+							$('.selectize-dropdown')[checked_options.length?'addClass':'removeClass']('checked');
+
 							if(checked_options.length){
 								offset=dropdown.offset();
 

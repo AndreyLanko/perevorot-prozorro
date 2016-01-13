@@ -24569,7 +24569,7 @@ $('#el').spin('flower', 'red')
 					],
 					render:{
 						option: function(item, escape) {
-							return '<div><input type="checkbox" data-selectable value="'+item.id+'">'+item.name+' #'+item.id+'</div>';
+							return '<div><input type="checkbox" data-selectable value="'+item.id+'"><span class="ch"></span>'+item.name+' #'+item.id+'</div>';
 						},
 						item: function(item, escape) {
 							return '<div>'+item.id+' — '+item.name.trunc(40)+'</div>';
@@ -24614,7 +24614,8 @@ $('#el').spin('flower', 'red')
 							var checked_options=_block.find('input[type="checkbox"]:checked');
 			
 							button[checked_options.length?'show':'hide']();
-	
+							$('.selectize-dropdown')[checked_options.length?'addClass':'removeClass']('checked');
+
 							if(checked_options.length){
 								offset=dropdown.offset();
 
@@ -25804,9 +25805,9 @@ var APP,
 			js: {
 				tender_menu_fixed: function(_self){
 					_self.sticky({
-						topSpacing: _self.position().top-15,
+						topSpacing: _self.position().top-80,
 						responsiveWidth: true,
-						bottomSpacing: $(document).height()-$('.tender--platforms').offset().top+_self.find('.tender--menu').height()+10
+						bottomSpacing: $(document).height()-$('.tender--platforms').offset().top+_self.find('.tender--menu').height()+30
 					});
 				},
 				tender: function(_self){
@@ -25828,17 +25829,29 @@ var APP,
 						e.preventDefault();
 
 						$('html, body').animate({
-							scrollTop: $('.tender--offers').position().top-30
+							scrollTop: $('.tender--offers.margin-bottom-xl').position().top-30
 						}, 500);
 					});
-					
+
+					$('a.documents-all').click(function(e){
+						e.preventDefault();
+
+						$('.overlay-documents-all').addClass('open');
+					});
+
+					$('a.info-all').click(function(e){
+						e.preventDefault();
+
+						$('.overlay-info-all').addClass('open');
+					});
+
 					$('a.document-link').click(function(e){
 						e.preventDefault();
 
 						$('.tender--offers.documents').hide();
 						$('.tender--offers.documents[data-id='+$(this).data('id')+']').show();
 
-						$('.overlay').addClass('open');
+						$('.overlay-documents').addClass('open');
 					});
 
 					$('.overlay-close').click(function(e){
