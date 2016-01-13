@@ -25,12 +25,12 @@ return [
 	[
 		'name'=>'ПриватМаркет',
 		'slug'=>'privatmarket',
-		'href'=>'https://privatmarket.ua/?TenderID={tenderID}'
+		'href'=>'https://privatmarket.ua/business/tenders#?TenderID={tenderID}'
 	],
 	[
 		'name'=>'Zakupki.prom.ua',
 		'slug'=>'zakupki',
-		'href'=>'http://zakupki.prom.ua/?TenderID={tenderID}'
+		'href'=>'http://zakupki.prom.ua/dz_redirect?TenderID={tenderID}'
 	],
 	[
 		'name'=>'Держзакупівлі онлайн',
