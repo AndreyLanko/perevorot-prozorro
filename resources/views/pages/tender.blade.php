@@ -181,7 +181,7 @@
 									<div class="gray-bg padding margin-bottom">
 										<ul class="nav nav-list">
 											@foreach ($item->documents as $k=>$document)
-												@if($k<5)
+												@if($k<=2)
 													<li>
 														{{date('d.m.Y', strtotime($document->dateModified))}}<br>
 														<a href="{{$document->url}}" target="_blank" class="word-break">{{$document->title}}</a>
@@ -190,7 +190,7 @@
 											@endforeach
 											{{--<li><a href="#"><i class="sprite-zip"></i> Зберегти усі документи архівом</a></li>--}}
 										</ul>
-										@if(sizeof($item->documents)>5)
+										@if(sizeof($item->documents)>3)
 											<div class="documents-all-wr"><a href="" class="documents-all">Всі документи </a><span class="all-number">({{sizeof($item->documents)}})</span></div>
 										@endif
 										<div class="overlay overlay-documents-all">
