@@ -191,7 +191,7 @@
 											{{--<li><a href="#"><i class="sprite-zip"></i> Зберегти усі документи архівом</a></li>--}}
 										</ul>
 										@if(sizeof($item->documents)>5)
-											<a href="" class="documents-all">Всі документи </a><span class="all-number">({{sizeof($item->documents)}})</span>
+											<div class="documents-all-wr"><a href="" class="documents-all">Всі документи </a><span class="all-number">({{sizeof($item->documents)}})</span></div>
 										@endif
 										<div class="overlay overlay-documents-all">
 											<div class="overlay-close overlay-close-layout"></div>
@@ -259,7 +259,7 @@
 												{{$item->tenderID}}
 											</li>
 										</ul>
-										<a href="" class="info-all">Додаткова інформація</a></span>
+										<div class="info-all-wr"><a href="" class="info-all">Додаткова інформація</a></span></div>
 										<div class="overlay overlay-info-all">
 											<div class="overlay-close overlay-close-layout"></div>
 											<div class="overlay-box">
@@ -338,6 +338,9 @@
 									<a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank">
 										<img src="/assets/images/platforms/{{$platform['slug']}}.png" alt="{{$platform['name']}}" title="{{$platform['name']}}">
 									</a>
+								</div>
+								<div class="border-hover">
+									<div class="btn-wr"><a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank" class="btn">Прийняти участь</a></div>
 								</div>
 							</div>
 						@endforeach

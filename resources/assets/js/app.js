@@ -64,7 +64,7 @@ var APP,
 					_self.sticky({
 						topSpacing: _self.position().top-80,
 						responsiveWidth: true,
-						bottomSpacing: $(document).height()-$('.tender--platforms').offset().top+_self.find('.tender--menu').height()+30
+						bottomSpacing: $(document).height()-$('.tender--platforms').offset().top+_self.find('.tender--menu').height()+70
 					});
 				},
 				tender: function(_self){

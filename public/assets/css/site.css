@@ -1587,7 +1587,7 @@ a:hover .sprite-pen-icon, .active .sprite-pen-icon, .sprite-pen-icon-a {
 .tender_menu_fixed {
 	width: 1170px;
 	margin: 0 auto;
-	z-index: 10;
+	z-index: 13;
 }
 .sprite-arrow-left {
     background-position: -0px -468px;
@@ -1730,15 +1730,14 @@ table td[class*=col-], table th[class*=col-] {
     float: none;
 }
 .tender .tender--platforms .tender--platforms--list .item {
+	position: relative;
     float: left;
-    width: 12.5%;
+    /*width: 12.5%;*/
+    width: 20%;
     text-align: center;
     margin-top: 30px;
-    height: 180px;
-    padding: 0 10px;
-}
-.tender .tender--platforms .tender--platforms--list .item img {
-    width: 100%;
+    /*height: 180px;*/
+    padding: 0 15px;
 }
 .tender .more {
 	position: relative;
@@ -1969,9 +1968,18 @@ html, body {
 	cursor: pointer;
 }
 .img-wr {
-	height: 123px;
+	height: 110px;
+	display: table;
+	width: 100%;
+}
+.tender--platforms--list .img-wr a {
 	display: table-cell;
     vertical-align: middle;
+    text-align: center;
+}
+.tender--platforms--list .img-wr a img {
+	width: auto;
+	max-width: 85%;
 }
 .description {
 	margin-bottom: 10px;
@@ -2253,6 +2261,78 @@ input:checked + .ch {
 .overlay-info-all .document-info {
 	font-size: .7875em;
 }
+.info-all-wr,
+.documents-all-wr {
+	margin-left: -15px;
+    margin-right: -15px;
+    padding: 15px 15px 0;
+    border-top: 1px solid #ededed;
+}
+.tender--platforms--list .btn {
+	padding: 10px;
+    background: #6dc8eb;
+    color: #fff;
+    display: inline-block;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	font-size: 17.92px;
+}
+.tender--platforms--list .btn:hover {
+	text-decoration: underline;
+}
+.tender--platforms--list .btn-wr {
+	margin-top: 20px;
+	text-align: center;
+	position: absolute;
+    bottom: 0px;
+    left: 0;
+    width: 100%;
+    padding-bottom: 20px;
+}
+.tender--platforms--list {
+	padding-bottom: 20px;
+}
+.border-hover {
+	z-index: 2;
+	position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 120px;
+    background-color: #fff;
+	padding: 10px 0 50px;	
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+	border: 2px solid #ededed;
+	-webkit-opacity: 0;
+	-moz-opacity: 0;
+	opacity: 0;
+	-webkit-transition: -webkit-opacity .2s ease-in-out;
+	-moz-transition: -moz-opacity .2s ease-in-out;
+	-o-transition: opacity .2s ease-in-out;
+	
+}
+.tender--platforms--list .img-wr {
+	position: relative;
+	z-index: 3;
+}
+.tender--platforms--list .item {
+	position: relative;
+	z-index: 10;
+}
+.tender--platforms--list .item:hover {
+	position: relative;
+	z-index: 11;
+}
+.tender--platforms--list .item:hover .border-hover {
+	-webkit-opacity: 1;
+	-moz-opacity: 1;
+	opacity: 1;
+}
+
 @media (max-width: 767px) {
 	.tender .tender--description--cost--wr {
 		padding-left: 0;
