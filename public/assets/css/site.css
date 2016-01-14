@@ -2332,7 +2332,9 @@ input:checked + .ch {
 	-moz-opacity: 1;
 	opacity: 1;
 }
-
+.selectize-dropdown-content {
+	max-height: 225px;
+}
 @media (max-width: 767px) {
 	.tender .tender--description--cost--wr {
 		padding-left: 0;
