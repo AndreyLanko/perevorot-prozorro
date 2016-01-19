@@ -58,7 +58,7 @@
 </script>
 
 <script id="block-dkpp" type="text/x-jquery-tmpl">
-	<div class="block block-cpv">
+	<div class="block block-dkpp">
 		<button class="none">Вибрати&nbsp;(<span></span>)</button>
 		<span class="block-key">ДКПП</span><select />
 	</div>

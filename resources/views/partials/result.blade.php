@@ -13,18 +13,20 @@
 							<li>{{$item->procuringEntity->address->locality}}</li>
 						@endif
 					</ol>
-					<div class="description-wr{{mb_strlen($item->description)>350?' croped':' open'}}">
-						@if ($item->description)
-							<div class="description"><p>{{$item->description}}</p></div>
-						@endif
-						@if (mb_strlen($item->description)>350)
-							<a class="search-form--open" href="">
-								<i class="sprite-arrow-right"></i>
-								<span>розгорнути</span>
-								<span>згорнути</span>
-							</a>
-						@endif
-					</div>
+					@if (!empty($item->description))
+						<div class="description-wr{{mb_strlen($item->description)>350?' croped':' open'}}">
+							@if ($item->description)
+								<div class="description"><p>{{$item->description}}</p></div>
+							@endif
+							@if (mb_strlen($item->description)>350)
+								<a class="search-form--open" href="">
+									<i class="sprite-arrow-right"></i>
+									<span>розгорнути</span>
+									<span>згорнути</span>
+								</a>
+							@endif
+						</div>
+					@endif
 					@if (!empty($item->procuringEntity->name))
 						<div class="items-list-item-description">
 							<strong>Компанія:</strong> {{$item->procuringEntity->name}}

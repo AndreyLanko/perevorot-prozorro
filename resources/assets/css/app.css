@@ -907,8 +907,7 @@ a:hover .sprite-pen-icon, .active .sprite-pen-icon, .sprite-pen-icon-a {
 	-moz-opacity: 0;
 	opacity: 0;
 }
-.block-cpv button,
-.block-dkpp button {
+.block-cpv button{
     box-shadow: none;
     border: none;
     background-color: #6DC8EB;
@@ -1902,8 +1901,8 @@ input:checked + .ch {
 .items-list--item .sprite-pen-icon-a {
 	width: 30px;
 	height: 29px;
-	background: url('../images/sprite-sm.png') no-repeat;/*path for css*/
-	background: url('/assets/images/sprite-sm.png') no-repeat;/*path for html*/
+	background: url('../images/sprite-sm.png') no-repeat;
+
 }
 .items-list--item a:hover .sprite-mouse-icon, 
 .items-list--item .active .sprite-mouse-icon, 
@@ -1920,4 +1919,14 @@ input:checked + .ch {
 }
 .result-all {
 	margin-top: 30px;
+}
+.block-dkpp button {
+    box-shadow: none;
+    border: none;
+    background-color: #6DC8EB;
+    color: #fff;
+    padding: 15px;
+    font-size: 1.14em;
+    outline: none;
+	margin-left: 16px;
 }
