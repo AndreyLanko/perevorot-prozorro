@@ -12,6 +12,7 @@
 		<script src="/assets/js/legacy/html5shiv.min.js"></script>
 		<script src="/assets/js/legacy/respond.min.js"></script>
 	<![endif]-->
+	@yield('head')
 </head>
 <body>
 	<div class="wrapper-main">

@@ -1,6 +1,13 @@
-
-		
 @extends('layouts/app')
+
+@section('head')
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="prozorro.org">
+	<meta property="og:title" content="{{htmlentities($item->procuringEntity->name, ENT_QUOTES)}}">
+	<meta property="og:url" content="{{Request::root()}}/{{Request::path()}}">
+	<meta property="og:image" content="{{Request::root()}}/assets/images/social/facebook.png">
+	<meta property="og:description" content="{{htmlentities($item->title, ENT_QUOTES)}}">
+@endsection
 
 @section('content')
 
