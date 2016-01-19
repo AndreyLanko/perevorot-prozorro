@@ -35,7 +35,7 @@
 		                <span class="icon-bar"></span>
 		                <span class="icon-bar"></span>
 		            </button>
-		            <a class="navbar-brand" href="/"><img src="/assets/images/logo.jpg" width="280" height="88" alt="Logo"></a>
+		            <a class="navbar-brand" href="/"><img src="/assets/images/logo.svg" width="280" height="88" alt="Logo"></a>
 		        </div>
 		
 				<div class="clearfix visible-sm"></div>
