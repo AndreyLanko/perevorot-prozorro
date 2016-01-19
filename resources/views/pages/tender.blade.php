@@ -263,11 +263,11 @@
 										<div class="overlay overlay-info-all">
 											<div class="overlay-close overlay-close-layout"></div>
 											<div class="overlay-box">
-												<div class="tender--offers documents" data-id="e059392ff4204074bfd76bf56cca7c74" style="display: block;">
+												<div class="tender--offers documents" style="display: block;">
 													<h4 class="overlay-title">Інформація про торги</h4>
 													<div class="document-info">
 														ID
-														<div class="document-date">{{$item->id}}</div>
+														<div class="document-date"><a href="https://public.api.openprocurement.org/api/0/tenders/{{$item->id}}" target="_blank">{{$item->id}}</a></div>
 													</div>																																																							</div>
 												<div class="overlay-close"><i class="sprite-close-grey"></i></div>
 											</div>
