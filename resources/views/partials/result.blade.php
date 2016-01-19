@@ -4,7 +4,7 @@
 			<div class="row clearfix">
 				<div class="col-md-8">
 					{{--dump($item)--}}
-					<a href="/tender/{{$item->tenderID}}/" class="items-list--header"><i class="sprite-mouse-icon"></i>{{$item->title}}</a>
+					<a href="/tender/{{$item->tenderID}}/" class="items-list--header"><i class="sprite-mouse-icon"></i><span class="cell">{{$item->title}}</span></a>
 					<div class="clearfix"></div>
 					<ol class="breadcrumb">
 						<li>Prozorro</li>
