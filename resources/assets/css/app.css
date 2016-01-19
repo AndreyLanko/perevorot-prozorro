@@ -1841,3 +1841,47 @@ input:checked + .ch {
 		position: relative;
 	}
 }
+
+.tender--platforms--list .item .img-wr a img {
+	width: 100%;
+}
+.tender--offers .table th:not(:first-child) {
+	text-align: left;
+}
+.tender .tender--head .tender--head--title,
+.tender .tender--description--cost--wr,
+.items-list--item .row > div,
+.result .row > div {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.items-list--header {
+	display: table;
+}
+.items-list--header .cell {
+	display: table-cell;
+	vertical-align: middle;
+}
+.selectize-control {
+	z-index: 1;
+}
+.delete {
+	z-index: 2;
+	top: -2px;
+	right: -2px;
+}
+.border-hover {
+	 filter: alpha(opacity=0);
+}
+.tender--platforms--list .item:hover .border-hover {
+	 filter: alpha(opacity=100);
+}
+@media (min-width: 768px) {
+	.main-menu--list .nav {
+		display: table;
+	}
+	.main-menu--list .nav-justified>li {
+	    width: auto;
+	}
+}
