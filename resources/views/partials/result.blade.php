@@ -43,7 +43,7 @@
 						<span class="uah">{{$item->value->currency}}</span>
 					</div>
 					@if (!empty($item->enquiryPeriod->startDate))
-						<div class="items-list--item--date"><strong>Дата:</strong> {{date('d.m.Y', strtotime($item->enquiryPeriod->startDate))}}</div>
+						<div class="items-list--item--date"><strong>Оголошено:</strong> {{date('d.m.Y', strtotime($item->enquiryPeriod->startDate))}}</div>
 					@endif
 				</div>
 			</div>

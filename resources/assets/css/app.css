@@ -907,7 +907,8 @@ a:hover .sprite-pen-icon, .active .sprite-pen-icon, .sprite-pen-icon-a {
 	-moz-opacity: 0;
 	opacity: 0;
 }
-.block-cpv button {
+.block-cpv button,
+.block-dkpp button {
     box-shadow: none;
     border: none;
     background-color: #6DC8EB;
@@ -1639,10 +1640,12 @@ html, body {
 	text-decoration: none;
 	font-weight: bold;
 }
-.block-cpv .selectize-dropdown-content > div {
+.block-cpv .selectize-dropdown-content > div,
+.block-dkpp .selectize-dropdown-content > div {
 	position: relative;
 }
-.block-cpv .selectize-dropdown-content input[type='checkbox'] {
+.block-cpv .selectize-dropdown-content input[type='checkbox'],
+.block-dkpp .selectize-dropdown-content input[type='checkbox']{
 	position: relative;
 	-webkit-opacity: 0;
 	-moz-opacity: 0;
@@ -1697,10 +1700,12 @@ input:checked + .ch {
 .block-not .selectize-input [data-value] {
 	text-decoration: line-through;
 }
-.block-cpv .selectize-dropdown.checked {
+.block-cpv .selectize-dropdown.checked,
+.block-dkpp .selectize-dropdown.checked {
 	padding-bottom: 80px;
 }
-.block-cpv button {
+.block-cpv button,
+.block-dkpp button {
 	z-index: 100;
     margin-top: 6px;
     margin-left: 8px;
@@ -1884,4 +1889,35 @@ input:checked + .ch {
 	.main-menu--list .nav-justified>li {
 	    width: auto;
 	}
+}
+
+.items-list--item a:hover .sprite-mouse-icon, 
+.items-list--item .active .sprite-mouse-icon, 
+.items-list--item .sprite-mouse-icon-a,
+.items-list--item .sprite-mouse-icon,
+
+.items-list--item .sprite-pen-icon,
+.items-list--item a:hover .sprite-pen-icon, 
+.items-list--item .active .sprite-pen-icon, 
+.items-list--item .sprite-pen-icon-a {
+	width: 30px;
+	height: 29px;
+	background: url('../images/sprite-sm.png') no-repeat;/*path for css*/
+	background: url('/assets/images/sprite-sm.png') no-repeat;/*path for html*/
+}
+.items-list--item a:hover .sprite-mouse-icon, 
+.items-list--item .active .sprite-mouse-icon, 
+.items-list--item .sprite-mouse-icon-a {
+	background-position: 0 -29px;
+}
+.items-list--item .sprite-pen-icon {
+	background-position: 0 -58px;
+}
+.items-list--item .sprite-pen-icon,
+.items-list--item a:hover .sprite-pen-icon, 
+.items-list--item .active .sprite-pen-icon {
+	background-position: 0 -86px;
+}
+.result-all {
+	margin-top: 30px;
 }

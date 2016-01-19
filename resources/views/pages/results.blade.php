@@ -19,16 +19,18 @@
 				</div>
 			</div>
 			<div class="col-md-4">
-				<ul class="nav navbar-nav inline-navbar search-form--filter--show-type">
-					<li>Показати:</li>
-					<li><a href="" class="active">Детально</a></li>
-					<li><a href="">Списком</a></li>
-				</ul>
-				<div class="clearfix"></div>
-				<select>
-					<option>Спочатку новіші</option>
-					<option>Спочатку новіші</option>
-				</select>
+				{{--
+					<ul class="nav navbar-nav inline-navbar search-form--filter--show-type">
+						<li>Показати:</li>
+						<li><a href="" class="active">Детально</a></li>
+						<li><a href="">Списком</a></li>
+					</ul>
+					<div class="clearfix"></div>
+					<select>
+						<option>Спочатку новіші</option>
+						<option>Спочатку новіші</option>
+					</select>
+				--}}
 			</div>
 		</div>
 	</div>

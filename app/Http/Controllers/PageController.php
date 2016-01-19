@@ -66,11 +66,15 @@ class PageController extends BaseController
 					$item=explode('=', $item);
 
 					$source=$item[0];
-					$search_value=$item[1];
-					$highlight[]=$item[1];
-					
-					$value=$this->get_value($source, $search_value);					
-					$highlight[]=$value;
+
+					if($source=='query')
+					{
+						$search_value=$item[1];
+						$highlight[]=$item[1];
+						
+						$value=$this->get_value($source, $search_value);					
+						$highlight[]=$value;
+					}
 				}
 			}
 
