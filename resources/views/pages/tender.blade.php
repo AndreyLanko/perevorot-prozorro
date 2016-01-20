@@ -156,7 +156,7 @@
 							</div>
 							@if (!empty($item->items))
 								<div class="margin-bottom">
-									<div class="border-bottom">
+									<div{{empty($item->features) ? 'class="border-bottom"':''}}>
 										<h3>Позиції</h3>
 										@foreach($item->items as $one)
 											<div class="row">
@@ -181,6 +181,33 @@
 									</div>
 								</div>
 							@endif
+
+							<div class="tender--platforms border-bottom margin-bottom-xl border-bottom">
+								<h3>Критерії вибору переможця</h3>
+								<table class="tender--customer margin-bottom">
+									<tbody>
+										<tr>
+											<td class="col-sm-4"><strong>Ціна:</strong></td>
+											<td class="col-sm-6">{{$features_price*100}}%</td>
+										</tr>
+										@if(!empty($item->features))
+											@foreach($item->features as $feature)
+												<tr>
+													<td class="col-sm-4"><strong>{{$feature->description}}:</strong></td>
+													<td class="col-sm-6">{{$feature->max*100}}%</td>
+												</tr>
+												@foreach($feature->enum as $enum)
+													<tr>
+														<td class="col-sm-4"><strong>{{$enum->title}}:</strong></td>
+														<td class="col-sm-6">{{$enum->value*100}}%</td>
+													</tr>
+												@endforeach
+											@endforeach
+										@endif
+									</tbody>
+								</table>
+							</div>
+
 							<div class="row">
 								@if (!empty($item->documents))
 								<div class="col-sm-4 margin-bottom ">

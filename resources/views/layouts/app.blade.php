@@ -18,6 +18,11 @@
 	<div class="wrapper-main">
 		<nav class="navbar navbar-default top-menu">
 		    <div class="container">
+			    <ul class="language-chooser language-chooser-text qtranxs_language_chooser" id="qtranslate-chooser">
+					<li class="lang-en"><a href="http://prozorro.lemon.ua/en/" hreflang="en" title="Eng (en)" class="qtranxs_text qtranxs_text_en"><span>Eng</span></a></li>
+					<li class="lang-ua active"><a href="http://prozorro.lemon.ua/ua/" hreflang="ua" title="Укр (ua)" class="qtranxs_text qtranxs_text_ua"><span>Укр</span></a></li>
+				</ul>
+				<div class="qtranxs_widget_end"></div>
 		        <ul class="nav navbar-nav pull-right inline-navbar">
 		            <li><a href=""><i class="sprite-social-fb"></i></a></li>
 		            <li><a href=""><i class="sprite-social-tw"></i></a></li>
@@ -36,7 +41,7 @@
 		                <span class="icon-bar"></span>
 		                <span class="icon-bar"></span>
 		            </button>
-		            <a class="navbar-brand" href="/"><img src="/assets/images/logo.svg" width="280" height="88" alt="Logo"></a>
+		            <a class="navbar-brand" href="/"><img src="/assets/images/prozorro-logo-tmp.png" width="172" alt="Logo" ></a>
 		        </div>
 		
 				<div class="clearfix visible-sm"></div>

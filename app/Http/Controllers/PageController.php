@@ -142,6 +142,31 @@ class PageController extends BaseController
 				$error=$data->error;
 		}
 
+		$features_price=1;
+
+		if(!empty($item->features))
+		{
+			foreach($item->features as $k=>$feature)
+			{
+				$max=0;
+				
+				foreach($feature->enum as $one)
+					$max=max($max, floatval($one->value));
+
+				$item->features[$k]->max = new \stdClass();
+				$item->features[$k]->max=$max;
+
+				$features_price-=$max;
+
+				usort($feature->enum, function ($a, $b)
+				{
+				    return strcmp($b->value, $a->value);
+				});
+
+				$item->features[$k]->enum=$feature->enum;
+			}
+		}
+		
 		$platforms=Config::get('platforms');
 		shuffle($platforms);
 
@@ -152,6 +177,7 @@ class PageController extends BaseController
 
 		return view('pages/tender')
 				->with('item', $item)
+				->with('features_price', $features_price)
 				->with('back', starts_with(Request::server('HTTP_REFERER'), Request::root().'/search') ? Request::server('HTTP_REFERER') : false)
 				->with('dataStatus', $dataStatus)
 				->with('platforms', $platforms)

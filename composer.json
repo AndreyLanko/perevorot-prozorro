@@ -5,6 +5,7 @@
 	"license": "MIT",
 	"type": "project",
 	"require": {
+		"thiagoalessio/tesseract_ocr": "0.2.1",
 		"laravel/framework": "5.0.*"
 	},
 	"require-dev": {

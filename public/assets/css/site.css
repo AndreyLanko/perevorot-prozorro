@@ -2437,4 +2437,134 @@ input:checked + .ch {
 	margin-left: 16px;
 }
 
+
+/*homepage*/
+ul.language-chooser {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    width: auto;
+    line-height: 28px;
+}
+.language-chooser li, .qtranxs_widget_end {
+    display: inline-block;
+    margin: 0 5px;
+}
+.language-chooser li a {
+    padding-top: 6px;
+    padding-bottom: 5px;
+    line-height: 16px;
+}
+.language-chooser li.active, .language-chooser li.active a {
+    color: #666;
+}
+.sections {
+    font-size: 1.71em;
+    text-transform: uppercase;
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+.sections > li {
+    display: table-cell;
+    width: 33%;
+    height: 100px;
+    vertical-align: middle;
+}
+.sections > li > a {
+    color: #333;
+    padding: 12px 15px 5px;
+}
+.green-bg {
+	background: #8fd785;
+}
+.gray-bg {
+    background: #f0f5f2;
+}
+.blue-bg {
+	background: #6dc8eb;
+}
+.sprite-customer {
+    width: 50px;
+    height: 46px;
+    background-position: -154px -108px;
+}
+.sprite-tender-search {
+    width: 34px;
+    height: 46px;
+    background-position: -90px -230px;
+}
+.sprite-provider {
+    width: 46px;
+    height: 46px;
+    background-position: -208px -162px;
+}
+.size48, .page-content .size48 {
+    font-size: 48px;
+}
+.margin-top-x {
+    margin-top: 40px;
+}
+.more2 {
+    text-align: center;
+    display: block;
+}
+.margin-bottom-x {
+    margin-bottom: 40px;
+}
+.tender--simmilar.tender-type2 {
+    font-size: 1.14em;
+}
+h1 {
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 2.57em;
+    color: #666;
+    cursor: default;
+}
+.sprite-arrow-right {
+    background-position: 0 -414px;
+    width: 21px;
+    height: 21px;
+}
+.size18, .page-content .size18 {
+    font-size: 18px;
+}
+.center {
+    text-align: center;
+}
+.table-monitor img {
+	max-width: 100%;
+}
+.sections > li > a:hover, .sections > li > a:focus {
+    background: #f0f5f2;
+}
+.sections > li:hover, .sections > li:focus {
+    background: #f0f5f2;
+}
+.navbar-header {
+	padding-left: 7px;
+}
+.navbar-brand {
+	padding: 34px 15px 20px;
+}
+@media (min-width: 992px) {
+	.col-md-offset-2 {
+	    margin-left: 16.66666667%;
+	}
+}
+@media (max-width: 769px) {
+	.sections {
+	    font-size: 1.3em;
+	    table-layout: auto;
+	    display: block;
+	}
+	.sections > li {
+	    width: 100%;
+	    height: auto;
+	    display: block;
+	}
+}
 /*# sourceMappingURL=site.css.map */
