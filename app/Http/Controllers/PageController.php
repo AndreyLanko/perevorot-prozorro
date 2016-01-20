@@ -5,12 +5,20 @@ use Input;
 use Cache;
 use Request;
 use Config;
+use TesseractOCR;
 
 class PageController extends BaseController
 {
 	public function home()
 	{
-		return view('pages/search');
+		//apt-get install tesseract-ocr
+		/*
+		$tesseract = new TesseractOCR(public_path('000001_qrrxD.png'));
+		$tesseract->setLanguage('eng');
+		dd($tesseract->recognize());
+		*/
+		
+		return view('pages/home');
 	}
 
 	public function search()
