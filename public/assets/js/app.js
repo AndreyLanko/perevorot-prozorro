@@ -26246,6 +26246,7 @@ var APP,
 							dataType: "json",
 							success: function(response){
 								$('#search_button').removeClass('loading').spin(false);
+								$('[homepage]').remove();
 								
 								if(response.html){
 									$('#result').html(response.html);
