@@ -127,17 +127,9 @@
 				<div class="border-bottom margin-bottom-xl">
 					<div class="row">
 						<div class="col-sm-9">
-							<div class=" margin-bottom">
+							<div class="margin-bottom">
 								<h3>Опис</h3>
 								<div class="row">
-									<div class="col-md-4 col-md-push-8">
-										{{--
-										<div class="gray-bg padding margin-bottom tender--description--number">
-											Номер тендера:
-											<div class="blue">{{$item->tenderID}}</div>
-										</div>
-										--}}
-									</div>
 									@if (!empty($item->description))
 										<div class="col-md-12 description-wr croped">
 											<div class="tender--description--text description{{mb_strlen($item->description)>350?' croped':' open'}}">
@@ -175,6 +167,10 @@
 															<span>згорнути</span>
 														</a>
 													@endif
+													{{--
+													<div>Код СPV: {Код}   {Название}</div>
+													<div>Код ДКПП: {Код}   {Название}</div>
+													--}}
 												</div>
 											</div>
 										@endforeach
@@ -211,41 +207,43 @@
 							</div>
 
 							<div class="row row-details col-sm-9">
-								@if (!empty($item->documents))
-								<div class="col-sm-4 margin-bottom ">
+								<div class="col-sm-4 margin-bottom">
 									<h3>Документація</h3>
 									<div class="gray-bg padding margin-bottom">
-										<ul class="nav nav-list">
-											@foreach ($item->documents as $k=>$document)
-												@if($k<=2)
-													<li>
-														{{date('d.m.Y', strtotime($document->dateModified))}}<br>
-														<a href="{{$document->url}}" target="_blank" class="word-break">{{$document->title}}</a>
-													</li>
-												@endif
-											@endforeach
-											{{--<li><a href="#"><i class="sprite-zip"></i> Зберегти усі документи архівом</a></li>--}}
-										</ul>
-										@if(sizeof($item->documents)>3)
-											<div class="documents-all-wr"><a href="" class="documents-all">Всі документи </a><span class="all-number">({{sizeof($item->documents)}})</span></div>
+										@if (!empty($item->documents))
+											<ul class="nav nav-list">
+												@foreach ($item->documents as $k=>$document)
+													@if($k<=2)
+														<li>
+															{{date('d.m.Y', strtotime($document->dateModified))}}<br>
+															<a href="{{$document->url}}" target="_blank" class="word-break">{{$document->title}}</a>
+														</li>
+													@endif
+												@endforeach
+												{{--<li><a href="#"><i class="sprite-zip"></i> Зберегти усі документи архівом</a></li>--}}
+											</ul>
+											@if(sizeof($item->documents)>3)
+												<div class="documents-all-wr"><a href="" class="documents-all">Всі документи </a><span class="all-number">({{sizeof($item->documents)}})</span></div>
+											@endif
+											<div class="overlay overlay-documents-all">
+												<div class="overlay-close overlay-close-layout"></div>
+												<div class="overlay-box">
+													<div class="tender--offers documents" data-id="e059392ff4204074bfd76bf56cca7c74" style="display: block;">
+														<h4 class="overlay-title">Документація</h4>
+														@foreach ($item->documents as $k=>$document)
+															<div class="document-info">
+																<div class="document-date">{{date('d.m.Y H:i', strtotime($document->dateModified))}}</div>
+																<a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
+															</div>
+														@endforeach																																													</div>
+														<div class="overlay-close"><i class="sprite-close-grey"></i></div>
+													</div>
+											</div>
+										@else
+											<div>Відсутня</div>
 										@endif
-										<div class="overlay overlay-documents-all">
-											<div class="overlay-close overlay-close-layout"></div>
-											<div class="overlay-box">
-												<div class="tender--offers documents" data-id="e059392ff4204074bfd76bf56cca7c74" style="display: block;">
-													<h4 class="overlay-title">Документація</h4>
-													@foreach ($item->documents as $k=>$document)
-														<div class="document-info">
-															<div class="document-date">{{date('d.m.Y H:i', strtotime($document->dateModified))}}</div>
-															<a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
-														</div>
-													@endforeach																																													</div>
-													<div class="overlay-close"><i class="sprite-close-grey"></i></div>
-												</div>
-										</div>
 									</div>
 								</div>
-								@endif
 								<div class="col-sm-4 margin-bottom ">
 									<h3>Дати</h3>
 									<div class="gray-bg padding margin-bottom">
