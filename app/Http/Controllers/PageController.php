@@ -74,69 +74,6 @@ class PageController extends BaseController
 				->with('result', $result);
 	}
 	
-	public function getSearchResultsHightlightArray($query)
-	{
-		$query_string=$query;
-		$highlight=[];
-
-		if($query_string)
-		{
-			$query_array=explode('&', urldecode($query_string));
-
-			if(sizeof($query_array))
-			{
-				foreach($query_array as $item)
-				{
-					$item=explode('=', $item);
-
-					$source=$item[0];
-
-					if($source=='query')
-					{
-						$search_value=$item[1];
-						$highlight[]=$item[1];
-						
-						$value=$this->get_value($source, $search_value);					
-						$highlight[]=$value;
-					}
-				}
-			}
-
-			$highlight=array_unique(array_filter($highlight));
-		}		
-
-		return $highlight;
-	}
-	
-	private function get_value($source, $search_value)
-	{
-		$lang='uk';
-
-		$data=[];
-
-		if(!file_exists('./sources/'.$lang.'/'.$source.'.json'))
-			return $data;
-
-		$raw=json_decode(file_get_contents('./sources/'.$lang.'/'.$source.'.json'), TRUE);
-
-		foreach($raw as $id=>$name)
-		{
-			array_push($data, [
-				'id'=>$id,
-				'name'=>$name
-			]);
-		}			
-
-		foreach($data as $item)
-		{
-			if($item['id']==$search_value)
-				return $item['name'];
-		}
-			
-		
-		return FALSE;
-	}
-	
 	public function tender($id)
 	{
 		$json=$this->getSearchResults(['tid='.$id]);
@@ -191,6 +128,14 @@ class PageController extends BaseController
 		foreach(app('App\Http\Controllers\FormController')->get_status_data() as $one)
 			$dataStatus[$one['id']]=$one['name'];
 
+		if(!empty($item->bids))
+		{
+			usort($item->bids, function ($a, $b)
+			{
+			    return strcmp($a->value->amount, $b->value->amount);
+			});
+		}
+
 		return view('pages/tender')
 				->with('item', $item)
 				->with('features_price', $features_price)
@@ -200,6 +145,40 @@ class PageController extends BaseController
 				->with('error', $error);
 	}
 
+	public function getSearchResultsHightlightArray($query)
+	{
+		$query_string=$query;
+		$highlight=[];
+
+		if($query_string)
+		{
+			$query_array=explode('&', urldecode($query_string));
+
+			if(sizeof($query_array))
+			{
+				foreach($query_array as $item)
+				{
+					$item=explode('=', $item);
+
+					$source=$item[0];
+
+					if($source=='query')
+					{
+						$search_value=$item[1];
+						$highlight[]=$item[1];
+						
+						$value=$this->get_value($source, $search_value);					
+						$highlight[]=$value;
+					}
+				}
+			}
+
+			$highlight=array_unique(array_filter($highlight));
+		}		
+
+		return $highlight;
+	}
+	
 	public function getSearchResults($query)
 	{
 		//file_get_contents($this->api.'?'.implode('&', $query))
@@ -227,6 +206,35 @@ class PageController extends BaseController
 
 		return $result;
 	}	
+	
+	private function get_value($source, $search_value)
+	{
+		$lang='uk';
+
+		$data=[];
+
+		if(!file_exists('./sources/'.$lang.'/'.$source.'.json'))
+			return $data;
+
+		$raw=json_decode(file_get_contents('./sources/'.$lang.'/'.$source.'.json'), TRUE);
+
+		foreach($raw as $id=>$name)
+		{
+			array_push($data, [
+				'id'=>$id,
+				'name'=>$name
+			]);
+		}			
+
+		foreach($data as $item)
+		{
+			if($item['id']==$search_value)
+				return $item['name'];
+		}
+			
+		
+		return FALSE;
+	}
 	
 	private function parseBiNumbers($numbers)
 	{
