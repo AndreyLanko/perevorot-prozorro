@@ -137,7 +137,7 @@
 									@if (!empty($item->description))
 										<div class="col-md-12 description-wr croped">
 											<div class="tender--description--text description{{mb_strlen($item->description)>350?' croped':' open'}}">
-												{{$item->description}}
+												{!!nl2br($item->description)!!}
 											</div>
 											@if (mb_strlen($item->description)>350)
 												<a class="search-form--open" href="">
@@ -163,7 +163,7 @@
 												</div>
 												<div class="col-md-8 col-md-pull-4 description-wr{{mb_strlen($one->description)>350?' croped':' open'}}">
 													<div class="tender--description--text description">
-														{{$one->description}}
+														{!!nl2br($one->description)!!}
 													</div>
 													@if (mb_strlen($one->description)>350)
 														<a class="search-form--open"><i class="sprite-arrow-down"></i>
@@ -473,6 +473,41 @@
 						</div>
 					</div>
 				@endif
+				@if(!empty($item->awards))
+					<div class="container tender--platforms">
+						<div class="margin-bottom-xl">
+							<h3>Укладений договір</h3>
+							<table class="table table-striped margin-bottom">
+									<thead>
+										<tr>
+											<th>Контракт</th>
+											<th>Статус</th>
+											<th>Опубліковано</th>
+										</tr>
+									</thead>
+									<tbody>
+										@foreach($item->awards as $award)
+											@foreach($award->contracts as $contract)
+												@foreach($contract->documents as $document)
+													<tr>
+														<td><a href="{{$document->url}}" target="_blank">{{$document->title}}</a></td>
+														<td>{{$contract->status}}</td>
+														<td>
+															<div>{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+															@if(strtotime($document->datePublished) != strtotime($document->dateModified))
+																<div class="tender-date">Змінено: {{date('d.m.Y H:i', strtotime($document->dateModified))}}</div>
+															@endif
+														</td>
+													</tr>
+												@endforeach
+											@endforeach
+										@endforeach
+									</tbody>
+							</table>
+						</div>
+					</div>
+				@endif
+
 				{{--
 				<div class="tender--offers border-bottom margin-bottom">
 					<h3>Отримані пропозиції</h3>

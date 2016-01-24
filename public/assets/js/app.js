@@ -24569,7 +24569,7 @@ $('#el').spin('flower', 'red')
 					],
 					render:{
 						option: function(item, escape) {
-							return '<div><input type="checkbox" data-selectable value="'+item.id+'"><span class="ch"></span>'+item.name+' #'+item.id+'</div>';
+							return '<div style="margin-left:'+(item.level*20)+'px"><input type="checkbox" data-selectable value="'+item.id+'"><span class="ch"></span>'+item.id+' — '+item.name+'</div>';
 						},
 						item: function(item, escape) {
 							return '<div>'+item.id+' — '+item.name.trunc(40)+'</div>';
@@ -25879,10 +25879,12 @@ var APP,
 
 			js: {
 				tender_menu_fixed: function(_self){
+					var offset=$('.tender--platforms').length ? $('.tender--platforms:first').offset().top : $('.tender--offers:first').offset().top;
+					
 					_self.sticky({
 						topSpacing: _self.position().top-80,
 						responsiveWidth: true,
-						bottomSpacing: $(document).height()-$('.tender--platforms').offset().top+_self.find('.tender--menu').height()+70
+						bottomSpacing: $(document).height()-offset+_self.find('.tender--menu').height()+70
 					});
 				},
 				tender: function(_self){

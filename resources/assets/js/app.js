@@ -61,10 +61,12 @@ var APP,
 
 			js: {
 				tender_menu_fixed: function(_self){
+					var offset=$('.tender--platforms').length ? $('.tender--platforms:first').offset().top : $('.tender--offers:first').offset().top;
+					
 					_self.sticky({
 						topSpacing: _self.position().top-80,
 						responsiveWidth: true,
-						bottomSpacing: $(document).height()-$('.tender--platforms').offset().top+_self.find('.tender--menu').height()+70
+						bottomSpacing: $(document).height()-offset+_self.find('.tender--menu').height()+70
 					});
 				},
 				tender: function(_self){
