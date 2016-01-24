@@ -313,6 +313,42 @@
 									</div>
 								</div>
 							</div>
+
+							<div class="container">
+								<div class="col-sm-9">
+									<h3>Запитання</h3>
+								
+									<div class="row">
+										@if (!empty($item->questions))
+											@foreach($item->questions as $question)
+												<div class="margin-bottom-xl">
+													<div><strong>{{$question->title}}</strong></div>
+													<div class="grey-light size12">{{date('d.m.Y H:i', strtotime($question->date))}}</div>
+													<div class="description-wr margin-bottom{{mb_strlen($question->description)>350?' croped':' open'}}">
+														<div class="description">
+															{{$question->description}}
+														</div>
+														@if (mb_strlen($question->description)>350)
+															<a class="search-form--open"><i class="sprite-arrow-down"></i>
+																<span>розгорнути</span>
+																<span>згорнути</span>
+															</a>
+														@endif
+													</div>
+													@if(!empty($question->answer))
+														<div style="margin-left:20px;"><strong>Відповідь:</strong> <i>{!!nl2br($question->answer)!!}</i></div>
+													@else
+														<div style="margin-left:20px;font-weight: bold">Відповідь відсутня</div>
+													@endif
+												</div>
+											@endforeach
+										@else
+											Запитання відсутні
+										@endif
+									</div>
+								</div>
+							</div>
+
 							@if (!empty($item->procuringEntity))
 								<div class="col-sm-9 tender--customer--inner">
 									<h3>Замовник</h3>
@@ -487,20 +523,22 @@
 									</thead>
 									<tbody>
 										@foreach($item->awards as $award)
-											@foreach($award->contracts as $contract)
-												@foreach($contract->documents as $document)
-													<tr>
-														<td><a href="{{$document->url}}" target="_blank">{{$document->title}}</a></td>
-														<td>{{$contract->status}}</td>
-														<td>
-															<div>{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
-															@if(strtotime($document->datePublished) != strtotime($document->dateModified))
-																<div class="tender-date">Змінено: {{date('d.m.Y H:i', strtotime($document->dateModified))}}</div>
-															@endif
-														</td>
-													</tr>
+											@if(!empty($award->contracts))
+												@foreach($award->contracts as $contract)
+													@foreach($contract->documents as $document)
+														<tr>
+															<td><a href="{{$document->url}}" target="_blank">{{$document->title}}</a></td>
+															<td>{{$contract->status}}</td>
+															<td>
+																<div>{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+																@if(strtotime($document->datePublished) != strtotime($document->dateModified))
+																	<div class="tender-date">Змінено: {{date('d.m.Y H:i', strtotime($document->dateModified))}}</div>
+																@endif
+															</td>
+														</tr>
+													@endforeach
 												@endforeach
-											@endforeach
+											@endif
 										@endforeach
 									</tbody>
 							</table>

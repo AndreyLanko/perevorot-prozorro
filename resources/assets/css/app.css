@@ -2078,6 +2078,12 @@ h1 {
 	font-size: 14px;
 	color: #999;
 }
+.grey-light{
+	color: #999;
+}
+.size12{
+	font-size:12px;
+}
 .col-md-pull-4.description-wr {
 	margin-bottom: 0;
 }
