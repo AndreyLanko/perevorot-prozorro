@@ -56,7 +56,9 @@
 								<a href="{{$back}}" class="back-tender"><i class="sprite-arrow-left"></i> Повернутися до результатів</a>
 							@endif
 							<div class="clearfix"></div>
-							<a href="" class="blue-btn">Подати пропозицію</a>
+							@if($item->is_active_proposal)
+								<a href="" class="blue-btn">Подати пропозицію</a>
+							@endif
 							{{--
 							<ul class="nav nav-list">
 								<li>
@@ -366,29 +368,31 @@
 						</div>
 					</div>
 				</div>
-				<div class="container">
-					<div class="">
-						<div class="tender--platforms border-bottom margin-bottom-xl">
-							<h3>Подати пропозицію</h3>
-							Оберіть один з майданчиків, щоб прийняти участь у аукціоні
-							<div class="tender--platforms--list clearfix">
-								@foreach($platforms as $platform)
-									<div class="item">
-										<div class="img-wr">
-											<a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank">
-												<img src="/assets/images/platforms/{{$platform['slug']}}.png" alt="{{$platform['name']}}" title="{{$platform['name']}}">
-											</a>
+				@if($item->is_active_proposal)
+					<div class="container">
+						<div class="">
+							<div class="tender--platforms border-bottom margin-bottom-xl">
+								<h3>Подати пропозицію</h3>
+								Оберіть один з майданчиків, щоб прийняти участь у аукціоні
+								<div class="tender--platforms--list clearfix">
+									@foreach($platforms as $platform)
+										<div class="item">
+											<div class="img-wr">
+												<a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank">
+													<img src="/assets/images/platforms/{{$platform['slug']}}.png" alt="{{$platform['name']}}" title="{{$platform['name']}}">
+												</a>
+											</div>
+											<div class="border-hover">
+												<div class="btn-wr"><a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank" class="btn">Прийняти участь</a></div>
+											</div>
 										</div>
-										<div class="border-hover">
-											<div class="btn-wr"><a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank" class="btn">Прийняти участь</a></div>
-										</div>
-									</div>
-								@endforeach
+									@endforeach
+								</div>
+								{{--<a href="#" class="more margin-bottom"><i class="sprite-arrow-down"></i> Показати всіх</a>--}}
 							</div>
-							{{--<a href="#" class="more margin-bottom"><i class="sprite-arrow-down"></i> Показати всіх</a>--}}
 						</div>
 					</div>
-				</div>
+				@endif
 				@if (!empty($item->bids))
 					<div class="container">
 						<div class="tender--offers margin-bottom-xl">

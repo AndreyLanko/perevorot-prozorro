@@ -135,6 +135,9 @@ class PageController extends BaseController
 			    return strcmp($a->value->amount, $b->value->amount);
 			});
 		}
+		
+		$item->is_active_proposal=new \stdClass();
+		$item->is_active_proposal=in_array($item->status, ['active.enquiries', 'active.tendering']);
 
 		return view('pages/tender')
 				->with('item', $item)
