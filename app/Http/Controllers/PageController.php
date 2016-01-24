@@ -11,12 +11,6 @@ class PageController extends BaseController
 {
 	public function home()
 	{
-		//apt-get install tesseract-ocr
-		/*
-		$tesseract = new TesseractOCR(public_path('000001_qrrxD.png'));
-		$tesseract->setLanguage('eng');
-		dd($tesseract->recognize());
-		*/
 		$last=app('App\Http\Controllers\FormController')->getSearchResults([
 			'procedure=open'
 		]);
@@ -39,6 +33,7 @@ class PageController extends BaseController
 		return view('pages/home')
 				->with('dataStatus', $dataStatus)
 				->with('auctions', $auctions_items)
+				->with('numbers', $this->parseBiNumbers(Config::get('bi-numbers')))
 				->with('last', json_decode($last));
 	}
 
@@ -232,4 +227,28 @@ class PageController extends BaseController
 
 		return $result;
 	}	
+	
+	private function parseBiNumbers($numbers)
+	{
+		$out=Cache::remember('bi_numbers', 60, function() use ($numbers)
+		{
+			foreach($numbers as $name=>$number)
+			{
+				$data=file_get_contents($number);
+	
+				if(!empty($data))
+				{
+					$data=explode("\n", trim($data));
+
+					$out[$name]=$data;
+				}
+				else
+					$out[$name]=[0, ''];
+			}
+
+			return $out;
+		});
+
+		return $out;
+	}
 }

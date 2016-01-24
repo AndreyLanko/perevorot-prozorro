@@ -2504,6 +2504,12 @@ ul.language-chooser {
 .size48, .page-content .size48 {
     font-size: 48px;
 }
+.size24, .page-content .size24{
+	font-size: 24px;
+}
+.line-height1 {
+	line-height:1.2em;
+}
 .margin-top-x {
     margin-top: 40px;
 }

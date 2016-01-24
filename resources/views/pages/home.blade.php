@@ -92,43 +92,38 @@
 		<tbody>
 			<tr>
 				<td>
-					<img src="http://bi.prozorro.org/images/000001_qrrxD.png" alt="" >
-					{{--<p>#тендерів</p>
+					<p>#тендерів</p>
 					<span class="blue size48">
-						35,21<br />
-						<span class="size24">тис</span>
-					</span>--}}
+						{{$numbers['number'][0]}}<br />
+						<span class="size24">{{$numbers['number'][1]}}</span>
+					</span>
 				</td>
 				<td>
-					<img src="http://bi.prozorro.org/images/000001_CanHme.png" alt="" >				
-					{{--<p>Планова сума</p>
+					<p>Планова сума</p>
 					<span class="blue size48">
-						6,37<br />
-						<span class="size24">млрд</span>
-					</span>--}}
+						{{$numbers['sum'][0]}}<br />
+						<span class="size24">{{$numbers['sum'][1]}}</span>
+					</span>
 				</td>
 				<td>
-					<img src="http://bi.prozorro.org/images/000001_pAuPP.png" alt="" >	
-					{{--<p># Організаторів</p>
+					<p># Організаторів</p>
 					<span class="blue size48">
-						2,25<br />
-						<span class="size24">тис</span>
-					</span>--}}
+						{{$numbers['organizer'][0]}}<br />
+						<span class="size24">{{$numbers['organizer'][1]}}</span>
+					</span>
 				</td>
 				<td>
-					<img src="http://bi.prozorro.org/images/000001_eqpLp.png" alt="" >	
-					{{--<p>Пропозицій на торги</p>
+					<p>Пропозицій на торги</p>
 					<span class="blue size48">
-						2,71
-					</span>--}}
+						{{$numbers['bids'][0]}}
+					</span>
 				</td>
 				<td>
-					<img src="http://bi.prozorro.org/images/000001_XxALYp.png" alt="" >	
-					{{--<p>Економія</p>
+					<p>Економія</p>
 					<span class="blue size48">
-						498,38<br />
-						<span class="size24">млн</span>
-					</span>--}}
+						{{$numbers['economy'][0]}}<br />
+						<span class="size24">{{$numbers['economy'][1]}}</span>
+					</span>
 				</td>
 			</tr>
 		</tbody>
