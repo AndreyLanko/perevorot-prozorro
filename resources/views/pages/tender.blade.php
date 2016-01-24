@@ -1,12 +1,14 @@
 @extends('layouts/app')
 
 @section('head')
-	<meta property="og:type" content="website">
-	<meta property="og:site_name" content="prozorro.org">
-	<meta property="og:title" content="{{htmlentities($item->procuringEntity->name, ENT_QUOTES)}}">
-	<meta property="og:url" content="{{Request::root()}}/{{Request::path()}}">
-	<meta property="og:image" content="{{Request::root()}}/assets/images/social/fb.png">
-	<meta property="og:description" content="{{htmlentities($item->title, ENT_QUOTES)}}">
+	@if ($item && !$error)
+		<meta property="og:type" content="website">
+		<meta property="og:site_name" content="prozorro.org">
+		<meta property="og:title" content="{{htmlentities($item->procuringEntity->name, ENT_QUOTES)}}">
+		<meta property="og:url" content="{{Request::root()}}/{{Request::path()}}">
+		<meta property="og:image" content="{{Request::root()}}/assets/images/social/fb.png">
+		<meta property="og:description" content="{{htmlentities($item->title, ENT_QUOTES)}}">
+	@endif
 @endsection
 
 @section('content')
@@ -151,7 +153,7 @@
 									<div{{empty($item->features) ? 'class="border-bottom"':''}}>
 										<h3>Позиції</h3>
 										@foreach($item->items as $one)
-											<div class="row">
+											<div class="row margin-bottom">
 												<div class="col-md-4 col-md-push-8">
 													<div class="padding margin-bottom">
 														{{$one->quantity}} шт.
@@ -167,10 +169,10 @@
 															<span>згорнути</span>
 														</a>
 													@endif
-													{{--
-													<div>Код СPV: {Код}   {Название}</div>
-													<div>Код ДКПП: {Код}   {Название}</div>
-													--}}
+													<div class="tender-date">Код СPV: {{$one->classification->id}} — {{$one->classification->description}}</div>
+													@if(!empty($one->additionalClassifications[0]))
+														<div class="tender-date">Код ДКПП: {{$one->additionalClassifications[0]->id}} — {{$one->additionalClassifications[0]->description}}</div>
+													@endif
 												</div>
 											</div>
 										@endforeach
