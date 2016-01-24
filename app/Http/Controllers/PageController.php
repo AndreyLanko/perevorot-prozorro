@@ -17,8 +17,29 @@ class PageController extends BaseController
 		$tesseract->setLanguage('eng');
 		dd($tesseract->recognize());
 		*/
+		$last=app('App\Http\Controllers\FormController')->getSearchResults([
+			'procedure=open'
+		]);
+
+		$auctions=app('App\Http\Controllers\FormController')->getSearchResults([
+			'status=active.auction'
+		]);
+
+		$auctions=json_decode($auctions);
+		$auctions_items=false;
+
+		if(!empty($auctions->items))
+			$auctions_items=array_chunk(array_slice($auctions->items, 0, 9), 3);
 		
-		return view('pages/home');
+		$dataStatus=[];
+
+		foreach(app('App\Http\Controllers\FormController')->get_status_data() as $one)
+			$dataStatus[$one['id']]=$one['name'];
+
+		return view('pages/home')
+				->with('dataStatus', $dataStatus)
+				->with('auctions', $auctions_items)
+				->with('last', json_decode($last));
 	}
 
 	public function search()

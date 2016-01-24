@@ -22,187 +22,71 @@
 	</div>
 	
 	<div class="clearfix"></div>
-	
-	<h1 class="size48 margin-top">Щойно оголошені закупівлі</h1>
-	
-	<div class="tender--simmilar tender-type2">
-		<div class="row">
-			<div class="col-md-4 col-sm-6">
-				<div class="tender--simmilar--item gray-bg padding margin-bottom">
-					<div class="tender--simmilar--item--control">
-						<a href="#"><i class="sprite-star"></i></a>
-						<a href="#"><i class="sprite-close-blue"></i></a>
-					</div>
-					<div class="green tender--simmilar--item--cost">30 124 <span class="small">грн</span></div>
-					<a href="#" class="title">Проведення вимірювальних робіт електроустановок та електропристроїв на відповідність до вимог ПТЕ та ПТБ</a>
-					
-					
-					<div class="tender--legend">Допорогові торги    <span class="marked">Уточнення</span>    м. Київ</div>
-					
-						<div class="tender--simmilar--text margin-bottom">
-							<strong>Компанія:</strong> Вищий навчальний заклад Київський медичний коледж ім.П.І.Гаврося"
+
+	@if(!empty($last->items))
+		<h1 class="size48 margin-top">Щойно оголошені закупівлі</h1>
+		
+		<div class="tender--simmilar tender-type2">
+			<div class="row">
+				@foreach($last->items as $i=>$item)
+					@if($i<3)
+						<div class="col-md-4 col-sm-6">
+							<div class="tender--simmilar--item gray-bg padding margin-bottom">
+								{{--
+								<div class="tender--simmilar--item--control">
+									<a href="#"><i class="sprite-star"></i></a>
+									<a href="#"><i class="sprite-close-blue"></i></a>
+								</div>
+								--}}
+								<div class="green tender--simmilar--item--cost">{{number_format($item->value->amount, 0, '', ' ')}} <span class="small">{{$item->value->currency}}</span></div>
+								<a href="/tender/{{$item->tenderID}}/" class="title">{{$item->title}}</a>
+								<div class="tender--legend">Prozorro <span class="marked">{{$dataStatus[$item->status]}}</span>    @if (!empty($item->procuringEntity->address->locality)){{$item->procuringEntity->address->locality}}@endif</div>
+								@if (!empty($item->procuringEntity->name))
+									<div class="tender--simmilar--text margin-bottom">
+										<strong>Компанія:</strong> {{$item->procuringEntity->name}}
+									</div>
+								@endif
+								<a href="/tender/{{$item->tenderID}}/"><i class="sprite-arrow-right"></i> Детальніше</a>
+							</div>
 						</div>
-						<a href="#"><i class="sprite-arrow-right"></i> Детальніше</a>
-
-				</div>
+					@endif
+				@endforeach
 			</div>
 			
-			<div class="col-md-4 col-sm-6">
-				<div class="tender--simmilar--item gray-bg padding margin-bottom">
-					<div class="tender--simmilar--item--control">
-						<a href="#"><i class="sprite-star"></i></a>
-						<a href="#"><i class="sprite-close-blue"></i></a>
-					</div>
-					<div class="green tender--simmilar--item--cost">30 124 <span class="small">грн</span></div>
-					<a href="#" class="title">Проведення вимірювальних робіт електроустановок та електропристроїв на відповідність до вимог ПТЕ та ПТБ</a>
-					
-					
-					<div class="tender--legend">Допорогові торги    <span class="marked">Уточнення</span>    м. Київ</div>
-					
-						<div class="tender--simmilar--text margin-bottom">
-							<strong>Компанія:</strong> Вищий навчальний заклад Київський медичний коледж ім.П.І.Гаврося"
+			<div class="col-sm-12">
+				<a href="/search/?procedure=open"><i class="sprite-arrow-right"></i> Перейти до всіх свіжих заявок</a>
+			</div>
+		</div>
+		<div class="clearfix"></div>	
+		<hr />
+	@endif
+
+	@if($auctions)
+		<h1 class="size48 margin-top-x">Сьогоднішні аукціони</h1>
+		
+		<div class="row size14 margin-bottom">
+			@foreach($auctions as $auction)
+				<div class="col-md-4">
+					{{--<h4 class="center">Відбуваються прямо зараз</h4>--}}
+					@foreach($auction as $item)
+						<div class="margin-bottom">
+							<div class="gray-bg padding">
+								<p><a href="/tender/{{$item->tenderID}}/" class="size18">{{$item->title}}</a></p>
+								участників: {{!empty($item->bids)?sizeof($item->bids):0}}<br />
+								Поточна ставка: <span class="marked">? грн</span><br />
+								Почався ? год тому
+							</div>
 						</div>
-						<a href="#"><i class="sprite-arrow-right"></i> Детальніше</a>
+					@endforeach
+					{{--<a href="#"><i class="sprite-arrow-right"></i> Всі поточні аукціони</a>--}}
+				</div>
+			@endforeach
+		</div>
+		<hr />
+	@endif
 
-				</div>
-			</div>
-			
-			<div class="col-md-4 col-sm-6">
-				<div class="tender--simmilar--item gray-bg padding margin-bottom">
-					<div class="tender--simmilar--item--control">
-						<a href="#"><i class="sprite-star"></i></a>
-						<a href="#"><i class="sprite-close-blue"></i></a>
-					</div>
-					<div class="green tender--simmilar--item--cost">30 124 <span class="small">грн</span></div>
-					<a href="#" class="title">Проведення вимірювальних робіт електроустановок та електропристроїв на відповідність до вимог ПТЕ та ПТБ</a>
-					
-					
-					<div class="tender--legend">Допорогові торги    <span class="marked">Уточнення</span>    м. Київ</div>
-					
-
-						<div class="tender--simmilar--text margin-bottom">
-							<strong>Компанія:</strong> Вищий навчальний заклад Київський медичний коледж ім.П.І.Гаврося"
-						</div>
-						<a href="#"><i class="sprite-arrow-right"></i> Детальніше</a>
-
-				</div>
-			</div>
-		</div>
-		
-		<div class="col-sm-12">
-		<a href="#"><i class="sprite-arrow-right"></i> Перейти до всіх свіжих заявок</a>
-		</div>
-	</div>
-	
-	<div class="clearfix"></div>
-	
-	<hr />
-	
-	<h1 class="size48 margin-top-x">Сьогоднішні аукціони</h1>
-	
-	<div class="row size14 margin-bottom">
-		<div class="col-md-4">
-		
-			<h4 class="center">Відбуваються прямо зараз</h4>
-		
-			<div class="margin-bottom">
-				<div class="gray-bg padding">
-					<p><a href="#" class="size18">Проведення вимірювальних робіт електроустановок на відповідність до вимог ПТЕ та ПТБ</a></p>
-					14 участників<br />
-					Поточна ставка: <span class="marked">132 222 грн</span><br />
-					Почався 1 год тому
-				</div>
-			</div>
-			
-			<div class="margin-bottom">
-				<div class="gray-bg padding">
-					<p><a href="#" class="size18">Проведення вимірювальних робіт електроустановок на відповідність до вимог ПТЕ та ПТБ</a></p>
-					14 участників<br />
-					Поточна ставка: <span class="marked">132 222 грн</span><br />
-					Почався 1 год тому
-				</div>
-			</div>
-			
-			<div class="margin-bottom">
-				<div class="gray-bg padding">
-					<p><a href="#" class="size18">Проведення вимірювальних робіт електроустановок на відповідність до вимог ПТЕ та ПТБ</a></p>
-					14 участників<br />
-					Поточна ставка: <span class="marked">132 222 грн</span><br />
-					Почався 1 год тому
-				</div>
-			</div>
-			
-			<a href="#"><i class="sprite-arrow-right"></i> Всі поточні аукціони</a>
-		</div>
-		<div class="col-md-4">
-		
-			<h4 class="center">Відбудуться у найближчі 24 години</h4>
-		
-			<div class="margin-bottom">
-				<div class="gray-bg padding">
-					<p><a href="#" class="size18">Проведення вимірювальних робіт електроустановок на відповідність до вимог ПТЕ та ПТБ</a></p>
-					14 участників<br />
-					Поточна ставка: <span class="marked">132 222 грн</span><br />
-					Почався 1 год тому
-				</div>
-			</div>
-			
-			<div class="margin-bottom">
-				<div class="gray-bg padding">
-					<p><a href="#" class="size18">Проведення вимірювальних робіт електроустановок на відповідність до вимог ПТЕ та ПТБ</a></p>
-					14 участників<br />
-					Поточна ставка: <span class="marked">132 222 грн</span><br />
-					Почався 1 год тому
-				</div>
-			</div>
-			
-			<div class="margin-bottom">
-				<div class="gray-bg padding">
-					<p><a href="#" class="size18">Проведення вимірювальних робіт електроустановок на відповідність до вимог ПТЕ та ПТБ</a></p>
-					14 участників<br />
-					Поточна ставка: <span class="marked">132 222 грн</span><br />
-					Почався 1 год тому
-				</div>
-			</div>
-			<a href="#"><i class="sprite-arrow-right"></i> Найближчі аукціони</a>
-		</div>
-		<div class="col-md-4">
-		
-			<h4 class="center">Успішно завершені</h4>
-		
-			<div class="margin-bottom">
-				<div class="gray-bg padding">
-					<p><a href="#" class="size18">Проведення вимірювальних робіт електроустановок на відповідність до вимог ПТЕ та ПТБ</a></p>
-					14 участників<br />
-					Поточна ставка: <span class="marked">132 222 грн</span><br />
-					Почався 1 год тому
-				</div>
-			</div>
-			
-			<div class="margin-bottom">
-				<div class="gray-bg padding">
-					<p><a href="#" class="size18">Проведення вимірювальних робіт електроустановок на відповідність до вимог ПТЕ та ПТБ</a></p>
-					14 участників<br />
-					Поточна ставка: <span class="marked">132 222 грн</span><br />
-					Почався 1 год тому
-				</div>
-			</div>
-			
-			<div class="margin-bottom">
-				<div class="gray-bg padding">
-					<p><a href="#" class="size18">Проведення вимірювальних робіт електроустановок на відповідність до вимог ПТЕ та ПТБ</a></p>
-					14 участників<br />
-					Поточна ставка: <span class="marked">132 222 грн</span><br />
-					Почався 1 год тому
-				</div>
-			</div>
-			<a href="#"><i class="sprite-arrow-right"></i> Усі завершені</a>
-		</div>
-	</div>
-	<hr />
-	
 	<h1 class="size48">Відкритий моніторинг державних витрат</h1>
-	<h2 class="center margin-bottom-x">Кожен може контролювати систему на <a href="#">bi.prozorro.org</a></h2>
+	<h2 class="center margin-bottom-x">Кожен може контролювати систему на <a href="http://bi.prozorro.org/" target="_blank">bi.prozorro.org</a></h2>
 	
 	<table class="center size18 table-sm line-height1 valign-top margin-bottom-x table-monitor" width="100%">
 		<tbody>
