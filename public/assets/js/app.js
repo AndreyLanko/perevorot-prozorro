@@ -25273,6 +25273,7 @@ var DATE_SELECTED=[];
 })();
 (function(){
 	'use strict';
+	return;
 
 	var json;
 
