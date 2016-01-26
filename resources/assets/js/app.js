@@ -61,7 +61,7 @@ var APP,
 
 			js: {
 				tender_menu_fixed: function(_self){
-					var offset=$('.tender--platforms').length ? $('.tender--platforms:first').offset().top : $('.tender--offers:first').offset().top;
+					var offset=$('.wide-table:first').offset().top-50;
 					
 					_self.sticky({
 						topSpacing: _self.position().top-80,

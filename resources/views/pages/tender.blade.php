@@ -405,7 +405,7 @@
 					</div>
 				</div>
 				@if($item->is_active_proposal)
-					<div class="container">
+					<div class="container wide-table">
 						<div class="">
 							<div class="tender--platforms border-bottom margin-bottom-xl">
 								<h3>Подати пропозицію</h3>
@@ -430,7 +430,7 @@
 					</div>
 				@endif
 				@if (!empty($item->bids))
-					<div class="container">
+					<div class="container wide-table">
 						<div class="tender--offers margin-bottom-xl">
 							<h3>Отримані пропозиції</h3>
 							<table class="table table-striped margin-bottom">
@@ -446,7 +446,7 @@
 									@foreach($item->bids as $bid)
 										<tr>
 											<td>{{$bid->tenderers[0]->name}}</td>
-											<td>{{number_format($bid->value->amount, 0, '', ' ')}} {{$bid->value->currency}}{{$bid->value->valueAddedTaxIncluded?' з ПДВ':''}}</td>
+											<td>{{str_replace('.00', '', number_format($bid->value->amount, 2, '.', ' '))}} {{$bid->value->currency}}{{$bid->value->valueAddedTaxIncluded?' з ПДВ':''}}</td>
 											<td>
 												@if (!empty($item->awards))
 													@foreach($item->awards as $award)
@@ -510,7 +510,7 @@
 					</div>
 				@endif
 				@if(!empty($item->awards))
-					<div class="container tender--platforms">
+					<div class="container wide-table tender--platforms">
 						<div class="margin-bottom-xl">
 							<h3>Укладений договір</h3>
 							<table class="table table-striped margin-bottom">

@@ -132,7 +132,7 @@ class PageController extends BaseController
 		{
 			usort($item->bids, function ($a, $b)
 			{
-			    return strcmp($a->value->amount, $b->value->amount);
+			    return floatval($a->value->amount)<floatval($b->value->amount);
 			});
 		}
 		
