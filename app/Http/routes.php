@@ -9,6 +9,8 @@ Route::post('form/check/{type}', 'FormController@check');
 Route::post('form/search', 'FormController@search');
 Route::post('form/autocomplete/{type}', 'FormController@autocomplete');
 
+Route::get('json/platforms/{type}', 'JsonController@platforms');
+
 
 /*
 Route::get('json/combined', 'JsonController@combined');

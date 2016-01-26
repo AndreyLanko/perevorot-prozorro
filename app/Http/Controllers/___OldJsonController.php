@@ -3,7 +3,7 @@
 use Cache;
 use Input;
 
-class JsonController extends Controller
+class OldJsonController extends Controller
 {
 	var $max_word_length=3; //минимальная длина слова в классификаторе для поиска
 	var $max_results_by_letter=30; //максимальная количество кодов в выдаче по одному сегменту
