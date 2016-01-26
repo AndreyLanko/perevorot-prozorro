@@ -6,6 +6,4 @@ composer.lock
 /resources/assets/js/vendor
 /resources/assets/less/vendor
 /resources/assets/css/vendor
-/public/assets/css
-/public/assets/js
 /public/pz-wp
