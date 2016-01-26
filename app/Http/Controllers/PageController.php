@@ -69,6 +69,7 @@ class PageController extends BaseController
 		}
 
 		return view('pages/search')
+				->with('html', $this->get_html())
 				->with('preselected_values', json_encode($preselected_values, JSON_UNESCAPED_UNICODE))
 				->with('highlight', json_encode($this->getSearchResultsHightlightArray(Request::server('QUERY_STRING')), JSON_UNESCAPED_UNICODE))
 				->with('result', $result);
@@ -141,6 +142,7 @@ class PageController extends BaseController
 
 		return view('pages/tender')
 				->with('item', $item)
+				->with('html', $this->get_html())
 				->with('features_price', $features_price)
 				->with('back', starts_with(Request::server('HTTP_REFERER'), Request::root().'/search') ? Request::server('HTTP_REFERER') : false)
 				->with('dataStatus', $dataStatus)
@@ -261,5 +263,30 @@ class PageController extends BaseController
 		});
 
 		return $out;
+	}
+	
+	private function get_html()
+	{
+		$html=file_get_contents('./sources/html/index.html');
+
+		$header=substr($html, strpos($html, '<nav class="navbar navbar-default top-menu">'));
+		$header=substr($header, 0, strpos($header, '<div class="container switcher">'));
+
+		$switcher=substr($html, strpos($html, '<div class="container switcher">'));
+		$switcher=substr($switcher, 0, strpos($switcher, '<div class="site">'));
+
+		$footer=substr($html, strpos($html, '<nav class="navbar navbar-default footer">'));
+		$footer=substr($footer, 0, strpos($footer, '</body>'));
+
+		$html=Cache::remember('get_html', 1, function() use ($header, $footer, $switcher)
+		{
+			return [
+				'header'=>$header,
+				'switcher'=>$switcher,
+				'footer'=>$footer
+			];
+		});
+		
+		return $html;
 	}
 }

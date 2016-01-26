@@ -11,9 +11,15 @@
 	@endif
 @endsection
 
-@section('content')
+@section('html_header')
+	{!!$html['header']!!}
+@endsection
 
-{{--@include('partials/form')--}}
+@section('html_footer')
+	{!!$html['footer']!!}
+@endsection
+
+@section('content')
 
 @if ($item && !$error)
 	{{--dump($item)--}}
@@ -525,18 +531,20 @@
 										@foreach($item->awards as $award)
 											@if(!empty($award->contracts))
 												@foreach($award->contracts as $contract)
-													@foreach($contract->documents as $document)
-														<tr>
-															<td><a href="{{$document->url}}" target="_blank">{{$document->title}}</a></td>
-															<td>{{$contract->status}}</td>
-															<td>
-																<div>{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
-																@if(strtotime($document->datePublished) != strtotime($document->dateModified))
-																	<div class="tender-date">Змінено: {{date('d.m.Y H:i', strtotime($document->dateModified))}}</div>
-																@endif
-															</td>
-														</tr>
-													@endforeach
+													@if(!empty($contract->documents))
+														@foreach($contract->documents as $document)
+															<tr>
+																<td><a href="{{$document->url}}" target="_blank">{{$document->title}}</a></td>
+																<td>{{$contract->status}}</td>
+																<td>
+																	<div>{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+																	@if(strtotime($document->datePublished) != strtotime($document->dateModified))
+																		<div class="tender-date">Змінено: {{date('d.m.Y H:i', strtotime($document->dateModified))}}</div>
+																	@endif
+																</td>
+															</tr>
+														@endforeach
+													@endif
 												@endforeach
 											@endif
 										@endforeach
