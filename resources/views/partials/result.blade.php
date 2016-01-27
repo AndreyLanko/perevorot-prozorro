@@ -8,7 +8,7 @@
 					<div class="clearfix"></div>
 					<ol class="breadcrumb">
 						<li>Prozorro</li>
-						<li class="marked">{{$dataStatus[$item->status]}}</li>
+						<li class="marked">{{!empty($dataStatus[$item->status])?$dataStatus[$item->status]:'nostatus'}}</li>
 						@if (!empty($item->procuringEntity->address->locality))
 							<li>{{$item->procuringEntity->address->locality}}</li>
 						@endif

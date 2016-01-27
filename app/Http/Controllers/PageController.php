@@ -5,12 +5,24 @@ use Input;
 use Cache;
 use Request;
 use Config;
+use Session;
 use TesseractOCR;
 
 class PageController extends BaseController
 {
 	public function home()
 	{
+		if(!empty(Input::get('api')))
+		{
+			switch((int) Input::get('api'))
+			{
+				case 1:	Session::set('api', 'http://search.aws3.tk/search'); break;
+				case 2:	Session::set('api', 'http://ocds-test.aws3.tk/search'); break;
+			}
+
+			return redirect('/');			
+		}
+
 		$last=app('App\Http\Controllers\FormController')->getSearchResults([
 			'procedure=open'
 		]);
@@ -187,8 +199,8 @@ class PageController extends BaseController
 	
 	public function getSearchResults($query)
 	{
-		//file_get_contents($this->api.'?'.implode('&', $query))
-		$url=Config::get('prozorro.API').'?'.implode('&', $query);
+		$url=Session::get('api', Config::get('prozorro.API')).'?'.implode('&', $query);
+
 		$header=get_headers($url)[0];
 
 		if(strpos($header, '200 OK')!==false)

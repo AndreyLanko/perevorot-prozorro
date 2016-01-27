@@ -2,7 +2,6 @@
 
 @section('html_header')
 	{!!$html['header']!!}
-	{!!$html['switcher']!!}
 @endsection
 
 @section('html_footer')

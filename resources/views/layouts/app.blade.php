@@ -15,6 +15,19 @@
 	@yield('head')
 </head>
 <body>
+	<div style="position:fixed;font-size:10px;top:0px;right:0px;z-index:2222222">
+		<form action="/" method="get">
+			@if(Session::get('api')=='http://ocds-test.aws3.tk/search')
+				<input type="button" value="ocds-test" disabled>
+				<input type="submit" value="prozorro">
+				<input type="hidden" value="1" name="api">
+			@else
+				<input type="submit" value="ocds-test">
+				<input type="button" value="prozorro" disabled>
+				<input type="hidden" value="2" name="api">
+			@endif
+		</form>
+	</div>
 	<div class="wrapper-main">
 		
 		@yield('html_header')

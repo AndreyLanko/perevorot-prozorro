@@ -4,6 +4,7 @@ use Cache;
 use Input;
 use View;
 use Config;
+use Session;
 use Illuminate\Routing\Controller as BaseController;
 
 class FormController extends BaseController
@@ -60,7 +61,6 @@ class FormController extends BaseController
 
 	public function getSearchResults($query)
 	{
-		//file_get_contents($this->api.'?'.implode('&', $query))
 		$ch = curl_init();
 
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -97,7 +97,7 @@ class FormController extends BaseController
 
 		$query[]='start='.Input::get('start');
 
-		curl_setopt($ch, CURLOPT_URL, Config::get('prozorro.API').'?'.implode('&', $query));
+		curl_setopt($ch, CURLOPT_URL, Session::get('api', Config::get('prozorro.API')).'?'.implode('&', $query));
 
 		$result=curl_exec($ch);
 

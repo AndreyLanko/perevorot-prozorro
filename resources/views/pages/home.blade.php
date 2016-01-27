@@ -48,7 +48,7 @@
 								--}}
 								<div class="green tender--simmilar--item--cost">{{number_format($item->value->amount, 0, '', ' ')}} <span class="small">{{$item->value->currency}}</span></div>
 								<a href="/tender/{{$item->tenderID}}/" class="title">{{$item->title}}</a>
-								<div class="tender--legend">Prozorro <span class="marked">{{$dataStatus[$item->status]}}</span>    @if (!empty($item->procuringEntity->address->locality)){{$item->procuringEntity->address->locality}}@endif</div>
+								<div class="tender--legend">Prozorro <span class="marked">{{!empty($dataStatus[$item->status])?$dataStatus[$item->status]:'nostatus'}}</span>    @if (!empty($item->procuringEntity->address->locality)){{$item->procuringEntity->address->locality}}@endif</div>
 								@if (!empty($item->procuringEntity->name))
 									<div class="tender--simmilar--text margin-bottom">
 										<strong>Компанія:</strong> {{$item->procuringEntity->name}}
