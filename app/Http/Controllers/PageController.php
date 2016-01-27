@@ -31,6 +31,7 @@ class PageController extends BaseController
 			$dataStatus[$one['id']]=$one['name'];
 
 		return view('pages/home')
+				->with('html', $this->get_html())
 				->with('dataStatus', $dataStatus)
 				->with('auctions', $auctions_items)
 				->with('numbers', $this->parseBiNumbers(Config::get('bi-numbers')))
