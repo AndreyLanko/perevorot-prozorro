@@ -53,7 +53,7 @@
 						@if (!empty($item->procuringEntity->name))
 							<div class="tender--head--company">{{$item->procuringEntity->name}}</div>
 						@endif
-						<div class="tender--head--inf">Prozorro   <span class="marked">{{$dataStatus[$item->status]}}</span>   @if (!empty($item->procuringEntity->address->locality)){{$item->procuringEntity->address->locality}}@endif</div>
+						<div class="tender--head--inf">Prozorro   <span class="marked">{{!empty($dataStatus[$item->status])?$dataStatus[$item->status]:'nostatus'}}</span>   @if (!empty($item->procuringEntity->address->locality)){{$item->procuringEntity->address->locality}}@endif</div>
 					</div>
 					
 					<div class="tender_menu_fixed" data-js="tender_menu_fixed">
@@ -164,7 +164,7 @@
 											<div class="row margin-bottom">
 												<div class="col-md-4 col-md-push-8">
 													<div class="padding margin-bottom">
-														{{$one->quantity}} шт.
+														{{!empty($one->quantity)?$one->quantity.' шт.':''}}
 													</div>
 												</div>
 												<div class="col-md-8 col-md-pull-4 description-wr{{mb_strlen($one->description)>350?' croped':' open'}}">

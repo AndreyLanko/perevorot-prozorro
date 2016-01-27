@@ -146,7 +146,7 @@ class PageController extends BaseController
 		{
 			usort($item->bids, function ($a, $b)
 			{
-			    return floatval($a->value->amount)<floatval($b->value->amount);
+			    return floatval($a->value->amount)>floatval($b->value->amount);
 			});
 		}
 		
