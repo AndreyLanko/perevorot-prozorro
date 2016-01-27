@@ -12,9 +12,9 @@
 
 <div class="container">		
 	<ul class="nav nav-justified sections ">
-		<li class="green-bg notitle"><a href="http://prozorro.lemon.ua/postachalniku/"><i class="sprite-customer"></i> <span>Постачальнику</span></a></li>
-		<li class="gray-bg notitle"><a href="http://prozorro.lemon.ua/poshuk-tendera/"><i class="sprite-tender-search"></i> <span>Пошук тендера</span></a></li>
-		<li class="blue-bg notitle"><a href="http://prozorro.lemon.ua/zamovniku/"><i class="sprite-provider"></i> <span>Замовнику</span></a></li>
+		<li class="green-bg notitle"><a href="/postachalniku/"><i class="sprite-customer"></i> <span>Постачальнику</span></a></li>
+		<li class="gray-bg notitle"><a href="/"><i class="sprite-tender-search"></i> <span>Пошук тендера</span></a></li>
+		<li class="blue-bg notitle"><a href="/zamovniku/"><i class="sprite-provider"></i> <span>Замовнику</span></a></li>
 	</ul>
 </div>
 

@@ -268,22 +268,19 @@ class PageController extends BaseController
 	
 	private function get_html()
 	{
-		$html=file_get_contents('./sources/html/index.html');
+		$html=file_get_contents(Request::root().'/postachalniku/');
 
 		$header=substr($html, strpos($html, '<nav class="navbar navbar-default top-menu">'));
 		$header=substr($header, 0, strpos($header, '<div class="container switcher">'));
-
-		$switcher=substr($html, strpos($html, '<div class="container switcher">'));
-		$switcher=substr($switcher, 0, strpos($switcher, '<div class="site">'));
+		$header=str_replace('current-menu-item', '', $header);
 
 		$footer=substr($html, strpos($html, '<nav class="navbar navbar-default footer">'));
 		$footer=substr($footer, 0, strpos($footer, '</body>'));
 
-		$html=Cache::remember('get_html', 1, function() use ($header, $footer, $switcher)
+		$html=Cache::remember('get_html', 1, function() use ($header, $footer)
 		{
 			return [
 				'header'=>$header,
-				'switcher'=>$switcher,
 				'footer'=>$footer
 			];
 		});
