@@ -25949,12 +25949,23 @@ var APP,
 					});
 				},
 				tender: function(_self){
+					_self.on('click', '.question--open', function(e){
+						e.preventDefault();
+
+						$(this).closest('.questions-block').find('.none').toggle();
+						$(this).toggleClass('open');
+
+						$('html, body').animate({
+							scrollTop: $('.row.questions').offset().top-50
+						}, 500);
+					});
+
 					_self.on('click', '.search-form--open', function(e){
 						e.preventDefault();
 
-						$(this).closest('.description-wr').toggleClass('open');
-					});
-					
+						$(this).closest('.description-wr').toggleClass('open');							
+					});					
+
 					_self.find('.blue-btn').click(function(e){
 						e.preventDefault();
 

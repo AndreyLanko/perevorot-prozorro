@@ -177,9 +177,15 @@
 															<span>згорнути</span>
 														</a>
 													@endif
-													<div class="tender-date">Код СPV: {{$one->classification->id}} — {{$one->classification->description}}</div>
+													@if (!empty($one->classification))
+														<div class="tender-date">Код СPV: {{$one->classification->id}} — {{$one->classification->description}}</div>
+													@else
+														<div class="tender-date">Код CPV не указан</div>
+													@endif													
 													@if(!empty($one->additionalClassifications[0]))
 														<div class="tender-date">Код ДКПП: {{$one->additionalClassifications[0]->id}} — {{$one->additionalClassifications[0]->description}}</div>
+													@else
+														<div class="tender-date">Код ДКПП не указан</div>
 													@endif
 												</div>
 											</div>
@@ -225,7 +231,7 @@
 												@foreach ($item->documents as $k=>$document)
 													@if($k<=2)
 														<li>
-															{{date('d.m.Y', strtotime($document->dateModified))}}<br>
+															{{!empty($document->dateModified) ? date('d.m.Y', strtotime($document->dateModified)) : 'без дати'}}<br>
 															<a href="{{$document->url}}" target="_blank" class="word-break">{{$document->title}}</a>
 														</li>
 													@endif
@@ -242,10 +248,11 @@
 														<h4 class="overlay-title">Документація</h4>
 														@foreach ($item->documents as $k=>$document)
 															<div class="document-info">
-																<div class="document-date">{{date('d.m.Y H:i', strtotime($document->dateModified))}}</div>
+																<div class="document-date">{{!empty($document->dateModified) ? date('d.m.Y', strtotime($document->dateModified)) : 'без дати'}}</div>
 																<a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
 															</div>
-														@endforeach																																													</div>
+														@endforeach
+														</div>
 														<div class="overlay-close"><i class="sprite-close-grey"></i></div>
 													</div>
 											</div>
@@ -312,7 +319,18 @@
 													<div class="document-info">
 														ID
 														<div class="document-date"><a href="https://public.api.openprocurement.org/api/0/tenders/{{$item->id}}" target="_blank">{{$item->id}}</a></div>
-													</div>																																																							</div>
+													</div>
+													@if(Session('api')=='http://ocds-test.aws3.tk/search')
+														<div class="document-info">
+															JSON
+															<div class="document-date"><a href="http://ocds-test.aws3.tk/search?tid={{$item->tenderID}}" target="_blank">ocds-test.aws3.tk</a></div>
+														</div>
+														<div class="document-info">
+															ips.vdz.ua
+															<div class="document-date"><a href="https://ips.vdz.ua/ua/purchase_details.htm?id={{$item->id}}" target="_blank">ips.vdz.ua</a></div>
+														</div>
+													@endif
+												</div>
 												<div class="overlay-close"><i class="sprite-close-grey"></i></div>
 											</div>
 										</div>
@@ -324,30 +342,38 @@
 								<div class="col-sm-9">
 									<h3>Запитання</h3>
 								
-									<div class="row">
+									<div class="row questions">
 										@if (!empty($item->questions))
-											@foreach($item->questions as $question)
-												<div class="margin-bottom-xl">
-													<div><strong>{{$question->title}}</strong></div>
-													<div class="grey-light size12">{{date('d.m.Y H:i', strtotime($question->date))}}</div>
-													<div class="description-wr margin-bottom{{mb_strlen($question->description)>350?' croped':' open'}}">
-														<div class="description">
-															{{$question->description}}
+											<div class="description-wr questions-block">
+												@foreach($item->questions as $k=>$question)
+													<div class="questions-row{{$k>1?' none':' visible'}}">
+														<div><strong>{{$question->title}}</strong></div>
+														<div class="grey-light size12 question-date">{{date('d.m.Y H:i', strtotime($question->date))}}</div>
+														<div class="question-one description-wr margin-bottom{{mb_strlen($question->description)>350?' croped':' open'}}">
+															<div class="description">
+																{{$question->description}}
+															</div>
+															@if (mb_strlen($question->description)>350)
+																<a class="search-form--open"><i class="sprite-arrow-down"></i>
+																	<span>розгорнути</span>
+																	<span>згорнути</span>
+																</a>
+															@endif
 														</div>
-														@if (mb_strlen($question->description)>350)
-															<a class="search-form--open"><i class="sprite-arrow-down"></i>
-																<span>розгорнути</span>
-																<span>згорнути</span>
-															</a>
+														@if(!empty($question->answer))
+															<div class="answer"><strong>Відповідь:</strong> <i>{!!nl2br($question->answer)!!}</i></div>
+														@else
+															<div class="answer" style="font-weight: bold">Відповідь відсутня</div>
 														@endif
 													</div>
-													@if(!empty($question->answer))
-														<div style="margin-left:20px;"><strong>Відповідь:</strong> <i>{!!nl2br($question->answer)!!}</i></div>
-													@else
-														<div style="margin-left:20px;font-weight: bold">Відповідь відсутня</div>
-													@endif
-												</div>
-											@endforeach
+												@endforeach
+												@if (sizeof($item->questions)>2)
+													<a class="question--open"><i class="sprite-arrow-down"></i>
+														<span class="question-up">Розгорнути всі запитання: {{sizeof($item->questions)}}</span>
+														<span class="question-down">Згорнути запитання</span>
+													</a>
+												@endif												
+											</div>
 										@else
 											Запитання відсутні
 										@endif

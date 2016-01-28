@@ -16,7 +16,7 @@ class PageController extends BaseController
 		{
 			switch((int) Input::get('api'))
 			{
-				case 1:	Session::set('api', 'http://search.aws3.tk/search'); break;
+				case 1:	Session::set('api', 'http://prozorro.aws3.tk/search'); break;
 				case 2:	Session::set('api', 'http://ocds-test.aws3.tk/search'); break;
 			}
 
