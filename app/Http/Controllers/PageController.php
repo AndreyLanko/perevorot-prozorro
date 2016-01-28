@@ -12,6 +12,7 @@ class PageController extends BaseController
 {
 	public function home()
 	{
+		/*
 		if(!empty(Input::get('api')))
 		{
 			switch((int) Input::get('api'))
@@ -22,6 +23,7 @@ class PageController extends BaseController
 
 			return redirect('/');			
 		}
+		*/
 
 		$last=app('App\Http\Controllers\FormController')->getSearchResults([
 			'procedure=open'
@@ -199,7 +201,8 @@ class PageController extends BaseController
 	
 	public function getSearchResults($query)
 	{
-		$url=Session::get('api', Config::get('prozorro.API')).'?'.implode('&', $query);
+		//$url=Session::get('api', Config::get('prozorro.API')).'?'.implode('&', $query);
+		$url=Config::get('prozorro.API').'?'.implode('&', $query);
 
 		$header=get_headers($url)[0];
 

@@ -15,6 +15,7 @@
 	@yield('head')
 </head>
 <body>
+	{{--
 	<div style="position:fixed;font-size:10px;top:0px;right:0px;z-index:2222222">
 		<form action="/" method="get">
 			@if(Session::get('api')=='http://ocds-test.aws3.tk/search')
@@ -28,6 +29,7 @@
 			@endif
 		</form>
 	</div>
+	--}}
 	<div class="wrapper-main">
 		
 		@yield('html_header')

@@ -320,6 +320,7 @@
 														ID
 														<div class="document-date"><a href="https://public.api.openprocurement.org/api/0/tenders/{{$item->id}}" target="_blank">{{$item->id}}</a></div>
 													</div>
+													{{--
 													@if(Session('api')=='http://ocds-test.aws3.tk/search')
 														<div class="document-info">
 															JSON
@@ -330,6 +331,7 @@
 															<div class="document-date"><a href="https://ips.vdz.ua/ua/purchase_details.htm?id={{$item->id}}" target="_blank">ips.vdz.ua</a></div>
 														</div>
 													@endif
+													--}}
 												</div>
 												<div class="overlay-close"><i class="sprite-close-grey"></i></div>
 											</div>
