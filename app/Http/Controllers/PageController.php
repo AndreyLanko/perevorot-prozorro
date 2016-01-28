@@ -152,6 +152,9 @@ class PageController extends BaseController
 			});
 		}
 		
+		$item->__icon=new \StdClass();
+		$item->__icon=starts_with($item->tenderID, 'ocds-random-ua')?'pen':'mouse';
+
 		$item->is_active_proposal=new \stdClass();
 		$item->is_active_proposal=in_array($item->status, ['active.enquiries', 'active.tendering']);
 

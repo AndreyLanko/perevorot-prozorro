@@ -4,10 +4,10 @@
 			<div class="row clearfix">
 				<div class="col-md-8">
 					{{--dump($item)--}}
-					<a href="/tender/{{$item->tenderID}}/" class="items-list--header"><i class="sprite-mouse-icon"></i><span class="cell">{{$item->title}}</span></a>
+					<a href="/tender/{{$item->tenderID}}/" class="items-list--header"><i class="sprite-{{$item->__icon}}-icon"></i><span class="cell">{{$item->title}}</span></a>
 					<div class="clearfix"></div>
 					<ol class="breadcrumb">
-						<li>Prozorro</li>
+						<li>{{$item->__icon=='pen'?'Паперові закупівлі':'Електронні закупівлі'}}</li>
 						<li class="marked">{{!empty($dataStatus[$item->status])?$dataStatus[$item->status]:'nostatus'}}</li>
 						@if (!empty($item->procuringEntity->address->locality))
 							<li>{{$item->procuringEntity->address->locality}}</li>

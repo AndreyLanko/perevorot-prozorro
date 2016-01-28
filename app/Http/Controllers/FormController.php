@@ -45,6 +45,14 @@ class FormController extends BaseController
 			{
 				$dataStatus=[];
 
+				foreach($data->items as $k=>$item)
+				{
+					$item->__icon=new \StdClass();
+					$item->__icon=starts_with($item->tenderID, 'ocds-random-ua')?'pen':'mouse';
+					
+					$data->items[$k]=$item;
+				}
+				
 				foreach($this->get_status_data() as $one)
 					$dataStatus[$one['id']]=$one['name'];
 

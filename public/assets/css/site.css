@@ -1002,7 +1002,6 @@ body {
     height: 44px;
 }
 .main-result .sprite-pen-icon {
-    background-position: 0 -272px;
     width: 44px;
     height: 44px;
 }
@@ -2441,13 +2440,13 @@ input:checked + .ch {
 .items-list--item .sprite-mouse-icon-a {
 	background-position: 0 -29px;
 }
-.items-list--item .sprite-pen-icon {
-	background-position: 0 -58px;
-}
 .items-list--item .sprite-pen-icon,
 .items-list--item a:hover .sprite-pen-icon, 
 .items-list--item .active .sprite-pen-icon {
 	background-position: 0 -86px;
+}
+.items-list--item .sprite-pen-icon {
+	background-position: 0 -57px;
 }
 .result-all {
 	margin-top: 30px;

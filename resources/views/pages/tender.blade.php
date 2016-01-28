@@ -53,7 +53,7 @@
 						@if (!empty($item->procuringEntity->name))
 							<div class="tender--head--company">{{$item->procuringEntity->name}}</div>
 						@endif
-						<div class="tender--head--inf">Prozorro   <span class="marked">{{!empty($dataStatus[$item->status])?$dataStatus[$item->status]:'nostatus'}}</span>   @if (!empty($item->procuringEntity->address->locality)){{$item->procuringEntity->address->locality}}@endif</div>
+						<div class="tender--head--inf">{{$item->__icon=='pen'?'Паперові закупівлі':'Електронні закупівлі'}}   <span class="marked">{{!empty($dataStatus[$item->status])?$dataStatus[$item->status]:'nostatus'}}</span>   @if (!empty($item->procuringEntity->address->locality)){{$item->procuringEntity->address->locality}}@endif</div>
 					</div>
 					
 					<div class="tender_menu_fixed" data-js="tender_menu_fixed">
