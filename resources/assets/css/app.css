@@ -2185,6 +2185,102 @@ h1.homepage {
 .answer {
 	background: url('../images/answer.png') no-repeat 0 0;
 }
+ul.social-top {
+    padding-left: 0;
+    margin: 0;
+    list-style: none;
+    float: right;
+}
+.social-top > li {
+    display: inline-block;
+    float: left;
+    position: relative;
+}
+.social-top > li > a {
+    color: #1689b3;
+    line-height: 16px;
+    position: relative;
+    display: block;
+    padding: 6px 15px 5px; 
+}
+
+[class^="sprite-social-"], [class^="sprite-header-"] {
+    display: inline-block;
+    background-image: url('../images/sprite-social.png');
+    background-repeat: no-repeat;
+    overflow: hidden;
+    text-indent: -9999px;
+    vertical-align: middle;
+    text-align: left;
+}
+.sprite-header-fb {
+    width: 9px;
+    height: 16px;
+    
+    background-position: -92px -92px;
+}
+.social-top > li > a:hover i.sprite-header-fb, .social-top > li > a:focus i.sprite-header-fb, .social-top > li > a:active i.sprite-header-fb {
+    background-position: -101px -92px;
+}
+.sprite-header-ln {
+    width: 15px;
+    height: 14px;
+    background-position: -92px -108px;
+}
+.social-top > li > a:hover i.sprite-header-ln, .social-top > li > a:focus i.sprite-header-ln, .social-top > li > a:active i.sprite-header-ln {
+    background-position: -107px -108px;
+}
+.sprite-header-youtube {
+    width: 11px;
+    height: 13px;
+    background-position: -163px -92px;
+}
+.social-top > li > a:hover i.sprite-header-youtube, .social-top > li > a:focus i.sprite-header-youtube, .social-top > li > a:active i.sprite-header-youtube {
+    background-position: -174px -92px;
+}
+.footer ul.social-top {
+    padding-left: 0;
+    margin: 0;
+    list-style: none;
+    float: right;
+}
+.footer .social-top > li {
+    display: inline-block;
+    float: left;
+    position: relative;
+}
+.footer .social-top > li > a {
+    color: #1689b3;
+    line-height: 46px;
+    position: relative;
+    display: block;
+    padding: 6px 5px 5px;
+}
+.footer i.sprite-header-fb {
+    width: 46px;
+    height: 46px;
+    background-position: 0 0;
+}
+.footer .social-top > li > a:hover i.sprite-header-fb, .footer .social-top > li > a:focus i.sprite-header-fb, .footer .social-top > li > a:active i.sprite-header-fb {
+    background-position: -46px 0;
+}
+.footer i.sprite-header-ln {
+    width: 46px;
+    height: 46px;
+    background-position: -46px -46px;
+}
+.footer .social-top > li > a:hover i.sprite-header-ln, .footer .social-top > li > a:focus i.sprite-header-ln, .footer .social-top > li > a:active i.sprite-header-ln {
+    background-position: -92px -46px;
+}
+.footer i.sprite-header-youtube {
+    width: 46px;
+    height: 46px;
+    background-position: -163px -46px;
+}
+
+.footer .social-top > li > a:hover i.sprite-header-youtube, .footer .social-top > li > a:focus i.sprite-header-youtube, .footer .social-top > li > a:active i.sprite-header-youtube {
+    background-position: -163px 0;
+}
 @media (max-width: 769px) {
 	.sticky-wrapper {
 		height: auto!important;
