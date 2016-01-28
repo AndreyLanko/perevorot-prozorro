@@ -8,7 +8,7 @@
 					<div class="clearfix"></div>
 					<ol class="breadcrumb">
 						<li>{{$item->__icon=='pen'?'Паперові закупівлі':'Електронні закупівлі'}}</li>
-						<li class="marked">{{!empty($dataStatus[$item->status])?$dataStatus[$item->status]:'nostatus'}}</li>
+						<li class="marked">{{!empty($dataStatus[$item->status])?$dataStatus[$item->status]:'Статус не визначено'}}</li>
 						@if (!empty($item->procuringEntity->address->locality))
 							<li>{{$item->procuringEntity->address->locality}}</li>
 						@endif

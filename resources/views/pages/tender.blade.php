@@ -53,7 +53,7 @@
 						@if (!empty($item->procuringEntity->name))
 							<div class="tender--head--company">{{$item->procuringEntity->name}}</div>
 						@endif
-						<div class="tender--head--inf">{{$item->__icon=='pen'?'Паперові закупівлі':'Електронні закупівлі'}}   <span class="marked">{{!empty($dataStatus[$item->status])?$dataStatus[$item->status]:'nostatus'}}</span>   @if (!empty($item->procuringEntity->address->locality)){{$item->procuringEntity->address->locality}}@endif</div>
+						<div class="tender--head--inf">{{$item->__icon=='pen'?'Паперові закупівлі':'Електронні закупівлі'}}   <span class="marked">{{!empty($dataStatus[$item->status])?$dataStatus[$item->status]:'Статус не визначено'}}</span>   @if (!empty($item->procuringEntity->address->locality)){{$item->procuringEntity->address->locality}}@endif</div>
 					</div>
 					
 					<div class="tender_menu_fixed" data-js="tender_menu_fixed">
@@ -193,34 +193,35 @@
 									</div>
 								</div>
 							@endif
-							
-							<div class="col-sm-9 criterii">{{--tender--platforms border-bottom margin-bottom-xl border-bottom--}}
-								<h3>Критерії вибору переможця</h3>
-								<div class="">
-									<table class="tender--customer margin-bottom tender--customer-left">
-										<tbody>
-											<tr>
-												<td class="col-md-8 col-md-pull-4">Ціна:</td>
-												<td class="col-md-4 col-md-push-8">{{$features_price*100}}%</td>
-											</tr>
-											@if(!empty($item->features))
-												@foreach($item->features as $feature)
-													<tr>
-														<td class="col-md-8 col-md-pull-4">{{$feature->description}}:</td>
-														<td class="col-md-4 col-md-push-8 1">{{$feature->max*100}}%</td>
-													</tr>
-													@foreach($feature->enum as $enum)
+							@if($item->__icon!='pen')
+								<div class="col-sm-9 criterii">{{--tender--platforms border-bottom margin-bottom-xl border-bottom--}}
+									<h3>Критерії вибору переможця</h3>
+									<div class="">
+										<table class="tender--customer margin-bottom tender--customer-left">
+											<tbody>
+												<tr>
+													<td class="col-md-8 col-md-pull-4">Ціна:</td>
+													<td class="col-md-4 col-md-push-8">{{$features_price*100}}%</td>
+												</tr>
+												@if(!empty($item->features))
+													@foreach($item->features as $feature)
 														<tr>
-															<td class="col-md-8 col-md-pull-4 grey-light">{{$enum->title}}:</td>
-															<td class="col-md-4 col-md-push-8 grey-light">{{$enum->value*100}}%</td>
+															<td class="col-md-8 col-md-pull-4">{{$feature->description}}:</td>
+															<td class="col-md-4 col-md-push-8 1">{{$feature->max*100}}%</td>
 														</tr>
+														@foreach($feature->enum as $enum)
+															<tr>
+																<td class="col-md-8 col-md-pull-4 grey-light">{{$enum->title}}:</td>
+																<td class="col-md-4 col-md-push-8 grey-light">{{$enum->value*100}}%</td>
+															</tr>
+														@endforeach
 													@endforeach
-												@endforeach
-											@endif
-										</tbody>
-									</table>
+												@endif
+											</tbody>
+										</table>
+									</div>
 								</div>
-							</div>
+							@endif
 
 							<div class="row row-details col-sm-9">
 								<div class="col-sm-4 margin-bottom">
