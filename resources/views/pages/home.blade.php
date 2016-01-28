@@ -21,7 +21,7 @@
 @include('partials/form')
 
 <div class="container" homepage>
-	<h1 class="size48 margin-bottom margin-top-x">ProZorro – пілотний проект електронної системи публічних закупівель, що дозволяє онлайн продавати Державі.</h1>
+	<h1 class="homepage size48 margin-bottom margin-top-x">ProZorro – пілотний проект електронної системи публічних закупівель, що дозволяє онлайн продавати Державі.</h1>
 
 	<a href="#" class="more2 margin-bottom-x">Докладніше</a>
 	

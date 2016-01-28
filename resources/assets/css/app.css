@@ -2049,6 +2049,9 @@ h1 {
     color: #666;
     cursor: default;
 }
+h1.homepage {
+    text-transform: none;
+}
 .sprite-arrow-right {
     background-position: 0 -414px;
     width: 21px;
