@@ -53,7 +53,11 @@
 						@if (!empty($item->procuringEntity->name))
 							<div class="tender--head--company">{{$item->procuringEntity->name}}</div>
 						@endif
-						<div class="tender--head--inf">{{$item->__icon=='pen'?'Паперові закупівлі':'Електронні закупівлі'}}   <span class="marked">{{!empty($dataStatus[$item->status])?$dataStatus[$item->status]:'Статус не визначено'}}</span>   @if (!empty($item->procuringEntity->address->locality)){{$item->procuringEntity->address->locality}}@endif</div>
+						<div class="tender--head--inf">{{$item->__icon=='pen'?'Паперові закупівлі':'Електронні закупівлі'}}   @if(!empty($dataStatus[$item->status]))<span class="marked">{{$dataStatus[$item->status]}}</span>@endif  
+						@if($item->__icon=='pen')
+							&nbsp;&nbsp;<a href="https://ips.vdz.ua/ua/purchase_details.htm?id={{$item->id}}" target="_blank">Див. оригінал публікації на офіційному порталі</a>
+						@endif
+							 @if (!empty($item->procuringEntity->address->locality)){{$item->procuringEntity->address->locality}}@endif</div>
 					</div>
 					
 					<div class="tender_menu_fixed" data-js="tender_menu_fixed">
@@ -340,49 +344,50 @@
 									</div>
 								</div>
 							</div>
-
-							<div class="container">
-								<div class="col-sm-9">
-									<h3>Запитання</h3>
-								
-									<div class="row questions">
-										@if (!empty($item->questions))
-											<div class="description-wr questions-block">
-												@foreach($item->questions as $k=>$question)
-													<div class="questions-row{{$k>1?' none':' visible'}}">
-														<div><strong>{{$question->title}}</strong></div>
-														<div class="grey-light size12 question-date">{{date('d.m.Y H:i', strtotime($question->date))}}</div>
-														<div class="question-one description-wr margin-bottom{{mb_strlen($question->description)>350?' croped':' open'}}">
-															<div class="description">
-																{{$question->description}}
+							@if($item->__icon!='pen')
+								<div class="container">
+									<div class="col-sm-9">
+										<h3>Запитання</h3>
+									
+										<div class="row questions">
+											@if (!empty($item->questions))
+												<div class="description-wr questions-block">
+													@foreach($item->questions as $k=>$question)
+														<div class="questions-row{{$k>1?' none':' visible'}}">
+															<div><strong>{{$question->title}}</strong></div>
+															<div class="grey-light size12 question-date">{{date('d.m.Y H:i', strtotime($question->date))}}</div>
+															<div class="question-one description-wr margin-bottom{{mb_strlen($question->description)>350?' croped':' open'}}">
+																<div class="description">
+																	{{$question->description}}
+																</div>
+																@if (mb_strlen($question->description)>350)
+																	<a class="search-form--open"><i class="sprite-arrow-down"></i>
+																		<span>розгорнути</span>
+																		<span>згорнути</span>
+																	</a>
+																@endif
 															</div>
-															@if (mb_strlen($question->description)>350)
-																<a class="search-form--open"><i class="sprite-arrow-down"></i>
-																	<span>розгорнути</span>
-																	<span>згорнути</span>
-																</a>
+															@if(!empty($question->answer))
+																<div class="answer"><strong>Відповідь:</strong> <i>{!!nl2br($question->answer)!!}</i></div>
+															@else
+																<div class="answer" style="font-weight: bold">Відповідь відсутня</div>
 															@endif
 														</div>
-														@if(!empty($question->answer))
-															<div class="answer"><strong>Відповідь:</strong> <i>{!!nl2br($question->answer)!!}</i></div>
-														@else
-															<div class="answer" style="font-weight: bold">Відповідь відсутня</div>
-														@endif
-													</div>
-												@endforeach
-												@if (sizeof($item->questions)>2)
-													<a class="question--open"><i class="sprite-arrow-down"></i>
-														<span class="question-up">Розгорнути всі запитання: {{sizeof($item->questions)}}</span>
-														<span class="question-down">Згорнути запитання</span>
-													</a>
-												@endif												
-											</div>
-										@else
-											Запитання відсутні
-										@endif
+													@endforeach
+													@if (sizeof($item->questions)>2)
+														<a class="question--open"><i class="sprite-arrow-down"></i>
+															<span class="question-up">Розгорнути всі запитання: {{sizeof($item->questions)}}</span>
+															<span class="question-down">Згорнути запитання</span>
+														</a>
+													@endif												
+												</div>
+											@else
+												Запитання відсутні
+											@endif
+										</div>
 									</div>
 								</div>
-							</div>
+							@endif
 
 							@if (!empty($item->procuringEntity))
 								<div class="col-sm-9 tender--customer--inner">
