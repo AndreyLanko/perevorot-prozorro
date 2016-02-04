@@ -25,19 +25,27 @@ class PageController extends BaseController
 		}
 		*/
 
-		$last=app('App\Http\Controllers\FormController')->getSearchResults([
-			'procedure=open'
-		]);
+		$last=Cache::remember('get_last_homepage', 60, function()
+		{
+			return app('App\Http\Controllers\FormController')->getSearchResults([
+				'procedure=open'
+			]);
+		});			
 
-		$auctions=app('App\Http\Controllers\FormController')->getSearchResults([
-			'status=active.auction'
-		]);
+		$auctions_items=Cache::remember('get_last_auctions', 60, function()
+		{
+			$auctions=app('App\Http\Controllers\FormController')->getSearchResults([
+				'status=active.auction'
+			]);
 
-		$auctions=json_decode($auctions);
-		$auctions_items=false;
+			$auctions=json_decode($auctions);
+			$auctions_items=false;
+	
+			if(!empty($auctions->items))
+				$auctions_items=array_chunk(array_slice($auctions->items, 0, 9), 3);
 
-		if(!empty($auctions->items))
-			$auctions_items=array_chunk(array_slice($auctions->items, 0, 9), 3);
+			return $auctions_items;
+		});
 		
 		$dataStatus=[];
 
@@ -49,7 +57,7 @@ class PageController extends BaseController
 				->with('dataStatus', $dataStatus)
 				->with('auctions', $auctions_items)
 				->with('numbers', $this->parseBiNumbers(Config::get('bi-numbers')))
-				->with('last', json_decode($last));
+				->with('last', json_decode($last))->render();
 	}
 
 	public function search()
@@ -135,6 +143,20 @@ class PageController extends BaseController
 				$item->features[$k]->enum=$feature->enum;
 			}
 		}
+
+		if($features_price<1 && !empty($item->bids))
+		{
+			foreach($item->bids as $k=>$bid)
+			{
+				$item->bids[$k]->__featured_coef=new \StdClass();
+				$item->bids[$k]->__featured_price=new \StdClass();
+				
+				$featured_coef=trim(number_format(1+array_sum(array_pluck($bid->parameters, 'value'))/$features_price, 10, '.', ' '), '.0');
+
+				$item->bids[$k]->__featured_coef=$featured_coef;
+				$item->bids[$k]->__featured_price=str_replace('.00', '', number_format($bid->value->amount/$featured_coef, 2, '.', ' '));
+			}
+		}
 		
 		$platforms=Config::get('platforms');
 		shuffle($platforms);
@@ -146,9 +168,9 @@ class PageController extends BaseController
 
 		if(!empty($item->bids))
 		{
-			usort($item->bids, function ($a, $b)
+			usort($item->bids, function ($a, $b) use ($features_price)
 			{
-			    return floatval($a->value->amount)>floatval($b->value->amount);
+			    return floatval($features_price?$a->__featured_price:$a->value->amount)>floatval($features_price?$b->__featured_price:$b->value->amount);
 			});
 		}
 		
@@ -286,17 +308,17 @@ class PageController extends BaseController
 	
 	private function get_html()
 	{
-		$html=file_get_contents(Request::root().'/postachalniku/');
-
-		$header=substr($html, strpos($html, '<nav class="navbar navbar-default top-menu">'));
-		$header=substr($header, 0, strpos($header, '<div class="container switcher">'));
-		$header=str_replace('current-menu-item', '', $header);
-
-		$footer=substr($html, strpos($html, '<nav class="navbar navbar-default footer">'));
-		$footer=substr($footer, 0, strpos($footer, '</body>'));
-
-		$html=Cache::remember('get_html', 1, function() use ($header, $footer)
+		$html=Cache::remember('get_html', 60, function()
 		{
+			$html=file_get_contents(Request::root().'/postachalniku/');
+	
+			$header=substr($html, strpos($html, '<nav class="navbar navbar-default top-menu">'));
+			$header=substr($header, 0, strpos($header, '<div class="container switcher">'));
+			$header=str_replace('current-menu-item', '', $header);
+	
+			$footer=substr($html, strpos($html, '<nav class="navbar navbar-default footer">'));
+			$footer=substr($footer, 0, strpos($footer, '</body>'));
+
 			return [
 				'header'=>$header,
 				'footer'=>$footer

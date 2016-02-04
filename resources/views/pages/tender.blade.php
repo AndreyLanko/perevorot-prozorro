@@ -473,11 +473,15 @@
 					<div class="container wide-table">
 						<div class="tender--offers margin-bottom-xl">
 							<h3>Отримані пропозиції</h3>
-							<table class="table table-striped margin-bottom">
+							<table class="table table-striped margin-bottom small-text">
 								<thead>
 									<tr>
 										<th>Учасник</th>
 										<th>Пропозиція</th>
+										@if($features_price<1)
+											<th>Коефіціент</th>
+											<th>Приведена ціна</th>
+										@endif
 										<th>Статус</th>
 										<th>Документи</th>
 									</tr>
@@ -487,6 +491,10 @@
 										<tr>
 											<td>{{$bid->tenderers[0]->name}}</td>
 											<td>{{str_replace('.00', '', number_format($bid->value->amount, 2, '.', ' '))}} {{$bid->value->currency}}{{$bid->value->valueAddedTaxIncluded?' з ПДВ':''}}</td>
+											@if($features_price<1)
+												<td>{{$bid->__featured_coef}}</td>
+												<td>{{$bid->__featured_price}} {{$bid->value->currency}}</td>
+											@endif
 											<td>
 												@if (!empty($item->awards))
 													@foreach($item->awards as $award)
