@@ -166,7 +166,7 @@ class PageController extends BaseController
 		foreach(app('App\Http\Controllers\FormController')->get_status_data() as $one)
 			$dataStatus[$one['id']]=$one['name'];
 
-		if(!empty($item->bids))
+		if($features_price<1 && !empty($item->bids))
 		{
 			usort($item->bids, function ($a, $b) use ($features_price)
 			{

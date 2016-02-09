@@ -58,9 +58,15 @@ class FormController extends BaseController
 
 				$out=View::make('pages.results')
 					->with('total', $data->total)
+					->with('error', false)
 					->with('dataStatus', $dataStatus)
 					->with('start', ((int) Input::get('start') + Config::get('prozorro.page_limit')))
 					->with('items', $data->items)->render();
+			}
+			else
+			{
+				$out=View::make('pages.results')
+					->with('error', !empty($data->error) ? $data->error : false)->render();
 			}
 		}
 
@@ -106,7 +112,9 @@ class FormController extends BaseController
 		$query[]='start='.Input::get('start');
 
 		//curl_setopt($ch, CURLOPT_URL, Session::get('api', Config::get('prozorro.API')).'?'.implode('&', $query));
-		curl_setopt($ch, CURLOPT_URL, Config::get('prozorro.API').'?'.implode('&', $query));
+		$path=Config::get('prozorro.API').'?'.implode('&', $query);
+
+		curl_setopt($ch, CURLOPT_URL, $path);
 
 		$result=curl_exec($ch);
 

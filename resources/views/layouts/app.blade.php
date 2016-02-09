@@ -8,6 +8,8 @@
 	<title>Prozorro</title>
 	<link rel="stylesheet" href="/assets/css/app.css">
 	<link rel="stylesheet" href="/assets/css/site.css">
+	<link rel="stylesheet" href="/pz-wp/wp-content/themes/Prozzoro/css/search.css">
+
 	<!--[if lt IE 9]>
 		<script src="/assets/js/legacy/html5shiv.min.js"></script>
 		<script src="/assets/js/legacy/respond.min.js"></script>
