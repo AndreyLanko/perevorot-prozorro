@@ -505,6 +505,9 @@
 												@if (!empty($item->awards))
 													@foreach($item->awards as $award)
 														@if($award->bid_id==$bid->id)
+															@if(!empty($award->documents))
+																<a href="" class="document-link" data-id="{{$bid->id}}-status">
+															@endif
 															@if($award->status=='unsuccessful')
 																Дискваліфіковано
 															@elseif($award->status=='active')
@@ -513,6 +516,9 @@
 																Очікує рішення
 															@else
 																{{$award->status}}
+															@endif
+															@if(!empty($award->documents))
+																</a>
 															@endif
 														@endif
 													@endforeach
@@ -543,6 +549,10 @@
 												</div>
 											@endforeach
 										@endif
+									</div>
+								@endforeach
+								@foreach($item->bids as $bid)
+									<div class="tender--offers documents" data-id="{{$bid->id}}-status">
 										@if(!empty($item->awards))
 											@foreach($item->awards as $award)
 												@if($award->bid_id==$bid->id && !empty($award->documents))
