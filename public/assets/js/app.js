@@ -25939,6 +25939,16 @@ var APP,
 			},
 
 			js: {
+				home_equal_height: function(_self){
+					var max_height=0,
+						blocks=_self.find('[block]');
+
+					blocks.each(function(i){
+						max_height=Math.max($(this).height(), max_height);
+					});
+
+					blocks.height(max_height);
+				},
 				tender_menu_fixed: function(_self){
 					var offset=$('.wide-table:first').offset().top-50;
 					

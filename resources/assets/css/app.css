@@ -1044,6 +1044,9 @@ a:hover .sprite-pen-icon, .active .sprite-pen-icon, .sprite-pen-icon-a {
 .gray-bg {
     background: #f0f5f2;
 }
+.active-auctions .gray-bg.padding{
+	height:100%;
+}
 .tender .tender--head .container {
     position: relative;
 }
@@ -2280,6 +2283,21 @@ ul.social-top {
 
 .footer .social-top > li > a:hover i.sprite-header-youtube, .footer .social-top > li > a:focus i.sprite-header-youtube, .footer .social-top > li > a:active i.sprite-header-youtube {
     background-position: -163px 0;
+}
+.tender--simmilar--item,
+.table-top-bottom {
+	display: table;
+}
+.table-top-bottom {
+	height: 100%;
+}
+.item-bottom,
+.item-top {
+	display: table-row;
+}
+.item-bottom .item-bottom-cell {
+	display: table-cell;
+	vertical-align: bottom;
 }
 @media (max-width: 769px) {
 	.sticky-wrapper {

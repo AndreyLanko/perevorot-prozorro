@@ -34,27 +34,33 @@
 	@if(!empty($last->items))
 		<h1 class="size48 margin-top">Щойно оголошені закупівлі</h1>
 		
-		<div class="tender--simmilar tender-type2">
+		<div class="tender--simmilar tender-type2" data-js="home_equal_height">
 			<div class="row">
 				@foreach($last->items as $i=>$item)
 					@if($i<3)
 						<div class="col-md-4 col-sm-6">
-							<div class="tender--simmilar--item gray-bg padding margin-bottom">
+							<div class="tender--simmilar--item gray-bg padding margin-bottom" block>
 								{{--
 								<div class="tender--simmilar--item--control">
 									<a href="#"><i class="sprite-star"></i></a>
 									<a href="#"><i class="sprite-close-blue"></i></a>
 								</div>
 								--}}
-								<div class="green tender--simmilar--item--cost">{{number_format($item->value->amount, 0, '', ' ')}} <span class="small">{{$item->value->currency}}</span></div>
-								<a href="/tender/{{$item->tenderID}}/" class="title">{{$item->title}}</a>
-								<div class="tender--legend">Prozorro <span class="marked">{{!empty($dataStatus[$item->status])?$dataStatus[$item->status]:'nostatus'}}</span>    @if (!empty($item->procuringEntity->address->locality)){{$item->procuringEntity->address->locality}}@endif</div>
-								@if (!empty($item->procuringEntity->name))
-									<div class="tender--simmilar--text margin-bottom">
-										<strong>Компанія:</strong> {{$item->procuringEntity->name}}
+								<div class="item--top">
+									<div class="green tender--simmilar--item--cost">{{number_format($item->value->amount, 0, '', ' ')}} <span class="small">{{$item->value->currency}}</span></div>
+									<a href="/tender/{{$item->tenderID}}/" class="title">{{str_limit($item->title, 60)}}</a>
+								</div>
+								<div class="item-bottom">
+									<div class="item-bottom-cell">
+									<div class="tender--legend">Prozorro <span class="marked">{{!empty($dataStatus[$item->status])?$dataStatus[$item->status]:'nostatus'}}</span>    @if (!empty($item->procuringEntity->address->locality)){{$item->procuringEntity->address->locality}}@endif</div>
+									@if (!empty($item->procuringEntity->name))
+										<div class="tender--simmilar--text margin-bottom">
+											<strong>Компанія:</strong> {{$item->procuringEntity->name}}
+										</div>
+									@endif
+									<a href="/tender/{{$item->tenderID}}/"><i class="sprite-arrow-right"></i> Детальніше</a>
 									</div>
-								@endif
-								<a href="/tender/{{$item->tenderID}}/"><i class="sprite-arrow-right"></i> Детальніше</a>
+								</div>
 							</div>
 						</div>
 					@endif
@@ -70,19 +76,33 @@
 	@endif
 
 	@if($auctions)
-		<h1 class="size48 margin-top-x">Сьогоднішні аукціони</h1>
+		<h1 class="size48 margin-top-x">Проводяться аукціони</h1>
 		
-		<div class="row size14 margin-bottom">
+		<div class="active-auctions row size14 margin-bottom" data-js="home_equal_height">
 			@foreach($auctions as $auction)
 				<div class="col-md-4">
 					{{--<h4 class="center">Відбуваються прямо зараз</h4>--}}
 					@foreach($auction as $item)
-						<div class="margin-bottom">
+						<div class="margin-bottom" block>
 							<div class="gray-bg padding">
-								<p><a href="/tender/{{$item->tenderID}}/" class="size18">{{$item->title}}</a></p>
-								участників: {{!empty($item->bids)?sizeof($item->bids):0}}<br />
-								Поточна ставка: <span class="marked">? грн</span><br />
-								Почався ? год тому
+								<div class="table-top-bottom">
+									<div class="item-top">
+										<p><a href="/tender/{{$item->tenderID}}/" class="size18">{{str_limit($item->title, 60)}}</a></p>
+										@if(!empty($item->procuringEntity->identifier->legalName))
+										<p><b>Компанія:</b> {{$item->procuringEntity->identifier->legalName}}</p>
+										@endif
+									</div>
+									<div class="item-bottom">
+										<div class="item-bottom-cell">
+											
+											@if (!empty($item->numberOfBids))
+												Участників: {{$item->numberOfBids}}<br />
+											@endif
+											{{--Поточна ставка: <span class="marked">? грн</span><br />--}}
+											Початок: {{date('d.m.Y H:i', strtotime($item->auctionPeriod->startDate))}}
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					@endforeach
