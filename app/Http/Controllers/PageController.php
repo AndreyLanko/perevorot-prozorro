@@ -117,6 +117,14 @@ class PageController extends BaseController
 			}
 			else
 				$error=$data->error;
+		
+			if($error)
+			{
+				return view('pages/tender')
+					->with('html', $this->get_html())
+					->with('item', false)
+					->with('error', $error);
+			}
 		}
 
 		$features_price=1;

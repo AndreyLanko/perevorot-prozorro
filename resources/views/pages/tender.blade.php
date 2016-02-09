@@ -12,11 +12,15 @@
 @endsection
 
 @section('html_header')
-	{!!$html['header']!!}
+	@if (!empty($html))
+		{!!$html['header']!!}
+	@endif
 @endsection
 
 @section('html_footer')
-	{!!$html['footer']!!}
+	@if (!empty($html))
+		{!!$html['footer']!!}
+	@endif
 @endsection
 
 @section('content')
@@ -792,11 +796,11 @@
 		</div>
 	</div>
 @elseif ($error)
-	<div style="padding:20px 20px 40px 10px;">
+	<div style="padding:20px 20px 40px 10px;text-align:center">
 		API ERROR: {{$error}}
 	</div>
 @else
-	<div style="padding:20px 20px 40px 10px;">
+	<div style="padding:20px 20px 40px 10px;text-align:center">
 		Тендер не знайдено
 	</div>
 @endif
