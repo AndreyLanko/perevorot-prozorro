@@ -126,6 +126,36 @@ class PageController extends BaseController
 					->with('error', $error);
 			}
 		}
+		
+		if(!empty($item->contracts[0]->documents))
+		{
+			$item->__contracts=new \StdClass();
+			$documents=[];
+
+			foreach($item->contracts as $contract)
+			{
+				foreach($contract->documents as $document)
+				{
+					$document->dateSigned=new \StdClass();
+					$document->dateSigned=$contract->dateSigned;
+
+					$document->status=new \StdClass();
+					$document->status=$contract->status;
+					
+					$documents[]=$document;
+				}
+			}
+
+			usort($documents, function ($a, $b)
+			{
+				$datea = new DateTime($a->datePublished);
+				$dateb = new DateTime($b->datePublished);
+
+			    return $datea>$dateb;
+			});
+
+			$item->__documents=$documents;
+		}
 
 		$features_price=1;
 

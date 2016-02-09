@@ -207,18 +207,18 @@
 									<div class="">
 										<table class="tender--customer margin-bottom tender--customer-left">
 											<tbody>
-												<tr>
+												<tr class="main-row">
 													<td class="col-md-8 col-md-pull-4">Ціна:</td>
 													<td class="col-md-4 col-md-push-8">{{$features_price*100}}%</td>
 												</tr>
 												@if(!empty($item->features))
 													@foreach($item->features as $feature)
-														<tr>
+														<tr class="main-row">
 															<td class="col-md-8 col-md-pull-4">{{$feature->description}}:</td>
 															<td class="col-md-4 col-md-push-8 1">{{$feature->max*100}}%</td>
 														</tr>
 														@foreach($feature->enum as $enum)
-															<tr>
+															<tr class="add-row">
 																<td class="col-md-8 col-md-pull-4 grey-light">{{$enum->title}}:</td>
 																<td class="col-md-4 col-md-push-8 grey-light">{{$enum->value*100}}%</td>
 															</tr>
@@ -286,10 +286,10 @@
 													до {{date('d.m.Y H:i', strtotime($item->tenderPeriod->endDate))}}
 												</li>
 											@endif
-											@if(!empty($item->enquiryPeriod->endDate))
+											@if(!empty($item->auctionPeriod->startDate))
 												<li>
 													<strong>Початок аукціону:</strong><br>
-													{{date('d.m.Y H:i', strtotime($item->enquiryPeriod->endDate))}}
+													{{date('d.m.Y H:i', strtotime($item->auctionPeriod->startDate))}}
 												</li>
 											@endif
 										</ul>
@@ -494,10 +494,12 @@
 									@foreach($item->bids as $bid)
 										<tr>
 											<td>{{$bid->tenderers[0]->name}}</td>
-											<td>{{str_replace('.00', '', number_format($bid->value->amount, 2, '.', ' '))}} {{$bid->value->currency}}{{$bid->value->valueAddedTaxIncluded?' з ПДВ':''}}</td>
+											<td>{{str_replace('.00', '', number_format($bid->value->amount, 2, '.', ' '))}} 
+												<div class="td-small grey-light">{{$bid->value->currency}}{{$bid->value->valueAddedTaxIncluded?' з ПДВ':''}}</div>
+											</td>
 											@if($features_price<1)
 												<td>{{$bid->__featured_coef}}</td>
-												<td>{{$bid->__featured_price}} {{$bid->value->currency}}</td>
+												<td class="1">{{$bid->__featured_price}}</td>
 											@endif
 											<td>
 												@if (!empty($item->awards))
@@ -561,38 +563,32 @@
 						</div>
 					</div>
 				@endif
-				@if(!empty($item->awards))
+
+				@if(!empty($item->__documents))
 					<div class="container wide-table tender--platforms">
 						<div class="margin-bottom-xl">
 							<h3>Укладений договір</h3>
-							<table class="table table-striped margin-bottom">
+							<table class="table table-striped margin-bottom prev{{$features_price<1?'-five-col':''}}">
 									<thead>
 										<tr>
 											<th>Контракт</th>
 											<th>Статус</th>
+											<th>Дата контракту</th>
 											<th>Опубліковано</th>
 										</tr>
 									</thead>
 									<tbody>
-										@foreach($item->awards as $award)
-											@if(!empty($award->contracts))
-												@foreach($award->contracts as $contract)
-													@if(!empty($contract->documents))
-														@foreach($contract->documents as $document)
-															<tr>
-																<td><a href="{{$document->url}}" target="_blank">{{$document->title}}</a></td>
-																<td>{{$contract->status}}</td>
-																<td>
-																	<div>{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
-																	@if(strtotime($document->datePublished) != strtotime($document->dateModified))
-																		<div class="tender-date">Змінено: {{date('d.m.Y H:i', strtotime($document->dateModified))}}</div>
-																	@endif
-																</td>
-															</tr>
-														@endforeach
-													@endif
-												@endforeach
-											@endif
+										@foreach($item->__documents as $document)
+											<tr>
+												<td><a href="{{$document->url}}" target="_blank">{{$document->title}}</a></td>
+												<td>{{$document->status}}</td>
+												<td>
+													<div>{{date('d.m.Y H:i', strtotime($document->dateSigned))}}</div>
+												</td>
+												<td>
+													<div>{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+												</td>
+											</tr>
 										@endforeach
 									</tbody>
 							</table>

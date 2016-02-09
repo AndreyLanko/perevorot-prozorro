@@ -1522,7 +1522,7 @@ html, body {
 	display: block;
 }
 .tender--offers .document-link {
-	font-size: 0.87em;
+	/*font-size: 0.87em;*/
 }
 .overlay {
     top: 0;
@@ -1861,6 +1861,7 @@ input:checked + .ch {
 .selectize-dropdown-content {
 	max-height: 225px;
 }
+
 @media (max-width: 767px) {
 	.tender .tender--description--cost--wr {
 		padding-left: 0;
@@ -1877,7 +1878,8 @@ input:checked + .ch {
 .tender--platforms--list .item .img-wr a img {
 	width: 100%;
 }
-.tender--offers .table th:not(:first-child) {
+.tender--offers .table th,
+.tender--platforms .table th {
 	text-align: left;
 }
 .tender .tender--head .tender--head--title,
@@ -2299,6 +2301,48 @@ ul.social-top {
 	display: table-cell;
 	vertical-align: bottom;
 }
+.tender--offers .table th {
+	font-size: .88889em;
+}
+.tender--offers tr td:last-child {
+	font-size: .7743em;
+}
+.tender--offers .table td:not(:last-child) {
+	font-size: .7743em;
+}
+.tender--offers .table .td-small {
+	font-size: 12px;
+}
+.tender--offers .table th:first-child {
+	width: 31.5%;
+}
+.tender--offers .table th {
+	width: 12%;
+}
+.wide-table.tender--platforms th:first-child{
+	width: 31.5%;
+}
+.wide-table.tender--platforms th {
+	width: 12%;
+}
+.wide-table.tender--platforms .prev-five-col th:first-child{
+	width: 55.5%;
+}
+ .tender .criterii .tender--customer td {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+ .tender .criterii .tender--customer .main-row + .add-row td {
+	padding-top: 0;
+ }
+ .tender .criterii .tender--customer .add-row + .main-row td {
+	  padding-top: 20px;
+}
+.tender .criterii .tender--customer .main-row td {
+	padding-top: 15px;
+	padding-bottom: 10px;
+}
+
 @media (max-width: 769px) {
 	.sticky-wrapper {
 		height: auto!important;
