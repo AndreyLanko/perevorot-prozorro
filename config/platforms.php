@@ -29,7 +29,7 @@ return [
 	[
 		'name'=>'ПриватМаркет',
 		'slug'=>'privatmarket',
-		'href'=>'https://privatmarket.ua/business/tenders#?TenderID={tenderID}',
+		'href'=>'https://privatmarket.ua/business/tenders?TenderID={tenderID}',
 		'contractor'=>true
 	],
 	[

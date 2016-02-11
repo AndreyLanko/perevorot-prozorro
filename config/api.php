@@ -1,0 +1,7 @@
+<?php
+
+return [
+	'prozorro'=>env('PROZORRO_API'),
+	'ocds'=>'http://ocds-test.aws3.tk/search',
+	'sandbox'=>'http://sandbox.aws3.tk/search'
+];

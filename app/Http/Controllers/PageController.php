@@ -12,19 +12,16 @@ class PageController extends BaseController
 {
 	public function home()
 	{
-		/*
-		if(!empty(Input::get('api')))
+		foreach(Config::get('api') as $api=>$url)
 		{
-			switch((int) Input::get('api'))
+			if(Input::get($api))
 			{
-				case 1:	Session::set('api', 'http://prozorro.aws3.tk/search'); break;
-				case 2:	Session::set('api', 'http://ocds-test.aws3.tk/search'); break;
+				Session::set('api', $url);
+
+				return redirect('/');
 			}
-
-			return redirect('/');			
 		}
-		*/
-
+			
 		$last=Cache::remember('get_last_homepage', 60, function()
 		{
 			return app('App\Http\Controllers\FormController')->getSearchResults([
@@ -148,8 +145,8 @@ class PageController extends BaseController
 
 			usort($documents, function ($a, $b)
 			{
-				$datea = new DateTime($a->datePublished);
-				$dateb = new DateTime($b->datePublished);
+				$datea = new \DateTime($a->datePublished);
+				$dateb = new \DateTime($b->datePublished);
 
 			    return $datea>$dateb;
 			});
@@ -208,7 +205,14 @@ class PageController extends BaseController
 		{
 			usort($item->bids, function ($a, $b) use ($features_price)
 			{
-			    return floatval($features_price?$a->__featured_price:$a->value->amount)>floatval($features_price?$b->__featured_price:$b->value->amount);
+			    return floatval($a->__featured_price)>floatval($b->__featured_price);
+			});
+		}
+		elseif(!empty($item->bids))
+		{
+			usort($item->bids, function ($a, $b) use ($features_price)
+			{
+			    return floatval($a->value->amount)>floatval($b->value->amount);
 			});
 		}
 		
@@ -264,8 +268,8 @@ class PageController extends BaseController
 	
 	public function getSearchResults($query)
 	{
-		//$url=Session::get('api', Config::get('prozorro.API')).'?'.implode('&', $query);
-		$url=Config::get('prozorro.API').'?'.implode('&', $query);
+		$url=Session::get('api', Config::get('prozorro.API')).'?'.implode('&', $query);
+		//$url=Config::get('prozorro.API').'?'.implode('&', $query);
 
 		$header=get_headers($url)[0];
 

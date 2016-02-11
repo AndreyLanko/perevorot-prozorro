@@ -17,21 +17,22 @@
 	@yield('head')
 </head>
 <body>
-	{{--
-	<div style="position:fixed;font-size:10px;top:0px;right:0px;z-index:2222222">
-		<form action="/" method="get">
-			@if(Session::get('api')=='http://ocds-test.aws3.tk/search')
-				<input type="button" value="ocds-test" disabled>
-				<input type="submit" value="prozorro">
-				<input type="hidden" value="1" name="api">
-			@else
-				<input type="submit" value="ocds-test">
-				<input type="button" value="prozorro" disabled>
-				<input type="hidden" value="2" name="api">
-			@endif
-		</form>
-	</div>
-	--}}
+	@if(sizeof(Config::get('api'))>1)
+		<style>
+			.api-switcher input[disabled]{
+				opacity: .5;
+			}
+		</style>
+
+		<div class="api-switcher" style="position:fixed;font-size:10px;top:7px;left:7px;z-index:2222222">
+			<form action="/" method="get">
+				@foreach(Config::get('api') as $api=>$url)
+					<input type="submit" name="{{$api}}" value="{{$api}}"{{Session::get('api')==$url ? ' disabled':''}}>
+				@endforeach
+			</form>
+		</div>
+	@endif
+
 	<div class="wrapper-main">
 		
 		@yield('html_header')
