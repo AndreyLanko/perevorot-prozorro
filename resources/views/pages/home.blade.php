@@ -52,10 +52,11 @@
 								</div>
 								<div class="item-bottom">
 									<div class="item-bottom-cell">
-									<div class="tender--legend">Prozorro <span class="marked">{{!empty($dataStatus[$item->status])?$dataStatus[$item->status]:'nostatus'}}</span>    @if (!empty($item->procuringEntity->address->locality)){{$item->procuringEntity->address->locality}}@endif</div>
+									{{--<div class="tender--legend">Prozorro <span class="marked">{{!empty($dataStatus[$item->status])?$dataStatus[$item->status]:'nostatus'}}</span>    --}}
+									<div class="tender--legend">@if (!empty($item->procuringEntity->address->locality)){{$item->procuringEntity->address->locality}}@endif</div>
 									@if (!empty($item->procuringEntity->name))
 										<div class="tender--simmilar--text margin-bottom">
-											<strong>Компанія:</strong> {{$item->procuringEntity->name}}
+											<strong>Компанія:</strong> {{str_limit($item->procuringEntity->name, 70)}}
 										</div>
 									@endif
 									<a href="/tender/{{$item->tenderID}}/"><i class="sprite-arrow-right"></i> Детальніше</a>

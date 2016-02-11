@@ -111,8 +111,7 @@ class FormController extends BaseController
 
 		$query[]='start='.Input::get('start');
 
-		//curl_setopt($ch, CURLOPT_URL, Session::get('api', Config::get('prozorro.API')).'?'.implode('&', $query));
-		$path=Config::get('prozorro.API').'?'.implode('&', $query);
+		$path=Session::get('api', Config::get('prozorro.API')).'?'.implode('&', $query);
 
 		curl_setopt($ch, CURLOPT_URL, $path);
 

@@ -12,15 +12,20 @@ class PageController extends BaseController
 {
 	public function home()
 	{
-		foreach(Config::get('api') as $api=>$url)
+		if(sizeof(Config::get('api'))>1)
 		{
-			if(Input::get($api))
+			foreach(Config::get('api') as $api=>$url)
 			{
-				Session::set('api', $url);
-
-				return redirect('/');
+				if(Input::get($api))
+				{
+					Session::set('api', $url);
+	
+					return redirect('/');
+				}
 			}
 		}
+		else
+			Session::forget('api');
 			
 		$last=Cache::remember('get_last_homepage', 60, function()
 		{
@@ -115,6 +120,9 @@ class PageController extends BaseController
 			else
 				$error=$data->error;
 		
+			if(!$item)
+				$error='Тендер не найден'.(sizeof(Config::get('api'))>1?', попробуйте другой API':'');
+
 			if($error)
 			{
 				return view('pages/tender')
@@ -123,7 +131,8 @@ class PageController extends BaseController
 					->with('error', $error);
 			}
 		}
-		
+
+	
 		if(!empty($item->contracts[0]->documents))
 		{
 			$item->__contracts=new \StdClass();
@@ -215,7 +224,7 @@ class PageController extends BaseController
 			    return floatval($a->value->amount)>floatval($b->value->amount);
 			});
 		}
-		
+
 		$item->__icon=new \StdClass();
 		$item->__icon=starts_with($item->tenderID, 'ocds-random-ua')?'pen':'mouse';
 
