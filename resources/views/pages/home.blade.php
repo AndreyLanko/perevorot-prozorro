@@ -1,5 +1,14 @@
 @extends('layouts/app')
 
+@section('head')
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="prozorro.org">
+	<meta property="og:title" content="PROZORRO">
+	<meta property="og:url" content="{{Request::root()}}/{{Request::path()}}">
+	<meta property="og:image" content="{{Request::root()}}/assets/images/social/fb.png">
+	<meta property="og:description" content="{{htmlentities('ProZorro – пілотний проект електронної системи публічних закупівель, що дозволяє онлайн продавати Державі.', ENT_QUOTES)}}">
+@endsection
+
 @section('html_header')
 	{!!$html['header']!!}
 @endsection
