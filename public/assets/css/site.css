@@ -1534,6 +1534,10 @@ a:hover .sprite-pen-icon, .active .sprite-pen-icon, .sprite-pen-icon-a {
 	.main-menu .navbar-nav {
 	    margin: 0;
 	}
+	.wrapper-main .top-menu {
+		display: none;
+		background-color: #fff;
+	}
 	.inline-navbar.navbar-nav {
 	    margin-left: 0;
 	    margin-right: 0;
@@ -2871,6 +2875,7 @@ ul.social-top {
 		display: none;
 	}
 	.navbar-brand {
+		margin-top: 0;
 		padding-top: 5px;
 		padding-bottom: 5px;
 	}
@@ -2883,7 +2888,75 @@ ul.social-top {
 	    height: auto;
 	    display: block;
 	}
-	
+	table.table-sm {
+		margin-bottom: 0px;
+	}
+	table.table-sm,
+	table.table-sm tbody,
+	table.table-sm tr {
+		display: block;
+		width: 100%;
+	} 
+	table.table-sm tr {
+		overflow: hidden;
+		text-align: center;
+	}
+	table.table-sm td {
+		display: inline-block;
+		width: 49%;
+		margin-bottom: 30px;
+	}
+	table.table-sm td:nth-child(2n+1) {
+		clear: both;
+	}
+	table.table-sm td:last-child {
+		margin-bottom: 0;
+	}
+	.tender--simmilar .tender--simmilar--item {
+		width: 100%;
+	}
+	.mob-hide,
+	.active-auctions .col-md-4:not(:first-child) {
+		display: none
+	}
+	.block {
+		width: 100%;	
+	}
+	.block .selectize-control {
+		margin-top: 0;
+		width: 79%;
+	}
+	.block .selectize-input [data-value] {
+		white-space: nowrap; 
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	}
+	.block-key {
+		white-space: nowrap;
+		width: 20%;
+        margin-right: 1%;
+        text-overflow: ellipsis;
+		overflow: hidden;
+	}
+	.block-date .block-key {
+		text-overflow: ellipsis;
+        overflow: hidden;
+	}
+	.block .selectize-control {
+		position: initial;
+	}
+	.block:not(.block-date) .selectize-dropdown {
+		width: 100%!important;
+		min-width: 100%;
+		top: 39px!important;
+		left: 0!important;
+		left: -2px!important;
+	    padding-left: 1px;
+	    padding-right: 1px;
+	    -webkit-box-sizing: content-box;
+	    -moz-box-sizing: content-box;
+	    box-sizing: content-box;
+	}
 }
 @media (max-width: 768px) {
 	.tender--description .col-sm-9,

@@ -456,16 +456,18 @@
 								Оберіть один з майданчиків, щоб прийняти участь у аукціоні
 								<div class="tender--platforms--list clearfix">
 									@foreach($platforms as $platform)
-										<div class="item">
-											<div class="img-wr">
-												<a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank">
-													<img src="/assets/images/platforms/{{$platform['slug']}}.png" alt="{{$platform['name']}}" title="{{$platform['name']}}">
-												</a>
+										@if ($platform['tender'])
+											<div class="item">
+												<div class="img-wr">
+													<a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank">
+														<img src="/assets/images/platforms/{{$platform['slug']}}.png" alt="{{$platform['name']}}" title="{{$platform['name']}}">
+													</a>
+												</div>
+												<div class="border-hover">
+													<div class="btn-wr"><a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank" class="btn">Прийняти участь</a></div>
+												</div>
 											</div>
-											<div class="border-hover">
-												<div class="btn-wr"><a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank" class="btn">Прийняти участь</a></div>
-											</div>
-										</div>
+										@endif
 									@endforeach
 								</div>
 								{{--<a href="#" class="more margin-bottom"><i class="sprite-arrow-down"></i> Показати всіх</a>--}}
@@ -583,7 +585,7 @@
 										<tr>
 											<th>Контракт</th>
 											<th>Статус</th>
-											<th>Дата контракту</th>
+											<th>{{--Дата контракту--}}</th>
 											<th>Опубліковано</th>
 										</tr>
 									</thead>
@@ -593,7 +595,11 @@
 												<td><a href="{{$document->url}}" target="_blank">{{$document->title}}</a></td>
 												<td>{{$document->status}}</td>
 												<td>
-													<div>{{date('d.m.Y H:i', strtotime($document->dateSigned))}}</div>
+													{{--
+													@if (!empty($document->dateSigned))
+														<div>{{date('d.m.Y H:i', strtotime($document->dateSigned))}}</div>
+													@endif
+													--}}
 												</td>
 												<td>
 													<div>{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>

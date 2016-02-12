@@ -65,7 +65,8 @@ class PageController extends BaseController
 	public function search()
 	{
 		$preselected_values=[];
-		$query_string=Request::server('QUERY_STRING');
+		$query_string=trim(Request::server('QUERY_STRING'), '&');
+
 		$result='';
 
 		if($query_string)
@@ -96,7 +97,7 @@ class PageController extends BaseController
 		return view('pages/search')
 				->with('html', $this->get_html())
 				->with('preselected_values', json_encode($preselected_values, JSON_UNESCAPED_UNICODE))
-				->with('highlight', json_encode($this->getSearchResultsHightlightArray(Request::server('QUERY_STRING')), JSON_UNESCAPED_UNICODE))
+				->with('highlight', json_encode($this->getSearchResultsHightlightArray(trim(Request::server('QUERY_STRING'), '&')), JSON_UNESCAPED_UNICODE))
 				->with('result', $result);
 	}
 	
@@ -142,8 +143,11 @@ class PageController extends BaseController
 			{
 				foreach($contract->documents as $document)
 				{
-					$document->dateSigned=new \StdClass();
-					$document->dateSigned=$contract->dateSigned;
+					if(!empty($contract->dateSigned))
+					{
+						$document->dateSigned=new \StdClass();
+						$document->dateSigned=$contract->dateSigned;
+					}
 
 					$document->status=new \StdClass();
 					$document->status=$contract->status;

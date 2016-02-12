@@ -158,11 +158,11 @@
 		</tbody>
 	</table>
 	
-	<hr class="margin-bottom-x" />
+	<hr class="margin-bottom-x mob-hide" />
 	
-	<h1 class="size48 margin-bottom-x">Рейтинг замовників</h1>
+	<h1 class="size48 margin-bottom-x mob-hide">Рейтинг замовників</h1>
 	
-	<div class="center margin-bottom-x table-monitor">
+	<div class="center margin-bottom-x table-monitor mob-hide">
 		<img src="http://bi.prozorro.org/images/000002_UjcvFH.png" alt="Chart" >
 		{{--<img src="images/chart.jpg" alt="Chart" />--}}
 	</div>

@@ -63,7 +63,12 @@ class FormController extends BaseController
 					->with('start', ((int) Input::get('start') + Config::get('prozorro.page_limit')))
 					->with('items', $data->items)->render();
 			}
-			else
+			elseif(property_exists($data, 'items') && is_array($data->items) && !sizeof($data->items))
+			{
+				$out=View::make('pages.results')
+					->with('error', 'Жодних результатів')->render();
+			}
+			elseif(!empty($data->error))
 			{
 				$out=View::make('pages.results')
 					->with('error', !empty($data->error) ? $data->error : false)->render();
@@ -141,7 +146,7 @@ class FormController extends BaseController
 			$data_function='get_'.$type.'_data';
 			$data=$this->$data_function();
 
-			$query=strtolower(Input::get('query'));
+			$query=mb_strtolower(Input::get('query'));
 			$out=[];
 
 			foreach($data as $one)
@@ -171,7 +176,7 @@ class FormController extends BaseController
 			$data_function='get_'.$type.'_data';
 			$data=$this->$data_function();
 			
-			$query=Input::get('query');
+			$query=mb_strtolower(Input::get('query'));
 
 			foreach($data as $one)
 			{

@@ -19,6 +19,10 @@ class JsonController extends BaseController
 				unset($platforms[$k]);
 			else
 				unset($platforms[$k]['contractor']);
+
+            $url=parse_url($item['href']);
+
+            $platforms[$k]['href']=$url['scheme'].'://'.$url['host'].$url['path'];
 		};
 
 		return response()->json($platforms, 200, [

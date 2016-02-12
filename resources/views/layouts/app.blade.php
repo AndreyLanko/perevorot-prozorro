@@ -22,6 +22,11 @@
 			.api-switcher input[disabled]{
 				opacity: .5;
 			}
+			@media (max-width: 769px) {
+				.api-switcher{
+					display: none;
+				}
+			}
 		</style>
 
 		<div class="api-switcher" style="position:fixed;font-size:10px;top:7px;left:7px;z-index:2222222">
