@@ -26,7 +26,7 @@ return [
 	[
 		'name'=>'E-tender',
 		'slug'=>'etender',
-		'href'=>'http://e-tender.biz/?TenderID={tenderID}',
+		'href'=>'https://bid.e-tender.biz/tender?tenderid={tenderID}',
 		'contractor'=>true,
 		'tender'=>true
 	],
