@@ -63,7 +63,7 @@ class FormController extends BaseController
 					->with('start', ((int) Input::get('start') + Config::get('prozorro.page_limit')))
 					->with('items', $data->items)->render();
 			}
-			elseif(property_exists($data, 'items') && is_array($data->items) && !sizeof($data->items))
+			elseif(empty($data) || (property_exists($data, 'items') && is_array($data->items) && !sizeof($data->items)))
 			{
 				$out=View::make('pages.results')
 					->with('error', 'Жодних результатів')->render();

@@ -23,7 +23,9 @@
 				<div class="nav navbar-nav inline-navbar">
 					<div id="buttons" class="buttons"></div>
 				</div>
-				<a href="" class="pull-right">Як користуватись пошуком?</a>
+				{{--
+				    <a href="" class="pull-right">Як користуватись пошуком?</a>
+				--}}
 			</div>
 		</div>
 	</div>
