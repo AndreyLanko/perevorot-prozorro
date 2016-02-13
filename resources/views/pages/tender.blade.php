@@ -175,15 +175,17 @@
 														{{!empty($one->quantity)?$one->quantity.' шт.':''}}
 													</div>
 												</div>
-												<div class="col-md-8 col-md-pull-4 description-wr{{mb_strlen($one->description)>350?' croped':' open'}}">
-													<div class="tender--description--text description">
-														{!!nl2br($one->description)!!}
-													</div>
-													@if (mb_strlen($one->description)>350)
-														<a class="search-form--open"><i class="sprite-arrow-down"></i>
-															<span>розгорнути</span>
-															<span>згорнути</span>
-														</a>
+												<div class="col-md-8 col-md-pull-4 description-wr{{!empty($one->description) && mb_strlen($one->description)>350?' croped':' open'}}">
+													@if (!empty($one->description))
+        													<div class="tender--description--text description">
+        														{!!nl2br($one->description)!!}
+        													</div>
+        													@if (mb_strlen($one->description)>350)
+        														<a class="search-form--open"><i class="sprite-arrow-down"></i>
+        															<span>розгорнути</span>
+        															<span>згорнути</span>
+        														</a>
+        													@endif
 													@endif
 													@if (!empty($one->classification))
 														<div class="tender-date">Код СPV: {{$one->classification->id}} — {{$one->classification->description}}</div>
