@@ -7,7 +7,7 @@
 		<meta property="og:title" content="{{htmlentities($item->procuringEntity->name, ENT_QUOTES)}}">
 		<meta property="og:url" content="{{Request::root()}}/{{Request::path()}}">
 		<meta property="og:image" content="{{Request::root()}}/assets/images/social/fb.png">
-		<meta property="og:description" content="{{htmlentities($item->title, ENT_QUOTES)}}">
+		<meta property="og:description" content="{{!empty($item->title) ? htmlentities($item->title, ENT_QUOTES) : 'Без назви'}}">
 	@endif
 @endsection
 
@@ -30,7 +30,7 @@
 	<div class="tender" data-js="tender">
 		<div class="tender--head gray-bg">
 			<div class="container">
-				<div class="tender--head--title col-sm-9">{{$item->title}}</div>
+				<div class="tender--head--title col-sm-9">{{!empty($item->title) ? $item->title : 'Без назви'}}</div>
 	
 				{{--
 				<div class="breadcrumb_custom clearfix">

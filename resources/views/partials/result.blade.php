@@ -4,7 +4,7 @@
 			<div class="row clearfix">
 				<div class="col-md-8">
 					{{--dump($item)--}}
-					<a href="/tender/{{$item->tenderID}}/" class="items-list--header"><i class="sprite-{{$item->__icon}}-icon"></i><span class="cell">{{$item->title}}</span></a>
+                    <a href="/tender/{{$item->tenderID}}/" class="items-list--header"><i class="sprite-{{$item->__icon}}-icon"></i><span class="cell">{{!empty($item->title) ? $item->title : 'Без назви'}}</span></a>
 					<div class="clearfix"></div>
 					<ol class="breadcrumb">
 						<li>{{$item->__icon=='pen'?'Паперові закупівлі':'Електронні закупівлі'}}</li>
