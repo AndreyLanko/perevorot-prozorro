@@ -36,7 +36,20 @@ class Handler extends ExceptionHandler {
 	 */
 	public function render($request, Exception $e)
 	{
-		return parent::render($request, $e);
-	}
+        if($e instanceof \Symfony\Component\Debug\Exception\FatalErrorException) {
+            $statusCode = 500;
+        }
 
+        if(($e instanceof NotFoundHttpException || $e instanceof MethodNotAllowedHttpException) && view()->exists('errors.'.$e->getStatusCode())) {
+            $statusCode=$e->getStatusCode();
+            
+            return response()->view('errors.'.$e->getStatusCode(), [], $statusCode);
+        }
+
+        if (app()->environment() == 'production') {
+            return response()->view('errors.500', [], 200);
+        }
+        
+        return parent::render($request, $e);
+	}
 }
