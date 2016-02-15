@@ -362,17 +362,19 @@
 														<div class="questions-row{{$k>1?' none':' visible'}}">
 															<div><strong>{{$question->title}}</strong></div>
 															<div class="grey-light size12 question-date">{{date('d.m.Y H:i', strtotime($question->date))}}</div>
-															<div class="question-one description-wr margin-bottom{{mb_strlen($question->description)>350?' croped':' open'}}">
-																<div class="description">
-																	{{$question->description}}
-																</div>
-																@if (mb_strlen($question->description)>350)
-																	<a class="search-form--open"><i class="sprite-arrow-down"></i>
-																		<span>розгорнути</span>
-																		<span>згорнути</span>
-																	</a>
-																@endif
-															</div>
+															@if (!empty($question->description))
+        															<div class="question-one description-wr margin-bottom{{mb_strlen($question->description)>350?' croped':' open'}}">
+        																<div class="description">
+        																	{{$question->description}}
+        																</div>
+        																@if (mb_strlen($question->description)>350)
+        																	<a class="search-form--open"><i class="sprite-arrow-down"></i>
+        																		<span>розгорнути</span>
+        																		<span>згорнути</span>
+        																	</a>
+        																@endif
+        															</div>
+                                                            @endif
 															@if(!empty($question->answer))
 																<div class="answer"><strong>Відповідь:</strong> <i>{!!nl2br($question->answer)!!}</i></div>
 															@else
