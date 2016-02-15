@@ -44,7 +44,17 @@ class PageController extends BaseController
 			$auctions_items=false;
 	
 			if(!empty($auctions->items))
-				$auctions_items=array_chunk(array_slice($auctions->items, 0, 9), 3);
+			{
+        			$active_auctions=[];
+
+        			foreach($auctions->items as $one)
+        			{
+            			if(!empty($one->auctionPeriod))
+                			$active_auctions[]=$one;
+                }
+
+				$auctions_items=array_chunk(array_slice($active_auctions, 0, 9), 3);
+            }
 
 			return $auctions_items;
 		});
