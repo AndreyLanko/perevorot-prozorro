@@ -7,7 +7,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-8">
-					<div class="search-form--filter">
+					<div class="search-form--filter mob-hide">
 						<div class="result-all">Знайдено закупівель: {{number_format($total, 0, '', ' ')}}</div>
 						{{--
 						<ul class="nav navbar-nav inline-navbar search-form--filter--filter-records">

@@ -25939,6 +25939,29 @@ var APP,
 			},
 
 			js: {
+    			    home_more: function(_self){
+        			    var text_height=0,
+        			        text=$('.description .text'),
+        			        check_height=function(){
+                			    text_height=$('.text-itself').height()+20;
+                        },
+                        opened=false;
+
+        			    $(window).resize(check_height);
+
+                    check_height();
+                    
+        			    _self.click(function(e){
+            			    e.preventDefault();
+            			    $(this).closest('.description').toggleClass('opened');
+
+            			    text.animate({
+                			    height: !opened ? text_height : 0
+                        }, 400);
+
+                        opened=!opened;
+        			    });
+    			    },
 				home_equal_height: function(_self){
 					var max_height=0,
 						blocks=_self.find('[block]');
