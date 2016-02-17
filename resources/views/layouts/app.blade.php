@@ -14,6 +14,7 @@
 		<script src="/assets/js/legacy/html5shiv.min.js"></script>
 		<script src="/assets/js/legacy/respond.min.js"></script>
 	<![endif]-->
+    <link rel='shortcut icon' type='image/x-icon' href='/assets/images/favicon.ico' />
 	@yield('head')
 </head>
 <body>
