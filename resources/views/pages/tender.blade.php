@@ -645,17 +645,6 @@
 				@endif
 
 				{{--
-				<div class="tender--offers border-bottom margin-bottom">
-					<h3>Отримані пропозиції</h3>
-					
-					<ul class="nav nav-list margin-bottom">
-						@foreach($item->bids as $bid)
-							<li> <a href="#">Зберегти pdf</a></li>
-						@endforeach
-					</ul>
-				</div>
-				--}}
-				{{--
 				<div class="tender--complaint margin-bottom">
 					<h3>? Отримані скарги</h3>
 					<table class="table table-striped margin-bottom">
