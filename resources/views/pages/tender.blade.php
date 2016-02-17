@@ -255,7 +255,7 @@
 											<div class="overlay overlay-documents-all">
 												<div class="overlay-close overlay-close-layout"></div>
 												<div class="overlay-box">
-													<div class="tender--offers documents" data-id="e059392ff4204074bfd76bf56cca7c74" style="display: block;">
+													<div class="tender--offers documents" data-id="{{$item->id}}">
 														<h4 class="overlay-title">Документація</h4>
 														@foreach ($item->documents as $k=>$document)
 															<div class="document-info">
@@ -482,17 +482,19 @@
 				@if (!empty($item->bids))
 					<div class="container wide-table">
 						<div class="tender--offers margin-bottom-xl">
-							<h3>Отримані пропозиції</h3>
+							<h3>Протокол розкриття</h3>
+							<p class="tender-date">Дата і час розкриття: {{date('d.m.Y H:i', strtotime($item->auctionPeriod->endDate))}}</div>
 							<table class="table table-striped margin-bottom small-text">
 								<thead>
 									<tr>
 										<th>Учасник</th>
-										<th>Пропозиція</th>
+										<th>Первинна пропозиція</th>
+										<th>Остаточна пропозиція</th>
 										@if($features_price<1)
 											<th>Коефіціент</th>
 											<th>Приведена ціна</th>
 										@endif
-										<th>Статус</th>
+										{{--<th>Статус</th>--}}
 										<th>Документи</th>
 									</tr>
 								</thead>
@@ -500,13 +502,19 @@
 									@foreach($item->bids as $bid)
 										<tr>
 											<td>{{$bid->tenderers[0]->name}}</td>
-											<td>{{str_replace('.00', '', number_format($bid->value->amount, 2, '.', ' '))}} 
+											<td>
+    											    {{str_replace('.00', '', number_format($item->__initial_bids[$bid->id], 2, '.', ' '))}}
+        											<div class="td-small grey-light">{{$bid->value->currency}}{{$bid->value->valueAddedTaxIncluded?' з ПДВ':''}}</div>											
+											</td>
+											<td>
+    											    {{str_replace('.00', '', number_format($bid->value->amount, 2, '.', ' '))}} 
 												<div class="td-small grey-light">{{$bid->value->currency}}{{$bid->value->valueAddedTaxIncluded?' з ПДВ':''}}</div>
 											</td>
 											@if($features_price<1)
 												<td>{{$bid->__featured_coef}}</td>
 												<td class="1">{{$bid->__featured_price}}</td>
 											@endif
+											{{--
 											<td>
 												@if (!empty($item->awards))
 													@foreach($item->awards as $award)
@@ -530,6 +538,7 @@
 													@endforeach
 												@endif
 											</td>
+											--}}
 											<td>
 												@if(!empty($bid->documents))
 													<a href="" class="document-link" data-id="{{$bid->id}}">Документи</a>
@@ -546,9 +555,18 @@
 							<div class="overlay-box">
 								@foreach($item->bids as $bid)
 									<div class="tender--offers documents" data-id="{{$bid->id}}">
-										@if(!empty($bid->documents))
-											<h4 class="overlay-title">Документи, подані з пропозицією</h4>
-											@foreach($bid->documents as $document)
+										@if(!empty($bid->__documents_before))
+											<h4 class="overlay-title">Документи, подані до завершення періоду прийому пропозицій</h4>
+											@foreach($bid->__documents_before as $document)
+												<div class="document-info">
+													<div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+													<a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
+												</div>
+											@endforeach
+										@endif
+										@if(!empty($bid->__documents_after))
+											<h4 class="overlay-title">Документи, подані після завершення періоду прийому пропозицій</h4>
+											@foreach($bid->__documents_after as $document)
 												<div class="document-info">
 													<div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
 													<a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>

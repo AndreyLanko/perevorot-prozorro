@@ -3,6 +3,8 @@
 use Illuminate\Routing\Controller as BaseController;
 use Input;
 use Cache;
+use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Exception\ParseException;
 use Request;
 use Config;
 use Session;
@@ -143,7 +145,6 @@ class PageController extends BaseController
 			}
 		}
 
-	
 		if(!empty($item->contracts[0]->documents))
 		{
 			$item->__contracts=new \StdClass();
@@ -216,6 +217,25 @@ class PageController extends BaseController
 			}
 		}
 		
+		foreach($item->bids as $k=>$bid)
+		{
+			if(!empty($bid->documents))
+			{
+    				$item->bids[$k]->__documents_before=new \StdClass();
+    				$item->bids[$k]->__documents_before=[];
+
+    				$item->bids[$k]->__documents_after=new \StdClass();
+    				$item->bids[$k]->__documents_after=[];
+    				
+    				foreach($bid->documents as $document)
+    				{
+        				$what=strtotime($document->datePublished) > strtotime($item->tenderPeriod->endDate) ? '__documents_after' : '__documents_before';
+
+                    array_push($item->bids[$k]->$what, $document);
+                }
+            }
+    		}
+    		
 		$platforms=Config::get('platforms');
 		shuffle($platforms);
 
@@ -244,6 +264,8 @@ class PageController extends BaseController
 
 		$item->is_active_proposal=new \stdClass();
 		$item->is_active_proposal=in_array($item->status, ['active.enquiries', 'active.tendering']);
+
+        $this->get_initial_bids($item);
 
 		return view('pages/tender')
 				->with('item', $item)
@@ -370,6 +392,50 @@ class PageController extends BaseController
 
 		return $out;
 	}
+	
+	private function get_initial_bids(&$item)
+	{
+        $bid_by_bidders=[];
+        
+    	    if(!empty($item->bids))
+    	    {
+        	    foreach($item->bids as $bid)
+            	    $bid_by_bidders[$bid->id]=0;
+        }
+
+    	    if(!empty($item->documents))
+    	    {
+        	    $already_found=false;
+        	    
+        	    foreach($item->documents as $document)
+        	    {
+            	    if(pathinfo($document->title, PATHINFO_EXTENSION)=='yaml')
+            	    {
+                	    if(!$already_found)
+                	    {
+                    	    try
+                    	    {
+                        	    $yaml=Cache::remember('yaml_'.md5($document->url), 60, function() use ($document){
+                            	    return Yaml::parse(file_get_contents($document->url));
+                            });
+                        	    
+                        	    if(!empty($yaml['timeline']['auction_start']['initial_bids']))
+                        	    {
+                            	    $already_found=true;
+                            	    
+                            	    foreach($yaml['timeline']['auction_start']['initial_bids'] as $bid)
+                                	    $bid_by_bidders[$bid['bidder']]=$bid['amount'];
+                            }
+                        }
+                        catch (ParseException $e) {}
+                    }
+            	    }
+            }
+        }
+
+        $item->__initial_bids=new \StdClass();
+        $item->__initial_bids=$bid_by_bidders;
+    	}
 	
 	private function get_html()
 	{
