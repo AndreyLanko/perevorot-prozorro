@@ -266,6 +266,7 @@ class PageController extends BaseController
 		$item->is_active_proposal=in_array($item->status, ['active.enquiries', 'active.tendering']);
 
         $this->get_initial_bids($item);
+        $this->get_documents($item);
 
 		return view('pages/tender')
 				->with('item', $item)
@@ -436,6 +437,29 @@ class PageController extends BaseController
         $item->__initial_bids=new \StdClass();
         $item->__initial_bids=$bid_by_bidders;
     	}
+    	
+    	private function get_documents(&$item)
+    	{
+        	if(!empty($item->documents))
+        	{
+            	$yaml_files=[];
+
+            	foreach($item->documents as $k=>$document)
+            	{
+                	if(pathinfo($document->title, PATHINFO_EXTENSION)=='yaml')
+                	{
+                    	array_push($yaml_files, $document);
+                    	unset($item->documents[$k]);
+                }
+            }
+            
+            if(!sizeof($item->documents))
+                $item->documents=null;
+                
+            $item->__yaml_documents=new \StdClass();
+            $item->__yaml_documents=$yaml_files;
+        }
+    }
 	
 	private function get_html()
 	{

@@ -112,16 +112,18 @@
 
 								@if (!empty($item->bids))
 									<li>
-										<a href="" class="tender--offers--ancor"><i class="sprite-props"></i> Отримані пропозиції</a>
+										<a href="" class="tender--offers--ancor"><i class="sprite-props"></i> Протокол розкриття</a>
 									</li>
 								@endif
 
+								{{--
 								<li>
 									<a href=""><i class="sprite-share"></i> Поділитись</a>
 								</li>
 								<li>
 									<a href=""><i class="sprite-link"></i> Скопіювати посилання</a>
 								</li>
+								--}}
 							</ul>
 							@if(!empty($item->procuringEntity->contactPoint->name) || !empty($item->procuringEntity->contactPoint->email))
 								<p><strong>Контакти</strong></p>
@@ -325,12 +327,20 @@
 										<div class="overlay overlay-info-all">
 											<div class="overlay-close overlay-close-layout"></div>
 											<div class="overlay-box">
-												<div class="tender--offers documents" style="display: block;">
+												<div class="tender--offers documents" data-id="info">
 													<h4 class="overlay-title">Інформація про торги</h4>
 													<div class="document-info">
 														ID
 														<div class="document-date"><a href="https://public.api.openprocurement.org/api/0/tenders/{{$item->id}}" target="_blank">{{$item->id}}</a></div>
 													</div>
+													@if (!empty($item->__yaml_documents))
+        													@foreach($item->__yaml_documents as $document)
+        														<div class="document-info">
+        															Документація
+        															<div class="document-date"><a href="{{$document->url}}" target="_blank">{{$document->title}}</a></div>
+        														</div>													
+        													@endforeach
+        												@endif
 													{{--
 													@if(Session('api')=='http://ocds-test.aws3.tk/search')
 														<div class="document-info">
