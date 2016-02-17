@@ -201,10 +201,10 @@ var APP,
 					$('a.document-link').click(function(e){
 						e.preventDefault();
 
-						$('.tender--offers.documents').hide();
-						$('.tender--offers.documents[data-id='+$(this).data('id')+']').show();
+						$(this).closest('.container').find('.tender--offers.documents').hide();
+						$(this).closest('.container').find('.tender--offers.documents[data-id='+$(this).data('id')+']').show();
 
-						$('.overlay-documents').addClass('open');
+						$(this).closest('.container').find('.overlay-documents').addClass('open');
 					});
 
 					$('.overlay-close').click(function(e){

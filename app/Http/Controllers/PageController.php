@@ -267,6 +267,7 @@ class PageController extends BaseController
 
         $this->get_initial_bids($item);
         $this->get_documents($item);
+        $this->get_awards($item);
 
 		return view('pages/tender')
 				->with('item', $item)
@@ -438,6 +439,34 @@ class PageController extends BaseController
         $item->__initial_bids=$bid_by_bidders;
     	}
     	
+    	private function get_awards(&$item)
+    	{
+        $item->__active_award=new \StdClass();
+        $item->__active_award=null;
+        
+        	if(!empty($item->awards))
+        	{
+            	foreach($item->awards as $award)
+            	{
+                	if($award->status=='active')
+                	{
+                    	$item->__active_award=$award;
+                    	
+                    	$item->__bid_price=new \StdClass();
+                    	
+                    	foreach($item->bids as $bid)
+                    	{
+                        	if($bid->id==$item->__active_award->bid_id)
+                        	{
+                            	$item->__active_award->value=new \StdClass();
+                            	$item->__active_award->value=$bid->value;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     	private function get_documents(&$item)
     	{
         	if(!empty($item->documents))

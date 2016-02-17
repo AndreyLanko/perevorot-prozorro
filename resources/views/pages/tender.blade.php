@@ -493,7 +493,7 @@
 					<div class="container wide-table">
 						<div class="tender--offers margin-bottom-xl">
 							<h3>Протокол розкриття</h3>
-							<p class="tender-date">Дата і час розкриття: {{date('d.m.Y H:i', strtotime($item->auctionPeriod->endDate))}}</div>
+							<p class="tender-date">Дата і час розкриття: {{date('d.m.Y H:i', strtotime($item->auctionPeriod->endDate))}}</p>
 							<table class="table table-striped margin-bottom small-text">
 								<thead>
 									<tr>
@@ -559,54 +559,107 @@
 										</tr>
 									@endforeach
 								</tbody>
-						</table>
-						<div class="overlay overlay-documents">
-							<div class="overlay-close overlay-close-layout"></div>
-							<div class="overlay-box">
-								@foreach($item->bids as $bid)
-									<div class="tender--offers documents" data-id="{{$bid->id}}">
-										@if(!empty($bid->__documents_before))
-											<h4 class="overlay-title">Документи, подані до завершення періоду прийому пропозицій</h4>
-											@foreach($bid->__documents_before as $document)
-												<div class="document-info">
-													<div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
-													<a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
-												</div>
-											@endforeach
-										@endif
-										@if(!empty($bid->__documents_after))
-											<h4 class="overlay-title">Документи, подані після завершення періоду прийому пропозицій</h4>
-											@foreach($bid->__documents_after as $document)
-												<div class="document-info">
-													<div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
-													<a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
-												</div>
-											@endforeach
-										@endif
-									</div>
-								@endforeach
-								@foreach($item->bids as $bid)
-									<div class="tender--offers documents" data-id="{{$bid->id}}-status">
-										@if(!empty($item->awards))
-											@foreach($item->awards as $award)
-												@if($award->bid_id==$bid->id && !empty($award->documents))
-													<h4 class="overlay-title">Рішення відповідальної особи</h4>
-													@foreach($award->documents as $award_document)
-														<div class="document-info">
-															<div class="document-date">{{date('d.m.Y H:i', strtotime($award_document->datePublished))}}</div>
-															<a href="{{$award_document->url}}" target="_blank" class="document-name">{{$award_document->title}}</a>
-														</div>
-													@endforeach
-												@endif
-											@endforeach
-										@endif
-									</div>
-								@endforeach
-								<div class="overlay-close"><i class="sprite-close-grey"></i></div>
-							</div>
+                            </table>
+        						<div class="overlay overlay-documents">
+        							<div class="overlay-close overlay-close-layout"></div>
+        							<div class="overlay-box">
+        								@foreach($item->bids as $bid)
+        									<div class="tender--offers documents" data-id="{{$bid->id}}">
+        										@if(!empty($bid->__documents_before))
+        											<h4 class="overlay-title">Документи, подані до завершення періоду прийому пропозицій</h4>
+        											@foreach($bid->__documents_before as $document)
+        												<div class="document-info">
+        													<div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+        													<a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
+        												</div>
+        											@endforeach
+        										@endif
+        										@if(!empty($bid->__documents_after))
+        											<h4 class="overlay-title">Документи, подані після завершення періоду прийому пропозицій</h4>
+        											@foreach($bid->__documents_after as $document)
+        												<div class="document-info">
+        													<div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+        													<a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
+        												</div>
+        											@endforeach
+        										@endif
+        									</div>
+        								@endforeach
+        								{{--
+        								@foreach($item->bids as $bid)
+        									<div class="tender--offers documents" data-id="{{$bid->id}}-status">
+        										@if(!empty($item->awards))
+        											@foreach($item->awards as $award)
+        												@if($award->bid_id==$bid->id && !empty($award->documents))
+        													<h4 class="overlay-title">Рішення відповідальної особи</h4>
+        													@foreach($award->documents as $award_document)
+        														<div class="document-info">
+        															<div class="document-date">{{date('d.m.Y H:i', strtotime($award_document->datePublished))}}</div>
+        															<a href="{{$award_document->url}}" target="_blank" class="document-name">{{$award_document->title}}</a>
+        														</div>
+        													@endforeach
+        												@endif
+        											@endforeach
+        										@endif
+        									</div>
+        								@endforeach
+        								--}}
+        								<div class="overlay-close"><i class="sprite-close-grey"></i></div>
+        							</div>
+        						</div>
 						</div>
 					</div>
 				@endif
+				
+                @if(!empty($item->__active_award))
+                    <div class="container wide-table">
+						<div class="tender--offers margin-bottom-xl">
+							<h3>Повідомлення про намір укласти договір</h3>
+							<p class="tender-date">Дата і час публікації: {{date('d.m.Y H:i', strtotime($item->__active_award->date))}}</p>
+							<table class="table table-striped margin-bottom small-text">
+								<thead>
+									<tr>
+										<th>Учасник</th>
+										<th>Пропозиція</th>
+										<th>Документи</th>
+									</tr>
+								</thead>
+								<tbody>
+    								    <td>{{$item->__active_award->suppliers[0]->identifier->legalName}}<br>#{{$item->__active_award->suppliers[0]->identifier->id}}</td>
+    								    <td>
+                                        {{str_replace('.00', '', number_format($item->__active_award->value->amount, 2, '.', ' '))}} 
+                                        <div class="td-small grey-light">{{$item->__active_award->value->currency}}{{$item->__active_award->value->valueAddedTaxIncluded?' з ПДВ':''}}</div>
+                                    </td>
+                                    <td>
+										@if(!empty($item->__active_award->documents))
+											<a href="" class="document-link" data-id="{{$item->__active_award->id}}">Документи</a>
+										@else
+											Немає
+										@endif
+									</td>
+								</tbody>
+							</table>
+						</div>
+						
+						@if(!empty($item->__active_award->documents))
+                            <div class="overlay overlay-documents">
+        							<div class="overlay-close overlay-close-layout"></div>
+        							<div class="overlay-box">
+    									<div class="tender--offers documents" data-id="{{$item->__active_award->id}}">
+        									<h4 class="overlay-title">Документи</h4>
+										@foreach($item->__active_award->documents as $document)
+											<div class="document-info">
+												<div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+												<a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
+											</div>
+										@endforeach
+    									</div>
+        								<div class="overlay-close"><i class="sprite-close-grey"></i></div>
+        							</div>
+        						</div>
+                        @endif
+                    </div>
+                @endif
 
 				@if(!empty($item->__documents))
 					<div class="container wide-table tender--platforms">
