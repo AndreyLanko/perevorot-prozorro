@@ -8,7 +8,7 @@
 			<div class="row">
 				<div class="col-md-8">
 					<div class="search-form--filter mob-hide">
-						<div class="result-all">Знайдено закупівель: {{number_format($total, 0, '', ' ')}}</div>
+						<div class="result-all">Знайдено закупівель: <span header-totals>{{number_format($total, 0, '', ' ')}}</span></div>
 						{{--
 						<ul class="nav navbar-nav inline-navbar search-form--filter--filter-records">
 							<li><a href="">Додані сьогодні</a> (?)</li>

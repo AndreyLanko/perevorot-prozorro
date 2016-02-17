@@ -261,6 +261,8 @@ var APP,
 						input_query='',
 						$document=$(document);
 
+					APP.utils.totals.init();
+					
 					INPUT=_self;
 					BLOCKS=$('#blocks');
 					SEARCH_BUTTON=$('#search_button');
@@ -422,6 +424,35 @@ var APP,
 				}
 			},
 			utils: {
+    			    totals: {
+        			    init: function(){
+            			    var items_list=$('.items-list');
+
+                        $('[mobile-totals]').click(function(e){
+                            e.preventDefault();
+    
+                            $('html, body').animate({
+                                scrollTop: items_list.position().top
+                            }, 400);
+                        });
+
+                        APP.utils.totals.show();
+                    },
+        			    show: function(){
+            			    var container=$('[mobile-totals]'),
+            			        header_totals=$('[header-totals]'),
+            			        total=header_totals.text();
+                        
+                        if(total){
+                            container.removeClass('none-important').find('.result-all-link span').text(total);
+                        }else{
+                            container.addClass('none-important');
+                        }
+                    },
+                    reset: function(){
+                        $('[mobile-totals]').addClass('none-important');
+                    }
+    			    },
 				history: {
 					bind: function(){
 						if (IS_HISTORY){
@@ -528,7 +559,8 @@ var APP,
 								
 								if(response.html){
 									$('#result').html(response.html);
-									
+
+									APP.utils.totals.show();
 									APP.utils.result_highlight(response.highlight);
 								}else{
 									$('#result').html('Жодних результатiв');
@@ -650,6 +682,7 @@ var APP,
 						if(!BLOCKS.find('.block').length){
 							INPUT.addClass('no_blocks');
 							INPUT.attr('placeholder', INPUT.data('placeholder'));
+							APP.utils.totals.reset();
 						}
 					},
 					check: function(suggest){

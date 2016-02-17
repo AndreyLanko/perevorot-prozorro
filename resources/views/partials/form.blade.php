@@ -19,9 +19,9 @@
 				</div>
 				<div id="suggest" class="suggest"></div>
 			</div>
-			<!--<div class="search-form--filter mob-visible">
-					<div class="result-all"><a href="" class="result-all-link">Знайдено {{--{{number_format($total, 0, '', ' ')}}--}} закупівель. Показати</a></div>
-				</div>-->
+			<div class="search-form--filter mob-visible none-important" mobile-totals>
+				<div class="result-all"><a href="" class="result-all-link">Знайдено закупівель <span></span>. Показати</a></div>
+            </div>
 			<div class="search-form--add-cryteria">
 				<div class="nav navbar-nav inline-navbar">
 					<div id="buttons" class="buttons"></div>

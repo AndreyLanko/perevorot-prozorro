@@ -49,6 +49,9 @@ a {
 .none{
 	display: none;
 }
+.none-important{
+	display: none!important;
+}
 .query_input{
 	float: left;
 	margin-bottom: 10px;
