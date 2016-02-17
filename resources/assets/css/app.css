@@ -2493,7 +2493,6 @@ ul.social-top {
 }
 .description .switcher {
 	text-align: center;
-	display: block;
 }
 .description .switcher a {
 	display: inline-block;
@@ -2502,10 +2501,10 @@ ul.social-top {
 	display: none;
 }
 .description.opened .switcher a:nth-child(2) {
-	display: block;
+	display:  inline-block;
 }
 .description .switcher a:first-child {
-	display: block;
+	display:  inline-block;
 }
 .description.opened .switcher a:first-child {
 	display: none;
@@ -2525,4 +2524,4 @@ ul.social-top {
 	.description .text {
 		padding: 0 15px;
 	}
-}
+	}

@@ -27,6 +27,9 @@
 	</ul>
 </div>
 
+<a href="" class="go-down hidden-xs hidden-xm" data-js="go_up_down"></a>
+<a href="" class="back-to-top hidden-xs hidden-xm"></a>
+
 @include('partials/form')
 
 <div class="container" homepage>

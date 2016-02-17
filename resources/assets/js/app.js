@@ -60,6 +60,56 @@ var APP,
 			},
 
 			js: {
+    			    go_up_down: function(){
+                    var offset = 220,
+                        duration = 500,
+                        goto_up=$('.back-to-top'),
+                        goto_down=$('.go-down');
+                    
+                    $(window).scroll(function() {
+                        if ($(this).scrollTop() > offset) {
+                            goto_up.fadeIn(duration);
+                        } else {
+                           goto_up.fadeOut(duration);
+                        }
+                    });
+
+                    goto_up.click(function(event) {
+                        event.preventDefault();
+
+                        $('html, body').animate({
+                            scrollTop: 0
+                        }, duration);
+                    });
+
+                    var topset = $(document).height()- 2*($(window).height());
+
+                    $(window).scroll(function() {
+                        if ($(this).scrollTop() < (topset+200)) {
+                            goto_down.fadeIn(duration);
+                        } else {
+                            goto_down.fadeOut(duration);
+                        }
+                    });
+
+                    var do_action = false;
+
+                    goto_down.click(function(event) {
+                        if(do_action){
+                            return;
+                        }
+
+                        do_action=true;
+
+                        event.preventDefault();
+
+                        $('html, body').animate({
+                            scrollTop: ($(document).scrollTop() + $(window).height())
+                        }, duration, function(){
+                            do_action=false;
+                        });
+                    });
+    			    },
     			    home_more: function(_self){
         			    var text_height=0,
         			        text=$('.description .text'),
