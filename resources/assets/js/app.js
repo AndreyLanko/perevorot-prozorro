@@ -430,10 +430,12 @@ var APP,
 
                         $('[mobile-totals]').click(function(e){
                             e.preventDefault();
-    
-                            $('html, body').animate({
+                                
+                            $((navigator.userAgent.match(/(iPod|iPhone|iPad|Android)/)?'body':'html,body')).animate({
                                 scrollTop: items_list.position().top
                             }, 400);
+                            
+                            return true;
                         });
 
                         APP.utils.totals.show();
