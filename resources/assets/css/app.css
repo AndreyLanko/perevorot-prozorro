@@ -2400,7 +2400,7 @@ ul.social-top {
 	width: 12%;
 }
 .wide-table.tender--platforms th:first-child{
-	width: 31.5%;
+	width: 32.5%;
 }
 .wide-table.tender--platforms th {
 	width: 12%;
@@ -2408,6 +2408,22 @@ ul.social-top {
 .wide-table.tender--platforms .prev-five-col th:first-child{
 	width: 55.5%;
 }
+.tender--offers .table.contract th {
+	width: 12%;
+}
+.tender--offers .table.contract th:first-child {
+	width: 31.5%;
+}
+.tender--offers .table.contract th:nth-child(2) {
+	width: 24%;
+}
+.tender--offers .table.long th:first-child {
+	width: 43.5%;	
+}
+.tender--offers .table.long th:nth-child(2)  {
+	width: 36%;	
+}
+
  .tender .criterii .tender--customer td {
 	padding-top: 5px;
 	padding-bottom: 5px;

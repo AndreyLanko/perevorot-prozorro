@@ -493,12 +493,17 @@
 					<div class="container wide-table">
 						<div class="tender--offers margin-bottom-xl">
 							<h3>Протокол розкриття</h3>
-							<p class="table-date">Дата і час розкриття: {{date('d.m.Y H:i', strtotime($item->auctionPeriod->endDate))}}</p>
+							@if(!empty($item->auctionPeriod->endDate))
+    							    <p class="table-date">Дата і час розкриття: {{date('d.m.Y H:i', strtotime($item->auctionPeriod->endDate))}}</p>
+							@endif
+							@if(!empty($item->tenderPeriod->endDate))
+    							    <p class="table-date">Дата і час розкриття: {{date('d.m.Y H:i', strtotime($item->tenderPeriod->endDate))}}</p>
+							@endif
 							<table class="table table-striped margin-bottom small-text">
 								<thead>
 									<tr>
 										<th>Учасник</th>
-										<th>Первинна пропозиція</th>
+        								    <th>Первинна пропозиція</th>
 										<th>Остаточна пропозиція</th>
 										@if($features_price<1)
 											<th>Коефіціент</th>
@@ -513,13 +518,17 @@
 										<tr>
 											<td>{{$bid->tenderers[0]->name}}</td>
 											<td>
-    											    {{str_replace('.00', '', number_format($item->__initial_bids[$bid->id], 2, '.', ' '))}}
-        											<div class="td-small grey-light">{{$bid->value->currency}}{{$bid->value->valueAddedTaxIncluded?' з ПДВ':''}}</div>											
+        											@if(!empty($item->__initial_bids[$bid->id]))
+        		    									    {{str_replace('.00', '', number_format($item->__initial_bids[$bid->id], 2, '.', ' '))}}
+                                                @else
+                                                    {{str_replace('.00', '', number_format($bid->value->amount, 2, '.', ' '))}} 
+                                                @endif
+                                                <div class="td-small grey-light">{{$bid->value->currency}}{{$bid->value->valueAddedTaxIncluded?' з ПДВ':''}}</div>											
 											</td>
-											<td>
-    											    {{str_replace('.00', '', number_format($bid->value->amount, 2, '.', ' '))}} 
-												<div class="td-small grey-light">{{$bid->value->currency}}{{$bid->value->valueAddedTaxIncluded?' з ПДВ':''}}</div>
-											</td>
+    											<td>
+                                                {{str_replace('.00', '', number_format($bid->value->amount, 2, '.', ' '))}} 
+    												<div class="td-small grey-light">{{$bid->value->currency}}{{$bid->value->valueAddedTaxIncluded?' з ПДВ':''}}</div>
+    											</td>
 											@if($features_price<1)
 												<td>{{$bid->__featured_coef}}</td>
 												<td class="1">{{$bid->__featured_price}}</td>
@@ -616,7 +625,7 @@
 						<div class="tender--offers margin-bottom-xl">
 							<h3>Повідомлення про намір укласти договір</h3>
 							<p class="table-date">Дата і час публікації: {{date('d.m.Y H:i', strtotime($item->__active_award->date))}}</p>
-							<table class="table table-striped margin-bottom small-text">
+							<table class="table table-striped margin-bottom small-text{{$features_price<1?' long':' contract'}}">
 								<thead>
 									<tr>
 										<th>Учасник</th>
