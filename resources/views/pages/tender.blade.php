@@ -336,8 +336,8 @@
 													@if (!empty($item->__yaml_documents))
         													@foreach($item->__yaml_documents as $document)
         														<div class="document-info">
-        															Документація
-        															<div class="document-date"><a href="{{$document->url}}" target="_blank">{{$document->title}}</a></div>
+        															Журнал аукціону
+        															<div class="document-date"><a href="{{$document->url}}" target="_blank">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</a></div>
         														</div>													
         													@endforeach
         												@endif
@@ -493,7 +493,7 @@
 					<div class="container wide-table">
 						<div class="tender--offers margin-bottom-xl">
 							<h3>Протокол розкриття</h3>
-							<p class="tender-date">Дата і час розкриття: {{date('d.m.Y H:i', strtotime($item->auctionPeriod->endDate))}}</p>
+							<p class="table-date">Дата і час розкриття: {{date('d.m.Y H:i', strtotime($item->auctionPeriod->endDate))}}</p>
 							<table class="table table-striped margin-bottom small-text">
 								<thead>
 									<tr>
@@ -615,7 +615,7 @@
                     <div class="container wide-table">
 						<div class="tender--offers margin-bottom-xl">
 							<h3>Повідомлення про намір укласти договір</h3>
-							<p class="tender-date">Дата і час публікації: {{date('d.m.Y H:i', strtotime($item->__active_award->date))}}</p>
+							<p class="table-date">Дата і час публікації: {{date('d.m.Y H:i', strtotime($item->__active_award->date))}}</p>
 							<table class="table table-striped margin-bottom small-text">
 								<thead>
 									<tr>
@@ -625,7 +625,14 @@
 									</tr>
 								</thead>
 								<tbody>
-    								    <td>{{$item->__active_award->suppliers[0]->identifier->legalName}}<br>#{{$item->__active_award->suppliers[0]->identifier->id}}</td>
+        								<td>
+            								@if(!empty($item->__active_award->suppliers[0]->identifier->legalName))
+                								{{$item->__active_award->suppliers[0]->identifier->legalName}}<br>
+                                        @elseif(!empty($item->__active_award->suppliers[0]->name))
+                								{{$item->__active_award->suppliers[0]->name}}<br>
+                                        @endif
+                                        #{{$item->__active_award->suppliers[0]->identifier->id}}
+                                    </td>
     								    <td>
                                         {{str_replace('.00', '', number_format($item->__active_award->value->amount, 2, '.', ' '))}} 
                                         <div class="td-small grey-light">{{$item->__active_award->value->currency}}{{$item->__active_award->value->valueAddedTaxIncluded?' з ПДВ':''}}</div>

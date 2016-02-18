@@ -572,6 +572,11 @@ body {
 	font-size: 21px;
     line-height: 1;
 }
+.search-form--filter .result-all-link:focus,
+.search-form--filter .result-all-link:active {
+	color: #0099cc;
+	text-decoration: none;
+}
 .inline-navbar.nav > li {
     display: inline-block;
 }
@@ -1649,11 +1654,17 @@ html, body {
 }
 
 /*---date---*/
-.tender-date {
+.tender-date,
+.table-date {
 	margin-bottom: 0;
-	padding-left: 24px;
 	font-size: 0.76em;
 	color: #777;
+}
+.tender-date {
+	padding-left: 24px;
+}
+.table-date {
+	padding-bottom: 18px;
 }
 .sprite-props,
 .sprite-hammer {
@@ -2390,7 +2401,9 @@ ul.social-top {
 	padding-top: 15px;
 	padding-bottom: 10px;
 }
-
+.center.table-monitor > img {
+	margin-bottom: -100px;
+}
 @media (max-width: 769px) {
 	.sticky-wrapper {
 		height: auto!important;

@@ -51,7 +51,7 @@ class PageController extends BaseController
 
         			foreach($auctions->items as $one)
         			{
-            			if(!empty($one->auctionPeriod))
+            			if(!empty($one->auctionPeriod)/*  && strtotime($one->auctionPeriod->startDate)>time() */)
                 			$active_auctions[]=$one;
                 }
 
@@ -216,25 +216,28 @@ class PageController extends BaseController
 				$item->bids[$k]->__featured_price=str_replace('.00', '', number_format($bid->value->amount/$featured_coef, 2, '.', ' '));
 			}
 		}
-		
-		foreach($item->bids as $k=>$bid)
+
+		if(!empty($item->bids))
 		{
-			if(!empty($bid->documents))
-			{
-    				$item->bids[$k]->__documents_before=new \StdClass();
-    				$item->bids[$k]->__documents_before=[];
-
-    				$item->bids[$k]->__documents_after=new \StdClass();
-    				$item->bids[$k]->__documents_after=[];
-    				
-    				foreach($bid->documents as $document)
-    				{
-        				$what=strtotime($document->datePublished) > strtotime($item->tenderPeriod->endDate) ? '__documents_after' : '__documents_before';
-
-                    array_push($item->bids[$k]->$what, $document);
+        		foreach($item->bids as $k=>$bid)
+        		{
+        			if(!empty($bid->documents))
+        			{
+        				$item->bids[$k]->__documents_before=new \StdClass();
+        				$item->bids[$k]->__documents_before=[];
+    
+        				$item->bids[$k]->__documents_after=new \StdClass();
+        				$item->bids[$k]->__documents_after=[];
+        				
+        				foreach($bid->documents as $document)
+        				{
+            				$what=strtotime($document->datePublished) > strtotime($item->tenderPeriod->endDate) ? '__documents_after' : '__documents_before';
+    
+                        array_push($item->bids[$k]->$what, $document);
+                    }
                 }
-            }
-    		}
+        		}
+        }
     		
 		$platforms=Config::get('platforms');
 		shuffle($platforms);

@@ -114,16 +114,17 @@
 									<div class="item-top">
 										<p><a href="/tender/{{$item->tenderID}}/" class="size18">{{str_limit($item->title, 60)}}</a></p>
 										@if(!empty($item->procuringEntity->identifier->legalName))
-										<p><b>Компанія:</b> {{$item->procuringEntity->identifier->legalName}}</p>
+										    <p><b>Компанія:</b> {{$item->procuringEntity->identifier->legalName}}</p>
 										@endif
 									</div>
 									<div class="item-bottom">
 										<div class="item-bottom-cell">
-											
-											@if (!empty($item->numberOfBids))
-												Участників: {{$item->numberOfBids}}<br />
-											@endif
-											{{--Поточна ставка: <span class="marked">? грн</span><br />--}}
+											{{--
+    											@if (!empty($item->numberOfBids))
+    												Участників: {{$item->numberOfBids}}<br />
+    											@endif
+    											Поточна ставка: <span class="marked">? грн</span><br />
+											--}}
 											Початок: {{date('d.m.Y H:i', strtotime($item->auctionPeriod->startDate))}}
 										</div>
 									</div>
@@ -140,53 +141,55 @@
 
 	<h1 class="size48">Відкритий моніторинг державних витрат</h1>
 	<h2 class="center margin-bottom-x">Кожен може контролювати систему на <a href="http://bi.prozorro.org/" target="_blank">bi.prozorro.org</a></h2>
-	
-	<table class="center size18 table-sm line-height1 valign-top margin-bottom-x table-monitor" width="100%">
-		<tbody>
-			<tr>
-				<td>
-					<p>#тендерів</p>
-					<span class="blue size48">
-						{{$numbers['number'][0]}}<br />
-						<span class="size24">{{$numbers['number'][1]}}</span>
-					</span>
-				</td>
-				<td>
-					<p>Планова сума</p>
-					<span class="blue size48">
-						{{$numbers['sum'][0]}}<br />
-						<span class="size24">{{$numbers['sum'][1]}}</span>
-					</span>
-				</td>
-				<td>
-					<p># Організаторів</p>
-					<span class="blue size48">
-						{{$numbers['organizer'][0]}}<br />
-						<span class="size24">{{$numbers['organizer'][1]}}</span>
-					</span>
-				</td>
-				<td>
-					<p>Пропозицій на торги</p>
-					<span class="blue size48">
-						{{$numbers['bids'][0]}}
-					</span>
-				</td>
-				<td>
-					<p>Економія</p>
-					<span class="blue size48">
-						{{$numbers['economy'][0]}}<br />
-						<span class="size24">{{$numbers['economy'][1]}}</span>
-					</span>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+
+	<a href="/monitoryng/">
+        	<table class="center size18 table-sm line-height1 valign-top table-monitor" width="100%">
+        		<tbody>
+        			<tr>
+        				<td>
+        					<p>#тендерів</p>
+        					<span class="blue size48">
+        						{{$numbers['number'][0]}}<br />
+        						<span class="size24">{{$numbers['number'][1]}}</span>
+        					</span>
+        				</td>
+        				<td>
+        					<p>Планова сума</p>
+        					<span class="blue size48">
+        						{{$numbers['sum'][0]}}<br />
+        						<span class="size24">{{$numbers['sum'][1]}}</span>
+        					</span>
+        				</td>
+        				<td>
+        					<p># Організаторів</p>
+        					<span class="blue size48">
+        						{{$numbers['organizer'][0]}}<br />
+        						<span class="size24">{{$numbers['organizer'][1]}}</span>
+        					</span>
+        				</td>
+        				<td>
+        					<p>Пропозицій на торги</p>
+        					<span class="blue size48">
+        						{{$numbers['bids'][0]}}
+        					</span>
+        				</td>
+        				<td>
+        					<p>Економія</p>
+        					<span class="blue size48">
+        						{{$numbers['economy'][0]}}<br />
+        						<span class="size24">{{$numbers['economy'][1]}}</span>
+        					</span>
+        				</td>
+        			</tr>
+        		</tbody>
+        	</table>
+	</a>
 	
 	<hr class="margin-bottom-x mob-hide" />
 	
 	<h1 class="size48 margin-bottom-x mob-hide">Рейтинг замовників</h1>
 	
-	<div class="center margin-bottom-x table-monitor mob-hide">
+	<div class="center table-monitor mob-hide">
 		<img src="http://bi.prozorro.org/images/000001_QkJVDL.png" >
 		{{--<img src="images/chart.jpg" alt="Chart" />--}}
 	</div>
