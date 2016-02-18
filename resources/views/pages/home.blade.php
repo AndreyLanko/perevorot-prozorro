@@ -142,7 +142,7 @@
 	<h1 class="size48">Відкритий моніторинг державних витрат</h1>
 	<h2 class="center margin-bottom-x">Кожен може контролювати систему на <a href="http://bi.prozorro.org/" target="_blank">bi.prozorro.org</a></h2>
 
-	<a href="/monitoryng/">
+	<a class="number-href" href="/monitoryng/">
         	<table class="center size18 table-sm line-height1 valign-top table-monitor" width="100%">
         		<tbody>
         			<tr>

@@ -577,6 +577,27 @@ body {
 	color: #0099cc;
 	text-decoration: none;
 }
+.number-href {
+	display: block;
+	margin-bottom: 30px;
+}
+
+.number-href  p {
+	color: #333;
+}
+.number-href:hover,
+.number-href:focus,
+.number-href:active,
+.number-href:visited {
+	color: #0099cc;
+	text-decoration: none;
+}
+.number-href:hover p,
+.number-href:focus p,
+.number-href:active p,
+.number-href:visited p {
+	color: #333;
+}
 .inline-navbar.nav > li {
     display: inline-block;
 }
