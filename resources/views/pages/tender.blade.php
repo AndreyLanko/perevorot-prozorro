@@ -495,8 +495,7 @@
 							<h3>Протокол розкриття</h3>
 							@if(!empty($item->auctionPeriod->endDate))
     							    <p class="table-date">Дата і час розкриття: {{date('d.m.Y H:i', strtotime($item->auctionPeriod->endDate))}}</p>
-							@endif
-							@if(!empty($item->tenderPeriod->endDate))
+							@elseif(!empty($item->tenderPeriod->endDate))
     							    <p class="table-date">Дата і час розкриття: {{date('d.m.Y H:i', strtotime($item->tenderPeriod->endDate))}}</p>
 							@endif
 							<table class="table table-striped margin-bottom small-text">
