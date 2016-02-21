@@ -518,11 +518,21 @@ class PageController extends BaseController
 			$footer=substr($footer, 0, strpos($footer, '</body>'));
 
 			return [
-				'header'=>$header,
-				'footer'=>$footer
+				'header'=>$this->sanitize_html($header),
+				'footer'=>$this->sanitize_html($footer)
 			];
 		});
 		
 		return $html;
 	}
+
+    private function sanitize_html($html)
+    {
+        $search = array('/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s');        
+        $replace = array('>', '<', '\\1');
+    
+        $html = preg_replace($search, $replace, $html);
+    
+        return $html;
+    }
 }
