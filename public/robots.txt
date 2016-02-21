@@ -1,3 +1,4 @@
 User-agent: *
 Disallow: /*?*
-Disallow: /form/*
+Disallow: /form/
+Disallow: /search/
