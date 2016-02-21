@@ -619,6 +619,78 @@
 					</div>
 				@endif
 				
+                @if (!empty($item->awards))
+					<div class="container wide-table">
+						<div class="tender--offers margin-bottom-xl">
+							<h3>Протокол розгляду</h3>
+							<table class="table table-striped margin-bottom small-text">
+								<thead>
+									<tr>
+										<th>Учасник</th>
+        								    <th>Рішення</th>
+										<th>Пропозиція</th>
+										<th>Опубліковано</th>
+									</tr>
+								</thead>
+								<tbody>
+									@foreach($item->awards as $award)
+										<tr>
+											<td>
+                    								@if(!empty($award->suppliers[0]->identifier->legalName))
+                        								{{$award->suppliers[0]->identifier->legalName}}<br>
+                                                @elseif(!empty($award->suppliers[0]->name))
+                        								{{$award->suppliers[0]->name}}<br>
+                                                @endif
+                                                #{{$award->suppliers[0]->identifier->id}}    											
+											</td>
+                                            <td>
+												@if(!empty($award->documents))
+													<a href="" class="document-link" data-id="{{$award->id}}-award">
+												@endif
+												@if($award->status=='unsuccessful')
+													Дискваліфіковано
+												@elseif($award->status=='active')
+													Переможець
+												@elseif($award->status=='pending')
+													Очікує рішення
+												@else
+													{{$award->status}}
+												@endif
+												@if(!empty($award->documents))
+													</a>
+												@endif
+											</td>											
+											<td>
+                                                {{str_replace('.00', '', number_format($award->value->amount, 2, '.', ' '))}} 
+                                                <div class="td-small grey-light">{{$award->value->currency}}{{$award->value->valueAddedTaxIncluded?' з ПДВ':''}}</div>
+											</td>
+											<td>
+        											{{date('d.m.Y H:i', strtotime($award->date))}}
+											</td>
+										</tr>
+									@endforeach
+								</tbody>
+                            </table>
+                            <div class="overlay overlay-documents">
+        							<div class="overlay-close overlay-close-layout"></div>
+        							<div class="overlay-box">
+        								@foreach($item->awards as $award)
+        									<div class="tender--offers documents" data-id="{{$award->id}}-award">
+                                            <h4 class="overlay-title">Документи</h4>
+    											@foreach($award->documents as $document)
+    												<div class="document-info">
+    													<div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+    													<a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
+    												</div>
+    											@endforeach
+        									</div>
+        								@endforeach
+        								<div class="overlay-close"><i class="sprite-close-grey"></i></div>
+        							</div>
+        						</div>                            
+						</div>
+					</div>
+				@endif
                 @if(!empty($item->__active_award))
                     <div class="container wide-table">
 						<div class="tender--offers margin-bottom-xl">

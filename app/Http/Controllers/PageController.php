@@ -178,6 +178,17 @@ class PageController extends BaseController
 			$item->__documents=$documents;
 		}
 
+		if(!empty($item->awards))
+		{
+        		usort($item->awards, function ($a, $b)
+        		{
+        			$datea = new \DateTime($a->date);
+        			$dateb = new \DateTime($b->date);
+        
+        		    return $datea>$dateb;
+        		});
+        }
+
 		$features_price=1;
 
 		if(!empty($item->features))
