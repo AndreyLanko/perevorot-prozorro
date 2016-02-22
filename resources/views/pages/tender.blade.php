@@ -675,15 +675,17 @@
                                 <div class="overlay-close overlay-close-layout"></div>
                                 <div class="overlay-box">
                                     @foreach($item->awards as $award)
-                                        <div class="tender--offers documents" data-id="{{$award->id}}-award">
-                                        <h4 class="overlay-title">Документи</h4>
-                                            @foreach($award->documents as $document)
-                                                <div class="document-info">
-                                                    <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
-                                                    <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
-                                                </div>
-                                            @endforeach
-                                        </div>
+                                        @if (!empty($award->documents))
+                                            <div class="tender--offers documents" data-id="{{$award->id}}-award">
+                                            <h4 class="overlay-title">Документи</h4>
+                                                @foreach($award->documents as $document)
+                                                    <div class="document-info">
+                                                        <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+                                                        <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        @endif
                                     @endforeach
                                     <div class="overlay-close"><i class="sprite-close-grey"></i></div>
                                 </div>
