@@ -2,11 +2,11 @@
 
 @section('head')
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="prozorro.org">
-    <meta property="og:title" content="PROZORRO">
+    <meta property="og:site_name" content="{{trans('facebook.site_name')}}">
+    <meta property="og:title" content="{{trans('facebook.title')}}">
     <meta property="og:url" content="{{Request::root()}}/{{Request::path()}}">
     <meta property="og:image" content="{{Request::root()}}/assets/images/social/fb.png">
-    <meta property="og:description" content="{{htmlentities('ProZorro – пілотний проект електронної системи публічних закупівель, що дозволяє онлайн продавати Державі.', ENT_QUOTES)}}">
+    <meta property="og:description" content="{{htmlentities(trans('facebook.description'), ENT_QUOTES)}}">
 @endsection
 
 @section('html_header')
@@ -21,9 +21,9 @@
 
 <div class="container">        
     <ul class="nav nav-justified sections ">
-        <li class="green-bg notitle"><a href="/postachalniku/"><i class="sprite-provider"></i> <span>Постачальнику</span></a></li>
-        <li class="gray-bg notitle"><a href="/"><i class="sprite-tender-search"></i> <span>Пошук тендера</span></a></li>
-        <li class="blue-bg notitle"><a href="/zamovniku/"><i class="sprite-customer"></i> <span>Замовнику</span></a></li>
+        <li class="green-bg notitle"><a href="/postachalniku/"><i class="sprite-provider"></i> <span>{{trans('home.provider')}}</span></a></li>
+        <li class="gray-bg notitle"><a href="/"><i class="sprite-tender-search"></i> <span>{{trans('home.tender_search')}}</span></a></li>
+        <li class="blue-bg notitle"><a href="/zamovniku/"><i class="sprite-customer"></i> <span>{{trans('home.customer')}}</span></a></li>
     </ul>
 </div>
 
@@ -33,19 +33,17 @@
 @include('partials/form')
 
 <div class="container" homepage>
-    <h1 class="homepage size48 margin-bottom margin-top-x">ProZorro – пілотний проект електронної системи публічних закупівель, що дозволяє онлайн продавати Державі.</h1>
+    <h1 class="homepage size48 margin-bottom margin-top-x">{{trans('home.welcome_title')}}</h1>
     
     <div class="description">
         <div class="text">
             <div class="text-itself">
-                <p>Система електронних закупівель працює з лютого 2014 року, за цей час майже 3000 державних замовників оголосило більше 50 тисяч торгів. На підставі розпорядження Кабінетом Міністрів України ​№1408-р від 25.12.2015р. ProZorro є пілотним проектом, державним замовникам рекомендовано використовувати систему для допорогових закупівель товарів.</p>
-                <p>Наразі Верховна Рада України ухвалила проекту закону "Про Публічні Закупівлі", згідно якого протягом 2016 року всі державні закупівлі будуть переведені в електронну систему ProZorro. З 1 квітня дія закону "Про Публічні Закупівлі" поширюється на центральні органи виконавчої влади та закупівельників відповідно до Закону "Про особливості здійснення державних закупівель в окремих сферах господарської діяльності", а з 1 серпня на всіх інших закупівельників.</p>
-                <p>Пілотний проект, який створили волонтери з майдану та прийшли з ним в міністерство економічного розвитку і торгівлі України вже перетворився на Закон та нову систему закупівель</p>
+                {!!trans('home.welcome')!!}
             </div>
         </div>
         <div class="switcher" data-js="home_more">
-                <a href="" class="more2 margin-bottom-x">Докладніше</a>
-                <a href="" class="more2 margin-bottom-x">Згорнути</a>
+            <a href="" class="more2 margin-bottom-x">{{trans('interface.more')}}</a>
+            <a href="" class="more2 margin-bottom-x">{{trans('interface.collapse')}}</a>
         </div>
     </div>
     
@@ -56,7 +54,7 @@
     <div class="clearfix"></div>
 
     @if(!empty($last->items))
-        <h1 class="size48 margin-top">Щойно оголошені закупівлі</h1>
+        <h1 class="size48 margin-top">{{trans('home.last_tenders')}}</h1>
         
         <div class="tender--simmilar tender-type2" data-js="home_equal_height">
             <div class="row">
@@ -80,10 +78,10 @@
                                     <div class="tender--legend">@if (!empty($item->procuringEntity->address->locality)){{$item->procuringEntity->address->locality}}@endif</div>
                                     @if (!empty($item->procuringEntity->name))
                                         <div class="tender--simmilar--text margin-bottom">
-                                            <strong>Компанія:</strong> {{str_limit($item->procuringEntity->name, 70)}}
+                                            <strong>{{trans('interface.company')}}:</strong> {{str_limit($item->procuringEntity->name, 70)}}
                                         </div>
                                     @endif
-                                    <a href="/tender/{{$item->tenderID}}/"><i class="sprite-arrow-right"></i> Детальніше</a>
+                                    <a href="/tender/{{$item->tenderID}}/"><i class="sprite-arrow-right"></i> {{trans('interface.more')}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -93,7 +91,7 @@
             </div>
             
             <div class="col-sm-12">
-                <a href="/search/?procedure=open"><i class="sprite-arrow-right"></i> Перейти до всіх свіжих заявок</a>
+                <a href="/search/?procedure=open"><i class="sprite-arrow-right"></i> {{trans('home.all_last_tenders')}}</a>
             </div>
         </div>
         <div class="clearfix"></div>    
@@ -101,12 +99,11 @@
     @endif
 
     @if($auctions)
-        <h1 class="size48 margin-top-x">Проводяться аукціони</h1>
+        <h1 class="size48 margin-top-x">{{trans('home.active_tenders')}}</h1>
         
         <div class="active-auctions row size14 margin-bottom" data-js="home_equal_height">
             @foreach($auctions as $auction)
                 <div class="col-md-4">
-                    {{--<h4 class="center">Відбуваються прямо зараз</h4>--}}
                     @foreach($auction as $item)
                         <div class="margin-bottom" block>
                             <div class="gray-bg padding">
@@ -114,67 +111,60 @@
                                     <div class="item-top">
                                         <p><a href="/tender/{{$item->tenderID}}/" class="size18">{{str_limit($item->title, 60)}}</a></p>
                                         @if(!empty($item->procuringEntity->identifier->legalName))
-                                            <p><b>Компанія:</b> {{$item->procuringEntity->identifier->legalName}}</p>
+                                            <p><b>{{trans('interface.company')}}:</b> {{$item->procuringEntity->identifier->legalName}}</p>
                                         @endif
                                     </div>
                                     <div class="item-bottom">
                                         <div class="item-bottom-cell">
-                                            {{--
-                                                @if (!empty($item->numberOfBids))
-                                                    Участників: {{$item->numberOfBids}}<br />
-                                                @endif
-                                                Поточна ставка: <span class="marked">? грн</span><br />
-                                            --}}
-                                            Початок: {{date('d.m.Y H:i', strtotime($item->auctionPeriod->startDate))}}
+                                            {{trans('interface.start_at')}}: {{date('d.m.Y H:i', strtotime($item->auctionPeriod->startDate))}}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     @endforeach
-                    {{--<a href="#"><i class="sprite-arrow-right"></i> Всі поточні аукціони</a>--}}
                 </div>
             @endforeach
         </div>
         <hr />
     @endif
 
-    <h1 class="size48">Відкритий моніторинг державних витрат</h1>
-    <h2 class="center margin-bottom-x">Кожен може контролювати систему на <a href="http://bi.prozorro.org/" target="_blank">bi.prozorro.org</a></h2>
+    <h1 class="size48">{{trans('home.numbers_title')}}</h1>
+    <h2 class="center margin-bottom-x">{{trans('home.numbers_href')}} <a href="http://bi.prozorro.org/" target="_blank">bi.prozorro.org</a></h2>
 
     <a class="number-href" href="/monitoryng/">
         <table class="center size18 table-sm line-height1 valign-top table-monitor" width="100%">
             <tbody>
                 <tr>
                     <td>
-                        <p>#тендерів</p>
+                        <p>{{trans('home.numbers_tender')}}</p>
                         <span class="blue size48">
                             {{$numbers['number'][0]}}<br />
                             <span class="size24">{{$numbers['number'][1]}}</span>
                         </span>
                     </td>
                     <td>
-                        <p>Планова сума</p>
+                        <p>{{trans('home.numbers_sum')}}</p>
                         <span class="blue size48">
                             {{$numbers['sum'][0]}}<br />
                             <span class="size24">{{$numbers['sum'][1]}}</span>
                         </span>
                     </td>
                     <td>
-                        <p># Організаторів</p>
+                        <p>{{trans('home.numbers_org')}}</p>
                         <span class="blue size48">
                             {{$numbers['organizer'][0]}}<br />
                             <span class="size24">{{$numbers['organizer'][1]}}</span>
                         </span>
                     </td>
                     <td>
-                        <p>Пропозицій на торги</p>
+                        <p>{{trans('home.numbers_propositions')}}</p>
                         <span class="blue size48">
                             {{$numbers['bids'][0]}}
                         </span>
                     </td>
                     <td>
-                        <p>Економія</p>
+                        <p>{{trans('home.numbers_economy')}}</p>
                         <span class="blue size48">
                             {{$numbers['economy'][0]}}<br />
                             <span class="size24">{{$numbers['economy'][1]}}</span>
@@ -187,11 +177,10 @@
     
     <hr class="margin-bottom-x mob-hide" />
     
-    <h1 class="size48 margin-bottom-x mob-hide">Рейтинг замовників</h1>
+    <h1 class="size48 margin-bottom-x mob-hide">{{trans('home.rating_title')}}</h1>
     
     <div class="center table-monitor mob-hide">
         <img src="http://bi.prozorro.org/images/000001_QkJVDL.png" >
-        {{--<img src="images/chart.jpg" alt="Chart" />--}}
     </div>
     
 </div>

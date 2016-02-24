@@ -658,7 +658,7 @@ var APP,
 							if(typeof window.query_types[i] === 'function'){
 								var type=window.query_types[i]();
 
-								if(type.button_name){
+								if(type.button_name || type.template.data('buttonName')){
 									button_blocks.push(type);
 								}
 							}
@@ -699,9 +699,10 @@ var APP,
 				},
 				button: {
 					add: function(block){
-						var button=$('#helper-button').clone().html();
+						var button=$('#helper-button').clone().html(),
+						    button_data_name=block.template.data('buttonName');
 
-						button=$(button.replace(/\{name\}/, block.button_name));
+						button=$(button.replace(/\{name\}/, button_data_name ? button_data_name : block.button_name));
 
 						button.data('input_query', '');
 						button.data('block_type', block.prefix);
@@ -719,7 +720,8 @@ var APP,
 					show: function(input_query){
 						var blocks=APP.utils.detect_query_block(input_query),
 							row,
-							item;
+							item,
+							suggestName;
 
 						APP.utils.suggest.clear();
 
@@ -730,7 +732,9 @@ var APP,
 								if(typeof block.suggest_item=='function'){
 									row=block.suggest_item(row, input_query);
 								}else{
-									row=row.replace(/\{name\}/, block.name);
+        								suggestName=block.template.data('suggestName');
+        								
+									row=row.replace(/\{name\}/, suggestName ? suggestName : block.name);
 									row=row.replace(/\{value\}/, input_query);
 								}
 

@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="search-form--filter mob-hide">
-                        <div class="result-all">Знайдено закупівель: <span header-totals>{{number_format($total, 0, '', ' ')}}</span></div>
+                        <div class="result-all">{{trans('form.resuts_found')}}: <span header-totals>{{number_format($total, 0, '', ' ')}}</span></div>
                         {{--
                         <ul class="nav navbar-nav inline-navbar search-form--filter--filter-records">
                             <li><a href="">Додані сьогодні</a> (?)</li>
@@ -44,6 +44,6 @@
     @endforeach
 
     @if($start<$total)
-        <button class="show-more" data-start="{{$start}}">Показати більше результатів {{number_format($start+1, 0, '', ' ')}} — {{($start+Config::get('prozorro.page_limit'))>$total ? number_format($total, 0, '', ' ') : number_format($start+Config::get('prozorro.page_limit'), 0, '', ' ')}} з {{number_format($total, 0, '', ' ')}}</button>
+        <button class="show-more" data-start="{{$start}}">{{trans('form.show_more')}} {{number_format($start+1, 0, '', ' ')}} — {{($start+Config::get('prozorro.page_limit'))>$total ? number_format($total, 0, '', ' ') : number_format($start+Config::get('prozorro.page_limit'), 0, '', ' ')}} {{trans('form.show_more_from')}} {{number_format($total, 0, '', ' ')}}</button>
     @endif
 @endif

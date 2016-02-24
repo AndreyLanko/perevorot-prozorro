@@ -9,8 +9,6 @@
 		var query_types={
 			order: 600,
 			prefix: 'status',
-			name: 'Статус',
-			button_name: 'Статус',
 			pattern_search: /^(.*?)$/,
 			//pattern_exact: /^\d{1,8}-\d{1}$/,
 			template: $('#block-status'),
@@ -33,7 +31,7 @@
 			init: function(input_query, block){
 				var input=block.find('select'),
 					preselected_value=block.data('preselected_value');
-	
+
 				_block=block;
 	
 				input.selectize({
