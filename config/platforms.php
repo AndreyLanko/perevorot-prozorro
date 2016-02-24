@@ -48,6 +48,7 @@ return [
 		'name'=>'Держзакупівлі онлайн',
 		'slug'=>'netcast',
 		'href'=>'http://www.dzo.com.ua/tenders/TenderID?TenderID={tenderID}',
+		'public'=>'http://www.dzo.com.ua/',
 		'contractor'=>true,
 		'tender'=>true
 	],

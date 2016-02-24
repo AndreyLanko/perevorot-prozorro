@@ -20,7 +20,7 @@ class JsonController extends BaseController
 			else
 				unset($platforms[$k]['contractor']);
 
-            $url=parse_url($item['href']);
+            $url=parse_url(!empty($item['public']) ? $item['public'] : $item['href']);
 
             $platforms[$k]['href']=$url['scheme'].'://'.$url['host'].$url['path'];
 		};
