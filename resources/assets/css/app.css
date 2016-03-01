@@ -2049,6 +2049,8 @@ ul.language-chooser {
     display: inline-block;
     width: auto;
     line-height: 30px;
+    pointer-events: all;
+    text-transform: uppercase;
 }
 .language-chooser li, .qtranxs_widget_end {
     display: inline-block;
@@ -2578,6 +2580,18 @@ ul.social-top {
 }
 .description.opened .switcher a:first-child {
 	display: none;
+}
+.lang-box {
+	position: absolute;
+	top: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+}
+@media (max-width: 1020px) {
+	.lang-box ul.language-chooser {
+	    line-height: 45px;
+	}
 }
 @media (min-width: 992px) {
 	.description .text {

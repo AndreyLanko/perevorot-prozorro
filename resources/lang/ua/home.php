@@ -17,7 +17,6 @@ return [
 	'numbers_org'=>'# Організаторів',
 	'numbers_propositions'=>'Пропозицій на торги',
 	'numbers_economy'=>'Економія',
-	'numbers_sum'=>'Планова сума',
 	'rating_title'=>'Рейтинг замовників',
     'start_at'=>'Початок',
 ];

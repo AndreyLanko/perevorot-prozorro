@@ -21,9 +21,9 @@
 
 <div class="container">        
     <ul class="nav nav-justified sections ">
-        <li class="green-bg notitle"><a href="/postachalniku/"><i class="sprite-provider"></i> <span>{{trans('home.provider')}}</span></a></li>
-        <li class="gray-bg notitle"><a href="/"><i class="sprite-tender-search"></i> <span>{{trans('home.tender_search')}}</span></a></li>
-        <li class="blue-bg notitle"><a href="/zamovniku/"><i class="sprite-customer"></i> <span>{{trans('home.customer')}}</span></a></li>
+        <li class="green-bg notitle"><a href="{{href('postachalniku')}}"><i class="sprite-provider"></i> <span>{{trans('home.provider')}}</span></a></li>
+        <li class="gray-bg notitle"><a href="{{href('/')}}"><i class="sprite-tender-search"></i> <span>{{trans('home.tender_search')}}</span></a></li>
+        <li class="blue-bg notitle"><a href="{{href('zamovniku')}}"><i class="sprite-customer"></i> <span>{{trans('home.customer')}}</span></a></li>
     </ul>
 </div>
 
@@ -91,7 +91,7 @@
             </div>
             
             <div class="col-sm-12">
-                <a href="/search/?procedure=open"><i class="sprite-arrow-right"></i> {{trans('home.all_last_tenders')}}</a>
+                <a href="{{href('/search/?procedure=open')}}"><i class="sprite-arrow-right"></i> {{trans('home.all_last_tenders')}}</a>
             </div>
         </div>
         <div class="clearfix"></div>    
@@ -132,7 +132,7 @@
     <h1 class="size48">{{trans('home.numbers_title')}}</h1>
     <h2 class="center margin-bottom-x">{{trans('home.numbers_href')}} <a href="http://bi.prozorro.org/" target="_blank">bi.prozorro.org</a></h2>
 
-    <a class="number-href" href="/monitoryng/">
+    <a class="number-href" href="{{href('monitoryng')}}">
         <table class="center size18 table-sm line-height1 valign-top table-monitor" width="100%">
             <tbody>
                 <tr>

@@ -8,8 +8,6 @@
 		var query_types={
 			order: 300,
 			prefix: 'tid',
-			name: '№ закупівлі',
-			button_name: '№ закупівлі',
 			pattern_search: /^(.*?)$/,
 			pattern_exact: /^\d{1,9}$/,
 			template: $('#block-tid'),
@@ -38,7 +36,7 @@
 						}
 	
 						$.ajax({
-							url: '/form/autocomplete/tid',
+							url: LANG+'/form/autocomplete/tid',
 							type: 'POST',
 							dataType: 'json',
 							headers: APP.utils.csrf(),

@@ -19,7 +19,7 @@
 				if(!json){
 					$.ajax({
 						method: 'POST',
-						url: '/form/data/status',
+						url: LANG+'/form/data/status',
 						dataType: 'json',
 						headers: APP.utils.csrf(),
 						success: function(response){

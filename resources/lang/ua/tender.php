@@ -89,4 +89,8 @@ return [
     'active_awards_proposition'=>'Пропозиція',
     'active_awards_documents'=>'Документи',
     'start_date'=>'Оголошено',
+    'claims_title'=>'Вимоги про усунення порушення',
+    'no_complaints'=>'Вимоги про усунення порушення відсутні',
+    'expand_complaints'=>'Розгорнути всі вимоги',
+    'collapse_complaints'=>'Згорнути вимоги',
 ];

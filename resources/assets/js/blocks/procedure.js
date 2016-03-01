@@ -20,7 +20,7 @@
 				if(!json){
 					$.ajax({
 						method: 'POST',
-						url: '/form/data/procedure',
+						url: LANG+'/form/data/procedure',
 						dataType: 'json',
 						headers: APP.utils.csrf(),
 						success: function(response){

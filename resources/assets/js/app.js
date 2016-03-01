@@ -12,6 +12,7 @@ var APP,
 	SEARCH_BUTTON,
 	BLOCKS,
 	INITED=false,
+	LANG,
 	SEARCH_QUERY=[],
 	SEARCH_QUERY_TIMEOUT,
 
@@ -236,7 +237,7 @@ var APP,
 						$('.show-more').addClass('loading').spin(spin_options_light);
 
 						$.ajax({
-							url: '/form/search',
+							url: LANG+'/form/search',
 							data: {
 								query: APP.utils.get_query(),
 								start: $('.show-more').data('start')
@@ -263,6 +264,12 @@ var APP,
 
 					APP.utils.totals.init();
 					
+					LANG=_self.data('lang').slice(0, -1);
+
+					if(['', '/en', '/ru'].indexOf(LANG)===-1){
+        					return;
+        				}
+
 					INPUT=_self;
 					BLOCKS=$('#blocks');
 					SEARCH_BUTTON=$('#search_button');
@@ -548,7 +555,7 @@ var APP,
 						$('#search_button').addClass('loading').spin(spin_options);
 
 						$.ajax({
-							url: '/form/search',
+							url: LANG+'/form/search',
 							data: {
 								query: SEARCH_QUERY
 							},
@@ -565,7 +572,7 @@ var APP,
 									APP.utils.totals.show();
 									APP.utils.result_highlight(response.highlight);
 								}else{
-									$('#result').html('Жодних результатiв');
+									$('#result').html(INPUT.data('no-results'));
 								}
 							}
 						});
@@ -743,8 +750,8 @@ var APP,
 	
 									if(input_query && block.json && block.json.check){
 										$.ajax({
+											url: LANG+block.json.check,
 											method: 'POST',
-											url: block.json.check,
 											dataType: 'json',
 											headers: APP.utils.csrf(),
 											data: {

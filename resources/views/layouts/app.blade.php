@@ -34,6 +34,9 @@
             .api-switcher input[disabled]{
                 opacity: .5;
             }
+            .api-switcher input{
+                width:60px;
+            }
             @media (max-width: 769px) {
                 .api-switcher{
                     display: none;
@@ -44,7 +47,7 @@
         <div class="api-switcher" style="position:fixed;font-size:10px;top:7px;left:7px;z-index:2222222">
             <form action="/" method="get">
                 @foreach(Config::get('api') as $api=>$url)
-                    <input type="submit" name="{{$api}}" value="{{$api}}"{{Session::get('api')==$url ? ' disabled':''}}>
+                    <input type="submit" name="{{$api}}" value="{{$api}}"{{Session::get('api')==$url ? ' disabled':''}}><br>
                 @endforeach
             </form>
         </div>
@@ -54,6 +57,17 @@
         
         @yield('html_header')
 
+		<div class="container lang-box hidden-xs">
+			<ul class="language-chooser language-chooser-text qtranxs_language_chooser" id="qtranslate-chooser">
+				<li class="lang-en{{Config::get('locales.current')=='en'?' active':''}}">
+					<a href="/en/"><span>Eng</span></a>
+				</li>
+				<li class="lang-ua{{Config::get('locales.current')=='ua'?' active':''}}">
+					<a href="/"><span>Укр</span></a>
+				</li>
+			</ul>
+		</div>
+		
         @yield('content')
         <div class="last"></div>
     </div>

@@ -1,10 +1,10 @@
 <?php
 
-	foreach(Config::get('languages') as $language=>$language_info)
+	foreach(Config::get('locales.languages') as $language)
 	{
-		$lang_locale=($language_info['default']?'':$language.'/');
+		$prefix=(Config::get('locales.default')==$language ? '' : $language.'/');
 
-		Route::group(['prefix' => $lang_locale], function()
+		Route::group(['prefix' => $prefix], function()
 		{
             Route::get('/', 'PageController@home');
             Route::get('search', 'PageController@search');

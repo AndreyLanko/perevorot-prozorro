@@ -24578,8 +24578,6 @@ $('#el').spin('flower', 'red')
 		var query_types={
 			order: 200,
 			prefix: 'cpv',
-			name: 'CPV-код',
-			button_name: 'CPV-код',
 			pattern_search: pattern,
 			template: $('#block-cpv'),
 			json: {
@@ -24589,7 +24587,7 @@ $('#el').spin('flower', 'red')
 				if(!json){
 					$.ajax({
 						method: 'POST',
-						url: '/form/data/cpv',
+						url: LANG+'/form/data/cpv',
 						dataType: 'json',
 						headers: APP.utils.csrf(),
 						success: function(response){
@@ -24751,6 +24749,34 @@ $('#el').spin('flower', 'red')
 	window.query_types=window.query_types||[];
 	window.query_types.push(BLOCK);
 })();
+$.fn.datepicker.dates['en'] = {
+    days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    daysMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+    months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    today: "Today",
+    clear: "Clear",
+    format: "mm.dd.yyyy",
+    format_translated: "mm/dd/yyyy",
+    titleFormat: "MM yyyy",
+    weekStart: 0
+};
+
+$.fn.datepicker.dates['ua'] = {
+	days: ["Неділя", "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота"],
+	daysShort: ["Нед", "Пнд", "Втр", "Срд", "Чтв", "Птн", "Суб"],
+	daysMin: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+	months: ["Cічень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"],
+	monthsShort: ["Січ", "Лют", "Бер", "Кві", "Тра", "Чер", "Лип", "Сер", "Вер", "Жов", "Лис", "Гру"],
+	today: "Сьогодні",
+	clear: "Очистити",
+	format: "dd.mm.yyyy",
+	format_translated: "дд.мм.рррр",
+	weekStart: 1
+};
+
+
 var DATE_SELECTED=[];
 
 (function(){
@@ -24799,24 +24825,29 @@ var DATE_SELECTED=[];
 			init: function(input_query, block){
 				_block=block;
 
+                date_types=$('#block-date').data('types');
+
 				var dates=block.find('.block-date-picker .date'),
 					ever=false,
 					datepair=block.find('.block-date-picker'),
 					tooltip=block.find('.block-date-tooltip'),
-					preselected_value=block.data('preselected_value');
+					preselected_value=block.data('preselected_value'),
+					lang=LANG!='' ? LANG.substring(1) : 'ua';
 
 				date_start=$(dates[0]);
 				date_end=$(dates[1]);
+//                $.fn.datepicker.defaults.language = 'ua';
 
 				dates.datepicker({
 					autoclose: true,
 					format: format,
+					language: lang,
 					orientation: 'bottom'
 				});
 
 				dates.inputmask({
-					alias: 'dd.mm.yyyy',
-					placeholder: 'дд.мм.рррр'
+					alias: $.fn.datepicker.dates[lang].format,
+					placeholder: $.fn.datepicker.dates[lang].format_translated
 				});
 
 				if(input_query){
@@ -25044,8 +25075,6 @@ var DATE_SELECTED=[];
 		var query_types={
 			order: 200,
 			prefix: 'dkpp',
-			name: 'ДКПП-код',
-			button_name: 'ДКПП-код',
 			pattern_search: pattern,
 			template: $('#block-dkpp'),
 			json: {
@@ -25055,7 +25084,7 @@ var DATE_SELECTED=[];
 				if(!json){
 					$.ajax({
 						method: 'POST',
-						url: '/form/data/dkpp',
+						url: LANG+'/form/data/dkpp',
 						dataType: 'json',
 						headers: APP.utils.csrf(),
 						success: function(response){
@@ -25228,8 +25257,6 @@ var DATE_SELECTED=[];
 		var query_types={
 			order: 500,
 			prefix: 'edrpou',
-			name: 'Замовник',
-			button_name: 'Замовник',
 			pattern_search: /^(.*?)$/,
 			pattern_exact: /^\d{1,9}$/,
 			template: $('#block-edrpou'),
@@ -25260,7 +25287,7 @@ var DATE_SELECTED=[];
 						}
 	
 						$.ajax({
-							url: '/form/autocomplete/edrpou',
+							url: LANG+'/form/autocomplete/edrpou',
 							type: 'POST',
 							dataType: 'json',
 							headers: APP.utils.csrf(),
@@ -25353,7 +25380,7 @@ var DATE_SELECTED=[];
 				if(!json){
 					$.ajax({
 						method: 'POST',
-						url: '/form/data/procedure',
+						url: LANG+'/form/data/procedure',
 						dataType: 'json',
 						headers: APP.utils.csrf(),
 						success: function(response){
@@ -25447,7 +25474,6 @@ var DATE_SELECTED=[];
 		var query_types={
 			order: 0,
 			prefix: 'query',
-			name: 'Ключове слово (назва товару, опис або назва замовника)',
 			pattern_search: /^(.*?)$/,
 			template: $('#block-query'),
 			init: function(input_query, block){
@@ -25506,8 +25532,6 @@ var DATE_SELECTED=[];
 		var query_types={
 			order: 600,
 			prefix: 'region',
-			name: 'Регіон',
-			button_name: 'Регіон',
 			pattern_search: /^([^0-9]*)$/,
 			template: $('#block-region'),
 			json: {
@@ -25517,7 +25541,7 @@ var DATE_SELECTED=[];
 				if(!json){
 					$.ajax({
 						method: 'POST',
-						url: '/form/data/region',
+						url: LANG+'/form/data/region',
 						dataType: 'json',
 						headers: APP.utils.csrf(),
 						success: function(response){
@@ -25622,7 +25646,7 @@ var DATE_SELECTED=[];
 				if(!json){
 					$.ajax({
 						method: 'POST',
-						url: '/form/data/status',
+						url: LANG+'/form/data/status',
 						dataType: 'json',
 						headers: APP.utils.csrf(),
 						success: function(response){
@@ -25716,8 +25740,6 @@ var DATE_SELECTED=[];
 		var query_types={
 			order: 300,
 			prefix: 'tid',
-			name: '№ закупівлі',
-			button_name: '№ закупівлі',
 			pattern_search: /^(.*?)$/,
 			pattern_exact: /^\d{1,9}$/,
 			template: $('#block-tid'),
@@ -25746,7 +25768,7 @@ var DATE_SELECTED=[];
 						}
 	
 						$.ajax({
-							url: '/form/autocomplete/tid',
+							url: LANG+'/form/autocomplete/tid',
 							type: 'POST',
 							dataType: 'json',
 							headers: APP.utils.csrf(),
@@ -25814,8 +25836,6 @@ var DATE_SELECTED=[];
 		var query_types={
 			order: 300,
 			prefix: 'tid',
-			name: '№ закупівлі',
-			button_name: '№ закупівлі',
 			pattern_search: pattern,
 			template: $('#block-tid'),
 			init: function(input_query, block){
@@ -25887,6 +25907,7 @@ var APP,
 	SEARCH_BUTTON,
 	BLOCKS,
 	INITED=false,
+	LANG,
 	SEARCH_QUERY=[],
 	SEARCH_QUERY_TIMEOUT,
 
@@ -26111,7 +26132,7 @@ var APP,
 						$('.show-more').addClass('loading').spin(spin_options_light);
 
 						$.ajax({
-							url: '/form/search',
+							url: LANG+'/form/search',
 							data: {
 								query: APP.utils.get_query(),
 								start: $('.show-more').data('start')
@@ -26138,6 +26159,12 @@ var APP,
 
 					APP.utils.totals.init();
 					
+					LANG=_self.data('lang').slice(0, -1);
+
+					if(['', '/en', '/ru'].indexOf(LANG)===-1){
+        					return;
+        				}
+
 					INPUT=_self;
 					BLOCKS=$('#blocks');
 					SEARCH_BUTTON=$('#search_button');
@@ -26423,7 +26450,7 @@ var APP,
 						$('#search_button').addClass('loading').spin(spin_options);
 
 						$.ajax({
-							url: '/form/search',
+							url: LANG+'/form/search',
 							data: {
 								query: SEARCH_QUERY
 							},
@@ -26440,7 +26467,7 @@ var APP,
 									APP.utils.totals.show();
 									APP.utils.result_highlight(response.highlight);
 								}else{
-									$('#result').html('Жодних результатiв');
+									$('#result').html(INPUT.data('no-results'));
 								}
 							}
 						});
@@ -26618,8 +26645,8 @@ var APP,
 	
 									if(input_query && block.json && block.json.check){
 										$.ajax({
+											url: LANG+block.json.check,
 											method: 'POST',
-											url: block.json.check,
 											dataType: 'json',
 											headers: APP.utils.csrf(),
 											data: {
