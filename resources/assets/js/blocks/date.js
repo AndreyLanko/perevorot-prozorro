@@ -1,3 +1,31 @@
+$.fn.datepicker.dates['en'] = {
+    days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    daysMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+    months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    today: "Today",
+    clear: "Clear",
+    format: "mm.dd.yyyy",
+    format_translated: "mm/dd/yyyy",
+    titleFormat: "MM yyyy",
+    weekStart: 0
+};
+
+$.fn.datepicker.dates['ua'] = {
+	days: ["Неділя", "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота"],
+	daysShort: ["Нед", "Пнд", "Втр", "Срд", "Чтв", "Птн", "Суб"],
+	daysMin: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+	months: ["Cічень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"],
+	monthsShort: ["Січ", "Лют", "Бер", "Кві", "Тра", "Чер", "Лип", "Сер", "Вер", "Жов", "Лис", "Гру"],
+	today: "Сьогодні",
+	clear: "Очистити",
+	format: "dd.mm.yyyy",
+	format_translated: "дд.мм.рррр",
+	weekStart: 1
+};
+
+
 var DATE_SELECTED=[];
 
 (function(){
@@ -46,24 +74,29 @@ var DATE_SELECTED=[];
 			init: function(input_query, block){
 				_block=block;
 
+                date_types=$('#block-date').data('types');
+
 				var dates=block.find('.block-date-picker .date'),
 					ever=false,
 					datepair=block.find('.block-date-picker'),
 					tooltip=block.find('.block-date-tooltip'),
-					preselected_value=block.data('preselected_value');
+					preselected_value=block.data('preselected_value'),
+					lang=LANG!='' ? LANG.substring(1) : 'ua';
 
 				date_start=$(dates[0]);
 				date_end=$(dates[1]);
+//                $.fn.datepicker.defaults.language = 'ua';
 
 				dates.datepicker({
 					autoclose: true,
 					format: format,
+					language: lang,
 					orientation: 'bottom'
 				});
 
 				dates.inputmask({
-					alias: 'dd.mm.yyyy',
-					placeholder: 'дд.мм.рррр'
+					alias: $.fn.datepicker.dates[lang].format,
+					placeholder: $.fn.datepicker.dates[lang].format_translated
 				});
 
 				if(input_query){

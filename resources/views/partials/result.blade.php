@@ -4,11 +4,11 @@
 			<div class="row clearfix">
 				<div class="col-md-8">
 					{{--dump($item)--}}
-                    <a href="/tender/{{$item->tenderID}}/" class="items-list--header"><i class="sprite-{{$item->__icon}}-icon"></i><span class="cell">{{!empty($item->title) ? $item->title : 'Без назви'}}</span></a>
+                    <a href="/tender/{{$item->tenderID}}/" class="items-list--header"><i class="sprite-{{$item->__icon}}-icon"></i><span class="cell">{{!empty($item->title) ? $item->title : trans('facebook.tender_no_name')}}</span></a>
 					<div class="clearfix"></div>
 					<ol class="breadcrumb">
-						<li>{{$item->__icon=='pen'?'Паперові закупівлі':'Електронні закупівлі'}}</li>
-						<li class="marked">{{!empty($dataStatus[$item->status])?$dataStatus[$item->status]:'Статус не визначено'}}</li>
+						<li>{{$item->__icon=='pen' ? trans('tender.pen') : trans('tender.online')}}</li>
+						<li class="marked">{{!empty($dataStatus[$item->status]) ? $dataStatus[$item->status] : trans('tender.nostatus')}}</li>
 						@if (!empty($item->procuringEntity->address->locality))
 							<li>{{$item->procuringEntity->address->locality}}</li>
 						@endif
@@ -21,15 +21,15 @@
 							@if (mb_strlen($item->description)>350)
 								<a class="search-form--open" href="">
 									<i class="sprite-arrow-right"></i>
-									<span>розгорнути</span>
-									<span>згорнути</span>
+									<span>{{trans('interface.expand')}}</span>
+									<span>{{trans('interface.collapse')}}</span>
 								</a>
 							@endif
 						</div>
 					@endif
 					@if (!empty($item->procuringEntity->name))
 						<div class="items-list-item-description">
-							<strong>Компанія:</strong> {{$item->procuringEntity->name}}
+							<strong>{{trans('interface.company')}}:</strong> {{$item->procuringEntity->name}}
 						</div>
 					@endif
 					<div class="items-list--tem-id"><strong>ID:</strong> {{$item->tenderID}}</div>
@@ -40,12 +40,12 @@
 					<a href="" title="Delete" class="price-delete"><i class="sprite-close-blue">Delete</i></a>
 					--}}
 					<div class="items-list--item--price">
-						<span class="price-description">Очікувана вартість</span>
+						<span class="price-description">{{trans('tender.wait_sum')}}</span>
 						{{number_format($item->value->amount, 0, '', ' ')}}
 						<span class="uah">{{$item->value->currency}}</span>
 					</div>
 					@if (!empty($item->enquiryPeriod->startDate))
-						<div class="items-list--item--date"><strong>Оголошено:</strong> {{date('d.m.Y', strtotime($item->enquiryPeriod->startDate))}}</div>
+						<div class="items-list--item--date"><strong>{{trans('tender.start_date')}}:</strong> {{date('d.m.Y', strtotime($item->enquiryPeriod->startDate))}}</div>
 					@endif
 				</div>
 			</div>

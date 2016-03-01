@@ -358,7 +358,7 @@ class PageController extends BaseController
 	
 	private function get_value($source, $search_value)
 	{
-		$lang='uk';
+		$lang=Config::get('locales.current');
 
 		$data=[];
 
@@ -425,14 +425,16 @@ class PageController extends BaseController
         	    
         	    foreach($item->documents as $document)
         	    {
-            	    if(pathinfo($document->title, PATHINFO_EXTENSION)=='yaml')
+            	    if(pathinfo($document->title, PATHINFO_EXTENSION)=='yaml' && !empty($document->url))
             	    {
                 	    if(!$already_found)
                 	    {
                     	    try
                     	    {
                         	    $yaml=Cache::remember('yaml_'.md5($document->url), 60, function() use ($document){
-                            	    return Yaml::parse(file_get_contents($document->url));
+                            	    $yaml_file=@file_get_contents($document->url);
+
+                            	    return !empty($yaml_file) ? Yaml::parse($yaml_file) : [];
                             });
                         	    
                         	    if(!empty($yaml['timeline']['auction_start']['initial_bids']))
@@ -506,16 +508,26 @@ class PageController extends BaseController
 	
 	private function get_html()
 	{
-		$html=Cache::remember('get_html', 60, function()
+		$html=Cache::remember('get_html_'.Config::get('locales.current'), 60, function()
 		{
-			$html=file_get_contents(Request::root().'/postachalniku/');
+			$html=file_get_contents(Request::root().href('postachalniku'));
 	
 			$header=substr($html, strpos($html, '<nav class="navbar navbar-default top-menu">'));
 			$header=substr($header, 0, strpos($header, '<div class="container switcher">'));
 			$header=str_replace('current-menu-item', '', $header);
-	
+
+            $from_text='<ul class="language-chooser language-chooser-text qtranxs_language_chooser" id="qtranslate-chooser">';
+            $to_text='<div class="qtranxs_widget_end"></div>';
+
+            $from_pos=strpos($header, $from_text);
+            $to_pos=strpos($header, $to_text);
+
+			$header_nolangs=substr($header, 0, $from_pos).substr($header, $to_pos);
+            $header=$header_nolangs;
+
 			$footer=substr($html, strpos($html, '<nav class="navbar navbar-default footer">'));
 			$footer=substr($footer, 0, strpos($footer, '</body>'));
+			$footer=str_replace('current-menu-item', '', $footer);			 
 
 			return [
 				'header'=>$this->sanitize_html($header),

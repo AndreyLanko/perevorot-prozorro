@@ -10,8 +10,6 @@
 		var query_types={
 			order: 200,
 			prefix: 'cpv',
-			name: 'CPV-код',
-			button_name: 'CPV-код',
 			pattern_search: pattern,
 			template: $('#block-cpv'),
 			json: {
@@ -21,7 +19,7 @@
 				if(!json){
 					$.ajax({
 						method: 'POST',
-						url: '/form/data/cpv',
+						url: LANG+'/form/data/cpv',
 						dataType: 'json',
 						headers: APP.utils.csrf(),
 						success: function(response){

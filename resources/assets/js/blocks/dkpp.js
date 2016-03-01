@@ -10,8 +10,6 @@
 		var query_types={
 			order: 200,
 			prefix: 'dkpp',
-			name: 'ДКПП-код',
-			button_name: 'ДКПП-код',
 			pattern_search: pattern,
 			template: $('#block-dkpp'),
 			json: {
@@ -21,7 +19,7 @@
 				if(!json){
 					$.ajax({
 						method: 'POST',
-						url: '/form/data/dkpp',
+						url: LANG+'/form/data/dkpp',
 						dataType: 'json',
 						headers: APP.utils.csrf(),
 						success: function(response){

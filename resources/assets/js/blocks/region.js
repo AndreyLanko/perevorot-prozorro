@@ -9,8 +9,6 @@
 		var query_types={
 			order: 600,
 			prefix: 'region',
-			name: 'Регіон',
-			button_name: 'Регіон',
 			pattern_search: /^([^0-9]*)$/,
 			template: $('#block-region'),
 			json: {
@@ -20,7 +18,7 @@
 				if(!json){
 					$.ajax({
 						method: 'POST',
-						url: '/form/data/region',
+						url: LANG+'/form/data/region',
 						dataType: 'json',
 						headers: APP.utils.csrf(),
 						success: function(response){

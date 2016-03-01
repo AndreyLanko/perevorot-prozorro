@@ -9,8 +9,6 @@
 		var query_types={
 			order: 300,
 			prefix: 'tid',
-			name: '№ закупівлі',
-			button_name: '№ закупівлі',
 			pattern_search: pattern,
 			template: $('#block-tid'),
 			init: function(input_query, block){

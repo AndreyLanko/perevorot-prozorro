@@ -12,6 +12,7 @@ var APP,
 	SEARCH_BUTTON,
 	BLOCKS,
 	INITED=false,
+	LANG,
 	SEARCH_QUERY=[],
 	SEARCH_QUERY_TIMEOUT,
 
@@ -236,7 +237,7 @@ var APP,
 						$('.show-more').addClass('loading').spin(spin_options_light);
 
 						$.ajax({
-							url: '/form/search',
+							url: LANG+'/form/search',
 							data: {
 								query: APP.utils.get_query(),
 								start: $('.show-more').data('start')
@@ -263,6 +264,12 @@ var APP,
 
 					APP.utils.totals.init();
 					
+					LANG=_self.data('lang').slice(0, -1);
+
+					if(['', '/en', '/ru'].indexOf(LANG)===-1){
+        					return;
+        				}
+
 					INPUT=_self;
 					BLOCKS=$('#blocks');
 					SEARCH_BUTTON=$('#search_button');
@@ -548,7 +555,7 @@ var APP,
 						$('#search_button').addClass('loading').spin(spin_options);
 
 						$.ajax({
-							url: '/form/search',
+							url: LANG+'/form/search',
 							data: {
 								query: SEARCH_QUERY
 							},
@@ -565,7 +572,7 @@ var APP,
 									APP.utils.totals.show();
 									APP.utils.result_highlight(response.highlight);
 								}else{
-									$('#result').html('Жодних результатiв');
+									$('#result').html(INPUT.data('no-results'));
 								}
 							}
 						});
@@ -658,7 +665,7 @@ var APP,
 							if(typeof window.query_types[i] === 'function'){
 								var type=window.query_types[i]();
 
-								if(type.button_name){
+								if(type.button_name || type.template.data('buttonName')){
 									button_blocks.push(type);
 								}
 							}
@@ -699,9 +706,10 @@ var APP,
 				},
 				button: {
 					add: function(block){
-						var button=$('#helper-button').clone().html();
+						var button=$('#helper-button').clone().html(),
+						    button_data_name=block.template.data('buttonName');
 
-						button=$(button.replace(/\{name\}/, block.button_name));
+						button=$(button.replace(/\{name\}/, button_data_name ? button_data_name : block.button_name));
 
 						button.data('input_query', '');
 						button.data('block_type', block.prefix);
@@ -719,7 +727,8 @@ var APP,
 					show: function(input_query){
 						var blocks=APP.utils.detect_query_block(input_query),
 							row,
-							item;
+							item,
+							suggestName;
 
 						APP.utils.suggest.clear();
 
@@ -730,7 +739,9 @@ var APP,
 								if(typeof block.suggest_item=='function'){
 									row=block.suggest_item(row, input_query);
 								}else{
-									row=row.replace(/\{name\}/, block.name);
+        								suggestName=block.template.data('suggestName');
+        								
+									row=row.replace(/\{name\}/, suggestName ? suggestName : block.name);
 									row=row.replace(/\{value\}/, input_query);
 								}
 
@@ -739,8 +750,8 @@ var APP,
 	
 									if(input_query && block.json && block.json.check){
 										$.ajax({
+											url: LANG+block.json.check,
 											method: 'POST',
-											url: block.json.check,
 											dataType: 'json',
 											headers: APP.utils.csrf(),
 											data: {

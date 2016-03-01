@@ -3,11 +3,11 @@
 @section('head')
     @if ($item && !$error)
         <meta property="og:type" content="website">
-        <meta property="og:site_name" content="prozorro.org">
+        <meta property="og:site_name" content="{{trans('facebook.site_name')}}">
         <meta property="og:title" content="{{htmlentities($item->procuringEntity->name, ENT_QUOTES)}}">
         <meta property="og:url" content="{{Request::root()}}/{{Request::path()}}">
         <meta property="og:image" content="{{Request::root()}}/assets/images/social/fb.png">
-        <meta property="og:description" content="{{!empty($item->title) ? htmlentities($item->title, ENT_QUOTES) : 'Без назви'}}">
+        <meta property="og:description" content="{{!empty($item->title) ? htmlentities($item->title, ENT_QUOTES) : trans('facebook.tender_no_name')}}">
     @endif
 @endsection
 
@@ -30,7 +30,7 @@
     <div class="tender" data-js="tender">
         <div class="tender--head gray-bg">
             <div class="container">
-                <div class="tender--head--title col-sm-9">{{!empty($item->title) ? $item->title : 'Без назви'}}</div>
+                <div class="tender--head--title col-sm-9">{{!empty($item->title) ? $item->title : trans('facebook.tender_no_name')}}</div>
     
                 {{--
                 <div class="breadcrumb_custom clearfix">
@@ -41,10 +41,11 @@
                     <a href="#"><strong>Кваліфікаця:</strong> з 15.07 (пн)</a>
                 </div>
                 --}}
+
                 <div class="col-md-3 col-sm-3 tender--description--cost--wr">
                     @if (!empty($item->value))
                         <div class="gray-bg padding margin-bottom tender--description--cost">
-                            Очікувана вартість
+                            {{trans('tender.wait_sum')}}
                             <div class="green tender--description--cost--number">
                                 <strong>{{number_format($item->value->amount, 0, '', ' ')}} <span class="small">{{$item->value->currency}}</span></strong>
                             </div>
@@ -57,9 +58,9 @@
                         @if (!empty($item->procuringEntity->name))
                             <div class="tender--head--company">{{$item->procuringEntity->name}}</div>
                         @endif
-                        <div class="tender--head--inf">{{$item->__icon=='pen'?'Паперові закупівлі':'Електронні закупівлі'}}   @if(!empty($dataStatus[$item->status]))<span class="marked">{{$dataStatus[$item->status]}}</span>@endif  
+                        <div class="tender--head--inf">{{$item->__icon=='pen'?trans('tender.pen'):trans('tender.online')}}   @if(!empty($dataStatus[$item->status]))<span class="marked">{{$dataStatus[$item->status]}}</span>@endif  
                         @if($item->__icon=='pen')
-                            &nbsp;&nbsp;<a href="https://ips.vdz.ua/ua/purchase_details.htm?id={{$item->id}}" target="_blank">Див. оригінал публікації на офіційному порталі</a>
+                            &nbsp;&nbsp;<a href="https://ips.vdz.ua/ua/purchase_details.htm?id={{$item->id}}" target="_blank">{{trans('tender.pen_info')}}</a>
                         @endif
                              @if (!empty($item->procuringEntity->address->locality)){{$item->procuringEntity->address->locality}}@endif</div>
                     </div>
@@ -67,11 +68,11 @@
                     <div class="tender_menu_fixed" data-js="tender_menu_fixed">
                         <div class="col-sm-3 tender--menu">
                             @if($back)
-                                <a href="{{$back}}" class="back-tender"><i class="sprite-arrow-left"></i> Повернутися до результатів</a>
+                                <a href="{{$back}}" class="back-tender"><i class="sprite-arrow-left"></i> {{trans('tender.back')}}</a>
                             @endif
                             <div class="clearfix"></div>
                             @if($item->is_active_proposal)
-                                <a href="" class="blue-btn">Подати пропозицію</a>
+                                <a href="" class="blue-btn">{{trans('tender.apply')}}</a>
                             @endif
                             {{--
                             <ul class="nav nav-list">
@@ -96,23 +97,23 @@
                                 </li>
                                 --}}
                                 @if ($item->status=='active.enquiries')
-                                    Аукціон буде запланований після {{date('d.m.Y', strtotime($item->tenderPeriod->startDate))}}
+                                    {{trans('tender.auction_plan')}} {{date('d.m.Y', strtotime($item->tenderPeriod->startDate))}}
                                 @elseif(in_array($item->status, ['active.tendering', 'active.auction', 'active.qualification', 'active.awarded', 'unsuccessful', 'cancelled', 'complete']) && !empty($item->auctionUrl))
                                     <li>
-                                        <a href="{{$item->auctionUrl}}" target="_blank"><i class="sprite-hammer"></i> Перейти на аукціон</a>
+                                        <a href="{{$item->auctionUrl}}" target="_blank"><i class="sprite-hammer"></i> {{trans('tender.goto_auction')}}</a>
                                         @if(in_array($item->status, ['active.tendering', 'active.auction']))
-                                            <p class="tender-date">Запланований на {{date('d.m.Y H:i', strtotime($item->auctionPeriod->startDate))}}</p>
+                                            <p class="tender-date">{{trans('tender.auction_planned')}} {{date('d.m.Y H:i', strtotime($item->auctionPeriod->startDate))}}</p>
                                         @elseif(in_array($item->status, ['active.qualification', 'active.awarded', 'unsuccessful', 'cancelled', 'complete']) && !empty($item->auctionPeriod->endDate))
-                                            <p class="tender-date">Завершений {{date('d.m.Y H:i', strtotime($item->auctionPeriod->endDate))}}</p>
+                                            <p class="tender-date">{{trans('tender.auction_finished')}} {{date('d.m.Y H:i', strtotime($item->auctionPeriod->endDate))}}</p>
                                         @elseif(in_array($item->status, ['active.qualification', 'active.awarded', 'unsuccessful', 'cancelled', 'complete']))
-                                            <p class="tender-date">Аукціон не проводився</p>
+                                            <p class="tender-date">{{trans('tender.auction_not_happened')}}</p>
                                         @endif
                                     </li>
                                 @endif
 
                                 @if (!empty($item->bids))
                                     <li>
-                                        <a href="" class="tender--offers--ancor"><i class="sprite-props"></i> Протокол розкриття</a>
+                                        <a href="" class="tender--offers--ancor"><i class="sprite-props"></i> {{trans('tender.bids')}}</a>
                                     </li>
                                 @endif
 
@@ -126,7 +127,7 @@
                                 --}}
                             </ul>
                             @if(!empty($item->procuringEntity->contactPoint->name) || !empty($item->procuringEntity->contactPoint->email))
-                                <p><strong>Контакти</strong></p>
+                                <p><strong>{{trans('tender.contacts')}}</strong></p>
                                 @if(!empty($item->procuringEntity->contactPoint->name))
                                     <p>{{$item->procuringEntity->contactPoint->name}}</p>
                                 @endif
@@ -148,7 +149,7 @@
                     <div class="row">
                         <div class="col-sm-9">
                             <div class="margin-bottom">
-                                <h3>Опис</h3>
+                                <h3>{{trans('tender.info')}}</h3>
                                 <div class="row">
                                     @if (!empty($item->description))
                                         <div class="col-md-12 description-wr croped">
@@ -158,8 +159,8 @@
                                             @if (mb_strlen($item->description)>350)
                                                 <a class="search-form--open" href="">
                                                     <i class="sprite-arrow-right"></i>
-                                                    <span>розгорнути</span>
-                                                    <span>згорнути</span>
+                                                    <span>{{trans('interface.expand')}}</span>
+                                                    <span>{{trans('interface.collapse')}}</span>
                                                 </a>
                                             @endif
                                         </div>
@@ -169,12 +170,12 @@
                             @if (!empty($item->items))
                                 <div class="margin-bottom">
                                     <div{{empty($item->features) ? 'class="border-bottom"':''}}>
-                                        <h3>Позиції</h3>
+                                        <h3>{{trans('tender.items')}}</h3>
                                         @foreach($item->items as $one)
                                             <div class="row margin-bottom">
                                                 <div class="col-md-4 col-md-push-8">
                                                     <div class="padding margin-bottom">
-                                                        {{!empty($one->quantity)?$one->quantity.' шт.':''}}
+                                                        {{!empty($one->quantity)?$one->quantity.trans('tender.q'):''}}
                                                     </div>
                                                 </div>
                                                 <div class="col-md-8 col-md-pull-4 description-wr{{!empty($one->description) && mb_strlen($one->description)>350?' croped':' open'}}">
@@ -184,20 +185,20 @@
                                                             </div>
                                                             @if (mb_strlen($one->description)>350)
                                                                 <a class="search-form--open"><i class="sprite-arrow-down"></i>
-                                                                    <span>розгорнути</span>
-                                                                    <span>згорнути</span>
+                                                                    <span>{{trans('interface.expand')}}</span>
+                                                                    <span>{{trans('interface.collapse')}}</span>
                                                                 </a>
                                                             @endif
                                                     @endif
                                                     @if (!empty($one->classification))
-                                                        <div class="tender-date">Код СPV: {{$one->classification->id}} — {{$one->classification->description}}</div>
+                                                        <div class="tender-date">{{trans('tender.cpv')}}: {{$one->classification->id}} — {{$one->classification->description}}</div>
                                                     @else
-                                                        <div class="tender-date">Код CPV не указан</div>
+                                                        <div class="tender-date">{{trans('tender.no_cpv')}}</div>
                                                     @endif
                                                     @if(!empty($one->additionalClassifications[0]))
-                                                        <div class="tender-date">Код ДКПП: {{$one->additionalClassifications[0]->id}} — {{$one->additionalClassifications[0]->description}}</div>
+                                                        <div class="tender-date">{{trans('tender.dkpp')}}: {{$one->additionalClassifications[0]->id}} — {{$one->additionalClassifications[0]->description}}</div>
                                                     @else
-                                                        <div class="tender-date">Код ДКПП не указан</div>
+                                                        <div class="tender-date">{{trans('tender.no_dkpp')}}</div>
                                                     @endif
                                                 </div>
                                             </div>
@@ -206,45 +207,43 @@
                                 </div>
                             @endif
                             @if($item->__icon!='pen')
-                                <div class="col-sm-9 criterii">{{--tender--platforms border-bottom margin-bottom-xl border-bottom--}}
-                                    <h3>Критерії вибору переможця</h3>
-                                    <div class="">
-                                        <table class="tender--customer margin-bottom tender--customer-left">
-                                            <tbody>
-                                                <tr class="main-row">
-                                                    <td class="col-md-8 col-md-pull-4">Ціна:</td>
-                                                    <td class="col-md-4 col-md-push-8">{{$features_price*100}}%</td>
-                                                </tr>
-                                                @if(!empty($item->features))
-                                                    @foreach($item->features as $feature)
-                                                        <tr class="main-row">
-                                                            <td class="col-md-8 col-md-pull-4">{{$feature->description}}:</td>
-                                                            <td class="col-md-4 col-md-push-8 1">{{$feature->max*100}}%</td>
+                                <div class="col-sm-9 criterii">
+                                    <h3>{{trans('tender.criteria_title')}}</h3>
+                                    <table class="tender--customer margin-bottom tender--customer-left">
+                                        <tbody>
+                                            <tr class="main-row">
+                                                <td class="col-md-8 col-md-pull-4">{{trans('tender.price')}}:</td>
+                                                <td class="col-md-4 col-md-push-8">{{$features_price*100}}%</td>
+                                            </tr>
+                                            @if(!empty($item->features))
+                                                @foreach($item->features as $feature)
+                                                    <tr class="main-row">
+                                                        <td class="col-md-8 col-md-pull-4">{{$feature->description}}:</td>
+                                                        <td class="col-md-4 col-md-push-8 1">{{$feature->max*100}}%</td>
+                                                    </tr>
+                                                    @foreach($feature->enum as $enum)
+                                                        <tr class="add-row">
+                                                            <td class="col-md-8 col-md-pull-4 grey-light">{{$enum->title}}:</td>
+                                                            <td class="col-md-4 col-md-push-8 grey-light">{{$enum->value*100}}%</td>
                                                         </tr>
-                                                        @foreach($feature->enum as $enum)
-                                                            <tr class="add-row">
-                                                                <td class="col-md-8 col-md-pull-4 grey-light">{{$enum->title}}:</td>
-                                                                <td class="col-md-4 col-md-push-8 grey-light">{{$enum->value*100}}%</td>
-                                                            </tr>
-                                                        @endforeach
                                                     @endforeach
-                                                @endif
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                @endforeach
+                                            @endif
+                                        </tbody>
+                                    </table>
                                 </div>
                             @endif
 
                             <div class="row row-details col-sm-9">
                                 <div class="col-sm-4 margin-bottom">
-                                    <h3>Документація</h3>
+                                    <h3>{{trans('tender.documentation')}}</h3>
                                     <div class="gray-bg padding margin-bottom">
                                         @if (!empty($item->documents))
                                             <ul class="nav nav-list">
                                                 @foreach ($item->documents as $k=>$document)
                                                     @if($k<=2)
                                                         <li>
-                                                            {{!empty($document->dateModified) ? date('d.m.Y', strtotime($document->dateModified)) : 'без дати'}}<br>
+                                                            {{!empty($document->dateModified) ? date('d.m.Y', strtotime($document->dateModified)) : trans('tender.no_date')}}<br>
                                                             <a href="{{$document->url}}" target="_blank" class="word-break">{{$document->title}}</a>
                                                         </li>
                                                     @endif
@@ -252,16 +251,16 @@
                                                 {{--<li><a href="#"><i class="sprite-zip"></i> Зберегти усі документи архівом</a></li>--}}
                                             </ul>
                                             @if(sizeof($item->documents)>3)
-                                                <div class="documents-all-wr"><a href="" class="documents-all">Всі документи </a><span class="all-number">({{sizeof($item->documents)}})</span></div>
+                                                <div class="documents-all-wr"><a href="" class="documents-all">{{trans('all_documents')}} </a><span class="all-number">({{sizeof($item->documents)}})</span></div>
                                             @endif
                                             <div class="overlay overlay-documents-all">
                                                 <div class="overlay-close overlay-close-layout"></div>
                                                 <div class="overlay-box">
                                                     <div class="tender--offers documents" data-id="{{$item->id}}">
-                                                        <h4 class="overlay-title">Документація</h4>
+                                                        <h4 class="overlay-title">{{trans('tender.documentation')}}</h4>
                                                         @foreach ($item->documents as $k=>$document)
                                                             <div class="document-info">
-                                                                <div class="document-date">{{!empty($document->dateModified) ? date('d.m.Y', strtotime($document->dateModified)) : 'без дати'}}</div>
+                                                                <div class="document-date">{{!empty($document->dateModified) ? date('d.m.Y', strtotime($document->dateModified)) : trans('tender.no_date')}}</div>
                                                                 <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
                                                             </div>
                                                         @endforeach
@@ -270,29 +269,29 @@
                                                     </div>
                                             </div>
                                         @else
-                                            <div>Відсутня</div>
+                                            <div>{{trans('tender.no_documents')}}</div>
                                         @endif
                                     </div>
                                 </div>
                                 <div class="col-sm-4 margin-bottom ">
-                                    <h3>Дати</h3>
+                                    <h3>{{trans('tender.dates')}}</h3>
                                     <div class="gray-bg padding margin-bottom">
                                         <ul class="nav nav-list">
                                             @if(!empty($item->enquiryPeriod->endDate))
                                                 <li>
-                                                    <strong>Період уточнень:</strong><br>
-                                                    до {{date('d.m.Y H:i', strtotime($item->enquiryPeriod->endDate))}}
+                                                    <strong>{{trans('tender.period1')}}:</strong><br>
+                                                    {{trans('tender.till')}} {{date('d.m.Y H:i', strtotime($item->enquiryPeriod->endDate))}}
                                                 </li>
                                             @endif
                                             @if(!empty($item->tenderPeriod->endDate))
                                                 <li>
-                                                    <strong>Подання пропозицій:</strong><br>
-                                                    до {{date('d.m.Y H:i', strtotime($item->tenderPeriod->endDate))}}
+                                                    <strong>{{trans('tender.period2')}}:</strong><br>
+                                                    {{trans('tender.till')}} {{date('d.m.Y H:i', strtotime($item->tenderPeriod->endDate))}}
                                                 </li>
                                             @endif
                                             @if(!empty($item->auctionPeriod->startDate))
                                                 <li>
-                                                    <strong>Початок аукціону:</strong><br>
+                                                    <strong>{{trans('tender.period3')}}:</strong><br>
                                                     {{date('d.m.Y H:i', strtotime($item->auctionPeriod->startDate))}}
                                                 </li>
                                             @endif
@@ -300,35 +299,35 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-4 margin-bottom ">
-                                    <h3>Інформація про торги</h3>
+                                    <h3>{{trans('tender.auction_info')}}</h3>
                                     <div class="gray-bg padding margin-bottom">
                                         <ul class="nav nav-list">
                                             @if (!empty($dataStatus[$item->status]))
                                                 <li>
-                                                    <strong>Статус:</strong><br>{{$dataStatus[$item->status]}}
+                                                    <strong>{{trans('tender.status')}}:</strong><br>{{$dataStatus[$item->status]}}
                                                 </li>
                                             @endif
                                             @if (!empty($item->value->amount))
                                                 <li>
-                                                    <strong>Бюджет:</strong><br>{{number_format($item->value->amount, 0, '', ' ')}} {{$item->value->currency}}
+                                                    <strong>{{trans('tender.budget')}}:</strong><br>{{number_format($item->value->amount, 0, '', ' ')}} {{$item->value->currency}}
                                                 </li>
                                             @endif
                                             @if (!empty($item->minimalStep->amount))
                                                 <li>
-                                                    <strong>Мінімальний крок:</strong><br>{{$item->minimalStep->amount}} {{$item->minimalStep->currency}}
+                                                    <strong>{{trans('tender.min_step')}}:</strong><br>{{$item->minimalStep->amount}} {{$item->minimalStep->currency}}
                                                 </li>
                                             @endif
                                             <li>
-                                                <strong>Номер тендеру:</strong><br>
+                                                <strong>{{trans('tender.tender_id')}}:</strong><br>
                                                 {{$item->tenderID}}
                                             </li>
                                         </ul>
-                                        <div class="info-all-wr"><a href="" class="info-all">Додаткова інформація</a></span></div>
+                                        <div class="info-all-wr"><a href="" class="info-all">{{trans('tender.more')}}</a></span></div>
                                         <div class="overlay overlay-info-all">
                                             <div class="overlay-close overlay-close-layout"></div>
                                             <div class="overlay-box">
                                                 <div class="tender--offers documents" data-id="info">
-                                                    <h4 class="overlay-title">Інформація про торги</h4>
+                                                    <h4 class="overlay-title">{{trans('tender.auction_info')}}</h4>
                                                     <div class="document-info">
                                                         ID
                                                         <div class="document-date"><a href="https://public.api.openprocurement.org/api/0/tenders/{{$item->id}}" target="_blank">{{$item->id}}</a></div>
@@ -336,7 +335,7 @@
                                                     @if (!empty($item->__yaml_documents))
                                                         @foreach($item->__yaml_documents as $document)
                                                             <div class="document-info">
-                                                                Журнал аукціону
+                                                                {{trans('tender.auction_journal')}}
                                                                 <div class="document-date"><a href="{{$document->url}}" target="_blank">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</a></div>
                                                             </div>                                                    
                                                         @endforeach
@@ -363,7 +362,7 @@
                             @if($item->__icon!='pen')
                                 <div class="container">
                                     <div class="col-sm-9">
-                                        <h3>Запитання</h3>
+                                        <h3>{{trans('tender.questions_title')}}</h3>
                                     
                                         <div class="row questions">
                                             @if (!empty($item->questions))
@@ -379,28 +378,28 @@
                                                                     </div>
                                                                     @if (mb_strlen($question->description)>350)
                                                                         <a class="search-form--open"><i class="sprite-arrow-down"></i>
-                                                                            <span>розгорнути</span>
-                                                                            <span>згорнути</span>
+                                                                            <span>{{trans('interface.expand')}}</span>
+                                                                            <span>{{trans('interface.collapse')}}</span>
                                                                         </a>
                                                                     @endif
                                                                 </div>
                                                             @endif
                                                             @if(!empty($question->answer))
-                                                                <div class="answer"><strong>Відповідь:</strong> <i>{!!nl2br($question->answer)!!}</i></div>
+                                                                <div class="answer"><strong>{{trans('tender.answer')}}:</strong> <i>{!!nl2br($question->answer)!!}</i></div>
                                                             @else
-                                                                <div class="answer" style="font-weight: bold">Відповідь відсутня</div>
+                                                                <div class="answer" style="font-weight: bold">{{trans('tender.no_answer')}}</div>
                                                             @endif
                                                         </div>
                                                     @endforeach
                                                     @if (sizeof($item->questions)>2)
                                                         <a class="question--open"><i class="sprite-arrow-down"></i>
-                                                            <span class="question-up">Розгорнути всі запитання: {{sizeof($item->questions)}}</span>
-                                                            <span class="question-down">Згорнути запитання</span>
+                                                            <span class="question-up">{{trans('tender.expand_questions')}}: {{sizeof($item->questions)}}</span>
+                                                            <span class="question-down">{{trans('tender.collapse_questions')}}</span>
                                                         </a>
                                                     @endif                                                
                                                 </div>
                                             @else
-                                                Запитання відсутні
+                                                {{trans('tender.no_questions')}}
                                             @endif
                                         </div>
                                     </div>
@@ -409,38 +408,38 @@
 
                             @if (!empty($item->procuringEntity))
                                 <div class="col-sm-9 tender--customer--inner">
-                                    <h3>Замовник</h3>
+                                    <h3>{{trans('tender.customer')}}</h3>
                                 
                                     <div class="row">
                                         <table class="tender--customer margin-bottom">
                                             <tbody>
                                                 @if (!empty($item->procuringEntity->identifier->legalName))
                                                     <tr>
-                                                        <td class="col-sm-4"><strong>Назва підприємства:</strong></td>
+                                                        <td class="col-sm-4"><strong>{{trans('tender.customer_name')}}:</strong></td>
                                                         <td class="col-sm-6">{{$item->procuringEntity->identifier->legalName}}</td>
                                                     </tr>
                                                 @endif
                                                 @if (!empty($item->procuringEntity->identifier->id))
                                                     <tr>
-                                                        <td class="col-sm-4"><strong>ЄДРПОУ:</strong></td>
+                                                        <td class="col-sm-4"><strong>{{trans('tender.customer_code')}}:</strong></td>
                                                         <td class="col-sm-6">{{$item->procuringEntity->identifier->id}}</td>
                                                     </tr>
                                                 @endif
                                                 @if (!empty($item->procuringEntity->contactPoint->url))
                                                     <tr>
-                                                        <td class="col-sm-4"><strong>Сайт:</strong></td>
+                                                        <td class="col-sm-4"><strong>{{trans('tender.customer_website')}}:</strong></td>
                                                         <td class="col-sm-6"><a href="{{$item->procuringEntity->contactPoint->url}}" target="_blank">{{$item->procuringEntity->contactPoint->url}}</a></td>
                                                     </tr>
                                                 @endif
                                                 @if (!empty($item->procuringEntity->address))
                                                     <tr>
-                                                        <td class="col-sm-4"><strong>Адреса:</strong></td>
-                                                        <td class="col-sm-6">{{!empty($item->procuringEntity->address->postalCode) ? $item->procuringEntity->address->postalCode.', ': ''}}{{$item->procuringEntity->address->countryName}}, {{!empty($item->procuringEntity->address->region) ? $item->procuringEntity->address->region.' обл., ' : ''}}{{!empty($item->procuringEntity->address->locality) ? $item->procuringEntity->address->locality.', ' : ''}}{{!empty($item->procuringEntity->address->streetAddress) ? $item->procuringEntity->address->streetAddress : ''}}</td>
+                                                        <td class="col-sm-4"><strong>{{trans('tender.customer_addr')}}:</strong></td>
+                                                        <td class="col-sm-6">{{!empty($item->procuringEntity->address->postalCode) ? $item->procuringEntity->address->postalCode.', ': ''}}{{$item->procuringEntity->address->countryName}}, {{!empty($item->procuringEntity->address->region) ? $item->procuringEntity->address->region.trans('tender.region') : ''}}{{!empty($item->procuringEntity->address->locality) ? $item->procuringEntity->address->locality.', ' : ''}}{{!empty($item->procuringEntity->address->streetAddress) ? $item->procuringEntity->address->streetAddress : ''}}</td>
                                                     </tr>
                                                 @endif
                                                 @if (!empty($item->procuringEntity->contactPoint))
                                                     <tr>
-                                                        <td class="col-sm-4"><strong>Контактна особа:</strong></td>
+                                                        <td class="col-sm-4"><strong>{{trans('tender.customer_contact')}}:</strong></td>
                                                         <td class="col-sm-6">
                                                             @if (!empty($item->procuringEntity->contactPoint->name))
                                                                 {{$item->procuringEntity->contactPoint->name}}<br>
@@ -466,8 +465,8 @@
                     <div class="container wide-table">
                         <div class="">
                             <div class="tender--platforms border-bottom margin-bottom-xl">
-                                <h3>Подати пропозицію</h3>
-                                Оберіть один з майданчиків, щоб прийняти участь у аукціоні
+                                <h3>{{trans('tender.apply_title')}}</h3>
+                                {{trans('tender.apply_info')}}
                                 <div class="tender--platforms--list clearfix">
                                     @foreach($platforms as $platform)
                                         @if ($platform['tender'])
@@ -478,7 +477,7 @@
                                                     </a>
                                                 </div>
                                                 <div class="border-hover">
-                                                    <div class="btn-wr"><a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank" class="btn">Прийняти участь</a></div>
+                                                    <div class="btn-wr"><a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank" class="btn">{{trans('tender.apply_go')}}</a></div>
                                                 </div>
                                             </div>
                                         @endif
@@ -492,24 +491,23 @@
                 @if (!empty($item->bids))
                     <div class="container wide-table">
                         <div class="tender--offers margin-bottom-xl">
-                            <h3>Протокол розкриття</h3>
+                            <h3>{{trans('tender.bids_title')}}</h3>
                             @if(!empty($item->auctionPeriod->endDate))
-                                    <p class="table-date">Дата і час розкриття: {{date('d.m.Y H:i', strtotime($item->auctionPeriod->endDate))}}</p>
+                                    <p class="table-date">{{trans('tender.bids_open_time')}}: {{date('d.m.Y H:i', strtotime($item->auctionPeriod->endDate))}}</p>
                             @elseif(!empty($item->tenderPeriod->endDate))
-                                    <p class="table-date">Дата і час розкриття: {{date('d.m.Y H:i', strtotime($item->tenderPeriod->endDate))}}</p>
+                                    <p class="table-date">{{trans('tender.bids_open_time')}}: {{date('d.m.Y H:i', strtotime($item->tenderPeriod->endDate))}}</p>
                             @endif
                             <table class="table table-striped margin-bottom small-text">
                                 <thead>
                                     <tr>
-                                        <th>Учасник</th>
-                                            <th>Первинна пропозиція</th>
-                                        <th>Остаточна пропозиція</th>
+                                        <th>{{trans('tender.bids_participant')}}</th>
+                                        <th>{{trans('tender.bids_start_bid')}}</th>
+                                        <th>{{trans('tender.bids_last_bid')}}</th>
                                         @if($features_price<1)
-                                            <th>Коефіціент</th>
-                                            <th>Приведена ціна</th>
+                                            <th>{{trans('tender.bids_coef')}}</th>
+                                            <th>{{trans('tender.bids_price')}}</th>
                                         @endif
-                                        {{--<th>Статус</th>--}}
-                                        <th>Документи</th>
+                                        <th>{{trans('tender.bids_documents')}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -522,11 +520,11 @@
                                                 @else
                                                     {{str_replace('.00', '', number_format($bid->value->amount, 2, '.', ' '))}} 
                                                 @endif
-                                                <div class="td-small grey-light">{{$bid->value->currency}}{{$bid->value->valueAddedTaxIncluded?' з ПДВ':''}}</div>                                            
+                                                <div class="td-small grey-light">{{$bid->value->currency}}{{$bid->value->valueAddedTaxIncluded?trans('tender.vat'):''}}</div>                                            
                                             </td>
                                                 <td>
                                                 {{str_replace('.00', '', number_format($bid->value->amount, 2, '.', ' '))}} 
-                                                    <div class="td-small grey-light">{{$bid->value->currency}}{{$bid->value->valueAddedTaxIncluded?' з ПДВ':''}}</div>
+                                                    <div class="td-small grey-light">{{$bid->value->currency}}{{$bid->value->valueAddedTaxIncluded?trans('tender.vat'):''}}</div>
                                                 </td>
                                             @if($features_price<1)
                                                 <td>{{$bid->__featured_coef}}</td>
@@ -541,11 +539,11 @@
                                                                 <a href="" class="document-link" data-id="{{$bid->id}}-status">
                                                             @endif
                                                             @if($award->status=='unsuccessful')
-                                                                Дискваліфіковано
+                                                                {{trans('tender.big_status_unsuccessful')}}
                                                             @elseif($award->status=='active')
-                                                                Переможець
+                                                                {{trans('tender.big_status_active')}}
                                                             @elseif($award->status=='pending')
-                                                                Очікує рішення
+                                                                {{trans('tender.big_status_pending')}}
                                                             @else
                                                                 {{$award->status}}
                                                             @endif
@@ -559,9 +557,9 @@
                                             --}}
                                             <td>
                                                 @if(!empty($bid->documents))
-                                                    <a href="" class="document-link" data-id="{{$bid->id}}">Документи</a>
+                                                    <a href="" class="document-link" data-id="{{$bid->id}}">{{trans('tender.bids_documents')}}</a>
                                                 @else
-                                                    Немає
+                                                    {{trans('tender.no_documents')}}
                                                 @endif
                                             </td>
                                         </tr>
@@ -574,7 +572,9 @@
                                     @foreach($item->bids as $bid)
                                         <div class="tender--offers documents" data-id="{{$bid->id}}">
                                             @if(!empty($bid->__documents_before))
-                                                <h4 class="overlay-title">Документи, подані до завершення періоду прийому пропозицій</h4>
+                                                <h4 class="overlay-title">
+                                                    {{trans('tender.bids_documents_before')}}
+                                                </h4>
                                                 @foreach($bid->__documents_before as $document)
                                                     <div class="document-info">
                                                         <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
@@ -583,7 +583,9 @@
                                                 @endforeach
                                             @endif
                                             @if(!empty($bid->__documents_after))
-                                                <h4 class="overlay-title">Документи, подані після завершення періоду прийому пропозицій</h4>
+                                                <h4 class="overlay-title">
+                                                    {{trans('tender.bids_documents_before')}}
+                                                </h4>
                                                 @foreach($bid->__documents_after as $document)
                                                     <div class="document-info">
                                                         <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
@@ -593,25 +595,6 @@
                                             @endif
                                         </div>
                                     @endforeach
-                                    {{--
-                                    @foreach($item->bids as $bid)
-                                        <div class="tender--offers documents" data-id="{{$bid->id}}-status">
-                                            @if(!empty($item->awards))
-                                                @foreach($item->awards as $award)
-                                                    @if($award->bid_id==$bid->id && !empty($award->documents))
-                                                        <h4 class="overlay-title">Рішення відповідальної особи</h4>
-                                                        @foreach($award->documents as $award_document)
-                                                            <div class="document-info">
-                                                                <div class="document-date">{{date('d.m.Y H:i', strtotime($award_document->datePublished))}}</div>
-                                                                <a href="{{$award_document->url}}" target="_blank" class="document-name">{{$award_document->title}}</a>
-                                                            </div>
-                                                        @endforeach
-                                                    @endif
-                                                @endforeach
-                                            @endif
-                                        </div>
-                                    @endforeach
-                                    --}}
                                     <div class="overlay-close"><i class="sprite-close-grey"></i></div>
                                 </div>
                             </div>
@@ -622,14 +605,14 @@
                 @if (!empty($item->awards))
                     <div class="container wide-table">
                         <div class="tender--offers margin-bottom-xl">
-                            <h3>Протокол розгляду</h3>
+                            <h3>{{trans('tender.awards_title')}}</h3>
                             <table class="table table-striped margin-bottom small-text">
                                 <thead>
                                     <tr>
-                                        <th>Учасник</th>
-                                            <th>Рішення</th>
-                                        <th>Пропозиція</th>
-                                        <th>Опубліковано</th>
+                                        <th>{{trans('tender.awards_participant')}}</th>
+                                        <th>{{trans('tender.awards_result')}}</th>
+                                        <th>{{trans('tender.awards_proposition')}}</th>
+                                        <th>{{trans('tender.awards_published')}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -648,11 +631,11 @@
                                                     <a href="" class="document-link" data-id="{{$award->id}}-award">
                                                 @endif
                                                 @if($award->status=='unsuccessful')
-                                                    Дискваліфіковано
+                                                    {{trans('tender.big_status_unsuccessful')}}
                                                 @elseif($award->status=='active')
-                                                    Переможець
+                                                    {{trans('tender.big_status_active')}}
                                                 @elseif($award->status=='pending')
-                                                    Очікує рішення
+                                                    {{trans('tender.big_status_pending')}}
                                                 @else
                                                     {{$award->status}}
                                                 @endif
@@ -662,7 +645,7 @@
                                             </td>                                            
                                             <td>
                                                 {{str_replace('.00', '', number_format($award->value->amount, 2, '.', ' '))}} 
-                                                <div class="td-small grey-light">{{$award->value->currency}}{{$award->value->valueAddedTaxIncluded?' з ПДВ':''}}</div>
+                                                <div class="td-small grey-light">{{$award->value->currency}}{{$award->value->valueAddedTaxIncluded?trans('tender.vat'):''}}</div>
                                             </td>
                                             <td>
                                                     {{date('d.m.Y H:i', strtotime($award->date))}}
@@ -677,7 +660,7 @@
                                     @foreach($item->awards as $award)
                                         @if (!empty($award->documents))
                                             <div class="tender--offers documents" data-id="{{$award->id}}-award">
-                                            <h4 class="overlay-title">Документи</h4>
+                                            <h4 class="overlay-title">{{trans('tender.bids_documents')}}</h4>
                                                 @foreach($award->documents as $document)
                                                     <div class="document-info">
                                                         <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
@@ -696,14 +679,14 @@
                 @if(!empty($item->__active_award))
                     <div class="container wide-table">
                         <div class="tender--offers margin-bottom-xl">
-                            <h3>Повідомлення про намір укласти договір</h3>
-                            <p class="table-date">Дата і час публікації: {{date('d.m.Y H:i', strtotime($item->__active_award->date))}}</p>
+                            <h3>{{trans('tender.active_awards_title')}}</h3>
+                            <p class="table-date">{{trans('tender.active_awards_date')}}: {{date('d.m.Y H:i', strtotime($item->__active_award->date))}}</p>
                             <table class="table table-striped margin-bottom small-text{{$features_price<1?' long':' contract'}}">
                                 <thead>
                                     <tr>
-                                        <th>Учасник</th>
-                                        <th>Пропозиція</th>
-                                        <th>Документи</th>
+                                        <th>{{trans('tender.active_awards_participant')}}</th>
+                                        <th>{{trans('tender.active_awards_proposition')}}</th>
+                                        <th>{{trans('tender.active_awards_documents')}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -717,13 +700,13 @@
                                     </td>
                                         <td>
                                         {{str_replace('.00', '', number_format($item->__active_award->value->amount, 2, '.', ' '))}} 
-                                        <div class="td-small grey-light">{{$item->__active_award->value->currency}}{{$item->__active_award->value->valueAddedTaxIncluded?' з ПДВ':''}}</div>
+                                        <div class="td-small grey-light">{{$item->__active_award->value->currency}}{{$item->__active_award->value->valueAddedTaxIncluded?trans('tender.vat'):''}}</div>
                                     </td>
                                     <td>
                                         @if(!empty($item->__active_award->documents))
-                                            <a href="" class="document-link" data-id="{{$item->__active_award->id}}">Документи</a>
+                                            <a href="" class="document-link" data-id="{{$item->__active_award->id}}">{{trans('tender.bids_documents')}}</a>
                                         @else
-                                            Немає
+                                            {{trans('tender.no_documents')}}
                                         @endif
                                     </td>
                                 </tbody>
@@ -735,13 +718,15 @@
                                 <div class="overlay-close overlay-close-layout"></div>
                                 <div class="overlay-box">
                                     <div class="tender--offers documents" data-id="{{$item->__active_award->id}}">
-                                        <h4 class="overlay-title">Документи</h4>
-                                    @foreach($item->__active_award->documents as $document)
-                                        <div class="document-info">
-                                            <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
-                                            <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
-                                        </div>
-                                    @endforeach
+                                        <h4 class="overlay-title">
+                                            {{trans('tender.bids_documents')}}
+                                        </h4>
+                                        @foreach($item->__active_award->documents as $document)
+                                            <div class="document-info">
+                                                <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+                                                <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
+                                            </div>
+                                        @endforeach
                                     </div>
                                     <div class="overlay-close"><i class="sprite-close-grey"></i></div>
                                 </div>
@@ -753,14 +738,14 @@
                 @if(!empty($item->__documents))
                     <div class="container wide-table tender--platforms">
                         <div class="margin-bottom-xl">
-                            <h3>Укладений договір</h3>
+                            <h3>{{trans('tender.contract_title')}}</h3>
                             <table class="table table-striped margin-bottom prev{{$features_price<1?'-five-col':''}}">
                                 <thead>
                                     <tr>
-                                        <th>Контракт</th>
-                                        <th>Статус</th>
-                                        <th>{{--Дата контракту--}}</th>
-                                        <th>Опубліковано</th>
+                                        <th>{{trans('tender.contract')}}</th>
+                                        <th>{{trans('tender.contract_status')}}</th>
+                                        <th></th>
+                                        <th>{{trans('tender.contract_published')}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -785,198 +770,16 @@
                         </div>
                     </div>
                 @endif
-
-                {{--
-                <div class="tender--complaint margin-bottom">
-                    <h3>? Отримані скарги</h3>
-                    <table class="table table-striped margin-bottom">
-                        <thead>
-                            <tr>
-                                <th>Дата подачі скарги</th>
-                                <th>Назва скаргоподавця</th>
-                                <th>Статус скарги</th>
-                                <th>Документи</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>? 22-12-2016</td>
-                                <td>? Назва організації Назва організації </td>
-                                <td>? Наразі невідомо)</td>
-                                <td>
-                                    <a href="#">Зберегти pdf</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>? 22-12-2016</td>
-                                <td>? Назва організації Назва організації </td>
-                                <td>? Наразі невідомо)</td>
-                                <td>
-                                    <a href="#">Зберегти pdf</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>? 22-12-2016</td>
-                                <td>? Назва організації Назва організації </td>
-                                <td>? Наразі невідомо)</td>
-                                <td>
-                                    <a href="#">Зберегти pdf</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <a href="#" class="more margin-bottom"><i class="sprite-arrow-down"></i> Показати всі</a>
-                </div>
-                
-                <div class="tender--simmilar">
-                    <h3>? Схожі аукціони в періоді уточнення</h3>
-                    
-                    <div class="row">
-                        <div class="col-md-4 col-sm-6">
-                            <div class="tender--simmilar--item gray-bg padding margin-bottom active">
-                                <div class="tender--simmilar--item--control">
-                                    <a href="#"><i class="sprite-star"></i></a>
-                                    <a href="#"><i class="sprite-close-blue"></i></a>
-                                </div>
-                                <div class="green tender--simmilar--item--cost">30 124 <span class="small">грн</span></div>
-                                <a href="#" class="title">Проведення вимірювальних робіт електроустановок та електропристроїв на відповідність до вимог ПТЕ та ПТБ</a>
-                                
-                                
-                                <div class="tender--legend">Prozorro    <span class="marked">Уточнення</span> м. Київ</div>
-                                
-                                <div class="tender--simmilar--item--hidden-part">    
-                                    <div class="tender--simmilar--text margin-bottom">
-                                        <p>1. Вимірювання опору розтікання на основних заземлювачах і заземленнях магістралей і устаткування на об’єкті (вимірювання опору розтікання заземлюючого пристрою, питомого опору ґрунту, активного опору на змінному струмі PU183.1); (4 вимірювань) 2. ...</p>
-                                        <strong>Компанія:</strong> Вищий навчальний заклад Київський медичний коледж ім.П.І.Гаврося"
-                                    </div>
-                                    <a href="#"><i class="sprite-arrow-right"></i> Детальніше</a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-4 col-sm-6">
-                            <div class="tender--simmilar--item gray-bg padding margin-bottom">
-                                <div class="tender--simmilar--item--control">
-                                    <a href="#"><i class="sprite-star"></i></a>
-                                    <a href="#"><i class="sprite-close-blue"></i></a>
-                                </div>
-                                <div class="green tender--simmilar--item--cost">30 124 <span class="small">грн</span></div>
-                                <a href="#" class="title">Проведення вимірювальних робіт електроустановок та електропристроїв на відповідність до вимог ПТЕ та ПТБ</a>
-                                
-                                
-                                <div class="tender--legend">Допорогові торги    <span class="marked">Уточнення</span>    м. Київ</div>
-                                
-                                <div class="tender--simmilar--item--hidden-part">    
-                                    <div class="tender--simmilar--text margin-bottom">
-                                        <p>1. Вимірювання опору розтікання на основних заземлювачах і заземленнях магістралей і устаткування на об’єкті (вимірювання опору розтікання заземлюючого пристрою, питомого опору ґрунту, активного опору на змінному струмі PU183.1); (4 вимірювань) 2. ...</p>
-                                        <strong>Компанія:</strong> Вищий навчальний заклад Київський медичний коледж ім.П.І.Гаврося"
-                                    </div>
-                                    <a href="#"><i class="sprite-arrow-right"></i> Детальніше</a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-4 col-sm-6">
-                            <div class="tender--simmilar--item gray-bg padding margin-bottom">
-                                <div class="tender--simmilar--item--control">
-                                    <a href="#"><i class="sprite-star"></i></a>
-                                    <a href="#"><i class="sprite-close-blue"></i></a>
-                                </div>
-                                <div class="green tender--simmilar--item--cost">30 124 <span class="small">грн</span></div>
-                                <a href="#" class="title">Проведення вимірювальних робіт електроустановок та електропристроїв на відповідність до вимог ПТЕ та ПТБ</a>
-                                
-                                
-                                <div class="tender--legend">Допорогові торги    <span class="marked">Уточнення</span>    м. Київ</div>
-                                
-                                <div class="tender--simmilar--item--hidden-part">    
-                                    <div class="tender--simmilar--text margin-bottom">
-                                        <p>1. Вимірювання опору розтікання на основних заземлювачах і заземленнях магістралей і устаткування на об’єкті (вимірювання опору розтікання заземлюючого пристрою, питомого опору ґрунту, активного опору на змінному струмі PU183.1); (4 вимірювань) 2. ...</p>
-                                        <strong>Компанія:</strong> Вищий навчальний заклад Київський медичний коледж ім.П.І.Гаврося"
-                                    </div>
-                                    <a href="#"><i class="sprite-arrow-right"></i> Детальніше</a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-4 col-sm-6">
-                            <div class="tender--simmilar--item gray-bg padding margin-bottom">
-                                <div class="tender--simmilar--item--control">
-                                    <a href="#"><i class="sprite-star"></i></a>
-                                    <a href="#"><i class="sprite-close-blue"></i></a>
-                                </div>
-                                <div class="green tender--simmilar--item--cost">30 124 <span class="small">грн</span></div>
-                                <a href="#" class="title">Проведення вимірювальних робіт електроустановок та електропристроїв на відповідність до вимог ПТЕ та ПТБ</a>
-                                
-                                
-                                <div class="tender--legend">Допорогові торги    <span class="marked">Уточнення</span>    м. Київ</div>
-                                
-                                <div class="tender--simmilar--item--hidden-part">    
-                                    <div class="tender--simmilar--text margin-bottom">
-                                        <p>1. Вимірювання опору розтікання на основних заземлювачах і заземленнях магістралей і устаткування на об’єкті (вимірювання опору розтікання заземлюючого пристрою, питомого опору ґрунту, активного опору на змінному струмі PU183.1); (4 вимірювань) 2. ...</p>
-                                        <strong>Компанія:</strong> Вищий навчальний заклад Київський медичний коледж ім.П.І.Гаврося"
-                                    </div>
-                                    <a href="#"><i class="sprite-arrow-right"></i> Детальніше</a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-4 col-sm-6">
-                            <div class="tender--simmilar--item gray-bg padding margin-bottom">
-                                <div class="tender--simmilar--item--control">
-                                    <a href="#"><i class="sprite-star"></i></a>
-                                    <a href="#"><i class="sprite-close-blue"></i></a>
-                                </div>
-                                <div class="green tender--simmilar--item--cost">30 124 <span class="small">грн</span></div>
-                                <a href="#" class="title">Проведення вимірювальних робіт електроустановок та електропристроїв на відповідність до вимог ПТЕ та ПТБ</a>
-                                
-                                
-                                <div class="tender--legend">Допорогові торги    <span class="marked">Уточнення</span>    м. Київ</div>
-                                
-                                <div class="tender--simmilar--item--hidden-part">    
-                                    <div class="tender--simmilar--text margin-bottom">
-                                        <p>1. Вимірювання опору розтікання на основних заземлювачах і заземленнях магістралей і устаткування на об’єкті (вимірювання опору розтікання заземлюючого пристрою, питомого опору ґрунту, активного опору на змінному струмі PU183.1); (4 вимірювань) 2. ...</p>
-                                        <strong>Компанія:</strong> Вищий навчальний заклад Київський медичний коледж ім.П.І.Гаврося"
-                                    </div>
-                                    <a href="#"><i class="sprite-arrow-right"></i> Детальніше</a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-4 col-sm-6">
-                            <div class="tender--simmilar--item gray-bg padding margin-bottom">
-                                <div class="tender--simmilar--item--control">
-                                    <a href="#"><i class="sprite-star"></i></a>
-                                    <a href="#"><i class="sprite-close-blue"></i></a>
-                                </div>
-                                <div class="green tender--simmilar--item--cost">30 124 <span class="small">грн</span></div>
-                                <a href="#" class="title">Проведення вимірювальних робіт електроустановок та електропристроїв на відповідність до вимог ПТЕ та ПТБ</a>
-                                
-                                
-                                <div class="tender--legend">Допорогові торги    <span class="marked">Уточнення</span>    м. Київ</div>
-                                
-                                <div class="tender--simmilar--item--hidden-part">    
-                                    <div class="tender--simmilar--text margin-bottom">
-                                        <p>1. Вимірювання опору розтікання на основних заземлювачах і заземленнях магістралей і устаткування на об’єкті (вимірювання опору розтікання заземлюючого пристрою, питомого опору ґрунту, активного опору на змінному струмі PU183.1); (4 вимірювань) 2. ...</p>
-                                        <strong>Компанія:</strong> Вищий навчальний заклад Київський медичний коледж ім.П.І.Гаврося"
-                                    </div>
-                                    <a href="#"><i class="sprite-arrow-right"></i> Детальніше</a>
-                                </div>
-                            </div>
-                        </div>
-    
-                    </div>
-                </div>
-                --}}
             </div>
         </div>
     </div>
 @elseif ($error)
     <div style="padding:20px 20px 40px 10px;text-align:center">
-        API ERROR: {{$error}}
+        {!!$error!!}
     </div>
 @else
     <div style="padding:20px 20px 40px 10px;text-align:center">
-        Тендер не знайдено
+        {{trans('tender.tender_not_found')}}
     </div>
 @endif
 

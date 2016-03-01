@@ -8,7 +8,6 @@
 		var query_types={
 			order: 0,
 			prefix: 'query',
-			name: 'Ключове слово (назва товару, опис або назва замовника)',
 			pattern_search: /^(.*?)$/,
 			template: $('#block-query'),
 			init: function(input_query, block){

@@ -10,8 +10,6 @@
 		var query_types={
 			order: 700,
 			prefix: 'procedure',
-			name: 'Тип процедури',
-			button_name: 'Тип процедури',
 			pattern_search: /^(.*?)$/,
 			//pattern_exact: /^\d{1,8}-\d{1}$/,
 			template: $('#block-procedure'),
@@ -22,7 +20,7 @@
 				if(!json){
 					$.ajax({
 						method: 'POST',
-						url: '/form/data/procedure',
+						url: LANG+'/form/data/procedure',
 						dataType: 'json',
 						headers: APP.utils.csrf(),
 						success: function(response){

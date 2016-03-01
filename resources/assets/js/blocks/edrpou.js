@@ -7,8 +7,6 @@
 		var query_types={
 			order: 500,
 			prefix: 'edrpou',
-			name: 'Замовник',
-			button_name: 'Замовник',
 			pattern_search: /^(.*?)$/,
 			pattern_exact: /^\d{1,9}$/,
 			template: $('#block-edrpou'),
@@ -39,7 +37,7 @@
 						}
 	
 						$.ajax({
-							url: '/form/autocomplete/edrpou',
+							url: LANG+'/form/autocomplete/edrpou',
 							type: 'POST',
 							dataType: 'json',
 							headers: APP.utils.csrf(),

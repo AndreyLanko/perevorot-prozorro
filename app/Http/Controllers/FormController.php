@@ -66,7 +66,7 @@ class FormController extends BaseController
 			elseif(empty($data) || (property_exists($data, 'items') && is_array($data->items) && !sizeof($data->items)))
 			{
 				$out=View::make('pages.results')
-					->with('error', 'Жодних результатів')->render();
+					->with('error', trans('form.no_results'))->render();
 			}
 			elseif(!empty($data->error))
 			{
@@ -211,8 +211,10 @@ class FormController extends BaseController
         ], JSON_UNESCAPED_UNICODE);			
 	}
 
-	private function json($source, $lang)
+	private function json($source)
 	{
+        	$lang=Config::get('locales.current');
+        	
 		$data = Cache::remember('data_'.$source.'_'.$lang, 60, function() use ($lang, $source)
 		{
 			$raw=json_decode(file_get_contents('./sources/'.$lang.'/'.$source.'.json'), TRUE);
@@ -232,32 +234,32 @@ class FormController extends BaseController
 		return $data;
 	}
 	
-	private function get_cpv_data($lang='uk')
+	private function get_cpv_data()
 	{
-		return $this->json('cpv', $lang);
+		return $this->json('cpv');
 	}
 
-	private function get_dkpp_data($lang='uk')
+	private function get_dkpp_data()
 	{
-		return $this->json('dkpp', $lang);
+		return $this->json('dkpp');
 	}
 
-	private function get_region_data($lang='uk')
+	private function get_region_data()
 	{
-		return $this->json('region', $lang);
+		return $this->json('region');
 	}
 
-	private function get_procedure_data($lang='uk')
+	private function get_procedure_data()
 	{
-		return $this->json('procedure', $lang);
+		return $this->json('procedure');
 	}
 
-	public function get_status_data($lang='uk')
+	public function get_status_data()
 	{
-		return $this->json('status', $lang);
+		return $this->json('status');
 	}
 
-	private function get_tid_data($lang='uk')
+	private function get_tid_data()
 	{
 		return [
 			['id'=>'1', 'name'=>'1'],
@@ -266,8 +268,8 @@ class FormController extends BaseController
 		];
 	}
 
-	private function get_edrpou_data($lang='uk')
+	private function get_edrpou_data()
 	{
-		return $this->json('edrpou', $lang);
+		return $this->json('edrpou');
 	}
 }
