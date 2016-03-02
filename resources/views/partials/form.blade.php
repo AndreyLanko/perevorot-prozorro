@@ -14,7 +14,7 @@
 			
 			<div class="blocks-wr">
 				<div id="blocks" class="blocks clearfix">
-					<input id="query" class="query_input no_blocks" type="text" autocomplete="off" data-js="form" data-lang="{{Config::get('locales.href')}}" data-no-results="{{Config::get('locales.href')}}" data-placeholder="{{trans('form.no_results')}}"@if (!empty($preselected_values)) data-preselected='{{$preselected_values}}'@endif @if (!empty($preselected_values)) data-highlight='{{$highlight}}'@endif>
+					<input id="query" class="query_input no_blocks" type="text" autocomplete="off" data-js="form" data-lang="{{Config::get('locales.href')}}" data-no-results="{{Config::get('form.no_results')}}" data-placeholder="{{trans('form.placeholder')}}"@if (!empty($preselected_values)) data-preselected='{{$preselected_values}}'@endif @if (!empty($preselected_values)) data-highlight='{{$highlight}}'@endif>
 					<button id="search_button" class="more" disabled></button>
 				</div>
 				<div id="suggest" class="suggest"></div>
