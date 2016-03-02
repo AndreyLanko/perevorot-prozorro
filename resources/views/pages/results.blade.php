@@ -39,9 +39,13 @@
         </div>
     @endif
 
+    @include('partials.result-'.$search_type.'-header')
+
     @foreach ($items as $item)
-        @include('partials.result')
+        @include('partials.result-'.$search_type)
     @endforeach
+    
+    @include('partials.result-'.$search_type.'-footer')
 
     @if($start<$total)
         <button class="show-more" data-start="{{$start}}">{{trans('form.show_more')}} {{number_format($start+1, 0, '', ' ')}} — {{($start+Config::get('prozorro.page_limit'))>$total ? number_format($total, 0, '', ' ') : number_format($start+Config::get('prozorro.page_limit'), 0, '', ' ')}} {{trans('form.show_more_from')}} {{number_format($total, 0, '', ' ')}}</button>

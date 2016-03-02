@@ -18,9 +18,13 @@ class FormController extends BaseController
 		'status',
 		'tid'
 	];
+	
+	public $search_type='tender';
 
-	public function search()
+	public function search($search_type='tender')
 	{
+        	$this->search_type=$search_type;
+
 		$html=$this->getSearchResultsHtml(Input::get('query'));
 
 		return response()->json(($html ? [
@@ -43,25 +47,9 @@ class FormController extends BaseController
 
 			if(!empty($data->items))
 			{
-				$dataStatus=[];
+        			$callback=camel_case('prepare_'.$this->search_type);
 
-				foreach($data->items as $k=>$item)
-				{
-					$item->__icon=new \StdClass();
-					$item->__icon=starts_with($item->tenderID, 'ocds-random-ua')?'pen':'mouse';
-					
-					$data->items[$k]=$item;
-				}
-				
-				foreach($this->get_status_data() as $one)
-					$dataStatus[$one['id']]=$one['name'];
-
-				$out=View::make('pages.results')
-					->with('total', $data->total)
-					->with('error', false)
-					->with('dataStatus', $dataStatus)
-					->with('start', ((int) Input::get('start') + Config::get('prozorro.page_limit')))
-					->with('items', $data->items)->render();
+                return $this->$callback($data);
 			}
 			elseif(empty($data) || (property_exists($data, 'items') && is_array($data->items) && !sizeof($data->items)))
 			{
@@ -77,6 +65,44 @@ class FormController extends BaseController
 
 		return $out;
 	}
+
+    private function prepareTender($data)
+    {
+        $dataStatus=[];
+
+		foreach($data->items as $k=>$item)
+		{
+			$item->__icon=new \StdClass();
+			$item->__icon=starts_with($item->tenderID, 'ocds-random-ua')?'pen':'mouse';
+			
+			$data->items[$k]=$item;
+		}
+		
+		foreach($this->get_status_data() as $one)
+			$dataStatus[$one['id']]=$one['name'];
+
+		$out=View::make('pages.results')
+			->with('total', $data->total)
+			->with('search_type', $this->search_type)
+			->with('error', false)
+			->with('dataStatus', $dataStatus)
+			->with('start', ((int) Input::get('start') + Config::get('prozorro.page_limit')))
+			->with('items', $data->items)->render();
+        
+        return $out;
+    }
+
+    private function preparePlan($data)
+    {
+		$out=View::make('pages.results')
+			->with('total', $data->total)
+			->with('search_type', $this->search_type)
+			->with('error', false)
+			->with('start', ((int) Input::get('start') + Config::get('prozorro.page_limit')))
+			->with('items', $data->items)->render();
+        
+        return $out;
+    }
 
 	public function getSearchResults($query)
 	{
@@ -94,9 +120,10 @@ class FormController extends BaseController
 
 				$query[$k]=$url[0].'='.rtrim($cpv[0], '0');
 			}
-			elseif(substr($q, 0, 5)=='date[')
+			elseif(substr($q, 0, 5)=='date[' || substr($q, 0, 9)=='dateplan[')
 			{
 				$one_date=str_replace(['date[', ']='], ['', '='], $q);
+				$one_date=str_replace(['dateplan[', ']='], ['', '='], $q);
 				$one_date=preg_split('/(=|—)/', $one_date);
 
 				if(sizeof($one_date)==3)
@@ -116,7 +143,7 @@ class FormController extends BaseController
 
 		$query[]='start='.Input::get('start');
 
-		$path=Session::get('api', Config::get('prozorro.API')).'?'.implode('&', $query);
+		$path=Session::get('api_'.$this->search_type, Config::get('api.'.$this->search_type)).'?'.implode('&', $query);
 
 		curl_setopt($ch, CURLOPT_URL, $path);
 
@@ -167,7 +194,7 @@ class FormController extends BaseController
         ], JSON_UNESCAPED_UNICODE);
 	}
 
-	public function check($type=false)
+	public function check($search_type='tender', $type=false)
 	{
 		$out=0;
 

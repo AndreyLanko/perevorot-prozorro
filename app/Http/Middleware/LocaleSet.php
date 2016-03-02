@@ -30,8 +30,8 @@ class LocaleSet
                     Config::set('locales.href', '/'.$language.'/');
 
                     App::setLocale($language);
-    
-                    $request->server->set('REQUEST_URI', substr($uri, 4));
+
+                    $request->server->set('REQUEST_URI', substr($uri, 3));
                 }
             }
         }

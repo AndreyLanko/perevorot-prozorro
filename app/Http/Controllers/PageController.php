@@ -14,20 +14,24 @@ class PageController extends BaseController
 {
 	public function home()
 	{
-		if(sizeof(Config::get('api'))>1)
-		{
-			foreach(Config::get('api') as $api=>$url)
+        if(env('APP_ENV')=='local' && Input::get())
+        {
+            if(Input::get())
+            {
+                $switch_to=array_keys(Input::get())[0];
+                list($search_type, $new_api)=explode('-', $switch_to);
+            }
+
+			foreach(Config::get('api.__switcher.'.$search_type) as $api=>$url)
 			{
-				if(Input::get($api))
+				if($api==$new_api)
 				{
-					Session::set('api', $url);
+					Session::set('api_'.$search_type, $url);
 	
 					return redirect('/');
 				}
 			}
 		}
-		else
-			Session::forget('api');
 			
 		$last=Cache::remember('get_last_homepage', 60, function()
 		{
@@ -68,14 +72,19 @@ class PageController extends BaseController
 
 		return view('pages/home')
 				->with('html', $this->get_html())
+                ->with('search_type', 'tender')
 				->with('dataStatus', $dataStatus)
 				->with('auctions', $auctions_items)
 				->with('numbers', $this->parseBiNumbers(Config::get('bi-numbers')))
 				->with('last', json_decode($last))->render();
 	}
 
-	public function search()
+    var $search_type;
+    
+	public function search($search_type='tender')
 	{
+    	    $this->search_type=$this->get_search_type($search_type);
+    	    
 		$preselected_values=[];
 		$query_string=trim(Request::server('QUERY_STRING'), '&');
 
@@ -102,19 +111,70 @@ class PageController extends BaseController
 						$preselected_values[$source][]=$search_value;
 				}
 			}
-
-			$result=app('App\Http\Controllers\FormController')->getSearchResultsHtml($query_array);
+            
+            $FormController=app('App\Http\Controllers\FormController');
+            $FormController->search_type=$this->search_type;
+            
+			$result=$FormController->getSearchResultsHtml($query_array);
 		}
 
 		return view('pages/search')
 				->with('html', $this->get_html())
+				->with('search_type', $this->search_type)
 				->with('preselected_values', json_encode($preselected_values, JSON_UNESCAPED_UNICODE))
 				->with('highlight', json_encode($this->getSearchResultsHightlightArray(trim(Request::server('QUERY_STRING'), '&')), JSON_UNESCAPED_UNICODE))
 				->with('result', $result);
 	}
 	
+	private function get_search_type($search_type='tender')
+	{
+        	return in_array($search_type, ['tender', 'plan'])?$search_type:'tender';
+    	}
+	
+	public function plan($id)
+	{
+        $this->search_type='plan';
+		$json=$this->getSearchResults(['pid='.$id]);
+
+        $item=false;
+		$error=false;
+
+		if($json)
+		{
+			$data=json_decode($json);
+
+			if(empty($data->error))
+			{
+				if(!empty($data->items[0]))
+				{
+					$item=$data->items[0];
+				}
+			}
+			else
+				$error=$data->error;
+		
+			if(!$item)
+				$error='План не найден'.(Config::get('api.__switcher')?', попробуйте другой API':'');
+
+			if($error)
+			{
+				return view('pages/plan')
+					->with('html', $this->get_html())
+					->with('item', false)
+					->with('error', $error);
+			}
+		}
+
+		return view('pages/plan')
+				->with('item', $item)
+				->with('html', $this->get_html())
+				->with('error', $error);
+    }
+    
 	public function tender($id)
 	{
+        $this->search_type='tender';
+        
 		$json=$this->getSearchResults(['tid='.$id]);
 		$item=false;
 		$error=false;
@@ -134,7 +194,7 @@ class PageController extends BaseController
 				$error=$data->error;
 		
 			if(!$item)
-				$error='Тендер не найден'.(sizeof(Config::get('api'))>1?', попробуйте другой API':'');
+				$error='Тендер не найден'.(Config::get('api.__switcher')?', попробуйте другой API':'');
 
 			if($error)
 			{
@@ -329,8 +389,7 @@ class PageController extends BaseController
 	
 	public function getSearchResults($query)
 	{
-		$url=Session::get('api', Config::get('prozorro.API')).'?'.implode('&', $query);
-		//$url=Config::get('prozorro.API').'?'.implode('&', $query);
+		$url=Session::get('api_'.$this->search_type, Config::get('api.'.$this->search_type)).'?'.implode('&', $query);
 
 		$header=get_headers($url)[0];
 
