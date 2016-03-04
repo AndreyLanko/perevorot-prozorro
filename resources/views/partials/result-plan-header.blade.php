@@ -3,6 +3,7 @@
     <thead>
         <tr>
             <th>{{trans('plan.table.customer')}}</th>
+            <th>CPV/ДКПП</th>
             <th>{{trans('plan.table.subj')}}</th>
             <th>{{trans('plan.table.sum')}}</th>
             <th>{{trans('plan.table.planned_date')}}</th>

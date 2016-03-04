@@ -10,6 +10,16 @@
         #{{$item->procuringEntity->identifier->id}}
     </td>
     <td>
+        @if(!empty($item->classification))
+            <div>{{$item->classification->id}}: {{$item->classification->description}}</div><br>
+        @endif
+        @if(!empty($item->additionalClassifications))
+            @foreach ($item->additionalClassifications as $additionalClassification)
+                <div>{{$additionalClassification->id}}: {{$additionalClassification->description}}</div>
+            @endforeach
+        @endif        
+    </td>
+    <td>
         {{$item->budget->description}}
     </td>
     <td>

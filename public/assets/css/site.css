@@ -3105,7 +3105,10 @@ ul.social-top {
 	text-align: left;
 }
 .table-search th:first-child {
-	width: 31.5%;
+	width: 20%;
+}
+.table-search th:nth-child(2) {
+	width: 35%;
 }
 .table-search td {
 	font-size: .89em;

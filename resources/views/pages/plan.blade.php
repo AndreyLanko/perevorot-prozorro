@@ -78,18 +78,20 @@
                         </div>
                     </div>
                 </div> 
-                <div class="margin-bottom">
-                    <h3>{{trans('plan.dkpp')}}</h3>
-                    <div class="row">
-                        <div class="col-md-12 description-wr croped">
-                            <div class="tender--description--text description open">
-                                @foreach ($item->additionalClassifications as $additionalClassification)
-                                    <div>{{$additionalClassification->id}}: {{$additionalClassification->description}}</div>
-                                @endforeach
+                @if(!empty($item->additionalClassifications))
+                    <div class="margin-bottom">
+                        <h3>{{trans('plan.dkpp')}}</h3>
+                        <div class="row">
+                            <div class="col-md-12 description-wr croped">
+                                <div class="tender--description--text description open">
+                                    @foreach ($item->additionalClassifications as $additionalClassification)
+                                        <div>{{$additionalClassification->id}}: {{$additionalClassification->description}}</div>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
                 <div class="margin-bottom">
                     <h3>{{trans('plan.table.planned_date')}}</h3>
                     <div class="row">
