@@ -61,6 +61,15 @@ var APP,
 			},
 
 			js: {
+    			    openpopup: function(_self){
+        			    _self.click(function(e){
+            			    e.preventDefault();
+
+            			    _self.fadeOut(function(){
+                			    _self.remove();
+                        })
+        			    });
+    			    },
     			    go_up_down: function(){
                     var offset = 220,
                         duration = 500,
@@ -156,12 +165,13 @@ var APP,
 				tender: function(_self){
 					_self.on('click', '.question--open', function(e){
 						e.preventDefault();
+                        var self=$(this);
 
-						$(this).closest('.questions-block').find('.none').toggle();
-						$(this).toggleClass('open');
+						self.closest('.questions-block').find('.none').toggle();
+						self.toggleClass('open');
 
 						$('html, body').animate({
-							scrollTop: $('.row.questions').offset().top-50
+							scrollTop: self.closest('.row.questions').offset().top-50
 						}, 500);
 					});
 
