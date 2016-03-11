@@ -12,7 +12,7 @@ return [
 	'active_tenders'=>'Today’s auctions',
 	'numbers_title'=>'open monitoring of government spending',
 	'numbers_href'=>'Everyone can control the system on',
-	'numbers_tenders'=>'Tenders',
+	'numbers_tender'=>'Tenders',
 	'numbers_sum'=>'Target amount',
 	'numbers_org'=>'Sponsors',
 	'numbers_propositions'=>'Bidding proposals',
