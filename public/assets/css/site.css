@@ -1810,6 +1810,9 @@ table td[class*=col-], table th[class*=col-] {
     display: table-cell;
     float: none;
 }
+.container.wide-table .tender--platforms {
+	float: left;
+}
 .tender .tender--platforms .tender--platforms--list .item {
 	position: relative;
     float: left;

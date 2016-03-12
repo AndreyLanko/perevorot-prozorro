@@ -9,7 +9,9 @@
                         <div class="questions-row{{$k>1?' none':' visible'}}">
                             <div><strong>{{$complaint->title}}</strong></div>
                             <div>Статус: <div class="marked">{{trans('tender.claim_statuses.'.$complaint->status)}}</div></div>
-                            <div class="grey-light size12 question-date">Дата подання: {{date('d.m.Y H:i', strtotime($complaint->dateSubmitted))}}</div>
+                            @if(!empty($complaint->dateSubmitted))
+                                <div class="grey-light size12 question-date">Дата подання: {{date('d.m.Y H:i', strtotime($complaint->dateSubmitted))}}</div>
+                            @endif
                             @if (!empty($complaint->description))
                                 <div class="description-wr margin-bottom{{mb_strlen($complaint->description)>350?' croped':' open'}}">
                                     <div class="description">
