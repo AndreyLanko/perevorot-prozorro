@@ -43,7 +43,7 @@ return [
     'tender_id'=>'Номер тендеру',
     'more'=>'Додаткова інформація',
     'auction_journal'=>'Журнал аукціону',
-    'questions_title'=>'Запитання',
+    'questions_title'=>'Запитання до процедури',
     'answer'=>'Відповідь',
     'no_answer'=>'Відповідь відсутня',
     'expand_questions'=>'Розгорнути всі запитання',

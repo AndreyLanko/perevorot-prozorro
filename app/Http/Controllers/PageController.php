@@ -126,9 +126,7 @@ class PageController extends BaseController
 			if(empty($data->error))
 			{
 				if(!empty($data->items[0]))
-				{
 					$item=$data->items[0];
-				}
 			}
 			else
 				$error=$data->error;
@@ -143,39 +141,6 @@ class PageController extends BaseController
 					->with('item', false)
 					->with('error', $error);
 			}
-		}
-
-		if(!empty($item->contracts[0]->documents))
-		{
-			$item->__contracts=new \StdClass();
-			$documents=[];
-
-			foreach($item->contracts as $contract)
-			{
-				foreach($contract->documents as $document)
-				{
-					if(!empty($contract->dateSigned))
-					{
-						$document->dateSigned=new \StdClass();
-						$document->dateSigned=$contract->dateSigned;
-					}
-
-					$document->status=new \StdClass();
-					$document->status=$contract->status;
-					
-					$documents[]=$document;
-				}
-			}
-
-			usort($documents, function ($a, $b)
-			{
-				$datea = new \DateTime($a->datePublished);
-				$dateb = new \DateTime($b->datePublished);
-
-			    return $datea>$dateb;
-			});
-
-			$item->__documents=$documents;
 		}
 
 		if(!empty($item->awards))
@@ -227,33 +192,13 @@ class PageController extends BaseController
 				$item->bids[$k]->__featured_price=str_replace('.00', '', number_format($bid->value->amount/$featured_coef, 2, '.', ' '));
 			}
 		}
-
-		if(!empty($item->bids))
-		{
-        		foreach($item->bids as $k=>$bid)
-        		{
-        			if(!empty($bid->documents))
-        			{
-        				$item->bids[$k]->__documents_before=new \StdClass();
-        				$item->bids[$k]->__documents_before=[];
-    
-        				$item->bids[$k]->__documents_after=new \StdClass();
-        				$item->bids[$k]->__documents_after=[];
-        				
-        				foreach($bid->documents as $document)
-        				{
-            				$what=strtotime($document->datePublished) > strtotime($item->tenderPeriod->endDate) ? '__documents_after' : '__documents_before';
-    
-                        array_push($item->bids[$k]->$what, $document);
-                    }
-                }
-        		}
-        }
     		
 		$platforms=Config::get('platforms');
 		shuffle($platforms);
 
 		$dataStatus=[];
+
+        $this->parse_eu($item);
 
 		foreach(app('App\Http\Controllers\FormController')->get_status_data() as $one)
 			$dataStatus[$one['id']]=$one['name'];
@@ -279,9 +224,19 @@ class PageController extends BaseController
 		$item->is_active_proposal=new \stdClass();
 		$item->is_active_proposal=in_array($item->status, ['active.enquiries', 'active.tendering']);
 
+        $this->get_multi_lot($item);
+        $this->get_contracts($item);
         $this->get_initial_bids($item);
-        $this->get_documents($item);
+        $this->get_yaml_documents($item);
+        $this->get_tender_documents($item);        
+        $this->get_bids($item);        
         $this->get_awards($item);
+        $this->get_claims($item);
+        $this->get_complaints($item);
+        $this->get_opened_questions($item);
+        $this->get_opened_claims($item);
+        $this->get_questions($item);
+        $this->get_bids($item);
 
 		return view('pages/tender')
 				->with('item', $item)
@@ -330,6 +285,7 @@ class PageController extends BaseController
 	public function getSearchResults($query)
 	{
 		$url=Session::get('api', Config::get('prozorro.API')).'?'.implode('&', $query);
+		//dd($url);
 		//$url=Config::get('prozorro.API').'?'.implode('&', $query);
 
 		$header=get_headers($url)[0];
@@ -454,7 +410,42 @@ class PageController extends BaseController
         $item->__initial_bids=new \StdClass();
         $item->__initial_bids=$bid_by_bidders;
     	}
-    	
+    
+    	private function get_multi_lot(&$item)
+    	{
+
+        $item->__isMultiLot=new \StdClass();
+        $item->__isMultiLot=(!empty($item->lots) && sizeof($item->lots)>1);
+    }
+    
+    	private function get_opened_questions(&$item)
+    	{
+        $item->__isOpenedQuestions=new \StdClass();
+        $item->__isOpenedQuestions=false;
+
+        if(!empty($item->__complaints_claims))
+        	{
+            	$claims=array_pluck($item->__complaints_claims, 'status');
+
+            	if(sizeof(array_intersect(['claim', 'ignored'], $claims)) > 0)
+                $item->__isOpenedClaims=true;
+        }
+    }
+
+    	private function get_opened_claims(&$item)
+    	{
+        $item->__isOpenedClaims=new \StdClass();
+        $item->__isOpenedClaims=false;
+
+        	if(!empty($item->__complaints_complaints))
+        	{
+            	$complaints=array_pluck($item->__complaints_complaints, 'status');
+
+            	if(sizeof(array_intersect(['pending', 'accepted'], $complaints)) > 0)
+                $item->__isOpenedClaims=true;
+        }
+    }
+    
     	private function get_awards(&$item)
     	{
         $item->__active_award=new \StdClass();
@@ -481,9 +472,210 @@ class PageController extends BaseController
                 }
             }
         }
+
+        if($item->__isMultiLot)
+            $item->__active_award=null;
+    }
+
+    private function get_claims(&$item)
+    {
+        $__complaints_claims=[];
+        
+        foreach(['complaints', 'qualifications/complaints', 'awards/complaints'] as $type)
+        {
+            $path=explode('/', $type);
+
+            if(!empty($item->$path[0]))
+            {
+                $array=$item->$path[0];
+                $found_claims=[];
+
+                if(sizeof($path)>1)
+                {
+                    foreach($array as $item_claim)
+                    {
+                        if(!empty($item_complaint->$path[1]))
+                            $found_claims=array_merge($found_claims, $item_claim->complaints);
+                    }
+                }
+                else
+                    $found_claims=$array;
+
+                $data=array_where($found_claims, function($key, $claim) use($path, $item){
+                    return $claim->type=='claim' && (empty($claim->questionOf) || ($claim->questionOf=='tender' || ($claim->questionOf=='lot' && !empty($item->lots) && sizeof($item->lots)==1)));
+                });
+
+                if($data)
+                    $__complaints_claims=array_merge($__complaints_claims, $data);
+            }
+
+            if($__complaints_claims)
+            {
+                $item->__complaints_claims=new \StdClass();
+                $item->__complaints_claims=array_values($__complaints_claims);
+            }
+        }
+    }
+
+    private function get_complaints(&$item)
+    {
+        $__complaints_complaints=[];
+
+        foreach(['complaints', 'qualifications/complaints', 'awards/complaints'] as $type)
+        {
+            $path=explode('/', $type);
+
+            if(!empty($item->$path[0]))
+            {
+                $array=$item->$path[0];
+                $found_complaints=[];
+
+                if(sizeof($path)>1)
+                {
+                    foreach($array as $item_complaint)
+                    {
+                        if(!empty($item_complaint->$path[1]))
+                            $found_complaints=array_merge($found_complaints, $item_complaint->complaints);
+                    }
+                }
+                else
+                    $found_complaints=$array;
+
+                $data=array_where($found_complaints, function($key, $complaint) use($path, $item){
+                    return $complaint->type=='complaint'&& (empty($complaint->questionOf) || ($complaint->questionOf=='tender' || ($complaint->questionOf=='lot' && !empty($item->lots) && sizeof($item->lots)==1)));
+                });
+
+                if($data)
+                    $__complaints_complaints=array_merge($__complaints_complaints, $data);
+            }
+        }
+
+        if(sizeof($__complaints_complaints))
+        {
+            $item->__complaints_complaints=new \StdClass();
+            
+            foreach($__complaints_complaints as $k=>$complaint)
+            {
+                if(!empty($complaint->documents))
+                {
+                    $__complaints_complaints[$k]->__documents_owner=new \StdClass();
+                    $__complaints_complaints[$k]->__documents_owner=array_where($complaint->documents, function($key, $document){
+                        return $document->author=='complaint_owner';
+                    });
+
+                    $__complaints_complaints[$k]->__documents_reviewer=new \StdClass();
+                    $__complaints_complaints[$k]->__documents_reviewer=array_where($complaint->documents, function($key, $document){
+
+                        return $document->author=='aboveThresholdReviewers';                            
+                    });
+                }
+            }
+            
+            $item->__complaints_complaints=array_values($__complaints_complaints);
+        }
+    }
+
+    	private function get_questions(&$item, $type='tender')
+    	{
+        	if(!empty($item->questions))
+        	{            
+            $item->__questions=new \StdClass();
+
+            $item->__questions=array_where($item->questions, function($key, $question) use ($item, $type){
+                return $question->questionOf==$type || ($question->questionOf=='lot' && !empty($item->lots) && sizeof($item->lots)==1);
+            });
+        }
+    }
+
+    	private function get_tender_documents(&$item, $type='tender')
+    	{
+        	if(!empty($item->documents))
+        	{            
+            $item->__tender_documents=new \StdClass();
+
+            $item->__tender_documents=array_where($item->documents, function($key, $document) use ($type){
+                return $document->documentOf==$type;
+            });
+        }
+    }
+
+    private function get_bids(&$item)
+    {
+        if(!empty($item->bids))
+        {
+            if($item->procurementMethod=='open' && !$item->__isMultiLot)
+            {
+                $except_statuses=array_where($item->awards, function($key, $award){
+                    return in_array($award->status, ['active.pre-qualification', 'active.auction']);
+                });
+    
+                if(sizeof($except_statuses)==sizeof($item->awards))
+                    $item->bids=null;
+
+                if(!empty($item->bids))
+        		    {
+                		foreach($item->bids as $k=>$bid)
+                		{
+                			if(!empty($bid->documents))
+                			{
+                				$item->bids[$k]->__documents_before=new \StdClass();
+                				$item->bids[$k]->__documents_before=[];
+            
+                				$item->bids[$k]->__documents_after=new \StdClass();
+                				$item->bids[$k]->__documents_after=[];
+                				
+                				foreach($bid->documents as $document)
+                				{
+                    				$what=strtotime($document->datePublished) > strtotime($item->tenderPeriod->endDate) ? '__documents_after' : '__documents_before';
+            
+                                array_push($item->bids[$k]->$what, $document);
+                            }
+                        }
+                		}
+                }
+            }
+            else
+                $item->bids=null;
+        }
     }
     
-    	private function get_documents(&$item)
+    private function get_contracts(&$item)
+    {
+        if(!empty($item->contracts[0]->documents))
+		{
+			$item->__contracts=new \StdClass();
+			$documents=[];
+
+			foreach($item->contracts as $contract)
+			{
+				foreach($contract->documents as $document)
+				{
+					if(!empty($contract->dateSigned))
+					{
+						$document->dateSigned=new \StdClass();
+						$document->dateSigned=$contract->dateSigned;
+					}
+
+					$document->status=new \StdClass();
+					$document->status=$contract->status;
+					
+					$documents[]=$document;
+				}
+			}
+
+			usort($documents, function ($a, $b)
+			{
+				$datea = new \DateTime($a->datePublished);
+				$dateb = new \DateTime($b->datePublished);
+
+			    return $datea>$dateb;
+			});
+
+			$item->__documents=$documents;
+		}
+    }
+    
+    	private function get_yaml_documents(&$item)
     	{
         	if(!empty($item->documents))
         	{
@@ -537,6 +729,19 @@ class PageController extends BaseController
 		
 		return $html;
 	}
+
+    private function parse_eu(&$item)
+    {
+        if(!empty($item->procurementMethod))
+        {
+            if($item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdEU')
+            {
+                if(in_array($item->status, ['active.pre-qualification', 'active.auction']))
+                    unset($item->bids);
+            }
+        }
+        
+    }
 
     private function sanitize_html($html)
     {
