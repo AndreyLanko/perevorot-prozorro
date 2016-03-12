@@ -3204,6 +3204,30 @@ ul.social-top {
 	.overlay-counter .overlay-box {
 		margin-top: 145px;
 	}
+.table-search {
+	text-align: left;
+	font-size: 1.14em;
+}
+.table-search th {
+	width: 12%;
+}
+.table.table-search > thead > tr > th {
+	text-align: left;
+}
+.table-search th:first-child {
+	width: 20%;
+}
+.table-search th:nth-child(2) {
+	width: 35%;
+}
+.table-search td {
+	font-size: .89em;
+	line-height: 1.42857143;
+}
+.table-search td .val {
+	font-size: .89em;
+	/*font-size: 12px;
+	color: #999;*/
 }
 @media (max-width: 1020px) {
 	.lang-box ul.language-chooser {

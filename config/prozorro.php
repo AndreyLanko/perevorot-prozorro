@@ -2,7 +2,10 @@
 
 return [
 
-	'API' => env('PROZORRO_API', 'http://prozorro.aws3.tk/search'),
 	'page_limit' => 10,
+    'buttons'=>[
+        'tender'=>'query,cpv,dkpp,tid,date,edrpou,region,status',
+        'plan'=>'query,cpv,dkpp,pid,edrpou,region,dateplan'
+    ]
 
 ];

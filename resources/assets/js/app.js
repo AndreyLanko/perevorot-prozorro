@@ -13,6 +13,7 @@ var APP,
 	BLOCKS,
 	INITED=false,
 	LANG,
+	SEARCH_TYPE,
 	SEARCH_QUERY=[],
 	SEARCH_QUERY_TIMEOUT,
 
@@ -247,7 +248,7 @@ var APP,
 						$('.show-more').addClass('loading').spin(spin_options_light);
 
 						$.ajax({
-							url: LANG+'/form/search',
+							url: LANG+'/'+SEARCH_TYPE+'/form/search',
 							data: {
 								query: APP.utils.get_query(),
 								start: $('.show-more').data('start')
@@ -275,6 +276,7 @@ var APP,
 					APP.utils.totals.init();
 					
 					LANG=_self.data('lang').slice(0, -1);
+					SEARCH_TYPE=_self.data('type');
 
 					if(['', '/en', '/ru'].indexOf(LANG)===-1){
         					return;
@@ -400,6 +402,16 @@ var APP,
 							break;
 						}
 					});
+                    
+                    if(INPUT.data('buttons') && INPUT.data('buttons')!='*'){
+                        var buttons=INPUT.data('buttons').split(',');
+
+                        for(var i=0;i<window.query_types.length;i++){
+                            if(buttons.indexOf(window.query_types[i]().prefix)===-1){
+                                delete window.query_types[i];
+                            }
+                        };
+                    }
 					
 					APP.utils.block.preload();
 					APP.utils.block.buttons();
@@ -499,6 +511,15 @@ var APP,
 										param[0]='date';
 									}
 
+									if(param[0].indexOf('dateplan[')>=0){
+										param[1]={
+											type: param[0].match(/\[(.*?)\]/)[1],
+											value: decodeURI(param[1]).split('—')
+										};
+
+										param[0]='dateplan';
+									}
+
 									var button=$('<div/>');
 
 									button.data('input_query', '');
@@ -516,7 +537,7 @@ var APP,
 					},
 					push: function(){
 						if (IS_HISTORY){
-							window.History.pushState(null, document.title, '/search/'+(SEARCH_QUERY.length ? '?'+SEARCH_QUERY.join('&') : ''));
+							window.History.pushState(null, document.title, LANG+'/'+SEARCH_TYPE+'/search/'+(SEARCH_QUERY.length ? '?'+SEARCH_QUERY.join('&') : ''));
 						}
 					}
 				},
@@ -565,7 +586,7 @@ var APP,
 						$('#search_button').addClass('loading').spin(spin_options);
 
 						$.ajax({
-							url: LANG+'/form/search',
+							url: LANG+'/'+SEARCH_TYPE+'/form/search',
 							data: {
 								query: SEARCH_QUERY
 							},
@@ -615,6 +636,7 @@ var APP,
 						}						
 					},
 					add: function(self){
+    					console.log(self.data('input_query'));
 						var input_query=self.data('input_query'),
 							block_type=self.data('block_type'),
 							block=APP.utils.block.create(block_type),
@@ -760,7 +782,7 @@ var APP,
 	
 									if(input_query && block.json && block.json.check){
 										$.ajax({
-											url: LANG+block.json.check,
+											url: LANG+'/'+SEARCH_TYPE+block.json.check,
 											method: 'POST',
 											dataType: 'json',
 											headers: APP.utils.csrf(),

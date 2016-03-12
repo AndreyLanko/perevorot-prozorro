@@ -29,7 +29,7 @@
         </script>
     @endif
     
-    @if(sizeof(Config::get('api'))>1)
+    @if(env('APP_ENV')=='local')
         <style>
             .api-switcher input[disabled]{
                 opacity: .5;
@@ -46,8 +46,13 @@
 
         <div class="api-switcher" style="position:fixed;font-size:10px;top:7px;left:7px;z-index:2222222">
             <form action="/" method="get">
-                @foreach(Config::get('api') as $api=>$url)
-                    <input type="submit" name="{{$api}}" value="{{$api}}"{{Session::get('api')==$url ? ' disabled':''}}><br>
+                @foreach(Config::get('api.__switcher') as $type=>$apis)
+                    <div style="float:left;width:65px">
+                        <div style="width:65px;text-align: center;font-weight:bold">{{$type}}</div>
+                        @foreach($apis as $api=>$url)
+                            <input type="submit" name="{{$type}}-{{$api}}" value="{{$api}}"{{Session::get('api_'.$type)==$url ? ' disabled':''}}><br>
+                        @endforeach
+                    </div>
                 @endforeach
             </form>
         </div>
