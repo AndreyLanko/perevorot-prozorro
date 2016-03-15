@@ -1,9 +1,9 @@
-<div class="container margin-bottom-xl">
-    <div class="col-sm-9">
-        <h3>Скарги до процедури</h3>
-    
-        <div class="row questions">
-            @if (!empty($item->__complaints_complaints))
+@if (!empty($item->__complaints_complaints))
+    <div class="container margin-bottom-xl">
+        <div class="col-sm-9">
+            <h3>{{$title}}</h3>
+        
+            <div class="row questions">
                 <div class="description-wr questions-block">
                     @foreach($item->__complaints_complaints as $k=>$complaint)
                         <div class="questions-row{{$k>1?' none':' visible'}}">
@@ -31,45 +31,6 @@
                                         @endif
                                     </div>
                                 @endif
-{{--
-<<<<<<< Updated upstream
-@if(!empty($complaint->documents))
-<a href="" class="document-link" data-id="{{$complaint->id}}-complaint">{{trans('tender.bids_documents')}}</a>
-<br><br>
-@endif
-<div>
-@if(empty($complaint->resolutionType))
-<strong>Очікується</strong>
-@else
-<div><strong>{{$complaint->resolutionType}}, {{$complaint->resolution}}</strong></div>
-<div class="grey-light size12 question-date">{{date('d.m.Y H:i', strtotime($complaint->dateAnswered))}}</div>
-@endif
-</div>
-</div>
-@endforeach
-@if (sizeof($item->complaints)>2)
-<a class="question--open"><i class="sprite-arrow-down"></i>
-<span class="question-up">{{trans('tender.expand_complaints')}}: {{sizeof($item->complaints)}}</span>
-<span class="question-down">{{trans('tender.collapse_complaints')}}</span>
-</a>
-@endif                                                
-</div>
-@else
-{{trans('tender.no_complaints')}}
-@endif
-</div>
-<div class="overlay overlay-documents">
-<div class="overlay-close overlay-close-layout"></div>
-<div class="overlay-box">
-@foreach($item->complaints as $complaint)
-@if(!empty($complaint->documents))
-<div class="tender--offers documents" data-id="{{$complaint->id}}-complaint">
-<h4 class="overlay-title">
-{{trans('tender.bids_documents')}}
-</h4>
-@foreach($complaint->documents as $document)
-=======
---}}
                                 @if(!empty($complaint->__documents_owner))
                                     <a href="" class="document-link" data-id="{{$complaint->id}}-owner-complaint">{{trans('tender.bids_documents')}}</a>
                                     <br><br>
@@ -121,45 +82,43 @@
                         </a>
                     @endif                                                
                 </div>
-            @else
-                Немає скарг
-            @endif
-        </div>
-        @if(!empty($item->__complaints_complaints))
-            <div class="overlay overlay-documents">
-                <div class="overlay-close overlay-close-layout"></div>
-                <div class="overlay-box">
-                    @foreach($item->__complaints_complaints as $complaint)
-                        @if(!empty($complaint->__documents_owner))
-                            <div class="tender--offers documents" data-id="{{$complaint->id}}-owner-complaint">
-                                <h4 class="overlay-title">
-                                    Документи подані скаржником
-                                </h4>
-                                @foreach($complaint->__documents_owner as $document)
-                                    <div class="document-info">
-                                        <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
-                                        <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-                        @if(!empty($complaint->__documents_reviewer))
-                            <div class="tender--offers documents" data-id="{{$complaint->id}}-reviewer-complaint">
-                                <h4 class="overlay-title">
-                                    Документи Органу Оскарження
-                                </h4>
-                                @foreach($complaint->__documents_reviewer as $document)
-                                    <div class="document-info">
-                                        <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
-                                        <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-                    @endforeach
-                    <div class="overlay-close"><i class="sprite-close-grey"></i></div>
+            </div>
+            @if(!empty($item->__complaints_complaints))
+                <div class="overlay overlay-documents">
+                    <div class="overlay-close overlay-close-layout"></div>
+                    <div class="overlay-box">
+                        @foreach($item->__complaints_complaints as $complaint)
+                            @if(!empty($complaint->__documents_owner))
+                                <div class="tender--offers documents" data-id="{{$complaint->id}}-owner-complaint">
+                                    <h4 class="overlay-title">
+                                        Документи подані скаржником
+                                    </h4>
+                                    @foreach($complaint->__documents_owner as $document)
+                                        <div class="document-info">
+                                            <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+                                            <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                            @if(!empty($complaint->__documents_reviewer))
+                                <div class="tender--offers documents" data-id="{{$complaint->id}}-reviewer-complaint">
+                                    <h4 class="overlay-title">
+                                        Документи Органу Оскарження
+                                    </h4>
+                                    @foreach($complaint->__documents_reviewer as $document)
+                                        <div class="document-info">
+                                            <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+                                            <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                        @endforeach
+                        <div class="overlay-close"><i class="sprite-close-grey"></i></div>
+                    </div>
                 </div>
-            </div>                                        
+            @endif
         </div>
     </div>
 @endif

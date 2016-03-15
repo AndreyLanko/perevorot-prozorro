@@ -1,7 +1,8 @@
 @if (!empty($item->items) && !$item->__isMultiLot)
     <div class="margin-bottom">
         <div{{empty($item->features) ? 'class="border-bottom"':''}}>
-            <h3>{{trans('tender.items')}}</h3>
+            <h3>Протокол розгляду</h3>
+
             @foreach($item->items as $one)
                 <div class="row margin-bottom">
                     <div class="col-md-4 col-md-push-8">

@@ -26339,6 +26339,17 @@ var APP,
 			},
 
 			js: {
+    			    lot_tabs: function(_self){
+        			    var tabs_content=$('.tab-content'),
+        			        tabs=_self.find('a');
+
+        			    tabs.click(function(e){
+            			    e.preventDefault();
+
+            			    tabs_content.removeClass('active');
+            			    tabs_content.eq($(this).parent().index()).addClass('active');
+        			    });
+                },
     			    openpopup: function(_self){
         			    _self.click(function(e){
             			    e.preventDefault();

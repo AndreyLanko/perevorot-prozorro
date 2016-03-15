@@ -105,5 +105,15 @@ return [
         'declined'=>'Розглянута',
         'satisfied'=>'Розглянута',
         'claim'=>'Нова вимога',
+    ],
+    'qualification_status'=>[
+        'pending'=>'Очікується рішення',
+        'unsuccessful'=>'Дискваліфіковано',
+        'active'=>'Кваліфіковано',        
+    ],
+    'lot_status'=>[
+        'active'=>'Активний',
+        'cancelled'=>'Скасований',
+        'unsuccessful'=>'Закупівля не відбулась'
     ]
 ];

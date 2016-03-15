@@ -1,10 +1,10 @@
 @if($item->__icon!='pen')
-    <div class="container margin-bottom-xl">
-        <div class="col-sm-9">
-            <h3>{{trans('tender.questions_title')}}</h3>
-
-            <div class="row questions">
-                @if (!empty($item->__questions))
+    @if (!empty($item->__questions))
+        <div class="container margin-bottom-xl">
+            <div class="col-sm-9">
+                <h3>{{trans('tender.questions_title')}}</h3>
+    
+                <div class="row questions">
                     <div class="description-wr questions-block">
                         @foreach($item->__questions as $k=>$question)
                             <div class="questions-row{{$k>1?' none':' visible'}}">
@@ -37,10 +37,9 @@
                             </a>
                         @endif                                                
                     </div>
-                @else
-                    {{trans('tender.no_questions')}}
-                @endif
+                    {{--trans('tender.no_questions')--}}
+                </div>
             </div>
         </div>
-    </div>
+    @endif
 @endif

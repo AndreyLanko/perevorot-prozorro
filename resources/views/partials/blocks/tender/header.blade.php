@@ -35,7 +35,7 @@
                         </div>
                     @endif
                     <div class="tender--head--inf">
-                        {{$item->__icon=='pen'?trans('tender.pen'):trans('tender.online')}}
+                        {{$item->__procedure_name}}
                         @if(!empty($dataStatus[$item->status]))
                             &nbsp;&nbsp; <span class="marked">{{$dataStatus[$item->status]}}</span>
                         @endif

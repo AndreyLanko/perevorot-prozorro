@@ -1,9 +1,9 @@
-<div class="container margin-bottom-xl">
-    <div class="col-sm-9">
-        <h3>{{trans('tender.claims_title')}}</h3>
-    
-        <div class="row questions">
-            @if (!empty($item->__complaints_claims))
+@if (!empty($item->__complaints_claims))
+    <div class="container margin-bottom-xl">
+        <div class="col-sm-9">
+            <h3>{{trans('tender.claims_title')}}</h3>
+        
+            <div class="row questions">
                 <div class="description-wr questions-block">
                     @foreach($item->__complaints_claims as $k=>$complaint)
                         <div class="questions-row{{$k>1?' none':' visible'}}">
@@ -47,32 +47,31 @@
                         </a>
                     @endif                                                
                 </div>
-            @else
-                {{trans('tender.no_complaints')}}
+                {{--trans('tender.no_complaints')--}}
+            </div>
+            @if(!empty($item->__complaints_claims))
+                <div class="overlay overlay-documents">
+                    <div class="overlay-close overlay-close-layout"></div>
+                    <div class="overlay-box">
+                        @foreach($item->__complaints_claims as $complaint)
+                            @if(!empty($complaint->documents))
+                                <div class="tender--offers documents" data-id="{{$complaint->id}}-complaint">
+                                    <h4 class="overlay-title">
+                                        {{trans('tender.bids_documents')}}
+                                    </h4>
+                                    @foreach($complaint->documents as $document)
+                                        <div class="document-info">
+                                            <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+                                            <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                        @endforeach
+                        <div class="overlay-close"><i class="sprite-close-grey"></i></div>
+                    </div>
+                </div>
             @endif
         </div>
-        @if(!empty($item->__complaints_claims))
-            <div class="overlay overlay-documents">
-                <div class="overlay-close overlay-close-layout"></div>
-                <div class="overlay-box">
-                    @foreach($item->__complaints_claims as $complaint)
-                        @if(!empty($complaint->documents))
-                            <div class="tender--offers documents" data-id="{{$complaint->id}}-complaint">
-                                <h4 class="overlay-title">
-                                    {{trans('tender.bids_documents')}}
-                                </h4>
-                                @foreach($complaint->documents as $document)
-                                    <div class="document-info">
-                                        <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
-                                        <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-                    @endforeach
-                    <div class="overlay-close"><i class="sprite-close-grey"></i></div>
-                </div>
-            </div>
-        @endif
     </div>
-</div>
+@endif

@@ -44,7 +44,7 @@
                                 <div class="td-small grey-light">{{$award->value->currency}}{{$award->value->valueAddedTaxIncluded?trans('tender.vat'):''}}</div>
                             </td>
                             <td>
-                                    {{date('d.m.Y H:i', strtotime($award->date))}}
+                                {{date('d.m.Y H:i', strtotime($award->date))}}
                             </td>
                         </tr>
                     @endforeach

@@ -221,7 +221,7 @@ class PageController extends BaseController
 			foreach($item->features as $k=>$feature)
 			{
 				$max=0;
-				
+
 				foreach($feature->enum as $one)
 					$max=max($max, floatval($one->value));
 
@@ -245,7 +245,7 @@ class PageController extends BaseController
 			{
 				$item->bids[$k]->__featured_coef=new \StdClass();
 				$item->bids[$k]->__featured_price=new \StdClass();
-				
+
 				$featured_coef=trim(number_format(1+array_sum(array_pluck($bid->parameters, 'value'))/$features_price, 10, '.', ' '), '.0');
 
 				$item->bids[$k]->__featured_coef=$featured_coef;
@@ -272,10 +272,10 @@ class PageController extends BaseController
 		}
 		elseif(!empty($item->bids))
 		{
-			usort($item->bids, function ($a, $b) use ($features_price)
-			{
-			    return floatval($a->value->amount)>floatval($b->value->amount);
-			});
+    			usort($item->bids, function ($a, $b) use ($features_price)
+    			{
+    			    return empty($a->value) || empty($b->value) || (floatval($a->value->amount)>floatval($b->value->amount));
+    			});
 		}
 
 		$item->__icon=new \StdClass();
@@ -296,7 +296,9 @@ class PageController extends BaseController
         $this->get_opened_questions($item);
         $this->get_opened_claims($item);
         $this->get_questions($item);
-        $this->get_bids($item);
+        $this->get_qualifications($item);
+        $this->get_lots($item);
+        $this->get_procedure($item);
 
 		return view('pages/tender')
 				->with('item', $item)
@@ -483,10 +485,10 @@ class PageController extends BaseController
 
         if(!empty($item->__complaints_claims))
         	{
-            	$claims=array_pluck($item->__complaints_claims, 'status');
+            	$claims=array_unique(array_pluck($item->__complaints_claims, 'status'));
 
             	if(sizeof(array_intersect(['claim', 'ignored'], $claims)) > 0)
-                $item->__isOpenedClaims=true;
+                $item->__isOpenedQuestions=true;
         }
     }
 
@@ -516,17 +518,6 @@ class PageController extends BaseController
                 	if($award->status=='active')
                 	{
                     	$item->__active_award=$award;
-                    	
-                    	$item->__bid_price=new \StdClass();
-                    	
-                    	foreach($item->bids as $bid)
-                    	{
-                        	if($bid->id==$item->__active_award->bid_id)
-                        	{
-                            	$item->__active_award->value=new \StdClass();
-                            	$item->__active_award->value=$bid->value;
-                        }
-                    }
                 }
             }
         }
@@ -535,7 +526,7 @@ class PageController extends BaseController
             $item->__active_award=null;
     }
 
-    private function get_claims(&$item)
+    private function get_claims(&$item, $type='tender', $return=false)
     {
         $__complaints_claims=[];
         
@@ -552,7 +543,7 @@ class PageController extends BaseController
                 {
                     foreach($array as $item_claim)
                     {
-                        if(!empty($item_complaint->$path[1]))
+                        if(!empty($item_claim->$path[1]))
                             $found_claims=array_merge($found_claims, $item_claim->complaints);
                     }
                 }
@@ -560,7 +551,7 @@ class PageController extends BaseController
                     $found_claims=$array;
 
                 $data=array_where($found_claims, function($key, $claim) use($path, $item){
-                    return $claim->type=='claim' && (empty($claim->questionOf) || ($claim->questionOf=='tender' || ($claim->questionOf=='lot' && !empty($item->lots) && sizeof($item->lots)==1)));
+                    return $claim->type=='claim' && (empty($claim->questionOf) || ($claim->questionOf==$type || ($claim->questionOf=='lot' && !$item->__isMultiLot)));
                 });
 
                 if($data)
@@ -568,14 +559,19 @@ class PageController extends BaseController
             }
 
             if($__complaints_claims)
+                $__complaints_claims=array_values($__complaints_claims);
+
+            if(!$return)
             {
                 $item->__complaints_claims=new \StdClass();
-                $item->__complaints_claims=array_values($__complaints_claims);
+                $item->__complaints_claims=$__complaints_claims;
             }
+            else
+                return $__complaints_claims;            
         }
     }
 
-    private function get_complaints(&$item)
+    private function get_complaints(&$item, $type='tender', $return=false)
     {
         $__complaints_complaints=[];
 
@@ -600,7 +596,7 @@ class PageController extends BaseController
                     $found_complaints=$array;
 
                 $data=array_where($found_complaints, function($key, $complaint) use($path, $item){
-                    return $complaint->type=='complaint'&& (empty($complaint->questionOf) || ($complaint->questionOf=='tender' || ($complaint->questionOf=='lot' && !empty($item->lots) && sizeof($item->lots)==1)));
+                    return $complaint->type=='complaint'&& (empty($complaint->questionOf) || ($complaint->questionOf==$type || ($complaint->questionOf=='lot' && !$item->__isMultiLot)));
                 });
 
                 if($data)
@@ -610,8 +606,6 @@ class PageController extends BaseController
 
         if(sizeof($__complaints_complaints))
         {
-            $item->__complaints_complaints=new \StdClass();
-            
             foreach($__complaints_complaints as $k=>$complaint)
             {
                 if(!empty($complaint->documents))
@@ -629,20 +623,38 @@ class PageController extends BaseController
                 }
             }
             
-            $item->__complaints_complaints=array_values($__complaints_complaints);
+            $__complaints_complaints=array_values($__complaints_complaints);
         }
+
+        if(!$return)
+        {
+            $item->__complaints_complaints=new \StdClass();
+            $item->__complaints_complaints=$__complaints_complaints;
+        }
+        else
+            return $__complaints_complaints;
+        
     }
 
-    	private function get_questions(&$item, $type='tender')
+    	private function get_questions(&$item, $type='tender', $return=false)
     	{
         	if(!empty($item->questions))
-        	{            
-            $item->__questions=new \StdClass();
-
-            $item->__questions=array_where($item->questions, function($key, $question) use ($item, $type){
-                return $question->questionOf==$type || ($question->questionOf=='lot' && !empty($item->lots) && sizeof($item->lots)==1);
+        	{
+            $questions=array_where($item->questions, function($key, $question) use ($item, $type){
+                return $question->questionOf==$type || !$item->__isMultiLot;
             });
+
+            if(!$return)
+            {
+                $item->__questions=new \StdClass();
+                $item->__questions=$questions;
+            }
+            else
+                return $questions;
         }
+        
+        if($return)
+            return [];
     }
 
     	private function get_tender_documents(&$item, $type='tender')
@@ -657,11 +669,11 @@ class PageController extends BaseController
         }
     }
 
-    private function get_bids(&$item)
+    private function get_bids(&$item, $return=false)
     {
         if(!empty($item->bids))
         {
-            if($item->procurementMethod=='open' && !$item->__isMultiLot)
+            if($item->procurementMethod=='open')
             {
                 $except_statuses=array_where($item->awards, function($key, $award){
                     return in_array($award->status, ['active.pre-qualification', 'active.auction']);
@@ -672,29 +684,241 @@ class PageController extends BaseController
 
                 if(!empty($item->bids))
         		    {
-                		foreach($item->bids as $k=>$bid)
+            		    $bids=$item->bids;
+            		    
+                		foreach($bids as $k=>$bid)
                 		{
                 			if(!empty($bid->documents))
                 			{
-                				$item->bids[$k]->__documents_before=new \StdClass();
-                				$item->bids[$k]->__documents_before=[];
+                				$bids[$k]->__documents_before=new \StdClass();
+                				$bids[$k]->__documents_before=[];
             
-                				$item->bids[$k]->__documents_after=new \StdClass();
-                				$item->bids[$k]->__documents_after=[];
+                				$bids[$k]->__documents_after=new \StdClass();
+                				$bids[$k]->__documents_after=[];
                 				
                 				foreach($bid->documents as $document)
                 				{
                     				$what=strtotime($document->datePublished) > strtotime($item->tenderPeriod->endDate) ? '__documents_after' : '__documents_before';
             
-                                array_push($item->bids[$k]->$what, $document);
+                                array_push($bids[$k]->$what, $document);
                             }
                         }
                 		}
+                		
+                		if(!$return)
+                    		$item->bids=$bids;
+                    else
+                        return $bids;
                 }
             }
-            else
-                $item->bids=null;
         }
+    }
+    
+    private function get_qualifications(&$item, $return=false)
+    {
+        if(!empty($item->qualifications))
+        {
+            $__qualifications=[];
+
+            $cnt=1;
+
+            foreach($item->qualifications as $qualification)
+            {
+                $qualification->__name=new \StdClass();
+                $qualification->__bid_documents=new \StdClass();
+                $qualification->__bid_documents_public=new \StdClass();
+                $qualification->__bid_documents_confident=new \StdClass();
+
+                if(starts_with($item->status, 'active.pre-qualification') || starts_with($item->status, 'active.auction'))
+                {
+                    $qualification->__name='Учасник '.$cnt;
+                }
+                else
+                {
+                    $bid=array_where($item->bids, function($key, $bid) use ($qualification){
+                        return $qualification->bidID==$bid->id;
+                    });
+                    
+                    if(!empty($bid))
+                    {
+                        $qualification->__name=array_values($bid)[0]->tenderers[0]->name;
+                        $qualification->__bid_documents=!empty($bid->documents) ? $bid->documents : [];
+                        
+                        $qualification->__bid_documents_public=array_where($qualification->__bid_documents, function($key, $document){
+                            return $document->confidentiality=='public';
+                        });
+
+                        $qualification->__bid_documents_confident=array_where($qualification->__bid_documents, function($key, $document){
+                            return $document->confidentiality=='buyerOnly';
+                        });
+                    }
+                }
+
+                array_push($__qualifications, $qualification);
+
+                $cnt++;
+            }
+
+            if(!$return)
+            {
+                $item->__qualifications=new \StdClass();
+                $item->__qualifications=$__qualifications;
+            }
+            else
+                return $__qualifications;
+        }   
+    }
+    
+    private function get_lots(&$item)
+    {
+        if(!empty($item->lots) && sizeof($item->lots)>1)
+        {
+            $tender_bids=$this->get_bids($item, true);
+
+            foreach($item->lots as $k=>$lot)
+            {
+                $lot->__icon=new \StdClass();
+                $lot->__icon=false;
+
+                $lot->__items=new \StdClass();
+
+                $lot->__items=array_where($item->items, function($key, $it) use ($lot){
+                    return $it->relatedLot==$lot->id;
+                });
+
+                $lot->__questions=new \StdClass();
+                $lot->__questions=array_where($this->get_questions($item, 'lot', true), function($key, $question) use ($lot){
+                    return !empty($question->relatedItem) && $question->relatedItem==$lot->id;
+                });
+
+                $lot->__complaints_claims=new \StdClass();
+                $lot->__complaints_claims=array_where($this->get_claims($item, 'lot', true), function($key, $claim) use ($lot){
+                    return !empty($claim->relatedItem) && $claim->relatedItem==$lot->id;
+                });
+
+                $lot->__complaints_complaints=new \StdClass();
+                $lot->__complaints_complaints=array_where($this->get_complaints($item, 'lot', true), function($key, $complaint) use ($lot){
+                    return !empty($complaint->relatedItem) && $complaint->relatedItem==$lot->id;
+                });
+                
+                $lot->awards=new \StdClass();
+                $lot->awards=[];
+
+                if(!empty($item->awards))
+                {
+                    $lot->awards=array_where($item->awards, function($key, $award) use ($lot){
+                        return !empty($award->lotID) && $award->lotID==$lot->id;
+                    });
+                }
+
+                if(!empty($tender_bids))
+                {
+                    $bids=array_where($tender_bids, function($key, $bid) use ($lot){
+                        return (!empty(array_where($bid->lotValues, function($k, $value) use ($lot){
+                            return $value->relatedLot==$lot->id;
+                        })));
+                    });
+                }
+
+                if(!empty($tender_bids))
+                {
+                    $lot->bids=new \StdClass();
+                    $lot->bids=[];
+                    $lot->bids_values=new \StdClass();
+                    $lot->bids_values=[];
+    
+                    foreach($tender_bids as $bid)
+                    {
+                        $lot_bid=array_where($bid->lotValues, function($key, $value) use ($lot) {
+                            return $value->relatedLot===$lot->id;
+                        });
+                        
+                        if(!empty($lot_bid))
+                        {
+                            $bid_value=array_values($lot_bid)[0];
+
+                            $lot->bids_values[]=$bid_value;
+                            $lot->bids[]=$bid;
+                        }
+                    }
+                }
+
+                $item->lots[$k]=$lot;
+            }
+            
+/*
+            foreach($item->lots as $k=>$lot)
+            {
+                if(!empty($lot->bids_values))
+                {
+                    foreach($lot->bids_values as $kk=>$bid)
+                    {
+                        $lot->bids[$kk]->value=new \StdClass();
+                        $lot->bids[$kk]->value=$lot->bids_values[$kk]->value;
+                    }
+                }
+//                $item->lots[$k]
+            }
+*/
+
+/*
+            dump($item->lots);
+            exit;
+*/
+            /*
+            if(!empty($tender_bids))
+            {
+                $bid_by_lot=[];
+    
+                foreach($tender_bids as $bid)
+                {
+                    foreach($bid->lotValues as $value)
+                    {
+                        $bid_by_lot[$value->relatedLot][]=[
+                            'value'=>$value,
+                            'bid'=>$bid
+                        ];
+                    }
+                }
+
+                foreach($item->lots as $k=>$lot)
+                {
+                    $lot->bids=new \StdClass();
+                    $lot->bids=[];
+    
+                    if(!empty($bid_by_lot[$lot->id]))
+                    {
+                        foreach($bid_by_lot[$lot->id] as $lot_bid)
+                        {
+                            $bid=$lot_bid['bid'];
+
+                            $bid->value=new \StdClass();
+                            $bid->value=$lot_bid['value'];
+
+                            $lot->bids[]=$bid;
+                        }
+                    }
+
+                    $item->__lots[$k]=$lot;
+                }
+            }
+            */
+                
+            //}    
+            /*
+        			usort($bid_by_lot, function ($a, $b)
+        			{
+        			    return floatval($a->value->amount)>floatval($b->value->amount);
+        			});
+            */
+            //}
+
+            
+
+            //dd($item->__lots);
+        }
+        //dd($item->lots);
+
     }
     
     private function get_contracts(&$item)
@@ -787,6 +1011,36 @@ class PageController extends BaseController
 		
 		return $html;
 	}
+	
+	private function get_procedure(&$item)
+	{
+    	    if($item->procurementMethod=='open' && $item->procurementMethodType=='belowThreshold')
+    	        $name='Допорогові закупівлі';
+
+    	    if($item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdUA')
+    	        $name='Відкриті торги';
+
+    	    if($item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdEU')
+    	        $name='Відкриті торги з публікацією англ.мовою';
+
+    	    if($item->procurementMethod=='limited' && $item->procurementMethodType=='reporting')
+    	        $name='Звіт про укладений договір';
+
+    	    if($item->procurementMethod=='limited' && $item->procurementMethodType=='negotiation')
+    	        $name='Переговорна процедура';
+
+    	    if($item->procurementMethod=='limited' && $item->procurementMethodType=='negotiation.quick')
+    	        $name='Переговорна процедура за нагальною потребою';
+
+    	    if($item->procurementMethod=='' && $item->procurementMethodType=='')
+    	        $name='Без застосування електронної системи';
+
+    	    if($item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdUA.defense')
+    	        $name='Відкриті торги (особливості оборони)';
+
+        $item->__procedure_name=new \StdClass();
+        $item->__procedure_name=$name;
+    	}
 
     private function parse_eu(&$item)
     {

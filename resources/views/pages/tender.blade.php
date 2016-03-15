@@ -60,12 +60,12 @@
                             @include('partials/blocks/tender/claims')
 
                             {{--Скарги до процедури--}}
-                            @include('partials/blocks/tender/complaints')
+                            @include('partials/blocks/tender/complaints', ['title'=>'Скарги до процедури'])
 
                             {{--Замовник--}}
                             @include('partials/blocks/tender/procuring-entity')
                             
-                            {{--Позиції--}}
+                            {{--Протокол розгляду--}}
                             @include('partials/blocks/tender/items')
                             
                             {{--Критерії вибору переможця--}}
@@ -74,16 +74,81 @@
                     </div>
                 </div>
                 
-                {{--Протокол розкриття--}}
+                @if($item->__isMultiLot)
+                    <div class="bs-example bs-example-tabs lots-tabs wide-table" data-js="lot_tabs">
+                        <ul class="nav nav-tabs" role="tablist">
+                            @foreach($item->lots as $k=>$lot)
+                                <li role="presentation" class="{{$k==0?'active':''}}">
+                                    <a href="" role="tab" data-toggle="tab" aria-expanded="{{$k==0?'true':'false'}}">Лот {{$k+1}}</a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <div class="lots-container">
+                        @foreach($item->lots as $k=>$lot)
+                            <div class="tab-content{{$k==0?' active':''}}">
+                                {{--Опис--}}
+                                @include('partials/blocks/lots/info', [
+                                    'item'=>$lot,
+                                    'tender'=>$item
+                                ])
 
-                {{--Реєстр пропозицій--}}
-                @include('partials/blocks/tender/bids')
-                
-                {{--Повідомлення про намір укласти договір--}}                
-                @include('partials/blocks/tender/active-awards')                
-                
-                {{--Протокол розгляду--}}
-                @include('partials/blocks/tender/awards')
+                                {{--Позиції--}}
+                                @include('partials/blocks/lots/items', [
+                                    'item'=>$lot
+                                ])
+
+                                {{--Критерії вибору переможця--}}
+                                @include('partials/blocks/lots/criteria', [
+                                    'item'=>$lot
+                                ])
+
+                                {{--Запитання до лоту--}}
+                                @include('partials/blocks/tender/questions', [
+                                    'item'=>$lot
+                                ])
+                                
+                                {{--Вимоги про усунення порушення до лоту--}}
+                                @include('partials/blocks/tender/claims', [
+                                    'item'=>$lot
+                                ])
+
+                                {{--Скарги до лоту--}}
+                                @include('partials/blocks/tender/complaints', [
+                                    'item'=>$lot,
+                                    'title'=>'Скарги до лоту'
+                                ])
+
+                                {{--Реєстр пропозицій--}}
+                                @include('partials/blocks/tender/bids', [
+                                    'item'=>$lot
+                                ])
+                                
+                                {{--Протокол розгляду--}}
+                                @include('partials/blocks/tender/awards', [
+                                    'item'=>$lot
+                                ])
+
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+
+                {{--Протокол розкриття--}}
+                @include('partials/blocks/tender/qualifications')
+
+                @if (!$item->__isMultiLot)
+
+                    {{--Реєстр пропозицій--}}
+                    @include('partials/blocks/tender/bids')
+                    
+                    {{--Протокол розгляду--}}
+                    @include('partials/blocks/tender/awards')
+
+                    {{--Повідомлення про намір укласти договір--}}                
+                    @include('partials/blocks/tender/active-awards')                
+                    
+                @endif
 
                 {{--Укладений договір--}}
                 @include('partials/blocks/tender/contract')
