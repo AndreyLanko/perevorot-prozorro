@@ -75,11 +75,13 @@ var APP,
                 },
     			    openpopup: function(_self){
         			    _self.click(function(e){
-            			    e.preventDefault();
-
-            			    _self.fadeOut(function(){
-                			    _self.remove();
-                        })
+            			    if(!$(e.target).is('a')){
+                			    e.preventDefault();
+    
+                			    _self.fadeOut(function(){
+                    			    _self.remove();
+                            });
+                        }
         			    });
     			    },
     			    go_up_down: function(){
