@@ -2691,6 +2691,55 @@ ul.social-top {
     -moz-box-shadow: 0px -2px 5px rgba(142, 141, 141, 0.5), 0px 2px 3px rgba(142, 141, 141, 0.5);
     box-shadow: 0px -5px 30px rgba(0, 0, 0, 0.25);
 }
+
+
+@media (min-width: 1200px) {
+	.lang-box  {
+		width: 1170px;	
+	}
+	.lang-box .language-chooser {
+		display: block;
+		width: 25%;
+		margin-left: 25%;	
+	}
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+	.lang-box  {
+		width: 970px;	
+	}
+	.lang-box .language-chooser {
+		display: block;
+		width: 33.333333%;
+		margin-left: 33.333333%;	
+	}	
+}
+@media (max-width: 992px) and (min-width: 768px) {
+	.container.lang-box .language-chooser {
+	    padding-left: 30px;
+	}
+	.top-menu .event-calendar {
+		float: right;
+	}
+}
+@media (min-width: 768px) and (max-width: 991px) {
+	.lang-box  {
+		width: 750px;	
+	}
+	.lang-box .language-chooser {
+		display: block;
+		width: 25%;
+		margin-left: 25%;	
+	}
+	.top-menu .col-sm-3 {
+	    width: 25%;
+	}
+	
+}
+@media (min-width: 993px) {
+	.lang-box .language-chooser {
+	    padding-left: 30px;
+	} 
+}
 @media (min-width: 641px) {
 	.overlay-counter .overlay-box {
 		margin-top: 145px;
