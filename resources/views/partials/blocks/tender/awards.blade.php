@@ -1,4 +1,4 @@
-@if (!empty($item->awards))
+@if (!empty($item->awards) && $item->procurementMethod=='open')
     <div class="container wide-table">
         <div class="tender--offers margin-bottom-xl">
             <h3>{{trans('tender.awards_title')}}</h3>

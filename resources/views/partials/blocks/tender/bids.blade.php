@@ -15,7 +15,7 @@
                         <th>{{trans('tender.bids_participant')}}</th>
                         <th>{{trans('tender.bids_start_bid')}}</th>
                         <th>{{trans('tender.bids_last_bid')}}</th>
-                        @if($features_price<1)
+                        @if($item->__features_price<1)
                             <th>{{trans('tender.bids_coef')}}</th>
                             <th>{{trans('tender.bids_price')}}</th>
                         @endif
@@ -48,7 +48,7 @@
                                     <div class="td-small grey-light">{{$item->bids_values[$k]->value->currency}}{{$item->bids_values[$k]->value->valueAddedTaxIncluded?trans('tender.vat'):''}}</div>                                            
                                 @endif
                             </td>
-                            @if($features_price<1)
+                            @if($item->__features_price<1)
                                 <td>{{$bid->__featured_coef}}</td>
                                 <td class="1">{{$bid->__featured_price}}</td>
                             @endif

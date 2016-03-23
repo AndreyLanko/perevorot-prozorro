@@ -25,16 +25,10 @@
                 
             <div class="row">
                 <div class="col-sm-9">
-                    @if (!empty($item->procuringEntity->name))
-                        <div class="tender--head--company">
-                            {{$item->procuringEntity->name}}<br>                                
-                        </div>
-                        <div style="margin:-20px 0px 10px 0px">
-                            ЄДРПОУ: {{$item->procuringEntity->identifier->id}}<br>
-                            {{trans('tender.customer_addr')}}: {{!empty($item->procuringEntity->address->postalCode) ? $item->procuringEntity->address->postalCode.', ': ''}}{{$item->procuringEntity->address->countryName}}, {{!empty($item->procuringEntity->address->region) ? $item->procuringEntity->address->region.trans('tender.region') : ''}}{{!empty($item->procuringEntity->address->locality) ? $item->procuringEntity->address->locality.', ' : ''}}{{!empty($item->procuringEntity->address->streetAddress) ? $item->procuringEntity->address->streetAddress : ''}}
-                        </div>
-                    @endif
                     <div class="tender--head--inf">
+                        {{$item->tenderID}} ● {{$item->id}}
+                    </div>
+                    <div class="tender--head--inf margin-bottom">
                         {{$item->__procedure_name}}
                         @if(!empty($dataStatus[$item->status]))
                             &nbsp;&nbsp; <span class="marked">{{$dataStatus[$item->status]}}</span>
@@ -49,6 +43,11 @@
                             &nbsp;&nbsp; Наявні скарги без рішення
                         @endif
                     </div>
+                    @if($item->__is_sign)
+                        <div>Електронний цифровий підпис накладено. <a href="">Перевірити</a></div>
+                    @else
+                        <div>Електронний цифровий підпис не накладено</div>
+                    @endif
                 </div>
                 
                 <div class="tender_menu_fixed" data-js="tender_menu_fixed">

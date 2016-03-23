@@ -1,9 +1,9 @@
-@if(!empty($item->__active_award))
+@if(!empty($item->__active_award) && $item->procurementMethodType!='reporting')
     <div class="container wide-table">
         <div class="tender--offers margin-bottom-xl">
-            <h3>{{trans('tender.active_awards_title')}}</h3>
+            <h2>{{trans('tender.active_awards_title')}}</h2>
             <p class="table-date">{{trans('tender.active_awards_date')}}: {{date('d.m.Y H:i', strtotime($item->__active_award->date))}}</p>
-            <table class="table table-striped margin-bottom small-text{{$features_price<1?' long':' contract'}}">
+            <table class="table table-striped margin-bottom small-text{{$item->__features_price<1?' long':' contract'}}">
                 <thead>
                     <tr>
                         <th>{{trans('tender.active_awards_participant')}}</th>

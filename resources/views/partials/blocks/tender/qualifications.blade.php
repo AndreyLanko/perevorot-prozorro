@@ -1,7 +1,7 @@
 @if (!empty($item->__qualifications) && !$item->__isMultiLot)
     <div class="container wide-table">
         <div class="tender--offers margin-bottom-xl">
-            <h3>Протокол розкриття</h3>
+            <h2>Протокол розкриття</h2>
             <table class="table table-striped margin-bottom small-text">
                 <thead>
                     <tr>

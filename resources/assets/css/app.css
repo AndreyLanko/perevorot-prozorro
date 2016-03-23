@@ -1106,6 +1106,7 @@ a:hover .sprite-pen-icon, .active .sprite-pen-icon, .sprite-pen-icon-a {
 }
 .tender .tender--head .tender--head--title {
     font-size: 1.71em;
+    margin-bottom: 20px;
 }
 .tender .tender--head .breadcrumb_custom {
     margin: 30px 0;
@@ -2885,4 +2886,53 @@ ul.social-top {
 	.description .text {
 		padding: 0 15px;
 	}
-	}
+}
+.tender--description h2 {
+	margin-top: 30px;
+	margin-bottom: 40px;
+}
+.tender--description h2:first-child {
+	margin-top: 50px;
+	margin-bottom: 40px;
+}
+.tender--description .wide-table h2 {
+	margin-top: 20px;
+}
+.tender--description h3 {
+	margin-top: 5px;
+	margin-bottom: 20px;
+}
+.tender--description .padding-side {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+.tender--description .padding-left-more {
+	padding-left: 39px;
+}
+.tender--description .description-wr.croped {
+	padding-top: 10px;
+}
+.tender--description .tender--customer--inner .padding-td,
+.tender--description .tender--customer--inner tr:last-child td {
+	padding-top: 10px;
+	padding-bottom: 5px;
+}
+.tender--description .lots-container h3 {
+	margin-top: 5px;
+	margin-bottom: 20px;
+}
+.lots-container .tender--customer h3 {
+	margin-bottom: 10px;
+}
+.margin-bottom-more {
+	padding-bottom: 15px;
+}
+.lots-container .margin-bottom:first-child  h3 {
+	margin-top: 30px;
+}
+.tender-date.dark {
+	color: #000;
+}
+.lots-container .position-block {
+	margin-top: 30px;
+}

@@ -1,7 +1,7 @@
 @if (!empty($item->__complaints_complaints))
     <div class="container margin-bottom-xl">
         <div class="col-sm-9">
-            <h3>{{$title}}</h3>
+            <h2>{{$title}}</h2>
         
             <div class="row questions">
                 <div class="description-wr questions-block">

@@ -1,7 +1,7 @@
 @if (!empty($item->items) && !$item->__isMultiLot)
     <div class="margin-bottom">
         <div{{empty($item->features) ? 'class="border-bottom"':''}}>
-            <h3>Протокол розгляду</h3>
+            <h3>Позиції</h3>
 
             @foreach($item->items as $one)
                 <div class="row margin-bottom">

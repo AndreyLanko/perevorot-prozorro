@@ -1,6 +1,6 @@
 @if (!empty($item->procuringEntity))
-    <div class="col-sm-9 tender--customer--inner">
-        <h3>{{trans('tender.customer')}}</h3>
+    <div class="col-sm-9 tender--customer--inner margin-bottom-more">
+        <h3>Інформація про замовника</h3>
     
         <div class="row">
             <table class="tender--customer margin-bottom">
