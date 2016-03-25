@@ -204,16 +204,17 @@ class PageController extends BaseController
         }
 
         $this->get_multi_lot($item);
+        $this->get_eu_lots($item);
 
         if(!empty($item->awards))
         {
-                usort($item->awards, function ($a, $b)
-                {
-                    $datea = new \DateTime($a->date);
-                    $dateb = new \DateTime($b->date);
-        
-                    return $datea>$dateb;
-                });
+            usort($item->awards, function ($a, $b)
+            {
+                $datea = new \DateTime($a->date);
+                $dateb = new \DateTime($b->date);
+    
+                return $datea>$dateb;
+            });
         }
 
         $features_price=1;
@@ -449,58 +450,57 @@ class PageController extends BaseController
     private function get_initial_bids(&$item)
     {
         $bid_by_bidders=[];
-        
-            if(!empty($item->bids))
-            {
-                foreach($item->bids as $bid)
-                    $bid_by_bidders[$bid->id]=0;
+
+        if(!empty($item->bids))
+        {
+            foreach($item->bids as $bid)
+                $bid_by_bidders[$bid->id]=0;
         }
 
-            if(!empty($item->documents))
+        if(!empty($item->documents))
+        {
+            $already_found=false;
+            
+            foreach($item->documents as $document)
             {
-                $already_found=false;
-                
-                foreach($item->documents as $document)
+                if(pathinfo($document->title, PATHINFO_EXTENSION)=='yaml' && !empty($document->url))
                 {
-                    if(pathinfo($document->title, PATHINFO_EXTENSION)=='yaml' && !empty($document->url))
+                    if(!$already_found)
                     {
-                        if(!$already_found)
+                        try
                         {
-                            try
-                            {
-                                $yaml=Cache::remember('yaml_'.md5($document->url), 60, function() use ($document){
-                                    $yaml_file=@file_get_contents($document->url);
+                            $yaml=Cache::remember('yaml_'.md5($document->url), 60, function() use ($document){
+                            $yaml_file=@file_get_contents($document->url);
 
-                                    return !empty($yaml_file) ? Yaml::parse($yaml_file) : [];
-                            });
-                                
-                                if(!empty($yaml['timeline']['auction_start']['initial_bids']))
-                                {
-                                    $already_found=true;
+                            return !empty($yaml_file) ? Yaml::parse($yaml_file) : [];
+                        });
+                            
+                            if(!empty($yaml['timeline']['auction_start']['initial_bids']))
+                            {
+                                $already_found=true;
                                     
-                                    foreach($yaml['timeline']['auction_start']['initial_bids'] as $bid)
-                                        $bid_by_bidders[$bid['bidder']]=$bid['amount'];
+                                foreach($yaml['timeline']['auction_start']['initial_bids'] as $bid)
+                                    $bid_by_bidders[$bid['bidder']]=$bid['amount'];
                             }
                         }
                         catch (ParseException $e) {}
                     }
-                    }
+                }
             }
         }
 
         $item->__initial_bids=new \StdClass();
         $item->__initial_bids=$bid_by_bidders;
-        }
+    }
     
-        private function get_multi_lot(&$item)
-        {
-
+    private function get_multi_lot(&$item)
+    {
         $item->__isMultiLot=new \StdClass();
         $item->__isMultiLot=(!empty($item->lots) && sizeof($item->lots)>1);
     }
     
-        private function get_opened_questions(&$item)
-        {
+    private function get_opened_questions(&$item)
+    {
         $item->__isOpenedQuestions=new \StdClass();
         $item->__isOpenedQuestions=false;
 
@@ -704,30 +704,45 @@ class PageController extends BaseController
                     $item->bids=null;
 
                 if(!empty($item->bids))
+                {
+                    $bids=$item->bids;
+                    
+                    foreach($bids as $k=>$bid)
                     {
-                        $bids=$item->bids;
-                        
-                        foreach($bids as $k=>$bid)
+                        if(!empty($bid->documents))
                         {
-                            if(!empty($bid->documents))
+                            $bids[$k]->__documents_before=new \StdClass();
+                            $bids[$k]->__documents_before=[];
+        
+                            $bids[$k]->__documents_after=new \StdClass();
+                            $bids[$k]->__documents_after=[];
+                            
+                            foreach($bid->documents as $document)
                             {
-                                $bids[$k]->__documents_before=new \StdClass();
-                                $bids[$k]->__documents_before=[];
-            
-                                $bids[$k]->__documents_after=new \StdClass();
-                                $bids[$k]->__documents_after=[];
-                                
-                                foreach($bid->documents as $document)
-                                {
-                                    $what=strtotime($document->datePublished) > strtotime($item->tenderPeriod->endDate) ? '__documents_after' : '__documents_before';
+                                $what=strtotime($document->datePublished) > strtotime($item->tenderPeriod->endDate) ? '__documents_after' : '__documents_before';
             
                                 array_push($bids[$k]->$what, $document);
                             }
+                            
+                            /*
+                            $qualification->__bid_documents=new \StdClass();
+                            $qualification->__bid_documents_public=new \StdClass();
+                            $qualification->__bid_documents_confident=new \StdClass();
+                            
+                            $qualification->__bid_documents_public=array_where($qualification->__bid_documents, function($key, $document){
+                                return $document->confidentiality=='public';
+                            });
+    
+                            $qualification->__bid_documents_confident=array_where($qualification->__bid_documents, function($key, $document){
+                                return $document->confidentiality=='buyerOnly';
+                            });
+                            */
+
                         }
-                        }
+                    }
                         
-                        if(!$return)
-                            $item->bids=$bids;
+                    if(!$return)
+                        $item->bids=$bids;
                     else
                         return $bids;
                 }
@@ -798,7 +813,14 @@ class PageController extends BaseController
 
             foreach($item->lots as $k=>$lot)
             {
+                if(!empty($item->__eu_bids[$lot->id]))
+                {
+                    $lot->__eu_bids=new \StdClass();
+                    $lot->__eu_bids=$item->__eu_bids[$lot->id];
+                }
+                
                 $lot->procurementMethod=$item->procurementMethod;
+                $lot->procurementMethodType=$item->procurementMethodType;
 
                 $lot->__icon=new \StdClass();
                 $lot->__icon=false;
@@ -955,19 +977,53 @@ class PageController extends BaseController
             $item->__documents=$documents;
         }
     }
-    
-        private function get_yaml_documents(&$item)
-        {
-            if(!empty($item->documents))
-            {
-                $yaml_files=[];
 
-                foreach($item->documents as $k=>$document)
+    private function get_eu_lots(&$item)
+    {
+        if($item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdEU')
+        {
+            if(!empty($item->bids))
+            {
+                if($item->__isMultiLot)
                 {
-                    if(pathinfo($document->title, PATHINFO_EXTENSION)=='yaml')
+                    $item->__eu_bids=new \StdClass();
+                    $item->__eu_bids=[];
+    
+                    foreach($item->bids as $bid)
                     {
-                        array_push($yaml_files, $document);
-                        unset($item->documents[$k]);
+                        $eu_bids=[];
+                        
+                        $lots=array_where($item->qualifications, function($key, $qualification) use ($bid){
+                            return $qualification->bidID==$bid->id;
+                        });
+    
+                        foreach($lots as $lot)
+                        {
+                            if(empty($item->__eu_bids[$lot->lotID]))
+                                $item->__eu_bids[$lot->lotID]=[];
+    
+                            $item->__eu_bids[$lot->lotID][]=clone $bid;
+                        }                        
+                    }
+                }
+                else
+                    $item->__eu_bids=$item->bids;
+            }
+        }
+    }
+    
+    private function get_yaml_documents(&$item)
+    {
+        if(!empty($item->documents))
+        {
+            $yaml_files=[];
+
+            foreach($item->documents as $k=>$document)
+            {
+                if(pathinfo($document->title, PATHINFO_EXTENSION)=='yaml')
+                {
+                    array_push($yaml_files, $document);
+                    unset($item->documents[$k]);
                 }
             }
             

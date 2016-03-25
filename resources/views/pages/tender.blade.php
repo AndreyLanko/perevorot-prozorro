@@ -21,6 +21,7 @@
     @if (!empty($html))
         {!!$html['footer']!!}
     @endif
+    <script src="https://cdn.rawgit.com/openprocurement-crypto/common/v.0.0.7/js/index.js"></script>
 @endsection
 
 @section('content')

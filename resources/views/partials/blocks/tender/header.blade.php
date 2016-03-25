@@ -44,7 +44,20 @@
                         @endif
                     </div>
                     @if($item->__is_sign)
-                        <div>Електронний цифровий підпис накладено. <a href="">Перевірити</a></div>
+                        <div data-js="tender_sign_check" data-id="{{$item->id}}">
+                            Електронний цифровий підпис накладено. <a href="" class="document-link" data-id="sign-check">Перевірити</a>
+                            <div class="overlay overlay-documents">
+                                <div class="overlay-close overlay-close-layout"></div>
+                                <div class="overlay-box">
+                                    <div class="documents" data-id="sign-check">
+                                        <h4 class="overlay-title">Перевірка підпису</h4>
+                                        <div class="loader"></div>
+                                        <div id="signPlaceholder"></div>
+                                    </div>
+                                    <div class="overlay-close"><i class="sprite-close-grey"></i></div>
+                                </div>
+                            </div>
+                        </div>
                     @else
                         <div>Електронний цифровий підпис не накладено</div>
                     @endif

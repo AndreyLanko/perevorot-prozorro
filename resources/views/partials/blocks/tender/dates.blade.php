@@ -22,10 +22,10 @@
                             <td class="col-sm-4">{{date('d.m.Y H:i', strtotime($item->tenderPeriod->endDate))}}</td>
                         </tr>
                     @endif
-                    @if(!$item->__isMultiLot && !empty($item->tenderPeriod->startDate))
+                    @if(!$item->__isMultiLot && !empty($item->auctionPeriod->startDate))
                         <tr>
                             <td class="col-sm-8"><strong>{{trans('tender.period4')}}:</strong></td>
-                            <td class="col-sm-4">{{date('d.m.Y H:i', strtotime($item->tenderPeriod->startDate))}}</td>
+                            <td class="col-sm-4">{{date('d.m.Y H:i', strtotime($item->auctionPeriod->startDate))}}</td>
                         </tr>
                     @endif
                     @if (!empty($item->value->amount))

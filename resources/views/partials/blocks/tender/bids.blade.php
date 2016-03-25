@@ -1,4 +1,4 @@
-@if (!empty($item->bids))
+@if (!empty($item->bids) && $item->procurementMethod=='open')
     <div class="container wide-table">
         <div class="tender--offers margin-bottom-xl">
             <h3>Реєстр пропозицій</h3>
@@ -84,6 +84,58 @@
                                     {{trans('tender.bids_documents_before')}}
                                 </h4>
                                 @foreach($bid->__documents_after as $document)
+                                    <div class="document-info">
+                                        <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+                                        <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
+                                    </div>
+                                @endforeach
+                            @endif
+                        </div>
+                    @endforeach
+                    <div class="overlay-close"><i class="sprite-close-grey"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
+@if (!empty($item->__eu_bids) && $item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdEU')
+    <div class="container wide-table">
+        <div class="tender--offers margin-bottom-xl">
+            <h3>Реєстр пропозицій</h3>
+
+            <table class="table table-striped margin-bottom small-text">
+                <thead>
+                    <tr>
+                        <th>{{trans('tender.bids_participant')}}</th>
+                        <th>{{trans('tender.bids_documents')}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($item->__eu_bids as $k=>$bid)
+                        <tr>
+                            <td>Учасник {{$k+1}}</td>
+                            <td>
+                                @if(!empty($bid->documents))
+                                    <a href="" class="document-link" data-id="{{$bid->id}}">{{trans('tender.bids_documents')}}</a>
+                                @else
+                                    {{trans('tender.no_documents')}}
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <div class="overlay overlay-documents">
+                <div class="overlay-close overlay-close-layout"></div>
+                <div class="overlay-box">
+                    @foreach($item->__eu_bids as $bid)
+                        <div class="tender--offers documents" data-id="{{$bid->id}}">
+                            @if(!empty($bid->documents))
+                                <h4 class="overlay-title">
+                                    {{trans('tender.bids_documents')}}
+                                </h4>
+                                @foreach($bid->documents as $document)
                                     <div class="document-info">
                                         <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
                                         <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
