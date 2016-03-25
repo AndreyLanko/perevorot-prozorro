@@ -7,3 +7,5 @@ composer.lock
 /resources/assets/less/vendor
 /resources/assets/css/vendor
 /public/pz-wp
+/public/assets/css*
+/public/assets/js/app.js*
