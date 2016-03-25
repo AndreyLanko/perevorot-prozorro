@@ -5,7 +5,7 @@
 	        <div class="row margin-bottom">
 	            <div class="col-md-4 col-md-push-8">
 	                <div class="padding margin-bottom">
-	                    {{!empty($one->quantity)?$one->quantity.trans('tender.q'):''}}
+	                    {{!empty($one->quantity)?$one->quantity:''}} @if(!empty($one->unit->code)){{trans('measures.'.$one->unit->code.'.symbol')}}@endif
 	                </div>
 	            </div>
 	            <div class="col-md-8 col-md-pull-4 description-wr{{!empty($one->description) && mb_strlen($one->description)>350?' croped':' open'}}">

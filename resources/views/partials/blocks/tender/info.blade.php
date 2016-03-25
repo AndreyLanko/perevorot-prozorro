@@ -15,8 +15,7 @@
                 @endif
             </div>
         @endif
-
-        @if(!empty($item->items))
+        @if(!empty($item->items) && !$item->__isMultiLot)
             <div class="col-md-12 margin-bottom padding-side"><strong>Опис окремої частини або частин предмета закупівлі</strong></div>
             @foreach($item->items as $one)
                 <div class="row margin-bottom">

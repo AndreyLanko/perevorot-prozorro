@@ -798,6 +798,8 @@ class PageController extends BaseController
 
             foreach($item->lots as $k=>$lot)
             {
+                $lot->procurementMethod=$item->procurementMethod;
+
                 $lot->__icon=new \StdClass();
                 $lot->__icon=false;
 
