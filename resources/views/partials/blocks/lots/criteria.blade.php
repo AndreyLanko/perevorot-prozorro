@@ -8,7 +8,7 @@
         @if(!empty($item->features))
             @foreach($item->features as $feature)
                 <tr class="main-row">
-                    <td class="col-md-8 col-md-pull-4">{{$feature->description}}:</td>
+                    <td class="col-md-8 col-md-pull-4">{{!empty($feature->title) ? $feature->title : ''}}:</td>
                     <td class="col-md-4 col-md-push-8 1">{{$feature->max*100}}%</td>
                 </tr>
                 @foreach($feature->enum as $enum)

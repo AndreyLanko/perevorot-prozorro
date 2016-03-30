@@ -44,7 +44,7 @@
                         @endif
                     </div>
                     @if($item->__is_sign)
-                        <div data-js="tender_sign_check" data-id="{{$item->id}}">
+                        <div data-js="tender_sign_check" data-url="{{$item->__sign_url}}">
                             Електронний цифровий підпис накладено. <a href="" class="document-link" data-id="sign-check">Перевірити</a>
                             <div class="overlay overlay-documents">
                                 <div class="overlay-close overlay-close-layout"></div>
@@ -69,7 +69,7 @@
                             <a href="{{$back}}" class="back-tender"><i class="sprite-arrow-left"></i> {{trans('tender.back')}}</a>
                         @endif
                         <div class="clearfix"></div>
-                        @if($item->is_active_proposal)
+                        @if($item->__is_apply)
                             <a href="" class="blue-btn">{{trans('tender.apply')}}</a>
                         @endif
                         {{--

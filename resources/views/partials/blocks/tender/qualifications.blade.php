@@ -1,7 +1,7 @@
-@if (!empty($item->__qualifications) && !$item->__isMultiLot)
+@if (!empty($item->__qualifications))
     <div class="container wide-table">
         <div class="tender--offers margin-bottom-xl">
-            <h2>Протокол розкриття</h2>
+            <h3>Протокол розгляду</h3>
             <table class="table table-striped margin-bottom small-text">
                 <thead>
                     <tr>
@@ -68,7 +68,8 @@
                                     <div class="document-info">
                                         <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
                                         <div>{{$document->title}}</div>
-                                        <p><strong>Обгрунтування конфіденційності:</strong> </p> <p>confidentialityRationale</p>
+                                        <p style="font-size:80%;margin-top:10px;margin-bottom:4px;color:#AAA">Обгрунтування конфіденційності</p>
+                                        <p style="font-size:80%;">{{$document->confidentialityRationale}}</p>
                                     </div>
                                 @endforeach
                             @endif

@@ -1,4 +1,4 @@
-@if (!empty($item->bids) && $item->procurementMethod=='open')
+@if (!empty($item->__bids) && $item->procurementMethod=='open')
     <div class="container wide-table">
         <div class="tender--offers margin-bottom-xl">
             <h3>Реєстр пропозицій</h3>
@@ -23,7 +23,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($item->bids as $k=>$bid)
+                    @foreach($item->__bids as $k=>$bid)
                         <tr>
                             <td>{{!empty($bid->tenderers[0]->name) ? $bid->tenderers[0]->name : 'Учасник'}}</td>
                             <td>
@@ -66,27 +66,29 @@
             <div class="overlay overlay-documents">
                 <div class="overlay-close overlay-close-layout"></div>
                 <div class="overlay-box">
-                    @foreach($item->bids as $bid)
+                    @foreach($item->__bids as $bid)
                         <div class="tender--offers documents" data-id="{{$bid->id}}">
-                            @if(!empty($bid->__documents_before))
+                            @if(!empty($bid->__documents_public))
                                 <h4 class="overlay-title">
-                                    {{trans('tender.bids_documents_before')}}
+                                    Публічні документи
                                 </h4>
-                                @foreach($bid->__documents_before as $document)
+                                @foreach($bid->__documents_public as $document)
                                     <div class="document-info">
                                         <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
                                         <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
                                     </div>
                                 @endforeach
-                            @endif
-                            @if(!empty($bid->__documents_after))
+                            @endif    
+                            @if(!empty($bid->__documents_confident))
                                 <h4 class="overlay-title">
-                                    {{trans('tender.bids_documents_before')}}
+                                    Конфіденційні документи
                                 </h4>
-                                @foreach($bid->__documents_after as $document)
+                                @foreach($bid->__documents_confident as $document)
                                     <div class="document-info">
                                         <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
-                                        <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
+                                        <div>{{$document->title}}</div>
+                                        <p style="font-size:80%;margin-top:10px;margin-bottom:4px;color:#AAA">Обгрунтування конфіденційності</p>
+                                        <p style="font-size:80%;">{{$document->confidentialityRationale}}</p>
                                     </div>
                                 @endforeach
                             @endif
@@ -98,7 +100,7 @@
         </div>
     </div>
 @endif
-
+{{--
 @if (!empty($item->__eu_bids) && $item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdEU')
     <div class="container wide-table">
         <div class="tender--offers margin-bottom-xl">
@@ -131,16 +133,33 @@
                 <div class="overlay-box">
                     @foreach($item->__eu_bids as $bid)
                         <div class="tender--offers documents" data-id="{{$bid->id}}">
-                            @if(!empty($bid->documents))
-                                <h4 class="overlay-title">
-                                    {{trans('tender.bids_documents')}}
-                                </h4>
-                                @foreach($bid->documents as $document)
-                                    <div class="document-info">
-                                        <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
-                                        <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
-                                    </div>
-                                @endforeach
+                            @if(!empty($bid->__documents_public))
+                                <div class="margin-bottom">
+                                    <h4 class="overlay-title">
+                                        Публічні документи
+                                    </h4>
+                                    @foreach($bid->__documents_public as $document)
+                                        <div class="document-info">
+                                            <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+                                            <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif    
+                            @if(!empty($bid->__documents_confident))
+                                <div class="margin-bottom">
+                                    <h4 class="overlay-title">
+                                        Конфіденційні документи
+                                    </h4>
+                                    @foreach($bid->__documents_confident as $document)
+                                        <div class="document-info">
+                                            <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+                                            <div>{{$document->title}}</div>
+                                            <p style="font-size:80%;margin-top:10px;margin-bottom:4px;color:#AAA">Обгрунтування конфіденційності</p>
+                                            <p style="font-size:80%;">{{$document->confidentialityRationale}}</p>
+                                        </div>
+                                    @endforeach
+                                </div>
                             @endif
                         </div>
                     @endforeach
@@ -150,3 +169,4 @@
         </div>
     </div>
 @endif
+--}}

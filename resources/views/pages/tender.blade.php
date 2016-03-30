@@ -41,6 +41,7 @@
                             @if(!empty($item->__open_name))
                                 <h2>{{$item->__open_name}}</h2>
                             @endif
+                            <div style="margin-top:-30px;margin-bottom:40px"><a href="{{href('tender/'.$item->tenderID.'/print/welcome')}}" target="_blank">Друкувати форму</a></div>
 
                             {{--Інформація про замовника--}}
                             @include('partials/blocks/tender/procuring-entity')
@@ -53,11 +54,12 @@
 
                             <h2>Документація</h2>
 
+                            {{--Критерії вибору переможця--}}
+                            @include('partials/blocks/tender/criteria')
+
                             {{--Документація--}}
                             @include('partials/blocks/tender/documentation')
 
-                            {{--Критерії вибору переможця--}}
-                            @include('partials/blocks/tender/criteria')
 
                             @if (!empty($item->__complaints_claims) ||!empty($item->__questions))
                                 <h2>Роз’яснення до процедури</h2>
@@ -75,13 +77,13 @@
                                 {{--Скарги до процедури--}}
                                 @include('partials/blocks/tender/complaints', ['title'=>'Скарги до процедури'])
     
-                                {{--Протокол розкриття--}}
+                                {{--Протокол розгляду--}}
                                 @include('partials/blocks/tender/qualifications')
 
                                 {{--Реєстр пропозицій--}}
                                 @include('partials/blocks/tender/bids')
 
-                                {{--Протокол розгляду--}}
+                                {{--Протокол розкриття--}}
                                 @include('partials/blocks/tender/awards')
                                 
                                 {{--Повідомлення про намір укласти договір--}}                
@@ -90,7 +92,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 @if($item->__isMultiLot)
                     <div class="bs-example bs-example-tabs lots-tabs wide-table" data-js="lot_tabs">
                         <ul class="nav nav-tabs" role="tablist">
@@ -115,8 +117,15 @@
                                     'item'=>$lot
                                 ])
 
+                                {{--<h2>Документація</h2>--}}
+
                                 {{--Критерії вибору переможця--}}
                                 @include('partials/blocks/lots/criteria', [
+                                    'item'=>$lot
+                                ])
+
+                                {{--Документація--}}
+                                @include('partials/blocks/tender/documentation',[
                                     'item'=>$lot
                                 ])
 
@@ -136,15 +145,17 @@
                                     'title'=>'Скарги до лоту'
                                 ])
 
-                                {{--Протокол розкриття--}}
-                                {{--@include('partials/blocks/tender/qualifications')--}}
-                                
+                                {{--Протокол розгляду--}}
+                                @include('partials/blocks/tender/qualifications', [
+                                    'item'=>$lot
+                                ])
+
                                 {{--Реєстр пропозицій--}}
                                 @include('partials/blocks/tender/bids', [
                                     'item'=>$lot
                                 ])
                                 
-                                {{--Протокол розгляду--}}
+                                {{--Протокол розкриття--}}
                                 @include('partials/blocks/tender/awards', [
                                     'item'=>$lot
                                 ])

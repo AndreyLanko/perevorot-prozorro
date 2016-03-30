@@ -1,7 +1,7 @@
 @if (!empty($item->awards) && $item->procurementMethod=='open')
     <div class="container wide-table">
         <div class="tender--offers margin-bottom-xl">
-            <h3>{{trans('tender.awards_title')}}</h3>
+            <h3>Протокол розкриття</h3>
             <table class="table table-striped margin-bottom small-text">
                 <thead>
                     <tr>

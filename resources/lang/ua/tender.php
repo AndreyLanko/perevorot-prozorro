@@ -105,6 +105,8 @@ return [
         'declined'=>'Розглянута',
         'satisfied'=>'Розглянута',
         'claim'=>'Нова вимога',
+        'stopping'=>'Скаргу відкликано скаржником',
+        'stopped'=>'Розгляд зупинено'
     ],
     'qualification_status'=>[
         'pending'=>'Очікується рішення',

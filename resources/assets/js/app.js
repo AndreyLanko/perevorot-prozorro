@@ -184,8 +184,7 @@ var APP,
                                 return;
                             }
                             var certInfo = "Підписувач:  <b>" + ownerInfo.GetSubjCN() + "</b><br/>" +
-                                    "ЦСК:  <b>" + ownerInfo.GetIssuerCN() + "</b><br/>" +
-                                    "Серійний номер:  <b>" + ownerInfo.GetSerial() + "</b><br/>";
+                                    "ЦСК:  <b>" + ownerInfo.GetIssuerCN() + "</b>";
                 
                             var timeMark;
                             if (timeInfo.IsTimeAvail()) {
@@ -206,7 +205,7 @@ var APP,
                         }
 
                         opSign.init({
-                            apiResourceUrl: 'https://lb.api-sandbox.openprocurement.org/api/2.1/tenders/'+_self.data('id'),
+                            apiResourceUrl: _self.data('url'),
                             callbackCheckSign: 'callbackCheckSign',
                             callbackRender: 'callbackRender',
                             verifyOnly: true
@@ -218,7 +217,7 @@ var APP,
                         offset=0;
 
                     if(offset_element.length)
-                        offset=offseoffset_element.offset().top-50;
+                        offset=offset_element.offset().top-50;
                     
                     _self.sticky({
                         topSpacing: _self.position().top-80,

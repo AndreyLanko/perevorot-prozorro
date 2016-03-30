@@ -2,7 +2,7 @@
     <div class="container wide-table tender--platforms">
         <div class="margin-bottom-xl">
             <h3>{{trans('tender.contract_title')}}</h3>
-            <table class="table table-striped margin-bottom prev{{$features_price<1?'-five-col':''}}">
+            <table class="table table-striped margin-bottom prev">
                 <thead>
                     <tr>
                         <th>{{trans('tender.contract')}}</th>
