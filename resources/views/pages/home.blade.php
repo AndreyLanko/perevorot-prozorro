@@ -52,10 +52,14 @@
         </div>
     </div>
     
-    <div class="video col-md-8 col-md-offset-2">
-        <iframe width="100%" height="315" src="https://www.youtube.com/embed/skcfKPXJqvA" frameborder="0" allowfullscreen></iframe>
+    <div class="video-list">
+	    <div class="video col-md-6">
+	        <iframe width="100%" height="315" src="https://www.youtube.com/embed/u1m5q9wnxbk" frameborder="0" allowfullscreen></iframe>
+	    </div>
+	    <div class="video col-md-6" >
+	        <iframe width="100%" height="315" src="https://www.youtube.com/embed/skcfKPXJqvA" frameborder="0" allowfullscreen></iframe>
+	    </div>
     </div>
-    
     <div class="clearfix"></div>
 
     @if(!empty($last->items))

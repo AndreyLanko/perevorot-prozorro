@@ -1926,7 +1926,20 @@ input:checked + .ch {
 .selectize-dropdown-content {
 	max-height: 225px;
 }
-
+.video {
+	margin-bottom: 20px;
+}
+.video:first-child {
+	padding-left: 0;
+}
+.video:nth-child(2) {
+	padding-right: 0;
+}
+.video-list {
+	width: 100%;
+	overflow: hidden;
+	padding-right: 5px;
+}
 @media (max-width: 767px) {
 	.tender .tender--description--cost--wr {
 		padding-left: 0;
@@ -2765,4 +2778,18 @@ ul.social-top {
 	.description .text {
 		padding: 0 15px;
 	}
+	.video-list .video:nth-child(2) {
+		margin-top: 20px;
+		padding-left: 0;
 	}
+	.description + .video {
+		margin-top: 0;
+	}
+	.video-list .video {
+		padding-left: 0;
+		padding-right: 0;
+	}
+	.video-list {
+		padding-right: 0;
+	}
+}
