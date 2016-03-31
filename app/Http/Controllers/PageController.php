@@ -78,7 +78,12 @@ class PageController extends BaseController
                 ->with('numbers', $this->parseBiNumbers(Config::get('bi-numbers')))
                 ->with('last', json_decode($last))->render();
     }
-
+    
+    function search_redirect()
+    {
+        return \Redirect::to(str_replace('/search', '/tender/search', Request::fullUrl()), 301);
+    }
+    
     var $search_type;
     
     public function search($search_type='tender')

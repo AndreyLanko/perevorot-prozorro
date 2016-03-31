@@ -8,6 +8,7 @@
 		{
             Route::get('/', 'PageController@home');
             
+            Route::get('search', 'PageController@search_redirect');
             Route::get('{search}/search', 'PageController@search');
             
             Route::get('tender/{id}', 'PageController@tender');
