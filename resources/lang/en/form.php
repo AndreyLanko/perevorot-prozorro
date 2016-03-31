@@ -2,7 +2,7 @@
 
 return [
 
-	'resuts_found'=>'Purchases found',
+	'resuts_found'=>'Found',
     'resuts_found_show'=>'Show',
     'show_more'=>'Show more',
     'show_more_from'=>'from',
@@ -10,6 +10,7 @@ return [
     'keyword'=>'Keyword (product name, description or procurer name)',
     'keyword_short'=>'Keyword',
     'tenderid'=>'Procurement No.',
+    'planid'=>'Plan #',
     'choose'=>'Select',
     'cpv'=>'CPV-code',
     'dkpp'=>'SCGS-code',
@@ -20,10 +21,16 @@ return [
     'no_results'=>'No results',
     'date'=>'Date',
     'date_types'=>[
-		'tender'=>'Applications submittion date',
+		'tender'=>'Applications submission date',
 		'enquiry'=>'Clarification period',
 		'auction'=>'Auction date',
 		'award'=>'Qualification date'				
-    ]
+    ],
+    'date_types_plan'=>[
+        'tender'=>'Estimate date of procurement procedure'
+    ],
+    'tenders'=>'Procurement',
+    'plans'=>'Procurement plans
+',
 
 ];

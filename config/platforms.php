@@ -10,6 +10,10 @@ return [
 		'tender'=>true,
 		'type1'=>false,
 		'type2'=>false,
+		'level1'=>true,
+		'level2'=>true,
+		'level3'=>false,
+		'level4'=>false,
 	],
 	[
 		'name'=>'Smart Tender',
@@ -19,6 +23,10 @@ return [
 		'tender'=>true,
 		'type1'=>false,
 		'type2'=>false,
+		'level1'=>true,
+		'level2'=>true,
+		'level3'=>true,
+		'level4'=>true,		
 	],
 	[
 		'name'=>'Newtend',
@@ -28,6 +36,10 @@ return [
 		'tender'=>true,
 		'type1'=>false,
 		'type2'=>false,
+		'level1'=>true,
+		'level2'=>true,
+		'level3'=>false,
+		'level4'=>false,		
 	],
 	[
 		'name'=>'E-tender',
@@ -37,6 +49,10 @@ return [
 		'tender'=>true,
 		'type1'=>false,
 		'type2'=>false,
+		'level1'=>true,
+		'level2'=>true,
+		'level3'=>false,
+		'level4'=>false,		
 	],
 	[
 		'name'=>'ПриватМаркет<br>(тільки для учасників)',
@@ -46,6 +62,10 @@ return [
 		'tender'=>true,
 		'type1'=>false,
 		'type2'=>false,
+		'level1'=>false,
+		'level2'=>true,
+		'level3'=>false,
+		'level4'=>true,		
 	],
 	[
 		'name'=>'Zakupki.prom.ua',
@@ -55,6 +75,10 @@ return [
 		'tender'=>true,
 		'type1'=>false,
 		'type2'=>false,
+		'level1'=>true,
+		'level2'=>true,
+		'level3'=>true,
+		'level4'=>true,
 	],
 	[
 		'name'=>'Держзакупівлі онлайн',
@@ -65,6 +89,10 @@ return [
 		'tender'=>true,
 		'type1'=>false,
 		'type2'=>false,
+		'level1'=>true,
+		'level2'=>true,
+		'level3'=>true,
+		'level4'=>true,		
 	],
 	[
 		'name'=>'zakupki.com.ua<br>(тільки для замовників)',
@@ -74,6 +102,10 @@ return [
 		'tender'=>false,
 		'type1'=>false,
 		'type2'=>false,
+		'level1'=>true,
+		'level2'=>true,
+		'level3'=>false,
+		'level4'=>false,		
 	]
 
 ];

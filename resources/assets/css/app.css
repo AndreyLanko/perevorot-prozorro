@@ -1106,6 +1106,7 @@ a:hover .sprite-pen-icon, .active .sprite-pen-icon, .sprite-pen-icon-a {
 }
 .tender .tender--head .tender--head--title {
     font-size: 1.71em;
+    margin-bottom: 20px;
 }
 .tender .tender--head .breadcrumb_custom {
     margin: 30px 0;
@@ -1303,6 +1304,9 @@ table td[class*=col-], table th[class*=col-] {
     position: static;
     display: table-cell;
     float: none;
+}
+.container.wide-table .tender--platforms {
+	float: left;
 }
 .tender .tender--platforms .tender--platforms--list .item {
 	position: relative;
@@ -2180,6 +2184,7 @@ h1.homepage {
 .main-menu .menu-item, .footer h4 {
     text-transform: uppercase;
 }
+
 @media (min-width: 992px) {
 	.col-md-offset-2 {
 	    margin-left: 16.66666667%;
@@ -2757,10 +2762,126 @@ ul.social-top {
 	.overlay-counter .overlay-box {
 		margin-top: 145px;
 	}
+.table-search {
+	text-align: left;
+	font-size: 1.14em;
+}
+.table-search th {
+	width: 12%;
+}
+.table.table-search > thead > tr > th {
+	text-align: left;
+}
+.table-search th:first-child {
+	width: 20%;
+}
+.table-search th:nth-child(2) {
+	width: 35%;
+}
+.table-search td {
+	font-size: .89em;
+	line-height: 1.42857143;
+}
+.table-search td .val {
+	font-size: .89em;
+	/*font-size: 12px;
+	color: #999;*/
+}
+/*
+.lots-tabs {
+	padding-bottom: 15px;
+	padding-top:7px;
+	border-bottom: 11px solid #888;
+	text-transform: uppercase;
+}
+*/
+.lots-container .col-md-pull-4.description-wr {
+	width: 66.66666667%;
+    left: -33.33333333%;
+}
+.lots-container {
+	padding-top: 5px;
+	font-size:90%;
+}
+.lots-container h3{
+	font-size:130%;
+}
+.tab {
+	cursor: pointer;
+}
+.tab:not(:last-child),
+.tab-content:not(:last-child) {
+	margin-right: 10px;
+}
+.tab,
+.tab-content {
+	display: inline-block;
+}
+/*
+.tab.active {
+    font-weight: bold;
+}
+*/
+.tab-content {
+	display: none;
+	width: 100%;
+}
+.tab-content.active {
+	display: inline-block;
+}
+.tab-content .row {
+	margin-left: 0;
+	margin-right: 0;	
+}
+.lots-tabs {
+	
+}
+/*
+.lots-container,
+.lots-tabs {
+	float: left;
+    width: 100%;
+    background-color: #f0f5f2;
+    outline: 10px solid #f0f5f2;
+}
+*/
+.lots-container {
+	
+	margin-bottom: 80px;
+	padding-bottom: 40px;
+	border-bottom: 2px solid #ededed;
+}
+.lots-container .col-sm-9,
+.lots-container .questions,
+.lots-container .description-wr {
+	width: 100%;
+}
+.lots-container .description-wr {
+	padding-left: 0;
+	padding-right: 0;
+}
+.lots-container .col-md-pull-4.description-wr {
+	right: 0;
+}
+.lots-container .main-row .col-md-8 {
+	padding-left: 0;
+}
+.lots-container .container .col-sm-9 {
+	padding-left: 0;
+	padding-right: 0;
+}
+.lots-container .description-wr.question-one {
+	padding-left: 26px;
+
 }
 @media (max-width: 1020px) {
 	.lang-box ul.language-chooser {
 	    line-height: 45px;
+	}
+}
+@media (max-width: 991px) {
+	.lots-container .col-md-pull-4.description-wr {
+		left: 0;
 	}
 }
 @media (min-width: 992px) {
@@ -2792,4 +2913,56 @@ ul.social-top {
 	.video-list {
 		padding-right: 0;
 	}
+}
+.tender--description h2 {
+	margin-top: 30px;
+	margin-bottom: 40px;
+}
+.tender--description h2:first-child {
+	margin-top: 50px;
+	margin-bottom: 40px;
+}
+.tender--description .wide-table h2 {
+	margin-top: 20px;
+}
+.tender--description h3 {
+	margin-top: 5px;
+	margin-bottom: 20px;
+}
+.tender--description .padding-side {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+.tender--description .padding-left-more {
+	padding-left: 39px;
+}
+.tender--description .description-wr.croped {
+	padding-top: 10px;
+}
+.tender--description .tender--customer--inner .padding-td,
+.tender--description .tender--customer--inner tr:last-child td {
+	padding-top: 10px;
+	padding-bottom: 5px;
+}
+.tender--description .lots-container h3 {
+	margin-top: 5px;
+	margin-bottom: 20px;
+}
+.lots-container .tender--customer h3 {
+	margin-bottom: 10px;
+}
+.margin-bottom-more {
+	padding-bottom: 15px;
+}
+.lots-container .margin-bottom:first-child  h3 {
+	margin-top: 30px;
+}
+.tender-date.dark {
+	color: #000;
+}
+.lots-container .position-block {
+	margin-top: 30px;
+}
+.stroked{
+    text-decoration: line-through;
 }
