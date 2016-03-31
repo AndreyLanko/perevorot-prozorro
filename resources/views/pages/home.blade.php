@@ -98,10 +98,11 @@
                     @endif
                 @endforeach
             </div>
-            
+            {{--
             <div class="col-sm-12">
                 <a href="{{href('/tender/search/?procedure=open')}}"><i class="sprite-arrow-right"></i> {{trans('home.all_last_tenders')}}</a>
             </div>
+            --}}
         </div>
         <div class="clearfix"></div>    
         <hr />

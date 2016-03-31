@@ -28,6 +28,13 @@
     	                @endif
     	            </div>
     	        @endif
+
+            @if (!empty($item->guarantee) && (int) $item->guarantee->amount>0)
+               <div>Вид тендерного забезпечення: <strong>Електронна банківська гарантія</div>
+               <div>Сума тендерного забезпечення: <strong>{{str_replace('.00', '', number_format($item->guarantee->amount, 2, '.', ' '))}} {{$item->guarantee->currency}}</div>
+            @else
+                <div>Вид тендерного забезпечення: <strong>Відсутній</strong></div>
+            @endif
         </div>
         @if (!empty($item->auctionPeriod->startDate) || !empty($item->auctionPeriod->endDate) || !empty($item->auctionUrl))
             <h3>Аукціон</h3>

@@ -712,15 +712,15 @@ var APP,
                         var input_query=self.data('input_query'),
                             block_type=self.data('block_type'),
                             block=APP.utils.block.create(block_type),
-                            template=block.template ? block.template.clone().html() : null,
+                            template=block && block.template ? block.template.clone().html() : null,
                             is_exact=false//(type.pattern_exact && type.pattern_exact.test(input))
 
-                        if(template){
-                            block.value=input_query;
-                            template=APP.utils.parse_template(template, block);
-                        }else{
-                            template=input;
+                        if(!template){
+                            return;
                         }
+
+                        block.value=input_query;
+                        template=APP.utils.parse_template(template, block);
 
                         INPUT.removeClass('no_blocks').removeAttr('placeholder');
 
