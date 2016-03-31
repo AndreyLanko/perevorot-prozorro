@@ -275,7 +275,7 @@ class PageController extends BaseController
             foreach($item->bids as $k=>$one)
             {
                 $item->bids[$k]->value=new \StdClass();
-                $item->bids[$k]->value=head($one->lotValues)->value;
+                $item->bids[$k]->value=!empty($one->lotValues) ? head($one->lotValues)->value : 0;
             }
         }
         
@@ -734,9 +734,25 @@ class PageController extends BaseController
         {            
             $item->__tender_documents=new \StdClass();
 
+            if($type=='tender' && (!empty($item->lots) && sizeof($item->lots)==1))
+                $type='lot';
+
             $item->__tender_documents=array_where($item->documents, function($key, $document) use ($type){
                 return $document->documentOf==$type;
             });
+
+            $names=[];
+            
+            foreach($item->__tender_documents as $document)
+            {
+                if(in_array($document->title, $names))
+                {
+                    $document->stroked=new \StdClass();
+                    $document->stroked=true;
+                }
+
+                $names[]=$document->title;
+            }
         }
     }
 
@@ -905,6 +921,19 @@ class PageController extends BaseController
                     $lot->__tender_documents=array_where($item->documents, function($key, $document) use ($lot){
                         return $document->documentOf=='lot' && $document->relatedItem==$lot->id;
                     });
+
+                    $names=[];
+ 
+                    foreach($lot->__tender_documents as $document)
+                    {
+                        if(in_array($document->title, $names))
+                        {
+                            $document->stroked=new \StdClass();
+                            $document->stroked=true;
+                        }
+        
+                        $names[]=$document->title;
+                    }
                 }
                 
                 $lot->awards=new \StdClass();

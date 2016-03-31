@@ -2936,3 +2936,6 @@ ul.social-top {
 .lots-container .position-block {
 	margin-top: 30px;
 }
+.stroked{
+    text-decoration: line-through;
+}
