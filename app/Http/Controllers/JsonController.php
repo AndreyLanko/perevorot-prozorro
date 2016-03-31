@@ -6,7 +6,7 @@ class JsonController extends BaseController
 {
 	public function platforms($type='all')
 	{
-		if(!in_array($type, ['all', 'contractors']))
+		if(!in_array($type, ['all', 'contractors', 'type1', 'type2']))
 			abort(404);
 
 		$platforms=\Config::get('platforms');
@@ -15,14 +15,21 @@ class JsonController extends BaseController
 		{
 			$platforms[$k]['logo']=\Request::root().'/assets/images/platforms/'.$item['slug'].'.png';
 
+            if($item[$type])
+            {
+                $url=parse_url(!empty($item['public']) ? $item['public'] : $item['href']);
+    
+                $platforms[$k]['href']=$url['scheme'].'://'.$url['host'].$url['path'];
+            }
+            else
+                unset($platforms[$k]);
+
+            /*
 			if($type=='contractors' && !$item['contractor'])
 				unset($platforms[$k]);
 			else
 				unset($platforms[$k]['contractor']);
-
-            $url=parse_url(!empty($item['public']) ? $item['public'] : $item['href']);
-
-            $platforms[$k]['href']=$url['scheme'].'://'.$url['host'].$url['path'];
+            */
 		};
 
 		return response()->json($platforms, 200, [

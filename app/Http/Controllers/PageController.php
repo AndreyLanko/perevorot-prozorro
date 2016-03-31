@@ -508,7 +508,7 @@ class PageController extends BaseController
 	
 	private function get_html()
 	{
-		$html=Cache::remember('get_html_'.Config::get('locales.current'), 0, function()
+		$html=Cache::remember('get_html_'.Config::get('locales.current'), 60, function()
 		{
 			$html=file_get_contents(Request::root().href('postachalniku'));
 	
