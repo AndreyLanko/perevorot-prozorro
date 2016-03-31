@@ -3,43 +3,31 @@
         <h3>Інформація про лот</h3>
         <div class="margin-bottom-more">
 	        <div>Предмет закупівлі: {{!empty($item->title) ? $item->title : 'без назви'}}</div>        
-        @if (!empty($item->description))
-            <div class="col-md-12 description-wr croped">
-                <div class="tender--description--text description{{mb_strlen($item->description)>350?' croped':' open'}}">
-                    Опис предмету закупівлі: {!!nl2br($item->description)!!}
+            @if (!empty($item->description))
+                <div class="col-md-12 description-wr croped">
+                    <div class="tender--description--text description{{mb_strlen($item->description)>350?' croped':' open'}}">
+                        Опис предмету закупівлі: {!!nl2br($item->description)!!}
+                    </div>
+                    @if (mb_strlen($item->description)>350)
+                        <a class="search-form--open" href="">
+                            <i class="sprite-arrow-right"></i>
+                            <span>{{trans('interface.expand')}}</span>
+                            <span>{{trans('interface.collapse')}}</span>
+                        </a>
+                    @endif
                 </div>
-                @if (mb_strlen($item->description)>350)
-                    <a class="search-form--open" href="">
-                        <i class="sprite-arrow-right"></i>
-                        <span>{{trans('interface.expand')}}</span>
-                        <span>{{trans('interface.collapse')}}</span>
-                    </a>
-                @endif
-            </div>
-           
-        @endif
-        <div>Статус: {{trans('tender.lot_status.'.$item->status)}}</div>
-	        
-        	        @if (!empty($item->value))
-        	            <div>
-        	                Очікувана вартість: <strong>{{number_format($item->value->amount, 0, '', ' ')}} <span class="small">{{$item->value->currency}}</span></strong>
-        	                @if($item->value->valueAddedTaxIncluded)
-        	                    з ПДВ
-        	                @else
-        	                    без ПДВ
-        	                @endif
-        	            </div>
-        	        @endif
-        	        @if (!empty($item->minimalStep))
-        	            <div>Мінімальний крок аукціону: <strong>{{number_format($item->minimalStep->amount, 0, '', ' ')}} <span class="small">{{$item->minimalStep->currency}}</span></strong>
-        	                @if($item->minimalStep->valueAddedTaxIncluded)
-        	                    з ПДВ
-        	                @else
-        	                    без ПДВ
-        	                @endif
-        	            </div>
-        	        @endif
-	       
+            @endif
+            <div>Статус: {{trans('tender.lot_status.'.$item->status)}}</div>	        
+    	        @if (!empty($item->value))
+    	            <div>
+    	                Очікувана вартість: <strong>{{number_format($item->value->amount, 0, '', ' ')}} <span class="small">{{$item->value->currency}}</span></strong>
+    	                @if($item->value->valueAddedTaxIncluded)
+    	                    з ПДВ
+    	                @else
+    	                    без ПДВ
+    	                @endif
+    	            </div>
+    	        @endif
         </div>
         @if (!empty($item->auctionPeriod->startDate) || !empty($item->auctionPeriod->endDate) || !empty($item->auctionUrl))
             <h3>Аукціон</h3>
