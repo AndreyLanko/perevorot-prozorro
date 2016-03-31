@@ -45,6 +45,9 @@
 
                             {{--Інформація про замовника--}}
                             @include('partials/blocks/tender/procuring-entity')
+
+                            {{--Обгрунтування застосування переговорної процедури--}}
+                            @include('partials/blocks/tender/negotiation')
                             
                             {{--Інформація про процедуру--}}
                             @include('partials/blocks/tender/dates')
