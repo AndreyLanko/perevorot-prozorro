@@ -741,17 +741,17 @@ class PageController extends BaseController
                 return $document->documentOf==$type;
             });
 
-            $names=[];
+            $ids=[];
             
             foreach($item->__tender_documents as $document)
             {
-                if(in_array($document->title, $names))
+                if(in_array($document->id, $ids))
                 {
                     $document->stroked=new \StdClass();
                     $document->stroked=true;
                 }
 
-                $names[]=$document->title;
+                $ids[]=$document->id;
             }
         }
     }
@@ -922,17 +922,17 @@ class PageController extends BaseController
                         return $document->documentOf=='lot' && $document->relatedItem==$lot->id;
                     });
 
-                    $names=[];
+                    $ids=[];
  
                     foreach($lot->__tender_documents as $document)
                     {
-                        if(in_array($document->title, $names))
+                        if(in_array($document->id, $ids))
                         {
                             $document->stroked=new \StdClass();
                             $document->stroked=true;
                         }
         
-                        $names[]=$document->title;
+                        $ids[]=$document->id;
                     }
                 }
                 
