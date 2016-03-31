@@ -14,6 +14,7 @@
 @section('html_header')
     @if (!empty($html))
         {!!$html['header']!!}
+        {!!$html['popup']!!}
     @endif
 @endsection
 

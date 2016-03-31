@@ -2,6 +2,7 @@
 
 @section('html_header')
     {!!$html['header']!!}
+    {!!$html['popup']!!}
 @endsection
 
 @section('html_footer')

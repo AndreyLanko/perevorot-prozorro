@@ -508,7 +508,7 @@ class PageController extends BaseController
 	
 	private function get_html()
 	{
-		$html=Cache::remember('get_html_'.Config::get('locales.current'), 60, function()
+		$html=Cache::remember('get_html_'.Config::get('locales.current'), 0, function()
 		{
 			$html=file_get_contents(Request::root().href('postachalniku'));
 	
@@ -529,9 +529,13 @@ class PageController extends BaseController
 			$footer=substr($footer, 0, strpos($footer, '</body>'));
 			$footer=str_replace('current-menu-item', '', $footer);			 
 
+			$popup=substr($html, strpos($html, '<section class="startpopup">'));
+			$popup=substr($popup, 0, strpos($popup, '</section>')).'</section>';
+
 			return [
 				'header'=>$this->sanitize_html($header),
-				'footer'=>$this->sanitize_html($footer)
+				'footer'=>$this->sanitize_html($footer),
+				'popup'=>$this->sanitize_html($popup)
 			];
 		});
 		

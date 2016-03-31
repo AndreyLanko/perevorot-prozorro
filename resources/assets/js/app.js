@@ -58,6 +58,16 @@ var APP,
 		return {
 			common: function(){
 				$('html').removeClass('no-js');
+
+                $('a.registration').bind('click', function(event){
+                    event.preventDefault();
+                    $('.startpopup').css('display', 'block');
+                });
+
+                $('.close-startpopup').bind('click', function(event){
+                    event.preventDefault();
+                    $('.startpopup').css('display', 'none');
+                });
 			},
 
 			js: {
