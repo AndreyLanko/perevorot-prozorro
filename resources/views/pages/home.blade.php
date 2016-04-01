@@ -22,8 +22,6 @@
 
 @section('content')
 
-@include('partials/once/timer-first-april')
-
 <div class="container">        
     <ul class="nav nav-justified sections">
         <li class="green-bg notitle"><a href="{{href('postachalniku')}}"><i class="sprite-provider"></i> <span>{{trans('home.provider')}}</span></a></li>

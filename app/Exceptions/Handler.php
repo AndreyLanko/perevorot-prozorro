@@ -1,6 +1,8 @@
 <?php namespace App\Exceptions;
 
 use Exception;
+use Request;
+use Log;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler {
@@ -24,7 +26,16 @@ class Handler extends ExceptionHandler {
 	 */
 	public function report(Exception $e)
 	{
-		return parent::report($e);
+        Log::info(Request::method().' '.Request::url());
+
+        if(!empty(Request::all())){
+            Log::info('', Request::all());
+        }
+
+        Log::info($e->getFile().' ('.$e->getLine().')');
+        Log::info($e->getMessage());
+
+		//return parent::report($e);
 	}
 
 	/**

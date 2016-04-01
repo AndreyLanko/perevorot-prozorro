@@ -15,6 +15,13 @@ $app = new Illuminate\Foundation\Application(
 	realpath(__DIR__.'/../')
 );
 
+$app->configureMonologUsing(function(Monolog\Logger $monolog) {
+    $filename = storage_path('logs/'.gethostname().'.log');
+
+    $handler = new Monolog\Handler\RotatingFileHandler($filename);
+    $monolog->pushHandler($handler);
+});
+
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces
