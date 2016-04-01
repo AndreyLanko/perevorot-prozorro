@@ -6,8 +6,8 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="{{trans('facebook.site_name')}}">
     <meta property="og:title" content="{{trans('facebook.title')}}">
-    <meta property="og:url" content="{{Request::root()}}/{{Request::path()}}">
-    <meta property="og:image" content="{{Request::root()}}/assets/images/social/fb.png">
+    <meta property="og:url" content="{{trans('facebook.site_url')}}{{Request::path()}}">
+    <meta property="og:image" content="{{trans('facebook.site_url')}}/assets/images/social/fb.png">
     <meta property="og:description" content="{{htmlentities(trans('facebook.description'), ENT_QUOTES)}}">
 @endsection
 
@@ -190,7 +190,7 @@
     <h1 class="size48 margin-bottom-x mob-hide">{{trans('home.rating_title')}}</h1>
     
     <div class="center table-monitor mob-hide">
-        <img src="http://bi.prozorro.org/images/000001_QkJVDL.png" >
+        <img src="/bi_static/000001_QkJVDL.png" >
     </div>
     
 </div>
