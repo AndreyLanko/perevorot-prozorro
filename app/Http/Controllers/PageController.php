@@ -740,10 +740,12 @@ class PageController extends BaseController
             $item->__tender_documents=new \StdClass();
 
             if($type=='tender' && (!empty($item->lots) && sizeof($item->lots)==1))
-                $type='lot';
+                $type=['tender', 'lot', 'item'];
+            else
+                $type=[$type];
 
             $item->__tender_documents=array_where($item->documents, function($key, $document) use ($type){
-                return $document->documentOf==$type;
+                return in_array($document->documentOf, $type);
             });
 
             $ids=[];
