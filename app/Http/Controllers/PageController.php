@@ -283,34 +283,29 @@ class PageController extends BaseController
                 $item->bids[$k]->value=!empty($one->lotValues) ? head($one->lotValues)->value : 0;
             }
         }
-        
-        if($features_price<1 && !empty($item->bids))
+
+        if(!$item->__isMultiLot)
         {
-            foreach($item->bids as $k=>$bid)
+            if($features_price<1 && !empty($item->bids))
             {
-                $item->bids[$k]->__featured_coef=new \StdClass();
-                $item->bids[$k]->__featured_coef=null;
-
-                $item->bids[$k]->__featured_price=new \StdClass();
-                $item->bids[$k]->__featured_price=null;
-
-                if(!empty($bid->parameters))
+                foreach($item->bids as $k=>$bid)
                 {
-                    $featured_coef=trim(number_format(1+array_sum(array_pluck($bid->parameters, 'value'))/$features_price, 10, '.', ' '), '.0');
- 
-                    $item->bids[$k]->__featured_coef=$featured_coef;
-                    $item->bids[$k]->__featured_price=str_replace('.00', '', number_format($bid->value->amount/$featured_coef, 2, '.', ' '));
+                    $item->bids[$k]->__featured_coef=new \StdClass();
+                    $item->bids[$k]->__featured_coef=null;
+    
+                    $item->bids[$k]->__featured_price=new \StdClass();
+                    $item->bids[$k]->__featured_price=null;
+    
+                    if(!empty($bid->parameters))
+                    {
+                        $featured_coef=trim(number_format(1+array_sum(array_pluck($bid->parameters, 'value'))/$features_price, 10, '.', ' '), '.0');
+     
+                        $item->bids[$k]->__featured_coef=$featured_coef;
+                        $item->bids[$k]->__featured_price=str_replace('.00', '', number_format($bid->value->amount/$featured_coef, 2, '.', ' '));
+                    }
                 }
             }
-        }
-
-        $item->__features_price=new \StdClass();
-        $item->__features_price=$features_price;
-
-        $this->parse_eu($item);
-
-        //if(!$item->__isMultiLot)
-        //{
+    
             if($features_price<1 && !empty($item->bids))
             {
                 usort($item->bids, function ($a, $b)
@@ -325,7 +320,12 @@ class PageController extends BaseController
                     return empty($a->value) || empty($b->value) || (floatval($a->value->amount)>floatval($b->value->amount));
                 });
             }
-        //}
+        }
+
+        $item->__features_price=new \StdClass();
+        $item->__features_price=$features_price;        
+
+        $this->parse_eu($item);
 
         $item->__icon=new \StdClass();
         $item->__icon=starts_with($item->tenderID, 'ocds-random-ua')?'pen':'mouse';
