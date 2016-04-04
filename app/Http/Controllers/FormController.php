@@ -143,6 +143,9 @@ class FormController extends BaseController
 
 		$query[]='start='.Input::get('start');
 
+		if(!empty(Session::get('api_pmtype')))
+        		$query[]='procurementMethodType='.Session::get('api_pmtype');
+
 		$path=Session::get('api_'.$this->search_type, Config::get('api.'.$this->search_type)).'?'.implode('&', $query);
 
 		curl_setopt($ch, CURLOPT_URL, $path);

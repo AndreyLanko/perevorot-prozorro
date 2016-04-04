@@ -27,8 +27,8 @@ class PageController extends BaseController
                 if($api==$new_api)
                 {
                     Session::set('api_'.$search_type, $url);
-    
-                    return redirect('/');
+
+                    return redirect(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/');
                 }
             }
         }
@@ -387,6 +387,9 @@ class PageController extends BaseController
     
     public function getSearchResults($query)
     {
+		if(!empty(Session::get('api_pmtype')))
+        		$query[]='procurementMethodType='.Session::get('api_pmtype');
+
         $url=Session::get('api_'.$this->search_type, Config::get('api.'.$this->search_type)).'?'.implode('&', $query);
 
         $header=get_headers($url)[0];

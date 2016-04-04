@@ -19,6 +19,16 @@
             	'plan'=>env('API_PLAN'),
             	'plan2'=>'http://plans20.aws3.tk/search'
         ];
+
+        $api['__switcher']['pmtype']=[
+            'all'=>'',
+            'below'=>'belowThreshold',
+            'aboveUA'=>'aboveThresholdUA',
+            'aboveEU'=>'aboveThresholdEU',
+            'reporting'=>'reporting',
+            'negotiation'=>'negotiation',
+            'neg.quick'=>'negotiation.quick',
+        ];
     }
     
     return $api;
