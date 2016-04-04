@@ -739,7 +739,7 @@ class PageController extends BaseController
         {            
             $item->__tender_documents=new \StdClass();
 
-            if($type=='tender' && (!empty($item->lots) && sizeof($item->lots)==1))
+            if($type=='tender' && (empty($item->lots) || (!empty($item->lots) && sizeof($item->lots)==1)))
                 $type=['tender', 'lot', 'item'];
             else
                 $type=[$type];
