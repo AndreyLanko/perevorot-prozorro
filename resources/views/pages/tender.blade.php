@@ -22,7 +22,9 @@
     @if (!empty($html))
         {!!$html['footer']!!}
     @endif
-    <script src="https://cdn.rawgit.com/openprocurement-crypto/common/v.0.0.11/js/index.js"></script>
+    @if($item->__is_sign)
+        <script src="https://rawgit.com/openprocurement-crypto/common/master/js/index.js"></script>
+    @endif
 @endsection
 
 @section('content')
