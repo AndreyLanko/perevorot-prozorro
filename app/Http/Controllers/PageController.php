@@ -161,6 +161,18 @@ class PageController extends BaseController
             if(!$item)
                 $error='План не найден'.(Config::get('api.__switcher')?', попробуйте другой API':'');
 
+            $item->__items=new \StdClass();
+            $item->__items=array_where($item->additionalClassifications, function($key, $one){
+                return $one->scheme!='КЕКВ';
+            });
+
+            $item->__items_kekv=new \StdClass();
+            $item->__items_kekv=array_where($item->additionalClassifications, function($key, $one){
+                return $one->scheme=='КЕКВ';
+            });
+            
+            $this->get_procedure($item->tender);
+
             if($error)
             {
                 return view('pages/plan')
@@ -1256,29 +1268,29 @@ class PageController extends BaseController
         
     private function get_procedure(&$item)
     {
-            if($item->procurementMethod=='open' && $item->procurementMethodType=='belowThreshold')
-                $name='Допорогові закупівлі';
+        if($item->procurementMethod=='open' && $item->procurementMethodType=='belowThreshold')
+            $name='Допорогові закупівлі';
 
-            if($item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdUA')
-                $name='Відкриті торги';
+        if($item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdUA')
+            $name='Відкриті торги';
 
-            if($item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdEU')
-                $name='Відкриті торги з публікацією англ.мовою';
+        if($item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdEU')
+            $name='Відкриті торги з публікацією англ.мовою';
 
-            if($item->procurementMethod=='limited' && $item->procurementMethodType=='reporting')
-                $name='Звіт про укладений договір';
+        if($item->procurementMethod=='limited' && $item->procurementMethodType=='reporting')
+            $name='Звіт про укладений договір';
 
-            if($item->procurementMethod=='limited' && $item->procurementMethodType=='negotiation')
-                $name='Переговорна процедура';
+        if($item->procurementMethod=='limited' && $item->procurementMethodType=='negotiation')
+            $name='Переговорна процедура';
 
-            if($item->procurementMethod=='limited' && $item->procurementMethodType=='negotiation.quick')
-                $name='Переговорна процедура за нагальною потребою';
+        if($item->procurementMethod=='limited' && $item->procurementMethodType=='negotiation.quick')
+            $name='Переговорна процедура за нагальною потребою';
 
-            if($item->procurementMethod=='' && $item->procurementMethodType=='')
-                $name='Без застосування електронної системи';
+        if($item->procurementMethod=='' && $item->procurementMethodType=='')
+            $name='Без застосування електронної системи';
 
-            if($item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdUA.defense')
-                $name='Відкриті торги (особливості оборони)';
+        if($item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdUA.defense')
+            $name='Відкриті торги (особливості оборони)';
 
         $item->__procedure_name=new \StdClass();
         $item->__procedure_name=$name;

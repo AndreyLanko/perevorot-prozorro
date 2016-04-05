@@ -24,99 +24,101 @@
 @endsection
 
 @section('content')
-
     @if ($item && !$error)
         <div class="tender">
             <div class="tender--head gray-bg">
                 <div class="container">
                     <div class="tender--head--title col-sm-9">{{$item->budget->description}}</div>
-                    <div class="col-md-3 col-sm-3 tender--description--cost--wr">
-                        <div class="gray-bg padding margin-bottom tender--description--cost">
-                            {{trans('plan.table.sum')}}
-                            <div class="green tender--description--cost--number">
-                                <strong>{{number_format($item->budget->amount, 0, '', ' ')}} <span class="small">{{$item->budget->currency}}</span></strong>
+                        <div class="col-md-3 col-sm-3 tender--description--cost--wr">
+                            <div class="gray-bg padding margin-bottom tender--description--cost">
+                                {{trans('plan.table.sum')}}
+                                <div class="green tender--description--cost--number">
+                                    <strong>{{number_format($item->budget->amount, 0, '', ' ')}} <span class="small">{{$item->budget->currency}}</span></strong>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     <div class="row">
                         <div class="col-sm-9">
-                            <div class="tender--head--company">
-                                @if(!empty($item->procuringEntity->identifier->legalName))
-                                    {{$item->procuringEntity->identifier->legalName}}, 
-                                @elseif(!empty($item->procuringEntity->name))
-                                    {{$item->procuringEntity->name}}, 
-                                @endif
-                                #{{$item->procuringEntity->identifier->id}}
-                            </div>        
+                            <div class="tender--head--inf">
+                                {{$item->planID}} ● {{$item->id}}
+                            </div>
+                            <div class="tender--head--inf margin-bottom">
+                                Опубліковано/змінено: {{date('d.m.Y H:i', strtotime($item->dateModified))}}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="tender--description">
                 <div class="container">
+                    <h2>ФОРМА РІЧНОГО ПЛАНУ ЗАКУПІВЕЛЬ</h2>
+                    <div style="margin:-30px 0px 40px 0px">на {{$item->budget->year}} рік</div>
+                </div>
+            </div>            
+
+            <div class="tender--description margin-bottom-xl">
+                <div class="container">
                     <div class="row">
                         <div class="col-sm-9">
-                <div class="margin-bottom">
-                    <h3>{{trans('plan.id')}}</h3>
-                    <div class="row">
-                        <div class="col-md-12 description-wr croped">
-                            <div class="tender--description--text description open">
-                                {{$item->planID}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="margin-bottom">
-                    <h3>CPV</h3>
-                    <div class="row">
-                        <div class="col-md-12 description-wr croped">
-                            <div class="tender--description--text description open">
-                                @if(!empty($item->classification))
-                                    {{$item->classification->id}}: {{$item->classification->description}}
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                </div> 
-                @if(!empty($item->additionalClassifications))
-                    <div class="margin-bottom">
-                        <h3>{{trans('plan.dkpp')}}</h3>
-                        <div class="row">
-                            <div class="col-md-12 description-wr croped">
-                                <div class="tender--description--text description open">
-                                    @foreach ($item->additionalClassifications as $additionalClassification)
-                                        <div>{{$additionalClassification->id}}: {{$additionalClassification->description}}</div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-                <div class="margin-bottom">
-                    <h3>{{trans('plan.table.planned_date')}}</h3>
-                    <div class="row">
-                        <div class="col-md-12 description-wr croped">
-                            <div class="tender--description--text description open">
-                                @if (!empty($item->tender->tenderPeriod))
-                                    {{date('d.m.Y H:i', strtotime($item->tender->tenderPeriod->startDate))}}
-                                @else
-                                    {{trans('plan.no_date')}}
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>                                   
-                <div class="margin-bottom">
-                    <h3>{{trans('plan.date')}}</h3>
-                    <div class="row">
-                        <div class="col-md-12 description-wr croped">
-                            <div class="tender--description--text description open">
-                                {{date('d.m.Y H:i', strtotime($item->dateModified))}}
-                            </div>
+                            <h3>Інформація про замовника</h3>
+                            <div>1. Найменування замовника: @if(!empty($item->procuringEntity->identifier->legalName)){{$item->procuringEntity->identifier->legalName}}@elseif(!empty($item->procuringEntity->name)){{$item->procuringEntity->name}}@endif</div>
+                            <div>2. Код згідно з ЄДРПОУ замовника: #{{$item->procuringEntity->identifier->id}}</div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="tender--description margin-bottom-xl">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <h3>Інформація про предмет закупівлі</h3>
+                            <div>3. Конкретна назва предмета закупівлі: <strong>{{$item->budget->description}}</strong></div>
+                            <br>
+                            @if(!empty($item->__items))
+                                <div class="margin-bottom">4. Коди відповідних класифікаторів предмета закупівлі:</div>
+                                @foreach($item->__items as $one)
+                                    <div class="margin-bottom">
+                                        <div class="description-wr">
+                                            <div class="tender--description--text description" style="margin-left:20px;">
+                                               {{trans('interface.scheme.'.$one->scheme)}}: {{$one->id}} — {!!nl2br($one->description)!!}
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                                @if($item->classification)
+                                    <div class="tender--description--text description" style="margin-left:20px;">
+                                       {{trans('tender.cpv')}}: {{$item->classification->id}} — {!!nl2br($item->classification->description)!!}
+                                    </div>
+                                @endif
+                            @else
+                                <div class="margin-bottom">4. Коди відповідних класифікаторів предмета закупівлі: <strong>відсутні</strong></div>
+                            @endif
+                            <br>
+                            @if(!empty($item->__items_kekv))
+                                <div class="margin-bottom">5. Код згідно з КЕКВ: </div>
+                                @foreach($item->__items_kekv as $one)
+                                    <div class="margin-bottom">
+                                        <div class="description-wr">
+                                            <div class="tender--description--text description" style="margin-left:20px;">
+                                                {{$one->scheme}}: {{$one->id}} — {!!nl2br($one->description)!!}
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="margin-bottom">5. Код згідно з КЕКВ: <strong>відсутній</strong></div>
+                            @endif
+                            <br>
+                            <div>6. Розмір бюджетного призначення за кошторисом або очікувана вартість предмета закупівлі: <strong>{{number_format($item->budget->amount, 0, '', ' ')}} {{$item->budget->currency}}</strong></div>
+                            <br>
+                            <div>7. Процедура закупівлі: <strong>{{$item->tender->__procedure_name}}</strong></div>
+                            <br>
+                            <div>8. Орієнтовний початок проведення процедури закупівлі: <strong>{{date('d.m.Y', strtotime($item->tender->tenderPeriod->startDate))}}{{--strftime('%B', strtotime($item->tender->tenderPeriod->startDate))--}}</strong></div>
+                            @if(!empty($item->budget->notes))
+                                <div>9. Примітки: <strong>{{$item->budget->notes}}</strong></div>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>

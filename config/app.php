@@ -1,5 +1,7 @@
 <?php
 
+setlocale(LC_TIME, "uk_UA");
+
 return [
 
 	/*

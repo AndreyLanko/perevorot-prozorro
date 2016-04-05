@@ -5,10 +5,15 @@
         <div class="row">
             <table class="tender--customer margin-bottom">
                 <tbody>
-                    @if (!empty($item->procuringEntity->identifier->legalName))
+                    @if(!empty($item->procuringEntity->identifier->legalName))
                         <tr>
                             <td class="col-sm-4"><strong>{{trans('tender.customer_name')}}:</strong></td>
                             <td class="col-sm-6">{{$item->procuringEntity->identifier->legalName}}</td>
+                        </tr>
+                    @elseif (!empty($item->procuringEntity->name))
+                        <tr>
+                            <td class="col-sm-4"><strong>{{trans('tender.customer_name')}}:</strong></td>
+                            <td class="col-sm-6">{{$item->procuringEntity->name}}</td>
                         </tr>
                     @endif
                     @if (!empty($item->procuringEntity->identifier->id))

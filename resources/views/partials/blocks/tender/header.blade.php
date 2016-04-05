@@ -43,7 +43,7 @@
                             &nbsp;&nbsp; Наявні скарги без рішення
                         @endif
                     </div>
-                    @if($item->__is_sign)
+                    @if(!empty($item->__is_sign))
                         <div data-js="tender_sign_check" data-url="{{$item->__sign_url}}">
                             Електронний цифровий підпис накладено. <a href="" class="document-link" data-id="sign-check">Перевірити</a>
                             <div class="overlay overlay-documents">

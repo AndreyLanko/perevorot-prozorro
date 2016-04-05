@@ -12,15 +12,15 @@
                     </div>
                     <div class="col-md-8 col-md-pull-4 description-wr{{!empty($one->description) && mb_strlen($one->description)>350?' croped':' open'}}">
                         @if (!empty($one->description))
-                                <div class="tender--description--text description">
-                                    {!!nl2br($one->description)!!}
-                                </div>
-                                @if (mb_strlen($one->description)>350)
-                                    <a class="search-form--open"><i class="sprite-arrow-down"></i>
-                                        <span>{{trans('interface.expand')}}</span>
-                                        <span>{{trans('interface.collapse')}}</span>
-                                    </a>
-                                @endif
+                            <div class="tender--description--text description">
+                                {!!nl2br($one->description)!!}
+                            </div>
+                            @if (mb_strlen($one->description)>350)
+                                <a class="search-form--open"><i class="sprite-arrow-down"></i>
+                                    <span>{{trans('interface.expand')}}</span>
+                                    <span>{{trans('interface.collapse')}}</span>
+                                </a>
+                            @endif
                         @endif
                         @if (!empty($one->classification))
                             <div class="tender-date">{{trans('tender.cpv')}}: {{$one->classification->id}} — {{$one->classification->description}}</div>

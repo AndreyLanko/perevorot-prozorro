@@ -68,11 +68,15 @@
     <table cellpadding="5" cellspacing="0" border="0" width="100%">
         <tr valign="top">
             <td width="302">10. Розмір  бюджетного  призначення  за  кошторисом  або  очікувана вартість  предмета закупівлі:</td>
-            <td><strong>{{str_replace('.00', '', number_format($lot->value->amount, 2, '.', ' '))}} {{$lot->value->currency}}</strong></td>
+            @if(!empty($lot->value))
+                <td><strong>{{str_replace('.00', '', number_format($lot->value->amount, 2, '.', ' '))}} {{$lot->value->currency}}</strong></td>
+            @endif
         </tr>
         <tr valign="top">
             <td>11. Розмір мінімального кроку пониження ціни:</td>
-            <td><strong>{{str_replace('.00', '', number_format($lot->minimalStep->amount, 2, '.', ' '))}} {{$lot->minimalStep->currency}}</strong></td>
+            @if(!empty($lot->minimalStep))
+                <td><strong>{{str_replace('.00', '', number_format($lot->minimalStep->amount, 2, '.', ' '))}} {{$lot->minimalStep->currency}}</strong></td>
+            @endif
         </tr>
         <tr valign="top">
             <td>12. Математична формула, яка буде застосовуватися при проведенні електронного аукціону для визначення показників інших критеріїв оцінки:</td>
