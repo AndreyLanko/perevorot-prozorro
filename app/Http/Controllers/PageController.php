@@ -360,6 +360,9 @@ class PageController extends BaseController
         $this->get_open_title($item);
         $this->parse_is_sign($item);
 
+        if(isset($_GET['dump']) && getenv('APP_ENV')=='local')
+            dd($item);
+
         return $item;
     }
 

@@ -44,7 +44,9 @@
                             @if(!empty($item->__open_name))
                                 <h2>{{$item->__open_name}}</h2>
                             @endif
-                            <div style="margin-top:-30px;margin-bottom:40px"><a href="{{href('tender/'.$item->tenderID.'/print/welcome')}}" target="_blank">Друкувати форму</a></div>
+                            @if($item->procurementMethod=='open' && $item->procurementMethodType!='belowThreshold')
+                                <div style="margin-top:-30px;margin-bottom:40px"><a href="{{href('tender/'.$item->tenderID.'/print/welcome')}}" target="_blank">Друкувати форму</a></div>
+                            @endif
 
                             {{--Інформація про замовника--}}
                             @include('partials/blocks/tender/procuring-entity')
