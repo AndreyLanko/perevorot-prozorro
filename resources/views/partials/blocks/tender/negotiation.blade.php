@@ -13,7 +13,7 @@
 
         @if (!empty($item->causeDescription))
             <div><strong>Обгрунтування</strong></div>
-            <div>{{$item->causeDescription}}</div>
+            <div>{!!nl2br($item->causeDescription)!!}</div>
         @endif
     </div>
 @endif

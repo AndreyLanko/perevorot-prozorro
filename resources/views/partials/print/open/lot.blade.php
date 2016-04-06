@@ -19,40 +19,40 @@
                 <td>{{$n++}}. Місце поставки товарів або місце виконання робіт чи надання послуг</td>
                 <td>{{$n++}}. Строк поставки товарів, виконання робіт чи надання послуг</td>
             </tr>
-            @foreach((!empty($lot->__items) ? $lot->__items : $item->items) as $item)
+            @foreach((!empty($lot->__items) ? $lot->__items : $item->items) as $one)
                 <tr valign="top">
                     <td>
-                        {{$item->description}}
+                        {{$one->description}}
                     </td>
                     <td>
-                        @if (!empty($item->classification))
-                            {{trans('tender.cpv')}}: {{$item->classification->id}} — {{$item->classification->description}}
+                        @if (!empty($one->classification))
+                            {{trans('tender.cpv')}}: {{$one->classification->id}} — {{$one->classification->description}}
                         @else
                             {{trans('tender.no_cpv')}}
                         @endif
                         <br>
-                        @if(!empty($item->additionalClassifications[0]))
-                            {{trans('tender.dkpp')}}: {{$item->additionalClassifications[0]->id}} — {{$item->additionalClassifications[0]->description}}
+                        @if(!empty($one->additionalClassifications[0]))
+                            {{trans('tender.dkpp')}}: {{$one->additionalClassifications[0]->id}} — {{$one->additionalClassifications[0]->description}}
                         @else
                             <br>{{trans('tender.no_dkpp')}}
                         @endif                
                     </td>
                     <td>
-                        {{!empty($item->quantity)?$item->quantity.trans('tender.q'):''}}
+                        {{!empty($one->quantity)?$one->quantity:''}} @if(!empty($one->unit->code)){{trans('measures.'.$one->unit->code.'.symbol')}}@endif
                     </td>
                     <td>
-                        @if(!empty($item->deliveryAddress->streetAddress))
-                            {{$item->deliveryAddress->postalCode}}, {{$item->deliveryAddress->region}}, {{$item->deliveryAddress->locality}}, {{$item->deliveryAddress->streetAddress}}
+                        @if(!empty($one->deliveryAddress->streetAddress))
+                            {{$one->deliveryAddress->postalCode}}, {{$one->deliveryAddress->region}}, {{$one->deliveryAddress->locality}}, {{$one->deliveryAddress->streetAddress}}
                         @else
                             Відсутнє
                         @endif
                     </td>
                     <td class="small">
-                        @if(!empty($item->deliveryDate->endDate) || !empty($item->deliveryDate->startDate))
-                            @if(!empty($item->deliveryDate->startDate)) від {{date('d.m.Y H:i', strtotime($item->deliveryDate->startDate))}}<br>@endif
-                            @if(!empty($item->deliveryDate->endDate)) до {{date('d.m.Y H:i', strtotime($item->deliveryDate->endDate))}}@endif
-                        @elseif(!empty($item->deliveryDate))
-                            {{date('d.m.Y H:i', strtotime($item->deliveryDate))}}
+                        @if(!empty($one->deliveryDate->endDate) || !empty($one->deliveryDate->startDate))
+                            @if(!empty($one->deliveryDate->startDate)) від {{date('d.m.Y', strtotime($one->deliveryDate->startDate))}}<br>@endif
+                            @if(!empty($one->deliveryDate->endDate)) до {{date('d.m.Y', strtotime($one->deliveryDate->endDate))}}@endif
+                        @elseif(!empty($one->deliveryDate))
+                            {{date('d.m.Y', strtotime($one->deliveryDate))}}
                         @else
                             Відсутня
                         @endif
@@ -62,6 +62,7 @@
         </table>
         <br>
     @endif
+    
     <table cellpadding="5" cellspacing="0" border="0" width="100%">
         <tr valign="top">
             <td width="302">{{$n++}}. Розмір  бюджетного  призначення  за  кошторисом  або  очікувана вартість  предмета закупівлі:</td>
@@ -97,19 +98,30 @@
             <td>{{$n++}}. Вид забезпечення тендерних пропозиції (якщо замовник вимагає його надати):</td>
             <td><strong>{{(!empty($guarantee) && (int)$guarantee->amount>0) ? 'Електронна банківська гарантія' : 'відсутній' }}</strong></td>
         </tr>
+        <?php
+            $auctionPeriod=false;
+
+            if(!empty($____item->lots) && sizeof($__item->lots)==1 && !empty($__item->lots[0]->auctionPeriod))
+                $auctionPeriod=$item->lots[0]->auctionPeriod;
+            elseif(!$__item->__isMultiLot && !empty($__item->auctionPeriod))
+                $auctionPeriod=$__item->auctionPeriod;
+            elseif(!empty($lot->auctionPeriod))
+                $auctionPeriod=$lot->auctionPeriod;
+        ?>
         <tr valign="top">
             <td>{{$n++}}. Дата та час розкриття тендерних пропозицій</td>
             <td><strong>
+                {{date('d.m.Y', strtotime($auctionPeriod->startDate))}}, 
                 @if (in_array($__item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdUA.defense']))
-                    Після завершення електронного аукціону
+                    після завершення електронного аукціону
                 @elseif($__item->procurementMethodType=='aboveThresholdUA')
-                    Після завершення електронного аукціону
+                    після завершення електронного аукціону
                 @endif
             </strong></td>
         </tr>
         <tr valign="top">
             <td>{{$n++}}. Дата та час проведення електронного аукціону:</td>
-            <td><strong>{{!empty($__item->auctionPeriod) ? date('d.m.Y H:i', strtotime($__item->auctionPeriod->startDate)) : 'відсутній'}}</strong></td>
+            <td><strong>{{!empty($auctionPeriod) ? date('d.m.Y H:i', strtotime($auctionPeriod->startDate)) : 'відсутній'}}</strong></td>
         </tr>
         <tr valign="top">
             <td>{{$n++}}. Строк, на який укладається рамкова угода:</td>

@@ -22,6 +22,12 @@
                             <td class="col-sm-4">{{date('d.m.Y H:i', strtotime($item->tenderPeriod->endDate))}}</td>
                         </tr>
                     @endif
+                    @if(!empty($item->lots) && sizeof($item->lots)==1 && !empty($item->lots[0]->auctionPeriod->startDate))
+                        <tr>
+                            <td class="col-sm-8"><strong>{{trans('tender.period4')}}:</strong></td>
+                            <td class="col-sm-4">{{date('d.m.Y H:i', strtotime($item->lots[0]->auctionPeriod->startDate))}}</td>
+                        </tr>
+                    @endif
                     @if(!$item->__isMultiLot && !empty($item->auctionPeriod->startDate))
                         <tr>
                             <td class="col-sm-8"><strong>{{trans('tender.period4')}}:</strong></td>

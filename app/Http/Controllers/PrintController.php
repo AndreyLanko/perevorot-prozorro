@@ -5,25 +5,32 @@ use Illuminate\Routing\Controller as BaseController;
 class PrintController extends BaseController
 {
     var $types=[
-        'welcome'
+        'open',
+        'limited',
+        'limited-reporting'
     ];
     
-	public function index($tender_id, $type)
+	public function index($tender_id, $type, $output)
 	{
 		if(!in_array($type, $this->types))
 			abort(404);
 
         $item=app('App\Http\Controllers\PageController')->tender_parse($tender_id);
 
-        $pdf = \App::make('dompdf.wrapper');
+        if($item->__print_href!=$type)
+            abort(404);
 
-        $pdf->loadView('pages/print', [
-            'item'=>$item
-        ]);
+        if($output=='pdf')
+        {
+            $pdf=\App::make('dompdf.wrapper');
+    
+            $pdf->loadView('pages/print/tender/'.$type, [
+                'item'=>$item
+            ]);
+
+            return $pdf->stream();
+        }
         
-        return $pdf->stream();
-
-
-        return view('pages/print')->with('item', $item);
+        return view('pages/print/tender/'.$type)->with('item', $item);//;
 	}
 }

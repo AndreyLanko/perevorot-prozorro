@@ -19,7 +19,7 @@
             Route::post('{search}/form/search', 'FormController@search');
             Route::post('form/autocomplete/{type}', 'FormController@autocomplete');            
 
-            Route::get('tender/{id}/print/{type}', 'PrintController@index');
+            Route::get('tender/{id}/print/{type}/{print}', 'PrintController@index')->where('print', '(pdf|html)');;
 		});
 	}
 

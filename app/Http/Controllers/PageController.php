@@ -239,6 +239,7 @@ class PageController extends BaseController
             }
         }
 
+        $this->get_print_href($item);
         $this->get_multi_lot($item);
         $this->get_eu_lots($item);
 
@@ -366,6 +367,21 @@ class PageController extends BaseController
         return $item;
     }
 
+    public function get_print_href(&$item)
+    {
+        $item->__print_href=new \StdClass();
+        $item->__print_href=false;
+        
+        if($item->procurementMethod=='open' && $item->procurementMethodType!='belowThreshold')
+            $item->__print_href='open';
+
+        if($item->procurementMethod=='limited' && $item->procurementMethodType!='reporting')
+            $item->__print_href='limited';        
+
+        if($item->procurementMethod=='limited' && $item->procurementMethodType=='reporting')
+            $item->__print_href='limited-reporting';        
+    }
+    
     public function getSearchResultsHightlightArray($query)
     {
         $query_string=$query;
@@ -764,6 +780,11 @@ class PageController extends BaseController
 
             $item->__tender_documents=array_where($item->documents, function($key, $document) use ($type){
                 return in_array($document->documentOf, $type);
+            });
+
+            usort($item->__tender_documents, function ($a, $b)
+            {
+                return intval(strtotime($b->datePublished))>intval(strtotime($a->datePublished));
             });
 
             $ids=[];
