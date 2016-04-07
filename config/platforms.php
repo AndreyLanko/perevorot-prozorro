@@ -63,9 +63,9 @@ return [
 		'type1'=>false,
 		'type2'=>false,
 		'level1'=>false,
-		'level2'=>false,
+		'level2'=>true,
 		'level3'=>false,
-		'level4'=>false,		
+		'level4'=>true,		
 	],
 	[
 		'name'=>'Zakupki.prom.ua',
