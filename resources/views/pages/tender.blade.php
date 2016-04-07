@@ -46,7 +46,15 @@
                             @endif
                             
                             @if($item->__print_href)
-                                <div style="margin-top:-30px;margin-bottom:40px">Друкувати форму <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href)}}" target="_blank">HTML</a></div>
+                                @if(starts_with($item->__print_href, 'limited'))
+                                    @if(empty($item->__active_award))
+                                        <div style="margin-top:-30px;margin-bottom:40px">Для друку форми необхідно завершити дії на майданчику</div>
+                                    @else
+                                        <div style="margin-top:-30px;margin-bottom:40px">Друкувати форму <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href)}}" target="_blank">HTML</a></div>
+                                    @endif
+                                @else
+                                    <div style="margin-top:-30px;margin-bottom:40px">Друкувати форму <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href)}}" target="_blank">HTML</a></div>
+                                @endif
                             @endif
 
                             {{--Інформація про замовника--}}
