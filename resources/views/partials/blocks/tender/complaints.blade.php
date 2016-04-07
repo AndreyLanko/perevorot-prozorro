@@ -40,13 +40,14 @@
                                 <div>
                                     <strong>
                                         Рішення Органу оскарження:
-                                        @if(in_array($complaint->status, ['declined', 'satisfied']))
-                                            @if(in_array($complaint->status, ['satisfied']))
-                                                Скарга задоволена
-                                            @endif
-                                            @if(in_array($complaint->status, ['declined']))
-                                                Скарга не задоволена
-                                            @endif
+                                        @if($complaint->status=='satisfied')
+                                            Скарга задоволена
+                                        @elseif($complaint->status=='stopped')
+                                            Розгляд зупинено
+                                        @elseif($complaint->status=='stopping')
+                                            Відкликано скаржником
+                                        @elseif($complaint->status=='declined')
+                                            Скарга не задоволена
                                         @else
                                             Очікується
                                         @endif
