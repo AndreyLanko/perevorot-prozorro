@@ -9,7 +9,7 @@
                         <div class="item">
                             <div class="img-wr">
                                 <a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank">
-                                    <img src="/assets/images/platforms/{{$platform['slug']}}.png" alt="{{$platform['name']}}" title="{{$platform['name']}}">
+                                    <img src="/assets/images/platforms/{{$platform['slug']}}.png" alt="{{strip_tags($platform['name'])}}" title="{{strip_tags($platform['name'])}}">
                                 </a>
                             </div>
                             <div class="border-hover">

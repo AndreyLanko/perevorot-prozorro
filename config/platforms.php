@@ -55,7 +55,7 @@ return [
 		'level4'=>false,		
 	],
 	[
-		'name'=>'ПриватМаркет<br>(тільки для учасників)',
+		'name'=>'ПриватМаркет',
 		'slug'=>'privatmarket',
 		'href'=>'https://privatmarket.ua/business/tenders?TenderID={tenderID}',
 		'contractor'=>true,
