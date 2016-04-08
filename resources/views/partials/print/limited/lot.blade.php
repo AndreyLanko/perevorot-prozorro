@@ -88,7 +88,7 @@
                     </td>
                     <td>
                         @if(!empty($award->suppliers[0]->address->streetAddress))
-                            {{$award->suppliers[0]->address->postalCode}}, {{$award->suppliers[0]->address->countryName}}, {{$award->suppliers[0]->address->region}}, {{$award->suppliers[0]->address->locality}}, {{$award->suppliers[0]->address->streetAddress}}
+                            {{!empty($award->suppliers[0]->address->postalCode) ? $award->suppliers[0]->address->postalCode : ''}}{{!empty($award->suppliers[0]->address->countryName) ? ', '.$award->suppliers[0]->address->countryName : ''}}{{!empty($award->suppliers[0]->address->region) ? ', '.$award->suppliers[0]->address->region : ''}}{{!empty($award->suppliers[0]->address->locality) ? ', '.$award->suppliers[0]->address->locality : ''}}, {{$award->suppliers[0]->address->streetAddress}}
                             <br><br>
                             {{$award->suppliers[0]->contactPoint->telephone}}
                         @else
