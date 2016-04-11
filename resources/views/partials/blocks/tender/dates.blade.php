@@ -56,18 +56,19 @@
                             <td class="col-sm-4">Відсутній</td>
                         </tr>
                     @endif
-
-                    @if (!empty($item->minimalStep->amount))
-                        <tr>
-                            <td class="col-sm-8"><strong>Розмір мінімального кроку пониження ціни:</strong></td>
-                            <td class="col-sm-4">{{number_format($item->minimalStep->amount, 0, '', ' ')}} {{$item->minimalStep->currency}}</td>
-                        </tr>
-                    @endif
-                    @if (!empty($item->value->amount && !empty($item->minimalStep->amount)))
-                        <tr>
-                            <td class="col-sm-8"><strong>Розмір мінімального кроку пониження ціни, %:</strong></td>
-                            <td class="col-sm-4">{{str_replace('.00', '', number_format(($item->minimalStep->amount/$item->value->amount)*100, 2, '.', ' '))}} %</td>
-                        </tr>
+                    @if(empty($item->lots) || sizeof($item->lots)==1)
+                        @if (!empty($item->minimalStep->amount))
+                            <tr>
+                                <td class="col-sm-8"><strong>Розмір мінімального кроку пониження ціни:</strong></td>
+                                <td class="col-sm-4">{{number_format($item->minimalStep->amount, 0, '', ' ')}} {{$item->minimalStep->currency}}</td>
+                            </tr>
+                        @endif
+                        @if (!empty($item->value->amount && !empty($item->minimalStep->amount)))
+                            <tr>
+                                <td class="col-sm-8"><strong>Розмір мінімального кроку пониження ціни, %:</strong></td>
+                                <td class="col-sm-4">{{str_replace('.00', '', number_format(($item->minimalStep->amount/$item->value->amount)*100, 2, '.', ' '))}} %</td>
+                            </tr>
+                        @endif
                     @endif
                 </tbody>
             </table>

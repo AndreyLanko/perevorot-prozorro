@@ -28,7 +28,15 @@
     	                @endif
     	            </div>
     	        @endif
-
+            @if (!empty($item->minimalStep))
+                <div>Мінімальний крок аукціону: <strong>{{number_format($item->minimalStep->amount, 0, '', ' ')}} <span class="small">{{$item->minimalStep->currency}}</span></strong>
+                    @if($item->minimalStep->valueAddedTaxIncluded)
+                        з ПДВ
+                    @else
+                        без ПДВ
+                    @endif
+                </div>
+            @endif
             @if (!empty($item->guarantee) && (int) $item->guarantee->amount>0)
                <div>Вид тендерного забезпечення: <strong>Електронна банківська гарантія</strong></div>
                <div>Сума тендерного забезпечення: <strong>{{str_replace('.00', '', number_format($item->guarantee->amount, 2, '.', ' '))}} {{$item->guarantee->currency}}</div>
