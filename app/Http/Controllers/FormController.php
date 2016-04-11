@@ -9,8 +9,9 @@ use Illuminate\Routing\Controller as BaseController;
 
 class FormController extends BaseController
 {
-	var $blocks=[
+	public $blocks=[
 		'cpv',
+		'date',
 		'dkpp',
 		'edrpou',
 		'region',
@@ -122,14 +123,15 @@ class FormController extends BaseController
 			}
 			elseif(substr($q, 0, 5)=='date[' || substr($q, 0, 9)=='dateplan[')
 			{
-				$one_date=str_replace(['date[', ']='], ['', '='], $q);
-				$one_date=str_replace(['dateplan[', ']='], ['', '='], $q);
+        			if(strpos($q, 'dateplan')!==false)
+                    $one_date=str_replace(['dateplan[', ']='], ['', '='], $q);
+                else
+        				$one_date=str_replace(['date[', ']='], ['', '='], $q);
+
 				$one_date=preg_split('/(=|—)/', $one_date);
 
 				if(sizeof($one_date)==3)
-				{
 					$query[$k]=$one_date[0].'_start='.$this->convert_date($one_date[1]).'&'.$one_date[0].'_end='.$this->convert_date($one_date[2], new \DateInterval('P1D'));
-				}
 				else
 					unset($query[$k]);
 			}
@@ -137,7 +139,10 @@ class FormController extends BaseController
 			{
 				$url=explode('=', $q, 2);
 
-				$query[$k]=$url[0].'='.str_replace([' '], ['+'], $url[1]);
+				if(!empty($url[1]))
+    				    $query[$k]=$url[0].'='.str_replace([' '], ['+'], $url[1]);
+    				else
+    				    unset($query[$k]);
 			}
 		}
 
@@ -147,6 +152,9 @@ class FormController extends BaseController
         		$query[]='procurementMethodType='.Session::get('api_pmtype');
 
 		$path=Session::get('api_'.$this->search_type, Config::get('api.'.$this->search_type)).'?'.implode('&', $query);
+
+        if(isset($_GET['query']) && getenv('APP_ENV')=='local')
+            dd($path);
 
 		curl_setopt($ch, CURLOPT_URL, $path);
 

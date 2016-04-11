@@ -99,15 +99,20 @@ class PageController extends BaseController
         {
             $query_array=explode('&', urldecode($query_string));
 
+            $FormController=app('App\Http\Controllers\FormController');
+
             if(sizeof($query_array))
             {
                 foreach($query_array as $item)
                 {
                     $item=explode('=', $item);
 
+                    if(empty($item[1]))
+                       continue;
+ 
                     $source=$item[0];
-                    $search_value=$item[1];
-                    
+                    $search_value=!empty($item[1]) ? $item[1] : null;
+
                     $value=$this->get_value($source, $search_value);
                     
                     if($value)
@@ -116,8 +121,7 @@ class PageController extends BaseController
                         $preselected_values[$source][]=$search_value;
                 }
             }
-            
-            $FormController=app('App\Http\Controllers\FormController');
+
             $FormController->search_type=$this->search_type;
             
             $result=$FormController->getSearchResultsHtml($query_array);
