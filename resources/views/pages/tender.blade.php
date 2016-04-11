@@ -40,7 +40,6 @@
                 <div class="margin-bottom-xl">
                     <div class="row">
                         <div class="col-sm-9">
-
                             @if(!empty($item->__open_name))
                                 <h2>{{$item->__open_name}}</h2>
                             @endif

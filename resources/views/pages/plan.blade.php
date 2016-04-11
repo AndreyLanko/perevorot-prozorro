@@ -21,6 +21,9 @@
     @if (!empty($html))
         {!!$html['footer']!!}
     @endif
+    @if(!empty($item->__is_sign))
+        <script src="https://rawgit.com/openprocurement-crypto/common/master/js/index.js"></script>
+    @endif
 @endsection
 
 @section('content')
@@ -45,6 +48,24 @@
                             <div class="tender--head--inf margin-bottom">
                                 Опубліковано/змінено: {{date('d.m.Y H:i', strtotime($item->dateModified))}}
                             </div>
+                            @if(!empty($item->__is_sign))
+                                <div data-js="tender_sign_check" data-url="{{$item->__sign_url}}">
+                                    Електронний цифровий підпис накладено. <a href="" class="document-link" data-id="sign-check">Перевірити</a>
+                                    <div class="overlay overlay-documents">
+                                        <div class="overlay-close overlay-close-layout"></div>
+                                        <div class="overlay-box">
+                                            <div class="documents" data-id="sign-check">
+                                                <h4 class="overlay-title">Перевірка підпису</h4>
+                                                <div class="loader"></div>
+                                                <div id="signPlaceholder"></div>
+                                            </div>
+                                            <div class="overlay-close"><i class="sprite-close-grey"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
+                                <div>Електронний цифровий підпис не накладено</div>
+                            @endif                            
                         </div>
                     </div>
                 </div>

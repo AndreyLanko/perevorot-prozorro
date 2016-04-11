@@ -70,6 +70,32 @@ var APP,
                     event.preventDefault();
                     $('.startpopup').css('display', 'none');
                 });
+
+                $('a.document-link').click(function(e){
+                    e.preventDefault();
+
+                    $(this).closest('.container').find('.tender--offers.documents').hide();
+                    $(this).closest('.container').find('.tender--offers.documents[data-id='+$(this).data('id')+']').show();
+
+                    $(this).closest('.container').find('.overlay-documents').addClass('open');
+                });
+
+                $('.overlay-close').click(function(e){
+                    e.preventDefault();
+
+                    $('.overlay').removeClass('open');
+                });
+                
+                $(document).keydown(function(e){
+                    if($('.overlay').is('.open')){
+                        switch (e.keyCode){
+                            case KEY_ESC:
+                                $('.overlay-close').click();
+                                return;
+                            break;
+                        }
+                    }
+                });
             },
 
             js: {
@@ -281,32 +307,6 @@ var APP,
                         e.preventDefault();
 
                         $('.overlay-info-all').addClass('open');
-                    });
-
-                    $('a.document-link').click(function(e){
-                        e.preventDefault();
-
-                        $(this).closest('.container').find('.tender--offers.documents').hide();
-                        $(this).closest('.container').find('.tender--offers.documents[data-id='+$(this).data('id')+']').show();
-
-                        $(this).closest('.container').find('.overlay-documents').addClass('open');
-                    });
-
-                    $('.overlay-close').click(function(e){
-                        e.preventDefault();
-
-                        $('.overlay').removeClass('open');
-                    });
-                    
-                    $(document).keydown(function(e){
-                        if($('.overlay').is('.open')){
-                            switch (e.keyCode){
-                                case KEY_ESC:
-                                    $('.overlay-close').click();
-                                    return;
-                                break;
-                            }
-                        }
                     });
                 },
                 search_result: function(_self){

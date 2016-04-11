@@ -165,18 +165,6 @@ class PageController extends BaseController
             if(!$item)
                 $error='План не найден'.(Config::get('api.__switcher')?', попробуйте другой API':'');
 
-            $item->__items=new \StdClass();
-            $item->__items=array_where($item->additionalClassifications, function($key, $one){
-                return $one->scheme!='КЕКВ';
-            });
-
-            $item->__items_kekv=new \StdClass();
-            $item->__items_kekv=array_where($item->additionalClassifications, function($key, $one){
-                return $one->scheme=='КЕКВ';
-            });
-            
-            $this->get_procedure($item->tender);
-
             if($error)
             {
                 return view('pages/plan')
@@ -185,6 +173,20 @@ class PageController extends BaseController
                     ->with('error', $error);
             }
         }
+
+        $item->__items=new \StdClass();
+        $item->__items=array_where($item->additionalClassifications, function($key, $one){
+            return $one->scheme!='КЕКВ';
+        });
+
+        $item->__items_kekv=new \StdClass();
+        $item->__items_kekv=array_where($item->additionalClassifications, function($key, $one){
+            return $one->scheme=='КЕКВ';
+        });
+        
+        $this->get_procedure($item->tender);
+
+        $this->parse_is_sign($item);
 
         return view('pages/plan')
                 ->with('item', $item)
