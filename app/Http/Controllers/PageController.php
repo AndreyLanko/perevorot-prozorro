@@ -264,11 +264,11 @@ class PageController extends BaseController
 
         if(!empty($item->features))
         {
-            $tender_features=array_where($item->features, function($key, $feature){
-                return $feature->featureOf=='tenderer';
+            $tender_features=array_where($item->features, function($key, $feature) use ($item){
+                return $feature->featureOf=='tenderer' || (!empty($item->lots) && sizeof($item->lots)==1 && $feature->featureOf=='lot');
             });
         }
-        
+
         if(!empty($tender_features))
         {
             foreach($tender_features as $k=>$feature)
