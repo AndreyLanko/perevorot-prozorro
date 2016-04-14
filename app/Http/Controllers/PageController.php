@@ -1107,25 +1107,28 @@ class PageController extends BaseController
     
     private function get_contracts(&$item)
     {
-        if(!empty($item->contracts[0]->documents))
+        if(!empty($item->contracts))
         {
             $item->__contracts=new \StdClass();
             $documents=[];
 
             foreach($item->contracts as $contract)
             {
-                foreach($contract->documents as $document)
+                if(!empty($contract->documents))
                 {
-                    if(!empty($contract->dateSigned))
+                    foreach($contract->documents as $document)
                     {
-                        $document->dateSigned=new \StdClass();
-                        $document->dateSigned=$contract->dateSigned;
+                        if(!empty($contract->dateSigned))
+                        {
+                            $document->dateSigned=new \StdClass();
+                            $document->dateSigned=$contract->dateSigned;
+                        }
+    
+                        $document->status=new \StdClass();
+                        $document->status=$contract->status;
+                        
+                        $documents[]=$document;
                     }
-
-                    $document->status=new \StdClass();
-                    $document->status=$contract->status;
-                    
-                    $documents[]=$document;
                 }
             }
 
