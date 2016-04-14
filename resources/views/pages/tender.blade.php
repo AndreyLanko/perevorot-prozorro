@@ -186,6 +186,9 @@
                 {{--Укладений договір--}}
                 @include('partials/blocks/tender/contract')
 
+                {{--Інформація про скасування--}}
+                @include('partials/blocks/tender/cancelled')
+
                 {{--Подати пропозицію--}}
                 @include('partials/blocks/tender/apply')
 
