@@ -1111,11 +1111,14 @@ class PageController extends BaseController
                     });
                 }
 
-                $lot->__cancellations=new \StdClass();
-
-                $lot->__cancellations=array_where($item->cancellations, function($key, $cancellation) use ($lot){
-                    return $cancellation->cancellationOf=='lot' && $cancellation->relatedLot==$lot->id;
-                });
+                if(!empty($item->cancellations))
+                {
+                    $lot->__cancellations=new \StdClass();
+    
+                    $lot->__cancellations=array_where($item->cancellations, function($key, $cancellation) use ($lot){
+                        return $cancellation->cancellationOf=='lot' && $cancellation->relatedLot==$lot->id;
+                    });
+                }
 
                 $item->lots[$k]=$lot;                
             }
