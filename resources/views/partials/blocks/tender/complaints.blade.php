@@ -2,10 +2,9 @@
     <div class="container margin-bottom-xl">
         <div class="col-sm-9">
             <h2>{{$title}}</h2>
-        
             <div class="row questions">
                 <div class="description-wr questions-block">
-                    @foreach($item->__complaints_complaints as $k=>$complaint)
+                    @foreach(array_values($item->__complaints_complaints) as $k=>$complaint)
                         <div class="questions-row{{$k>1?' none':' visible'}}">
                             <div><strong>{{!empty($complaint->complaintID)?$complaint->complaintID:$complaint->id}} Статус: <div class="marked">{{trans('tender.claim_statuses.'.$complaint->status)}}</div></strong></div>
                             <div class="grey-light size12 question-date">

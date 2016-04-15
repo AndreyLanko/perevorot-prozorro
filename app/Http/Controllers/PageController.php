@@ -367,7 +367,8 @@ class PageController extends BaseController
         $this->get_open_title($item);
         $this->parse_is_sign($item);
         $this->get_cancellations($item);
-
+        $this->get_action_url_singlelot($item);
+        
         if(isset($_GET['dump']) && getenv('APP_ENV')=='local')
             dd($item);
 
@@ -579,6 +580,15 @@ class PageController extends BaseController
         $item->__initial_bids=$bid_by_bidders;
     }
     
+    private function get_action_url_singlelot(&$item)
+    {
+        if(!empty($item->lots) && sizeof($item->lots)==1 && !empty($item->lots[0]->auctionUrl))
+        {
+            $item->auctionUrl=new \StdClass();
+            $item->auctionUrl=$item->lots[0]->auctionUrl;
+        }
+    }
+
     private function get_multi_lot(&$item)
     {
         $item->__isMultiLot=new \StdClass();
@@ -1101,6 +1111,12 @@ class PageController extends BaseController
                     });
                 }
 
+                $lot->__cancellations=new \StdClass();
+
+                $lot->__cancellations=array_where($item->cancellations, function($key, $cancellation) use ($lot){
+                    return $cancellation->cancellationOf=='lot' && $cancellation->relatedLot==$lot->id;
+                });
+
                 $item->lots[$k]=$lot;                
             }
         }
@@ -1218,15 +1234,15 @@ class PageController extends BaseController
         }
     }
 
-    private function get_cancellations(&$item)
+    private function get_cancellations(&$item, $type='tender')
     {
         $item->__cancellations=new \StdClass();
         $item->__cancellations=null;
 
         if(!empty($item->cancellations))
         {
-            $item->__cancellations=array_where($item->cancellations, function($key, $cancellation) use ($item){
-                return $cancellation->cancellationOf=='tender' || (!empty($item->lots) && sizeof($item->lots)==1 && $cancellation->cancellationOf=='lot');
+            $item->__cancellations=array_where($item->cancellations, function($key, $cancellation) use ($type, $item){
+                return $cancellation->cancellationOf==$type || (!empty($item->lots) && sizeof($item->lots)==1 && $cancellation->cancellationOf=='lot');
             });
         }
     }
