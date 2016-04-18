@@ -11,7 +11,7 @@
                                 @if (!empty($complaint->author->identifier->id))
                                     Скаржник: {{$complaint->author->name}}, Код ЄДРПОУ:{{$complaint->author->identifier->id}}<br>
                                 @endif
-                                Дата подання: {{date('d.m.Y H:i', strtotime($complaint->dateSubmitted))}}
+                                Дата подання: {{!empty($complaint->dateSubmitted) ? date('d.m.Y H:i', strtotime($complaint->dateSubmitted)) : 'відсутня'}}
                             </div>
                             
                             <div style="margin-left:40px">
