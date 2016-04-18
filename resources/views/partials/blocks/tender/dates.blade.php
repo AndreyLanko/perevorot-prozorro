@@ -37,7 +37,7 @@
                     @if (!empty($item->value->amount))
                         <tr>
                             <td class="col-sm-8"><strong>Очікувана вартість:</strong></td>
-                            <td class="col-sm-4">{{number_format($item->value->amount, 0, '', ' ')}} {{$item->value->currency}} {{$item->value->valueAddedTaxIncluded?'з ПДВ':'без ПДВ'}}</td>
+                            <td class="col-sm-4">{{number_format($item->value->amount, 0, '', ' ')}} {{$item->value->currency}} {{!empty($item->value->valueAddedTaxIncluded)?'з ПДВ':'без ПДВ'}}</td>
                         </tr>
                     @endif
 

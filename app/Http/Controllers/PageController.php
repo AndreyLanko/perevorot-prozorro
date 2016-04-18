@@ -245,6 +245,12 @@ class PageController extends BaseController
             }
         }
 
+        if(empty($item->procurementMethodType))
+        {
+            $item->procurementMethodType=new \StdClass();
+            $item->procurementMethodType='';
+        }
+        
         $this->get_print_href($item);
         $this->get_multi_lot($item);
         $this->get_eu_lots($item);
@@ -390,14 +396,17 @@ class PageController extends BaseController
         $item->__print_href=new \StdClass();
         $item->__print_href=false;
         
-        if($item->procurementMethod=='open' && $item->procurementMethodType!='belowThreshold')
-            $item->__print_href='open';
-
-        if($item->procurementMethod=='limited' && $item->procurementMethodType!='reporting')
-            $item->__print_href='limited';        
-
-        if($item->procurementMethod=='limited' && $item->procurementMethodType=='reporting')
-            $item->__print_href='limited-reporting';        
+        if(!empty($item->procurementMethodType))
+        {
+            if($item->procurementMethod=='open' && $item->procurementMethodType!='belowThreshold')
+                $item->__print_href='open';
+    
+            if($item->procurementMethod=='limited' && $item->procurementMethodType!='reporting')
+                $item->__print_href='limited';        
+    
+            if($item->procurementMethod=='limited' && $item->procurementMethodType=='reporting')
+                $item->__print_href='limited-reporting';
+        }
     }
     
     public function getSearchResultsHightlightArray($query)
@@ -808,8 +817,8 @@ class PageController extends BaseController
             else
                 $type=[$type];
 
-            $item->__tender_documents=array_where($item->documents, function($key, $document) use ($type){
-                return in_array($document->documentOf, $type);
+            $item->__tender_documents=array_where($item->documents, function($key, $document) use ($type, $item){
+                return $item->procurementMethodType=='' || in_array($document->documentOf, $type);
             });
 
             usort($item->__tender_documents, function ($a, $b)
@@ -1365,12 +1374,12 @@ class PageController extends BaseController
         if($item->procurementMethod=='limited' && $item->procurementMethodType=='negotiation.quick')
             $name='Переговорна процедура за нагальною потребою';
 
-        if($item->procurementMethod=='' && $item->procurementMethodType=='')
+        if($item->procurementMethodType=='')
             $name='Без застосування електронної системи';
 
         if($item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdUA.defense')
             $name='Відкриті торги (особливості оборони)';
-
+            
         $item->__procedure_name=new \StdClass();
         $item->__procedure_name=$name;
     }

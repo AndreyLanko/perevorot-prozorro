@@ -54,7 +54,7 @@
                         @elseif(!empty($one->deliveryDate))
                             {{date('d.m.Y', strtotime($one->deliveryDate))}}
                         @else
-                            Відсутня
+                            Відсутній
                         @endif
                     </td>
                 </tr>
@@ -101,7 +101,7 @@
         <?php
             $auctionPeriod=false;
 
-            if(!empty($____item->lots) && sizeof($__item->lots)==1 && !empty($__item->lots[0]->auctionPeriod))
+            if(!empty($__item->lots) && sizeof($__item->lots)==1 && !empty($__item->lots[0]->auctionPeriod))
                 $auctionPeriod=$item->lots[0]->auctionPeriod;
             elseif(!$__item->__isMultiLot && !empty($__item->auctionPeriod))
                 $auctionPeriod=$__item->auctionPeriod;
@@ -111,11 +111,11 @@
         <tr valign="top">
             <td>{{$n++}}. Дата та час розкриття тендерних пропозицій</td>
             <td><strong>
-                {{date('d.m.Y', strtotime($auctionPeriod->startDate))}}, 
+                {{!empty($auctionPeriod) ? date('d.m.Y', strtotime($auctionPeriod->startDate)) : 'відсутній'}} 
                 @if (in_array($__item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdUA.defense']))
-                    після завершення електронного аукціону
+                    , після завершення електронного аукціону
                 @elseif($__item->procurementMethodType=='aboveThresholdUA')
-                    після завершення електронного аукціону
+                    , після завершення електронного аукціону
                 @endif
             </strong></td>
         </tr>
