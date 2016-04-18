@@ -431,6 +431,9 @@ class PageController extends BaseController
 
         $url=Session::get('api_'.$this->search_type, Config::get('api.'.$this->search_type)).'?'.implode('&', $query);
 
+        if(isset($_GET['api']) && getenv('APP_ENV')=='local')
+            dd($url);
+
         $header=get_headers($url)[0];
 
         if(strpos($header, '200 OK')!==false)

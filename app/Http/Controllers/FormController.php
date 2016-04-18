@@ -153,7 +153,7 @@ class FormController extends BaseController
 
 		$path=Session::get('api_'.$this->search_type, Config::get('api.'.$this->search_type)).'?'.implode('&', $query);
 
-        if(isset($_GET['query']) && getenv('APP_ENV')=='local')
+        if(isset($_GET['api']) && getenv('APP_ENV')=='local')
             dd($path);
 
 		curl_setopt($ch, CURLOPT_URL, $path);
