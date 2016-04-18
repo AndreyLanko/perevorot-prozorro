@@ -368,11 +368,21 @@ class PageController extends BaseController
         $this->parse_is_sign($item);
         $this->get_cancellations($item);
         $this->get_action_url_singlelot($item);
+        $this->get_auction_period($item);
         
         if(isset($_GET['dump']) && getenv('APP_ENV')=='local')
             dd($item);
 
         return $item;
+    }
+    
+    public function get_auction_period(&$item)
+    {
+        if(!empty($item->lots) && sizeof($item->lots)==1 && !empty($item->lots[0]->auctionUrl) && empty($item->auctionPeriod))
+        {
+            $item->auctionPeriod=new \StdClass();
+            $item->auctionPeriod=$item->lots[0]->auctionPeriod;
+        }        
     }
 
     public function get_print_href(&$item)
