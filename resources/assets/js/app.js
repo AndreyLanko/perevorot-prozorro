@@ -526,8 +526,33 @@ var APP,
                 }
             },
             utils: {
-                    totals: {
-                        init: function(){
+                init_plan_print_button: function(){
+                    if(SEARCH_TYPE!='plan'){
+                        return;
+                    }
+
+                    var show=0,
+                        SEARCH_QUERY=APP.utils.get_query(),
+                        href=$('#print-list'),
+                        header_totals=$('[header-totals]');
+                    
+                    for(var i=0; i<SEARCH_QUERY.length; i++){
+                        if(SEARCH_QUERY[i].indexOf('dateplan[')>=0)
+                            show++;
+                        
+                        if(SEARCH_QUERY[i].indexOf('edrpou=')>=0)
+                            show++;
+                    }
+
+                    href.hide();
+
+                    if(parseInt(header_totals.html())>0 && SEARCH_QUERY.length==2 && show==2){
+                        href.show();
+                        href.attr('href', LANG+'/'+SEARCH_TYPE+'/search/print/html/?'+SEARCH_QUERY.join('&'));
+                    }
+                },
+                totals: {
+                    init: function(){
                             var items_list=$('.items-list');
 
                         $('[mobile-totals]').click(function(e){
@@ -542,11 +567,11 @@ var APP,
 
                         APP.utils.totals.show();
                     },
-                        show: function(){
-                            var container=$('[mobile-totals]'),
-                                header_totals=$('[header-totals]'),
-                                total=header_totals.text();
-                        
+                    show: function(){
+                        var container=$('[mobile-totals]'),
+                            header_totals=$('[header-totals]'),
+                            total=header_totals.text();
+                    
                         if(total){
                             container.removeClass('none-important').find('.result-all-link span').text(total);
                         }else{
@@ -556,7 +581,7 @@ var APP,
                     reset: function(){
                         $('[mobile-totals]').addClass('none-important');
                     }
-                    },
+                },
                 history: {
                     bind: function(){
                         if (IS_HISTORY){
@@ -605,6 +630,7 @@ var APP,
                         }
 
                         APP.utils.result_highlight(INPUT.data('highlight'));
+                        APP.utils.init_plan_print_button();
 
                         INITED=true;
                     },
@@ -675,6 +701,8 @@ var APP,
 
                                     APP.utils.totals.show();
                                     APP.utils.result_highlight(response.highlight);
+
+                                    APP.utils.init_plan_print_button();
                                 }else{
                                     $('#result').html(INPUT.data('no-results'));
                                 }

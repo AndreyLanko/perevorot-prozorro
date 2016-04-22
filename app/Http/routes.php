@@ -10,6 +10,7 @@
             
             Route::get('search', 'PageController@search_redirect');
             Route::get('{search}/search', 'PageController@search');
+            Route::get('plan/search/print/{print}', 'PrintController@plan_list')->where('print', '(html)');;
             
             Route::get('tender/{id}', 'PageController@tender');
             Route::get('plan/{id}', 'PageController@plan');
@@ -19,7 +20,7 @@
             Route::post('{search}/form/search', 'FormController@search');
             Route::post('form/autocomplete/{type}', 'FormController@autocomplete');            
 
-            Route::get('tender/{id}/print/{type}/{print}', 'PrintController@index')->where('print', '(pdf|html)');;
+            Route::get('tender/{id}/print/{type}/{print}', 'PrintController@one')->where('print', '(pdf|html)');;
 		});
 	}
 
