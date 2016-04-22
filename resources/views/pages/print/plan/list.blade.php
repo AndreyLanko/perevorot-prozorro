@@ -1,6 +1,27 @@
 @extends('layouts/print')
 
 @section('pdf')
+<style type="text/css" media="print">
+    @page {
+        size:  auto;
+        margin: 0mm;
+        size: landscape;
+    }
+    table {
+        page-break-inside: auto;
+    }
+    tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+    html{
+        background-color: #FFFFFF; 
+        margin: 0px;
+    }
+    body{
+        margin:1cm;
+    }
+</style>
     @if($main)
         <center>
             <h2>РІЧНИЙ ПЛАН ЗАКУПІВЕЛЬ</h2>
@@ -56,5 +77,4 @@
             ])
         </table>
     @endif
-
 @endsection
