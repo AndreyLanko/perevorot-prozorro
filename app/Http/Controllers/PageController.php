@@ -89,8 +89,30 @@ class PageController extends BaseController
     public function search($search_type='tender')
     {
         $this->search_type=$this->get_search_type($search_type);
-            
+        list($query_array, $preselected_values)=$this->parse_search_query();
+
+        $result='';
+
+        if(!empty($query_array))
+        {
+            $FormController=app('App\Http\Controllers\FormController');
+            $FormController->search_type=$this->search_type;
+
+            $result=$FormController->getSearchResultsHtml($query_array);
+        }
+
+        return view('pages/search')
+                ->with('html', $this->get_html())
+                ->with('search_type', $this->search_type)
+                ->with('preselected_values', json_encode($preselected_values, JSON_UNESCAPED_UNICODE))
+                ->with('highlight', json_encode($this->getSearchResultsHightlightArray(trim(Request::server('QUERY_STRING'), '&')), JSON_UNESCAPED_UNICODE))
+                ->with('result', $result);
+    }
+    
+    public function parse_search_query()
+    {
         $preselected_values=[];
+        $query_array=[];
         $query_string=trim(Request::server('QUERY_STRING'), '&');
 
         $result='';
@@ -121,18 +143,9 @@ class PageController extends BaseController
                         $preselected_values[$source][]=$search_value;
                 }
             }
-
-            $FormController->search_type=$this->search_type;
-            
-            $result=$FormController->getSearchResultsHtml($query_array);
         }
 
-        return view('pages/search')
-                ->with('html', $this->get_html())
-                ->with('search_type', $this->search_type)
-                ->with('preselected_values', json_encode($preselected_values, JSON_UNESCAPED_UNICODE))
-                ->with('highlight', json_encode($this->getSearchResultsHightlightArray(trim(Request::server('QUERY_STRING'), '&')), JSON_UNESCAPED_UNICODE))
-                ->with('result', $result);
+        return [$query_array, $preselected_values];
     }
     
     private function get_search_type($search_type='tender')
