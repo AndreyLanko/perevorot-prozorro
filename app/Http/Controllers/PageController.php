@@ -32,7 +32,11 @@ class PageController extends BaseController
                 }
             }
         }
-            
+        
+        $last=null;
+        $auctions_items=null;
+        
+        /*   
         $last=Cache::remember('get_last_homepage', 60, function()
         {
             return app('App\Http\Controllers\FormController')->getSearchResults([
@@ -55,7 +59,7 @@ class PageController extends BaseController
 
                     foreach($auctions->items as $one)
                     {
-                        if(!empty($one->auctionPeriod)/*  && strtotime($one->auctionPeriod->startDate)>time() */)
+                        if(!empty($one->auctionPeriod))
                             $active_auctions[]=$one;
                 }
 
@@ -64,6 +68,7 @@ class PageController extends BaseController
 
             return $auctions_items;
         });
+        */
         
         $dataStatus=[];
 
