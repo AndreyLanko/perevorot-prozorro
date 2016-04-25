@@ -29,6 +29,7 @@
                             <td>
                                 @if(!empty($item->__initial_bids[$bid->id]))
                                     {{str_replace('.00', '', number_format($item->__initial_bids[$bid->id], 2, '.', ' '))}}
+                                    <div class="td-small grey-light">{{$bid->value->currency}}{{$bid->value->valueAddedTaxIncluded?trans('tender.vat'):''}}</div>                                            
                                 @elseif(!empty($bid->value))
                                     {{str_replace('.00', '', number_format($bid->value->amount, 2, '.', ' '))}} 
                                     <div class="td-small grey-light">{{$bid->value->currency}}{{$bid->value->valueAddedTaxIncluded?trans('tender.vat'):''}}</div>                                            

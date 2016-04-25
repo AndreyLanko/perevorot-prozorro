@@ -597,7 +597,7 @@ class PageController extends BaseController
                         try
                         {
                             $yaml=Cache::remember('yaml_'.md5($document->url), 60, function() use ($document){
-                                $yaml_file=@file_get_contents($document->url);
+                                $yaml_file=file_get_contents($document->url);
 
                                 return !empty($yaml_file) ? Yaml::parse($yaml_file) : [];
                             });
@@ -993,6 +993,7 @@ class PageController extends BaseController
                 
                 $lot->procurementMethod=$item->procurementMethod;
                 $lot->procurementMethodType=$item->procurementMethodType;
+                $lot->__initial_bids=$item->__initial_bids;                
 
                 $lot->__icon=new \StdClass();
                 $lot->__icon=false;
