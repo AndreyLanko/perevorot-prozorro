@@ -15,7 +15,7 @@
                             @if (!empty($complaint->description))
                                 <div class="description-wr margin-bottom{{mb_strlen($complaint->description)>350?' croped':' open'}}">
                                     <div class="description">
-                                        {{$complaint->description}}
+                                        {!!nl2br($complaint->description)!!}
                                     </div>
                                     @if (mb_strlen($complaint->description)>350)
                                         <a class="search-form--open"><i class="sprite-arrow-down"></i>
@@ -34,7 +34,22 @@
                                 @if(empty($complaint->resolutionType))
                                     <div>Очікується</div>
                                 @else
-                                    <div>{{$complaint->resolutionType}}, {{$complaint->resolution}}</div>
+                                    <div>{{$complaint->resolutionType}}</div>
+                                    @if (!empty($complaint->tendererAction))
+                                        <div class="description-wr margin-bottom{{mb_strlen($complaint->tendererAction)>350?' croped':' open'}}">
+                                            <div class="description">
+                                                {!!nl2br($complaint->tendererAction)!!}
+                                            </div>
+                                            @if (mb_strlen($complaint->tendererAction)>350)
+                                                <a class="search-form--open"><i class="sprite-arrow-down"></i>
+                                                    <span>{{trans('interface.expand')}}</span>
+                                                    <span>{{trans('interface.collapse')}}</span>
+                                                </a>
+                                            @endif
+                                        </div>                                    
+                                    @elseif ($complaint->resolution)
+                                        <div>{{$complaint->resolution}}<div>
+                                    @endif
                                     <div class="grey-light size12 question-date">{{date('d.m.Y H:i', strtotime($complaint->dateAnswered))}}</div>
                                 @endif
                             </div>
