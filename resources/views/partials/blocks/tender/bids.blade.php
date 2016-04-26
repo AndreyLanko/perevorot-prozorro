@@ -8,7 +8,7 @@
             @elseif(!empty($item->tenderPeriod->endDate))
                 <p class="table-date">{{trans('tender.bids_open_time')}}: {{date('d.m.Y H:i', strtotime($item->tenderPeriod->endDate))}}</p>
             @endif
-            
+
             <table class="table table-striped margin-bottom small-text">
                 <thead>
                     <tr>
