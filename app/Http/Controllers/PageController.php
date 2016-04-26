@@ -467,6 +467,7 @@ class PageController extends BaseController
         		$query[]='procurementMethodType='.Session::get('api_pmtype');
 
         $url=Session::get('api_'.$this->search_type, Config::get('api.'.$this->search_type)).'?'.implode('&', $query);
+        $url=!empty($url) ? $url : env('PROZORRO_API');
 
         if(isset($_GET['api']) && getenv('APP_ENV')=='local')
             dd($url);
@@ -576,6 +577,7 @@ class PageController extends BaseController
     
     private function get_initial_bids(&$item)
     {
+        $bidders_by_lot=[];
         $bid_by_bidders=[];
 
         if(!empty($item->bids))
@@ -586,38 +588,39 @@ class PageController extends BaseController
 
         if(!empty($item->documents))
         {
-            $already_found=false;
-            
             foreach($item->documents as $document)
             {
                 if(pathinfo($document->title, PATHINFO_EXTENSION)=='yaml' && !empty($document->url))
                 {
-                    if(!$already_found)
+                    try
                     {
-                        try
-                        {
-                            $yaml=Cache::remember('yaml_'.md5($document->url), 60, function() use ($document){
-                                $yaml_file=file_get_contents($document->url);
+                        $yaml=Cache::remember('yaml_'.md5($document->url), 60, function() use ($document){
+                            $yaml_file=file_get_contents($document->url);
 
-                                return !empty($yaml_file) ? Yaml::parse($yaml_file) : [];
-                            });
-                            
-                            if(!empty($yaml['timeline']['auction_start']['initial_bids']))
+                            return !empty($yaml_file) ? Yaml::parse($yaml_file) : [];
+                        });
+                        
+                        if(!empty($yaml['timeline']['auction_start']['initial_bids']))
+                        {
+                            foreach($yaml['timeline']['auction_start']['initial_bids'] as $bid)
                             {
-                                $already_found=true;
-                                    
-                                foreach($yaml['timeline']['auction_start']['initial_bids'] as $bid)
-                                    $bid_by_bidders[$bid['bidder']]=$bid['amount'];
+                                if(!empty($yaml['lot_id']))
+                                    $bidders_by_lot[$yaml['lot_id']][$bid['bidder']]=$bid['amount'];
+
+                                $bid_by_bidders[$bid['bidder']]=$bid['amount'];
                             }
                         }
-                        catch (ParseException $e) {}
                     }
+                    catch (ParseException $e) {}
                 }
             }
         }
 
         $item->__initial_bids=new \StdClass();
         $item->__initial_bids=$bid_by_bidders;
+
+        $item->__initial_bids_by_lot=new \StdClass();
+        $item->__initial_bids_by_lot=$bidders_by_lot;
     }
     
     private function get_action_url_singlelot(&$item)
@@ -993,7 +996,14 @@ class PageController extends BaseController
                 
                 $lot->procurementMethod=$item->procurementMethod;
                 $lot->procurementMethodType=$item->procurementMethodType;
-                $lot->__initial_bids=$item->__initial_bids;                
+
+                if(!empty($item->__initial_bids_by_lot))
+                {
+                    if(!empty($item->__initial_bids_by_lot[$lot->id]))
+                        $lot->__initial_bids=$item->__initial_bids_by_lot[$lot->id];
+                }
+                else
+                    $lot->__initial_bids=$item->__initial_bids;
 
                 $lot->__icon=new \StdClass();
                 $lot->__icon=false;
@@ -1161,7 +1171,7 @@ class PageController extends BaseController
                     });
                 }
 
-                $item->lots[$k]=$lot;                
+                $item->lots[$k]=$lot;
             }
         }
     }

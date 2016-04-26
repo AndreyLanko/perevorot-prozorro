@@ -181,7 +181,9 @@
 
                                 {{--Інформація про скасування--}}
                                 @include('partials/blocks/tender/cancelled', [
-                                    'item'=>$lot
+                                    'item'=>$lot,
+                                    'tenderPeriod'=>!empty($item->tenderPeriod) ? $item->tenderPeriod : false,
+                                    'qualificationPeriod'=>!empty($item->qualificationPeriod) ? $item->qualificationPeriod : false
                                 ])
                             </div>
                         @endforeach
@@ -190,9 +192,14 @@
 
                 {{--Укладений договір--}}
                 @include('partials/blocks/tender/contract')
-
-                {{--Інформація про скасування--}}
-                @include('partials/blocks/tender/cancelled')
+                
+                @if (!$item->__isMultiLot)
+                    {{--Інформація про скасування--}}
+                    @include('partials/blocks/tender/cancelled', [
+                        'tenderPeriod'=>!empty($item->tenderPeriod) ? $item->tenderPeriod : false,
+                        'qualificationPeriod'=>!empty($item->qualificationPeriod) ? $item->qualificationPeriod : false
+                    ])
+                @endif
 
                 {{--Подати пропозицію--}}
                 @include('partials/blocks/tender/apply')

@@ -116,7 +116,7 @@ return [
     'lot_status'=>[
         'active'=>'Активний',
         'cancelled'=>'Скасований',
-        'unsuccessful'=>'Закупівля не відбулась',
+        'unsuccessful'=>'Торги відмінено',
         'complete'=>'Завершений',
     ],
     'info_title'=>[

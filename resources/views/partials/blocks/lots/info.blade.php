@@ -39,7 +39,7 @@
             @endif
             @if (!empty($item->guarantee) && (int) $item->guarantee->amount>0)
                <div>Вид тендерного забезпечення: <strong>Електронна банківська гарантія</strong></div>
-               <div>Сума тендерного забезпечення: <strong>{{str_replace('.00', '', number_format($item->guarantee->amount, 2, '.', ' '))}} {{$item->guarantee->currency}}</div>
+               <div>Сума тендерного забезпечення: <strong>{{str_replace('.00', '', number_format($item->guarantee->amount, 2, '.', ' '))}} {{$item->guarantee->currency}}</strong></div>
             @else
                 <div>Вид тендерного забезпечення: <strong>Відсутній</strong></div>
             @endif
