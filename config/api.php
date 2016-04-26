@@ -8,16 +8,14 @@
     if(env('APP_ENV')=='local')
     {
         $api['__switcher']['tender']=[
-            	'prozorro'=>env('API_TENDER'),
-            'v2'=>'http://v20.aws3.tk/search',
-            	'sandbox'=>'http://sandbox.aws3.tk/search',
-            //'ocds'=>'http://ocds-test.aws3.tk/search',
-            	//'merged'=>'http://merged.aws3.tk/search'
+            	'prozorro'=>env('API_TENDER_PROZORRO'),
+            'v2'=>env('API_TENDER_V2'),
+            	'sandbox'=>env('API_TENDER_SANDBOX'),
         ];
 
         $api['__switcher']['plan']=[
             	'plan'=>env('API_PLAN'),
-            	'plan2'=>'http://plans20.aws3.tk/search'
+            	'plan2'=>env('API_PLAN2')
         ];
 
         $api['__switcher']['pmtype']=[
