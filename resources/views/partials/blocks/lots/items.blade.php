@@ -32,7 +32,7 @@
 	                @endif
 	
 	                @if(!empty($one->deliveryAddress->streetAddress))
-        	                <div class="tender-date dark">Доставка: {{$one->deliveryAddress->postalCode}}, {{$one->deliveryAddress->region}}, {{$one->deliveryAddress->locality}}, {{$one->deliveryAddress->streetAddress}}</div>
+        	                <div class="tender-date dark">Доставка: {{!empty($one->deliveryAddress->postalCode) ? $one->deliveryAddress->postalCode : ''}}{{!empty($one->deliveryAddress->region) ? ', '.$one->deliveryAddress->region : ''}}{{!empty($one->deliveryAddress->locality) ? ', '.$one->deliveryAddress->locality : ''}}{{!empty($one->deliveryAddress->streetAddress) ? ', '.$one->deliveryAddress->streetAddress : ''}}</div>
 	                @endif
 	                @if(!empty($one->deliveryDate->endDate) || !empty($one->deliveryDate->startDate))
 	                    <div class="tender-date dark">Дата доставки:
