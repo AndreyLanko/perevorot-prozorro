@@ -182,6 +182,7 @@
                                 {{--Інформація про скасування--}}
                                 @include('partials/blocks/tender/cancelled', [
                                     'item'=>$lot,
+                                    'numberOfBids'=>!empty($item->numberOfBids) ? $item->numberOfBids : 0,
                                     'tenderPeriod'=>!empty($item->tenderPeriod) ? $item->tenderPeriod : false,
                                     'qualificationPeriod'=>!empty($item->qualificationPeriod) ? $item->qualificationPeriod : false
                                 ])
@@ -196,6 +197,7 @@
                 @if (!$item->__isMultiLot)
                     {{--Інформація про скасування--}}
                     @include('partials/blocks/tender/cancelled', [
+                        'numberOfBids'=>!empty($item->numberOfBids) ? $item->numberOfBids : 0,
                         'tenderPeriod'=>!empty($item->tenderPeriod) ? $item->tenderPeriod : false,
                         'qualificationPeriod'=>!empty($item->qualificationPeriod) ? $item->qualificationPeriod : false
                     ])

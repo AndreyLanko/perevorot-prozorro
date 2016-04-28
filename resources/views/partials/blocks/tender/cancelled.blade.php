@@ -63,7 +63,7 @@
                                 <div>відсутність тендерних пропозицій</div>
                             </div>
                         </div>
-                    @elseif($item->procurementMethodType=='aboveThresholdEU' && $item->numberOfBids < 2)
+                    @elseif($item->procurementMethodType=='aboveThresholdEU' && $numberOfBids < 2)
                         <div class="row">
                             <div class="col-md-12 margin-bottom">
                                 <strong>Дата відміни</strong>
@@ -74,7 +74,7 @@
                                 <div>подання для участі в торгах менше двох тендерних пропозицій</div>
                             </div>
                         </div>                        
-                    @elseif($item->procurementMethodType=='aboveThresholdEU' && $item->numberOfBids >= 2)
+                    @elseif($item->procurementMethodType=='aboveThresholdEU' && $numberOfBids >= 2)
                         <div class="row">
                             <div class="col-md-12 margin-bottom">
                                 <strong>Дата відміни</strong>
