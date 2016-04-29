@@ -5,8 +5,8 @@
         <meta property="og:type" content="website">
         <meta property="og:site_name" content="{{trans('facebook.site_name')}}">
         <meta property="og:title" content="{{htmlentities($item->procuringEntity->name, ENT_QUOTES)}}">
-        <meta property="og:url" content="{{Request::root()}}/{{Request::path()}}">
-        <meta property="og:image" content="{{Request::root()}}/assets/images/social/fb.png">
+        <meta property="og:url" content="{{env('ROOT_URL')}}/{{Request::path()}}">
+        <meta property="og:image" content="{{env('ROOT_URL')}}/assets/images/social/fb.png">
         <meta property="og:description" content="{{!empty($item->title) ? htmlentities($item->title, ENT_QUOTES) : trans('facebook.tender_no_name')}}">
     @endif
 @endsection

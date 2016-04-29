@@ -13,7 +13,7 @@ class JsonController extends BaseController
 
 		foreach($platforms as $k=>$item)
 		{
-			$platforms[$k]['logo']=\Request::root().'/assets/images/platforms/'.$item['slug'].'.png';
+			$platforms[$k]['logo']=env('ROOT_URL').'/assets/images/platforms/'.$item['slug'].'.png';
 
             if($item[$type])
             {

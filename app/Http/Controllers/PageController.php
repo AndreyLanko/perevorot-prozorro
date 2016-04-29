@@ -224,7 +224,7 @@ class PageController extends BaseController
         return view('pages/tender')
                 ->with('item', $item)
                 ->with('html', $this->get_html())
-                ->with('back', starts_with(Request::server('HTTP_REFERER'), Request::root().'/search') ? Request::server('HTTP_REFERER') : false)
+                ->with('back', starts_with(Request::server('HTTP_REFERER'), env('ROOT_URL').'/search') ? Request::server('HTTP_REFERER') : false)
                 ->with('dataStatus', $dataStatus)
                 ->with('error', $this->error);
     }
@@ -1328,7 +1328,7 @@ class PageController extends BaseController
     {
         $html=Cache::remember('get_html_'.Config::get('locales.current'), 60, function()
         {
-            $html=file_get_contents(Request::root().href('postachalniku'));
+            $html=file_get_contents(env('ROOT_URL').href('postachalniku'));
     
             $header=substr($html, strpos($html, '<nav class="navbar navbar-default top-menu">'));
             $header=substr($header, 0, strpos($header, '<div class="container switcher">'));
