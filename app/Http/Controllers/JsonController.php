@@ -2,14 +2,18 @@
 
 use Illuminate\Routing\Controller as BaseController;
 
+use Config;
+
 class JsonController extends BaseController
 {
+    var $types=['all', 'tender', 'contractor', 'type1', 'type2', 'level1', 'level2', 'level3', 'level4'];
+    
 	public function platforms($type='all')
 	{
-		if(!in_array($type, ['all', 'contractors', 'type1', 'type2']))
+		if(!in_array($type, $this->types))
 			abort(404);
 
-		$platforms=\Config::get('platforms');
+		$platforms=Config::get('platforms');
 
 		foreach($platforms as $k=>$item)
 		{
@@ -20,16 +24,12 @@ class JsonController extends BaseController
                 $url=parse_url(!empty($item['public']) ? $item['public'] : $item['href']);
     
                 $platforms[$k]['href']=$url['scheme'].'://'.$url['host'].$url['path'];
+
+                foreach($this->types as $t)
+                    unset($platforms[$k][$t]);
             }
             else
                 unset($platforms[$k]);
-
-            /*
-			if($type=='contractors' && !$item['contractor'])
-				unset($platforms[$k]);
-			else
-				unset($platforms[$k]['contractor']);
-            */
 		};
 
 		return response()->json($platforms, 200, [
