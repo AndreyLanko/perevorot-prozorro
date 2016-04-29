@@ -2,10 +2,12 @@
 
 use Illuminate\Routing\Controller as BaseController;
 use Input;
+use App;
 use Cache;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Request;
+use Redirect;
 use Config;
 use Session;
 use TesseractOCR;
@@ -86,7 +88,7 @@ class PageController extends BaseController
     
     function search_redirect()
     {
-        return \Redirect::to(str_replace('/search', '/tender/search', Request::fullUrl()), 301);
+        return Redirect::to(str_replace('/search', '/tender/search', Request::fullUrl()), 301);
     }
     
     var $search_type;
@@ -1328,8 +1330,8 @@ class PageController extends BaseController
     {
         $html=Cache::remember('get_html_'.Config::get('locales.current'), 60, function()
         {
-            $html=file_get_contents(env('ROOT_URL').href('postachalniku'));
-    
+            $html=file_get_contents(storage_path().'/framework/views/for_menu_'.App::getLocale().'.html');
+
             $header=substr($html, strpos($html, '<nav class="navbar navbar-default top-menu">'));
             $header=substr($header, 0, strpos($header, '<div class="container switcher">'));
             $header=str_replace('current-menu-item', '', $header);
