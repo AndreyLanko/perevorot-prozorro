@@ -69,7 +69,7 @@ return [
     'bids_documents_before'=>'Документи, подані до завершення періоду прийому пропозицій',
     'bids_documents_after'=>'Документи, подані після завершення періоду прийому пропозицій',
     'vat'=>' з ПДВ',
-    'big_status_unsuccessful'=>'Дискваліфіковано',
+    'big_status_unsuccessful'=>'Відхилено',
     'big_status_active'=>'Переможець',
     'big_status_pending'=>'Очікує рішення',
     'awards_title'=>'Протокол розгляду',
