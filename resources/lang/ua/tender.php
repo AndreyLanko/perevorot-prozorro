@@ -72,6 +72,7 @@ return [
     'big_status_unsuccessful'=>'Відхилено',
     'big_status_active'=>'Переможець',
     'big_status_pending'=>'Очікує рішення',
+    'big_status_cancelled'=>'Рішення скасоване',
     'awards_title'=>'Протокол розгляду',
     'awards_participant'=>'Учасник',
     'awards_result'=>'Рішення',

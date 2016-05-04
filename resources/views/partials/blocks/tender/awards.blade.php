@@ -32,6 +32,8 @@
                                     {{trans('tender.big_status_active')}}
                                 @elseif($award->status=='pending')
                                     {{trans('tender.big_status_pending')}}
+                                @elseif($award->status=='cancelled')
+                                    {{trans('tender.big_status_cancelled')}}
                                 @else
                                     {{$award->status}}
                                 @endif
