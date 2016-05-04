@@ -88,11 +88,11 @@
 
                             @endif
 
+                            {{--Скарги до процедури--}}
+                            @include('partials/blocks/tender/complaints', ['title'=>'Скарги до процедури'])
+
                             @if (!$item->__isMultiLot)
 
-                                {{--Скарги до процедури--}}
-                                @include('partials/blocks/tender/complaints', ['title'=>'Скарги до процедури'])
-    
                                 {{--Протокол розгляду--}}
                                 @include('partials/blocks/tender/qualifications')
 
