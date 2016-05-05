@@ -291,7 +291,7 @@ class PageController extends BaseController
         if(!empty($item->features))
         {
             $tender_features=array_where($item->features, function($key, $feature) use ($item){
-                return $feature->featureOf=='tenderer' || (!empty($item->lots) && sizeof($item->lots)==1 && $feature->featureOf=='lot');
+                return $feature->featureOf=='item' || $feature->featureOf=='tenderer' || (!empty($item->lots) && sizeof($item->lots)==1 && $feature->featureOf=='lot');
             });
         }
 
@@ -733,6 +733,10 @@ class PageController extends BaseController
             if($__complaints_claims)
                 $__complaints_claims=array_values($__complaints_claims);
 
+            $__complaints_claims=array_where($__complaints_claims, function($key, $claim){
+                return $claim->status!='draft';
+            });        
+
             if(!$return)
             {
                 $item->__complaints_claims=new \StdClass();
@@ -789,14 +793,24 @@ class PageController extends BaseController
 
                     $__complaints_complaints[$k]->__documents_reviewer=new \StdClass();
                     $__complaints_complaints[$k]->__documents_reviewer=array_where($complaint->documents, function($key, $document){
-
-                        return $document->author=='aboveThresholdReviewers';                            
+                        return in_array($document->author, ['aboveThresholdReviewers', 'reviewers']);
                     });
                 }
             }
             
             $__complaints_complaints=array_values($__complaints_complaints);
         }
+
+        foreach($__complaints_complaints as $k=>$complain)
+        {
+            $key=($item->procurementMethodType!='belowThreshold' ? '!' : '').'belowThreshold';
+
+            $__complaints_complaints[$k]->__status_name=trans('tender.complaints_statuses.'.$key.'.'.$complain->status);
+        }
+
+        $__complaints_complaints=array_where($__complaints_complaints, function($key, $complain){
+            return $complain->status!='draft';
+        });        
 
         if(!$return)
         {
@@ -987,9 +1001,12 @@ class PageController extends BaseController
         if(!empty($item->lots) && sizeof($item->lots)>1)
         {
             $tender_bids=$this->get_bids($item, true);
-
+            $parsed_lots=[];
+            
             foreach($item->lots as $k=>$lot)
             {
+                $lot=clone $lot;
+
                 if(!empty($item->__eu_bids[$lot->id]))
                 {
                     $lot->__eu_bids=new \StdClass();
@@ -1065,10 +1082,10 @@ class PageController extends BaseController
                 if(!empty($item->features))
                 {
                     $tender_features=array_where($item->features, function($key, $feature) use ($lot){
-                        return $feature->featureOf=='lot' && $feature->relatedItem==$lot->id;
+                        return $feature->featureOf=='tenderer' || ($feature->featureOf=='lot' && $feature->relatedItem==$lot->id);
                     });
                 }
-                
+
                 $features_price=1;
                 
                 if(!empty($tender_features))
@@ -1173,8 +1190,10 @@ class PageController extends BaseController
                     });
                 }
 
-                $item->lots[$k]=$lot;
+                $parsed_lots[]=$lot;
             }
+            
+            $item->lots=$parsed_lots;
         }
     }
     

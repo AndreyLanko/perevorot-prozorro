@@ -5,22 +5,23 @@
             <div class="row questions">
                 <div class="description-wr questions-block">
                     @foreach(array_values($item->__complaints_complaints) as $k=>$complaint)
-                        <div class="questions-row{{$k>1?' none':' visible'}}">
-                            <div><strong>{{!empty($complaint->complaintID)?$complaint->complaintID:$complaint->id}} Статус: <div class="marked">{{trans('tender.claim_statuses.'.$complaint->status)}}</div></strong></div>
+                        <div class="questions-row{{$k>1?' none':' visible'}}" style="margin-bottom:45px">
+                            <div><strong>Номер скарги: {{!empty($complaint->complaintID)?$complaint->complaintID:$complaint->id}}</strong></div>
+                            <div><strong>Статус: <div class="marked">{{$complaint->__status_name}}</div></strong></div>
                             <div class="grey-light size12 question-date">
                                 @if (!empty($complaint->author->identifier->id))
-                                    Скаржник: {{$complaint->author->name}}, Код ЄДРПОУ:{{$complaint->author->identifier->id}}<br>
+                                    Скаржник: {{!empty($complaint->author->identifier->legalName) ? $complaint->author->identifier->legalName : $complaint->author->name}}, Код ЄДРПОУ:{{$complaint->author->identifier->id}}<br>
                                 @endif
                                 Дата подання: {{!empty($complaint->dateSubmitted) ? date('d.m.Y H:i', strtotime($complaint->dateSubmitted)) : 'відсутня'}}
                             </div>
                             
-                            <div style="margin-left:40px">
+                            <div class="margin-bottom" style="margin-left:40px">
                                 <div><strong>{{$complaint->title}}</strong></div>
 
                                 @if (!empty($complaint->description))
-                                    <div class="description-wr margin-bottom{{mb_strlen($complaint->description)>350?' croped':' open'}}">
+                                    <div class="description-wr{{mb_strlen($complaint->description)>350?' croped':' open'}}">
                                         <div class="description">
-                                            {{$complaint->description}}
+                                            {!!$complaint->description!!}
                                         </div>
                                         @if (mb_strlen($complaint->description)>350)
                                             <a class="search-form--open"><i class="sprite-arrow-down"></i>
@@ -30,25 +31,54 @@
                                         @endif
                                     </div>
                                 @endif
+                                
+                                @if(!empty($complaint->dateAnswered))
+                                    <div style="margin-top:20px">
+                                        @if($complaint->resolutionType=='invalid')
+                                            <strong>Рішення замовника: Вимога залишена без розгляду</strong>
+                                        @elseif($complaint->resolutionType=='resolved')
+                                            <strong>Рішення замовника: Вимога задоволена</strong>
+                                        @elseif($complaint->resolutionType=='declined')
+                                            <strong>Рішення замовника: Вимога не задоволена</strong>
+                                        @endif
+                                    </div>
+                                    <div class="grey-light size12 question-date">Дата: {{date('d.m.Y H:i', strtotime($complaint->dateAnswered))}}</div>
+                                    <div>Причина: {!!nl2br($complaint->resolution)!!}</div>
+                                @endif
                                 @if(!empty($complaint->__documents_owner))
-                                    <a href="" class="document-link" data-id="{{$complaint->id}}-owner-complaint">{{trans('tender.bids_documents')}}</a>
-                                    <br><br>
+                                    <a href="" class="document-link" style="margin-top:5px; display:block" data-id="{{$complaint->id}}-owner-complaint">{{trans('tender.bids_documents')}}</a>
+                                @endif
+                                @if(property_exists($complaint, 'satisfied'))
+                                    <div style="margin-top:20px">
+                                        @if($complaint->satisfied)
+                                            <strong>Оцінка скаржника: Рішенням Замовника задоволений</strong>
+                                        @else
+                                            <strong>Оцінка скаржника: Рішенням Замовника не задоволений</strong>
+                                            @if(!empty($complaint->dateEscalated))
+                                                <div class="grey-light size12 question-date">Дата звернення до Комісії з розгляду звернень: {{date('d.m.Y H:i', strtotime($complaint->dateAnswered))}}</div>
+                                            @endif
+                                        @endif
+                                    </div>
                                 @endif
                             </div>
                             <div class="margin-bottom">
                                 <div>
                                     <strong>
-                                        Рішення Органу оскарження:
-                                        @if($complaint->status=='satisfied')
-                                            Скарга задоволена
-                                        @elseif($complaint->status=='stopped')
-                                            Розгляд зупинено
-                                        @elseif($complaint->status=='stopping')
+                                        @if(in_array($complaint->status, ['cancelled', 'stopping']))
                                             Відкликано скаржником
-                                        @elseif($complaint->status=='declined')
-                                            Скарга не задоволена
                                         @else
-                                            Очікується
+                                            Рішення Органу оскарження:
+                                            @if(in_array($complaint->status, ['pending', 'stopping']))
+                                                Очікується
+                                            @elseif($complaint->status=='stopped')
+                                                Розгляд зупинено
+                                            @elseif($complaint->status=='invalid')
+                                                Залишено без розгляду
+                                            @elseif($complaint->status=='satisfied')
+                                                Задоволена
+                                            @elseif($complaint->status=='declined')
+                                                Не задоволена
+                                            @endif
                                         @endif
                                     </strong>
                                 </div>
@@ -58,6 +88,12 @@
                                 @if(in_array($complaint->status, ['declined', 'satisfied']))
                                     @if(!empty($complaint->dateDecision))
                                         <div class="grey-light size12 question-date" style="margin-top: -10px;">Дата рішення: {{date('d.m.Y H:i', strtotime($complaint->dateDecision))}}</div>
+                                    @endif
+                                @endif
+                                @if(in_array($complaint->status, ['cancelled', 'stopping']))
+                                    @if(!empty($complaint->dateCanceled))
+                                        <div class="grey-light size12 question-date">Дата: {{date('d.m.Y H:i', strtotime($complaint->dateCanceled))}}</div>
+                                        Причина: {{$complaint->cancellationReason}}
                                     @endif
                                 @endif
                             </div>

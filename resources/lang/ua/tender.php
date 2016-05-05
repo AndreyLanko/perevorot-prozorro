@@ -109,6 +109,25 @@ return [
         'stopping'=>'Скаргу відкликано скаржником',
         'stopped'=>'Розгляд зупинено'
     ],
+    'complaints_statuses'=>[
+        '!belowThreshold'=>[
+            'pending'=>'Очікує прийняття до розгляду',
+            'cancelled'=>'Скасована скаржником',
+            'accepted'=>'Прийнята до розгляду',
+            'stopping'=>'Прийнята до розгляду',
+            'invalid'=>'Залишена без розгляду',
+            'satisfied'=>'Розглянута',
+            'declined'=>'Розглянута',
+            'stopped'=>'Розглянута',
+        ],
+        'belowThreshold'=>[
+            	'pending'=>'Очікує розгляду',
+            'cancelled'=>'Скасована скаржником',
+            'invalid'=>'Залишена без розгляду',
+            'declined'=>'Розглянута',
+            'resolved'=>'Розглянута',
+        ]
+    ],
     'qualification_status'=>[
         'pending'=>'Очікується рішення',
         'unsuccessful'=>'Дискваліфіковано',

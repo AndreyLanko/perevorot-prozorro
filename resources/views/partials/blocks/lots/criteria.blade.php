@@ -7,16 +7,20 @@
         </tr>
         @if(!empty($item->features))
             @foreach($item->features as $feature)
-                <tr class="main-row">
-                    <td class="col-md-8 col-md-pull-4">{{!empty($feature->title) ? $feature->title : ''}}:</td>
-                    <td class="col-md-4 col-md-push-8 1">{{$feature->max*100}}%</td>
-                </tr>
-                @foreach($feature->enum as $enum)
-                    <tr class="add-row">
-                        <td class="col-md-8 col-md-pull-4 grey-light">{{$enum->title}}:</td>
-                        <td class="col-md-4 col-md-push-8 grey-light">{{$enum->value*100}}%</td>
+                @if($feature->max>0)
+                    <tr class="main-row">
+                        <td class="col-md-8 col-md-pull-4">{{!empty($feature->title) ? $feature->title : ''}}:</td>
+                        <td class="col-md-4 col-md-push-8 1">{{$feature->max*100}}%</td>
                     </tr>
-                @endforeach
+                    @foreach($feature->enum as $enum)
+                        @if($enum->value>0)
+                            <tr class="add-row">
+                                <td class="col-md-8 col-md-pull-4 grey-light">{{$enum->title}}:</td>
+                                <td class="col-md-4 col-md-push-8 grey-light">{{$enum->value*100}}%</td>
+                            </tr>
+                        @endif
+                    @endforeach
+                @endif
             @endforeach
         @endif
     </tbody>
