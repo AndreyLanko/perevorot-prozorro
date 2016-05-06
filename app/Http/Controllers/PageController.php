@@ -737,6 +737,19 @@ class PageController extends BaseController
                 return $claim->status!='draft';
             });        
 
+            foreach($__complaints_claims as $k=>$claim)
+            {
+                $__complaints_claims[$k]->__documents_owner=empty($claim->documents)?false:array_where($claim->documents, function($key, $document){
+                    return in_array($document->author, ['complaint_owner']);
+                });
+
+                $__complaints_claims[$k]->__documents_tender_owner=empty($claim->documents)?false:array_where($claim->documents, function($key, $document){
+                    return in_array($document->author, ['tender_owner']);
+                });
+    
+                $__complaints_claims[$k]->__status_name=trans('tender.complain_statuses.'.$claim->status);
+            }
+
             if(!$return)
             {
                 $item->__complaints_claims=new \StdClass();
@@ -822,10 +835,10 @@ class PageController extends BaseController
         
     }
 
-        private function get_questions(&$item, $type='tender', $return=false)
+    private function get_questions(&$item, $type='tender', $return=false)
+    {
+        if(!empty($item->questions))
         {
-            if(!empty($item->questions))
-            {
             $questions=array_where($item->questions, function($key, $question) use ($item, $type){
                 return $question->questionOf==$type || !$item->__isMultiLot;
             });

@@ -1,11 +1,16 @@
 @if (!empty($item->__complaints_complaints))
     <div class="container margin-bottom-xl">
         <div class="col-sm-9">
-            <h2>{{$title}}</h2>
+            @if($item->procurementMethodType=='belowThreshold')
+                <h2>Звернення до розгляду Комісією</h2>
+            @else
+                <h2>{{$title}}</h2>
+            @endif
+            
             <div class="row questions">
                 <div class="description-wr questions-block">
                     @foreach(array_values($item->__complaints_complaints) as $k=>$complaint)
-                        <div class="questions-row{{$k>1?' none':' visible'}}" style="margin-bottom:45px">
+                        <div class="questions-row{{--$k>1?' none':' visible'--}}" style="margin-bottom:45px">
                             <div><strong>Номер скарги: {{!empty($complaint->complaintID)?$complaint->complaintID:$complaint->id}}</strong></div>
                             <div><strong>Статус: <div class="marked">{{$complaint->__status_name}}</div></strong></div>
                             <div class="grey-light size12 question-date">
@@ -43,7 +48,7 @@
                                         @endif
                                     </div>
                                     <div class="grey-light size12 question-date">Дата: {{date('d.m.Y H:i', strtotime($complaint->dateAnswered))}}</div>
-                                    <div>Причина: {!!nl2br($complaint->resolution)!!}</div>
+                                    <div>{!!nl2br($complaint->resolution)!!}</div>
                                 @endif
                                 @if(!empty($complaint->__documents_owner))
                                     <a href="" class="document-link" style="margin-top:5px; display:block" data-id="{{$complaint->id}}-owner-complaint">{{trans('tender.bids_documents')}}</a>
@@ -65,9 +70,13 @@
                                 <div>
                                     <strong>
                                         @if(in_array($complaint->status, ['cancelled', 'stopping']))
-                                            Відкликано скаржником
+                                            Скарга скасована старжником
                                         @else
-                                            Рішення Органу оскарження:
+                                            @if($item->procurementMethodType=='belowThreshold')
+                                                Рішення Комісії:
+                                            @else
+                                                Рішення Органу оскарження:
+                                            @endif
                                             @if(in_array($complaint->status, ['pending', 'stopping']))
                                                 Очікується
                                             @elseif($complaint->status=='stopped')
@@ -111,12 +120,14 @@
                             </div>
                         </div>
                     @endforeach
+                    {{--
                     @if (sizeof($item->__complaints_complaints)>2)
                         <a class="question--open"><i class="sprite-arrow-down"></i>
                             <span class="question-up">{{trans('tender.expand_complaints')}}: {{sizeof($item->__complaints_complaints)}}</span>
                             <span class="question-down">{{trans('tender.collapse_complaints')}}</span>
                         </a>
-                    @endif                                                
+                    @endif
+                    --}}
                 </div>
             </div>
             @if(!empty($item->__complaints_complaints))

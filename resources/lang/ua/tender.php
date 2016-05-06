@@ -128,6 +128,15 @@ return [
             'resolved'=>'Розглянута',
         ]
     ],
+    'complain_statuses'=>[
+        'claim'=>'Очікує розгляду',
+        'pending'=>'Очікує розгляду',
+        'answered'=>'Відповідь надана',
+        	'cancelled'=>'Скасована скаржником',
+        	'invalid'=>'Залишена без розгляду',
+        'declined'=>'Не задоволена',
+        'resolved'=>'Вирішена',
+    ],
     'qualification_status'=>[
         'pending'=>'Очікується рішення',
         'unsuccessful'=>'Дискваліфіковано',
