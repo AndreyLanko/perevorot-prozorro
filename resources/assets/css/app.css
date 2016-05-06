@@ -1140,6 +1140,9 @@ a:hover .sprite-pen-icon, .active .sprite-pen-icon, .sprite-pen-icon-a {
     display: inline-block;
     padding: 0 5px;
 }
+.marked.yellow {
+    background-color: #ffb300;
+}
 .tender .tender--menu {
     position: absolute;
     max-width: 293px;

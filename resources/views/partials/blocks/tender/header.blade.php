@@ -2,16 +2,6 @@
         <div class="container">
             <div class="tender--head--title col-sm-9">{{!empty($item->title) ? $item->title : trans('facebook.tender_no_name')}}</div>
 
-            {{--
-            <div class="breadcrumb_custom clearfix">
-                <a href="#" class="disable"><strong>Створена:</strong> 27.07 (сб)</a>
-                <a href="#" class="active"><strong>Уточнення:</strong> до 29.06 (пн)</a>
-                <a href="#"><strong>Пропозиції:</strong> до 6.07 (пт)</a>
-                <a href="#"><strong>Аукціон:</strong> 12.07 (пт)</a>
-                <a href="#"><strong>Кваліфікаця:</strong> з 15.07 (пн)</a>
-            </div>
-            --}}
-
             <div class="col-md-3 col-sm-3 tender--description--cost--wr">
                 @if (!empty($item->value))
                     <div class="gray-bg padding margin-bottom tender--description--cost">
@@ -31,7 +21,11 @@
                     <div class="tender--head--inf margin-bottom">
                         {{$item->__procedure_name}}
                         @if(!empty($dataStatus[$item->status]))
-                            &nbsp;&nbsp; <span class="marked">{{$dataStatus[$item->status]}}</span>
+                            @if(($item->__isOpenedQuestions || $item->__isOpenedClaims) && $item->procurementMethodType!='belowTheshold' && $item->status=='active.tendering' && !empty($item->tenderPeriod) && strtotime($item->tenderPeriod->endDate)<time())
+                                &nbsp;&nbsp; <span class="marked yellow">Заблоковано</span>
+                            @else
+                                &nbsp;&nbsp; <span class="marked">{{$dataStatus[$item->status]}}</span>
+                            @endif
                         @endif
                         @if($item->__icon=='pen')
                             &nbsp;&nbsp; <a href="https://ips.vdz.ua/ua/purchase_details.htm?id={{$item->id}}" target="_blank">{{trans('tender.pen_info')}}</a>
@@ -40,7 +34,7 @@
                             &nbsp;&nbsp; Наявні запитання/вимоги без відповіді
                         @endif
                         @if($item->__isOpenedClaims)
-                            &nbsp;&nbsp; Наявні скарги без рішення
+                            &nbsp;&nbsp; Наявні {{$item->procurementMethodType != 'belowTheshold' ? 'скарги' : 'звернення'}} без рішення
                         @endif
                     </div>
                     @if(!empty($item->__is_sign))

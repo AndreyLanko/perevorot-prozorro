@@ -673,8 +673,8 @@ class PageController extends BaseController
         {
             $complaints=array_pluck($item->__complaints_complaints, 'status');
 
-            if(sizeof(array_intersect(['pending', 'accepted'], $complaints)) > 0)
-            $item->__isOpenedClaims=true;
+            if(sizeof(array_intersect(['pending', 'accepted', 'stopping'], $complaints)) > 0)
+                $item->__isOpenedClaims=true;
         }
     }
     
