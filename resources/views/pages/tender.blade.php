@@ -73,7 +73,7 @@
                             {{--Критерії вибору переможця--}}
                             @include('partials/blocks/tender/criteria')
 
-                            {{--Документація--}}
+                            {{--Тендерна документація--}}
                             @include('partials/blocks/tender/documentation')
 
 

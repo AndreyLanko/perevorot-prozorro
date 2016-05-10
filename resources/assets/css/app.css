@@ -2969,3 +2969,15 @@ ul.social-top {
 .stroked{
     text-decoration: line-through;
 }
+.documents-tabs .tab-content{
+    margin-top:20px;
+}
+.documents-tabs .date{
+    margin-left:0px;
+    padding-left:0px;
+}
+.documents-tabs .stroked-date{
+    padding-left:0px;
+    font-size:13px;
+    margin-top:2px
+}

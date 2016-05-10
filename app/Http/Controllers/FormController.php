@@ -149,7 +149,7 @@ class FormController extends BaseController
 		$query[]='start='.Input::get('start');
 
 		if(!empty(Session::get('api_pmtype')))
-        		$query[]='procurementMethodType='.Session::get('api_pmtype');
+        		$query[]='proc_type='.Session::get('api_pmtype');
 
 		$path=Session::get('api_'.$this->search_type, Config::get('api.'.$this->search_type)).'?'.implode('&', $query);
 

@@ -466,7 +466,7 @@ class PageController extends BaseController
     public function getSearchResults($query)
     {
 		if(!empty(Session::get('api_pmtype')))
-        		$query[]='procurementMethodType='.Session::get('api_pmtype');
+        		$query[]='proc_type='.Session::get('api_pmtype');
 
         $url=Session::get('api_'.$this->search_type, Config::get('api.'.$this->search_type)).'?'.implode('&', $query);
         $url=!empty($url) ? $url : env('PROZORRO_API');
@@ -873,7 +873,7 @@ class PageController extends BaseController
 
             usort($item->__tender_documents, function ($a, $b)
             {
-                return intval(strtotime($b->datePublished))>intval(strtotime($a->datePublished));
+                return intval(strtotime($b->dateModified))>intval(strtotime($a->dateModified));
             });
 
             $ids=[];
@@ -888,6 +888,10 @@ class PageController extends BaseController
 
                 $ids[]=$document->id;
             }
+            
+            $item->__tender_documents_stroked=sizeof(array_where($item->__tender_documents, function($key, $document){
+                return !empty($document->stroked);
+            }))>0;
         }
     }
 
