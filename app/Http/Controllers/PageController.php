@@ -1072,6 +1072,11 @@ class PageController extends BaseController
                         return $document->documentOf=='lot' && $document->relatedItem==$lot->id;
                     });
 
+                    usort($lot->__tender_documents, function ($a, $b)
+                    {
+                        return intval(strtotime($b->dateModified))>intval(strtotime($a->dateModified));
+                    });
+        
                     $ids=[];
  
                     foreach($lot->__tender_documents as $document)
