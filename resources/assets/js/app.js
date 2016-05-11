@@ -100,7 +100,7 @@ var APP,
 
             js: {
                 lot_tabs: function(_self){
-                    var tabs_content=$('.tab-content'),
+                    var tabs_content=$('.'+_self.data('tab-class')),
                         tabs=_self.find('a');
 
                     tabs.click(function(e){

@@ -1084,6 +1084,10 @@ class PageController extends BaseController
         
                         $ids[]=$document->id;
                     }
+                    
+                    $lot->__tender_documents_stroked=sizeof(array_where($lot->__tender_documents, function($key, $document){
+                        return !empty($document->stroked);
+                    }))>0;                    
                 }
                 
                 $lot->awards=new \StdClass();

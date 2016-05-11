@@ -3,8 +3,8 @@
         <h3>Тендерна документація</h3>
 
         @if (!empty($item->__tender_documents))
-            @if($item->__tender_documents_stroked)
-                <div class="bs-example bs-example-tabs lots-tabs wide-table" data-js="lot_tabs">
+            @if(!empty($item->__tender_documents_stroked))
+                <div class="bs-example bs-example-tabs lots-tabs wide-table" data-js="lot_tabs" data-tab-class="tab-document-content{{!empty($lot_id)?'-lot-'.$lot_id:''}}">
                     <ul class="nav nav-tabs" role="tablist">
                         @foreach(['Остання редакція', 'Історія змін'] as $k=>$group)
                             <li role="presentation" class="{{$k==0?'active':''}}">
@@ -14,7 +14,7 @@
                     </ul>
                 </div>
     
-                <div class="tab-content active">
+                <div class="tab-content tab-document-content{{!empty($lot_id)?'-lot-'.$lot_id:''}} active">
             @endif
     
             <table class="tender--customer">
@@ -30,9 +30,9 @@
                 </tbody>
             </table>
     
-            @if($item->__tender_documents_stroked)
+            @if(!empty($item->__tender_documents_stroked))
                 </div>
-                <div class="tab-content">
+                <div class="tab-content tab-document-content{{!empty($lot_id)?'-lot-'.$lot_id:''}}">
                     <table class="tender--customer">
                         <tbody>
                             @foreach ($item->__tender_documents as $k=>$document)

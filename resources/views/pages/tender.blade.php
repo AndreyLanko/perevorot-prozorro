@@ -110,7 +110,7 @@
                 </div>
 
                 @if($item->__isMultiLot)
-                    <div class="bs-example bs-example-tabs lots-tabs wide-table" data-js="lot_tabs">
+                    <div class="bs-example bs-example-tabs lots-tabs wide-table" data-js="lot_tabs" data-tab-class="tab-lot-content">
                         <ul class="nav nav-tabs" role="tablist">
                             @foreach($item->lots as $k=>$lot)
                                 <li role="presentation" class="{{$k==0?'active':''}}">
@@ -121,7 +121,7 @@
                     </div>
                     <div class="lots-container">
                         @foreach($item->lots as $k=>$lot)
-                            <div class="tab-content{{$k==0?' active':''}}">
+                            <div class="tab-content tab-lot-content{{$k==0?' active':''}}">
                                 {{--Опис--}}
                                 @include('partials/blocks/lots/info', [
                                     'item'=>$lot,
@@ -142,7 +142,8 @@
 
                                 {{--Документація--}}
                                 @include('partials/blocks/tender/documentation',[
-                                    'item'=>$lot
+                                    'item'=>$lot,
+                                    'lot_id'=>$lot->id
                                 ])
 
                                 {{--Запитання до лоту--}}
