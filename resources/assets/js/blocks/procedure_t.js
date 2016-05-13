@@ -1,6 +1,5 @@
 (function(){
 	'use strict';
-	return;
 
 	var json;
 
@@ -9,18 +8,17 @@
 	
 		var query_types={
 			order: 700,
-			prefix: 'procedure',
+			prefix: 'procedure_t',
 			pattern_search: /^(.*?)$/,
-			//pattern_exact: /^\d{1,8}-\d{1}$/,
-			template: $('#block-procedure'),
+			template: $('#block-procedure_t'),
 			json: {
-				check: '/form/check/procedure'
+				check: '/form/check/procedure_t'
 			},
 			load: function(){
 				if(!json){
 					$.ajax({
 						method: 'POST',
-						url: LANG+'/form/data/procedure',
+						url: LANG+'/form/data/procedure_t',
 						dataType: 'json',
 						headers: APP.utils.csrf(),
 						success: function(response){

@@ -72,8 +72,12 @@
 <div class="block block-region"><span class="block-key">{{trans('form.region')}}</span><select /></div>
 </script>
 
-<script id="block-procedure" type="text/x-jquery-tmpl" data-suggest-name="{{trans('form.type')}}" data-button-name="{{trans('form.type')}}">
-<div class="block block-procedure"><span class="block-key">{{trans('form.type')}}</span><select /></div>
+<script id="block-procedure_p" type="text/x-jquery-tmpl" data-suggest-name="{{trans('form.procedure_p')}}" data-button-name="{{trans('form.type')}}">
+<div class="block block-procedure_p"><span class="block-key">{{trans('form.procedure_p')}}</span><select /></div>
+</script>
+
+<script id="block-procedure_t" type="text/x-jquery-tmpl" data-suggest-name="{{trans('form.procedure_t')}}" data-button-name="{{trans('form.type')}}">
+<div class="block block-procedure_t"><span class="block-key">{{trans('form.procedure_t')}}</span><select /></div>
 </script>
 
 <script id="block-status" type="text/x-jquery-tmpl" data-suggest-name="{{trans('form.status')}}" data-button-name="{{trans('form.status')}}">

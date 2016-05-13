@@ -18,6 +18,8 @@ return [
     'region'=>'Регіон',
     'type'=>'Тип процедури',
     'status'=>'Статус',
+    'procedure_p'=>'Тип процедури',
+    'procedure_t'=>'Тип процедури',
     'no_results'=>'Жодних результатiв',
     'date'=>'Дата',
     'date_types'=>[

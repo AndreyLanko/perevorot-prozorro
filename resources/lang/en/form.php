@@ -19,6 +19,8 @@ return [
     'type'=>'Procedure type',
     'status'=>'Status',
     'no_results'=>'No results',
+    'procedure_p'=>'Procedure type',
+    'procedure_t'=>'Procedure type',
     'date'=>'Date',
     'date_types'=>[
 		'tender'=>'Applications submission date',

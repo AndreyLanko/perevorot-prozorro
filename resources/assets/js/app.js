@@ -352,11 +352,12 @@ var APP,
                     SEARCH_TYPE=_self.data('type');
 
                     if(['', '/en', '/ru'].indexOf(LANG)===-1){
-                            return;
-                        }
+                        return;
+                    }
 
                     INPUT=_self;
                     BLOCKS=$('#blocks');
+
                     SEARCH_BUTTON=$('#search_button');
 
                     setInterval(function(){
@@ -792,7 +793,7 @@ var APP,
                     },
                     buttons: function(){
                         var button_blocks=[];
-                        
+
                         for(var i=0; i<window.query_types.length; i++){
                             if(typeof window.query_types[i] === 'function'){
                                 var type=window.query_types[i]();
@@ -800,7 +801,7 @@ var APP,
                                 if(type.button_name || type.template.data('buttonName')){
                                     button_blocks.push(type);
                                 }
-                            }
+                            };
                         }
     
                         button_blocks.sort(function(a, b){
