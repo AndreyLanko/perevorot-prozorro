@@ -3,13 +3,15 @@
 use Illuminate\Routing\Controller as BaseController;
 use Input;
 use Request;
+use App;
 
 class PrintController extends BaseController
 {
     var $types=[
         'open',
         'limited',
-        'limited-reporting'
+        'limited-reporting',
+        'report'
     ];
     
 	public function plan_list($output)
@@ -121,8 +123,8 @@ class PrintController extends BaseController
 
         $item=app('App\Http\Controllers\PageController')->tender_parse($tender_id);
 
-        if($item->__print_href!=$type)
-            abort(404);
+//        if($item->__print_href!=$type)
+//            abort(404);
 
         if($output=='pdf')
         {

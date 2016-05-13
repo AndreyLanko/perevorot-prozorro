@@ -377,11 +377,14 @@ class PageController extends BaseController
 
         $this->get_active_apply($item);
         $this->get_contracts($item);
+        $this->get_signed_contracts($item);
         $this->get_initial_bids($item);
         $this->get_yaml_documents($item);
         $this->get_tender_documents($item);        
         $this->get_bids($item);        
         $this->get_awards($item);
+        $this->get_uniqie_awards($item);
+        $this->get_uniqie_bids($item);
         $this->get_claims($item);
         $this->get_complaints($item);
         $this->get_opened_questions($item);
@@ -678,6 +681,28 @@ class PageController extends BaseController
         }
     }
     
+    private function get_uniqie_awards(&$item)
+    {
+        $item->__unique_awards=new \StdClass();
+        $item->__unique_awards=null;
+    
+        if(!empty($item->awards))
+        {
+            $ids=[];
+
+            foreach($item->awards as $award)
+            {
+                foreach($award->suppliers as $supplier)
+                {
+                    array_push($ids, $supplier->identifier->id);
+                }
+            }
+
+            $ids=array_unique($ids);
+            $item->__unique_awards=sizeof($ids);
+        }
+    }
+
     private function get_awards(&$item)
     {
         $item->__active_award=new \StdClass();
@@ -895,6 +920,33 @@ class PageController extends BaseController
         }
     }
 
+    private function get_uniqie_bids(&$item, $is_lot=false)
+    {
+        $item->__unique_bids=new \StdClass();
+        $item->__unique_bids=null;
+
+        if($is_lot)
+            $bids=!empty($item->__bids)?$item->__bids:false;
+        else
+            $bids=!empty($item->bids)?$item->bids:false;
+
+        if(!empty($bids))
+        {
+            $ids=[];
+
+            foreach($bids as $award)
+            {
+                foreach($award->tenderers as $tenderer)
+                {
+                    array_push($ids, $tenderer->identifier->id);
+                }
+            }
+
+            $ids=array_unique($ids);
+            $item->__unique_bids=sizeof($ids);
+        }
+    }
+    
     private function get_bids(&$item, $return=false)
     {
         if(!empty($item->bids))
@@ -1216,10 +1268,23 @@ class PageController extends BaseController
                     });
                 }
 
+                $this->get_uniqie_awards($lot);
+                $this->get_uniqie_bids($lot, true);
+
                 $parsed_lots[]=$lot;
             }
             
             $item->lots=$parsed_lots;
+        }
+    }
+    
+    private function get_signed_contracts(&$item)
+    {
+        if(!empty($item->contracts))
+        {
+            $item->__signed_contracts=array_where($item->contracts, function($key, $contract){
+                return !empty($contract->dateSigned);
+            });
         }
     }
     

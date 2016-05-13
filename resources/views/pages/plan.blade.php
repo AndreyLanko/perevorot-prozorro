@@ -73,7 +73,9 @@
             <div class="tender--description">
                 <div class="container">
                     <h2>ФОРМА РІЧНОГО ПЛАНУ ЗАКУПІВЕЛЬ</h2>
-                    <div style="margin:-30px 0px 40px 0px">на {{$item->budget->year}} рік</div>
+                    @if (!empty($item->budget->year))
+                        <div style="margin:-30px 0px 40px 0px">на {{$item->budget->year}} рік</div>
+                    @endif
                 </div>
             </div>            
 
