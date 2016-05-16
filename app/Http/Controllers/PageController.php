@@ -719,7 +719,7 @@ class PageController extends BaseController
             }
         }
 
-        if($item->__isMultiLot)
+        if(!empty($item->__isMultiLot))
             $item->__active_award=null;
     }
 
@@ -1270,6 +1270,7 @@ class PageController extends BaseController
 
                 $this->get_uniqie_awards($lot);
                 $this->get_uniqie_bids($lot, true);
+                $this->get_awards($lot);
 
                 $parsed_lots[]=$lot;
             }

@@ -185,7 +185,9 @@
                                 ])
 
                                 {{--Повідомлення про намір укласти договір--}}                
-                                {{--@include('partials/blocks/tender/active-awards')--}}
+                                @include('partials/blocks/tender/active-awards', [
+                                    'item'=>$lot
+                                ])
 
                                 {{--Інформація про скасування--}}
                                 @include('partials/blocks/tender/cancelled', [
