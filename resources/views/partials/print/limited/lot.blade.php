@@ -49,10 +49,10 @@
                     </td>
                     <td class="small">
                         @if(!empty($one->deliveryDate->endDate) || !empty($one->deliveryDate->startDate))
-                            @if(!empty($one->deliveryDate->startDate)) від {{date('d.m.Y H:i', strtotime($one->deliveryDate->startDate))}}<br>@endif
-                            @if(!empty($one->deliveryDate->endDate)) до {{date('d.m.Y H:i', strtotime($one->deliveryDate->endDate))}}@endif
+                            @if(!empty($one->deliveryDate->startDate)) від {{date('d.m.Y', strtotime($one->deliveryDate->startDate))}}<br>@endif
+                            @if(!empty($one->deliveryDate->endDate)) до {{date('d.m.Y', strtotime($one->deliveryDate->endDate))}}@endif
                         @elseif(!empty($one->deliveryDate))
-                            {{date('d.m.Y H:i', strtotime($one->deliveryDate))}}
+                            {{date('d.m.Y', strtotime($one->deliveryDate))}}
                         @else
                             Відсутня
                         @endif
