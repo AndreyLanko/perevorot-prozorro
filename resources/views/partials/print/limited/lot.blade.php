@@ -74,7 +74,14 @@
                 <td>{{$n++}}. Місцезнаходження (для юридичної особи) або місце проживання (для фізичної особи) учасника (учасників), з яким (якими) проведено переговори, телефон</td>
                 <td>{{$n++}}. Ціна пропозиції</td>
             </tr>
-            @foreach((!empty($lot->awards) ? $lot->awards : $item->awards) as $award)
+            <?php
+                $awards=(!empty($lot->awards) ? $lot->awards : $item->awards);
+
+                $awards=array_where($awards, function($key, $award){
+                    return in_array($award->status, ['unsuccessful', 'active']);
+                });
+            ?>
+            @foreach($awards as $award)
                 <tr valign="top">
                     <td>
                         @if(!empty($award->suppliers[0]->identifier->legalName))
