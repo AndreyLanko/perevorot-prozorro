@@ -95,15 +95,15 @@ return [
 		'level4'=>true,		
 	],
 	[
-		'name'=>'zakupki.com.ua<br>(тільки для замовників)',
+		'name'=>'zakupki.com.ua',
 		'slug'=>'lpzakupki',
 		'href'=>'http://lp.zakupki.com.ua/?TenderID={tenderID}',
 		'contractor'=>true,
 		'tender'=>false,
 		'type1'=>false,
 		'type2'=>false,
-		'level1'=>false,
-		'level2'=>false,
+		'level1'=>true,
+		'level2'=>true,
 		'level3'=>false,
 		'level4'=>false,		
 	]
