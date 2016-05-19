@@ -81,9 +81,9 @@
             <td>
                 <strong>
                     @if(in_array($__item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdEU']))
-                        {{(int) $lot->__unique_bids}}
+                        {{!empty($lot->__unique_bids) ? $lot->__unique_bids : $__item->__unique_bids}}
                     @elseif(in_array($__item->procurementMethodType, ['negotiation', 'negotiation.quick']))
-                        {{(int) $lot->__unique_awards}}
+                        {{!empty($lot->__unique_awards) ? $lot->__unique_awards : $__item->__unique_awards}}
                     @endif
                 </strong>
             </td>
@@ -100,6 +100,8 @@
 
         @if(!empty($lot->__bids))
             <?php $bidsOrAwards=$lot->__bids; ?>
+        @elseif(!empty($__item->__bids))
+            <?php $bidsOrAwards=$__item->__bids; ?>
         @elseif(!empty($lot->awards))
             <?php $bidsOrAwards=$lot->awards; ?>
         @endif

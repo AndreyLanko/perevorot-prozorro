@@ -932,11 +932,10 @@ class PageController extends BaseController
         else
             $bids=!empty($item->bids)?$item->bids:false;
 
-
         $bids=array_where($bids, function($key, $bid){
             return !in_array($bid->status, ['deleted', 'invalid']);
         });
-        
+
         if(!empty($bids))
         {
             $ids=[];
