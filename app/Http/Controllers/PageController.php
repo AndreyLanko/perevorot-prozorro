@@ -932,12 +932,12 @@ class PageController extends BaseController
         else
             $bids=!empty($item->bids)?$item->bids:false;
 
-        $bids=array_where($bids, function($key, $bid){
-            return empty($bid->status) || !in_array($bid->status, ['deleted', 'invalid']);
-        });
-
         if(!empty($bids))
         {
+            $bids=array_where($bids, function($key, $bid){
+                return empty($bid->status) || !in_array($bid->status, ['deleted', 'invalid']);
+            });
+    
             $ids=[];
 
             foreach($bids as $award)
@@ -994,9 +994,12 @@ class PageController extends BaseController
                         }
                     }
 
-                    $bids=array_where($bids, function($key, $bid){
-                        return empty($bid->status) || !in_array($bid->status, ['deleted', 'invalid']);
-                    });
+                    if(!empty($bids))
+                    {
+                        $bids=array_where($bids, function($key, $bid){
+                            return empty($bid->status) || !in_array($bid->status, ['deleted', 'invalid']);
+                        });
+                    }
 
                     if(!$return)
                         $item->__bids=$bids;
@@ -1035,9 +1038,12 @@ class PageController extends BaseController
                 if(starts_with($item->status, 'active.pre-qualification') || starts_with($item->status, 'active.auction') || starts_with($item->status, 'active.pre-qualification.stand-still'))
                     $qualification->__name='Учасник '.$cnt;
 
-                $item->bids=array_where($item->bids, function($key, $bid){
-                    return empty($bid->status) || !in_array($bid->status, ['deleted', 'invalid']);
-                });
+                if(!empty($item->bids))
+                {
+                    $item->bids=array_where($item->bids, function($key, $bid){
+                        return empty($bid->status) || !in_array($bid->status, ['deleted', 'invalid']);
+                    });
+                }
 
                 $bid=array_where($item->bids, function($key, $bid) use ($qualification){
                     return $qualification->bidID==$bid->id;
