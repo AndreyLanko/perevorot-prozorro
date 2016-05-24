@@ -933,7 +933,7 @@ class PageController extends BaseController
             $bids=!empty($item->bids)?$item->bids:false;
 
         $bids=array_where($bids, function($key, $bid){
-            return !in_array($bid->status, ['deleted', 'invalid']);
+            return empty($bid->status) || !in_array($bid->status, ['deleted', 'invalid']);
         });
 
         if(!empty($bids))
@@ -995,7 +995,7 @@ class PageController extends BaseController
                     }
 
                     $bids=array_where($bids, function($key, $bid){
-                        return !in_array($bid->status, ['deleted', 'invalid']);
+                        return empty($bid->status) || !in_array($bid->status, ['deleted', 'invalid']);
                     });
 
                     if(!$return)
@@ -1036,7 +1036,7 @@ class PageController extends BaseController
                     $qualification->__name='Учасник '.$cnt;
 
                 $item->bids=array_where($item->bids, function($key, $bid){
-                    return !in_array($bid->status, ['deleted', 'invalid']);
+                    return empty($bid->status) || !in_array($bid->status, ['deleted', 'invalid']);
                 });
 
                 $bid=array_where($item->bids, function($key, $bid) use ($qualification){
