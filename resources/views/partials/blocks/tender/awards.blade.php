@@ -2,6 +2,11 @@
     <div class="container wide-table">
         <div class="tender--offers margin-bottom-xl">
             <h3>Протокол розкриття</h3>
+
+            @if(1==1)
+                <div style="margin-top:-10px;margin-bottom:40px">Друкувати протокол розкриття тендерних пропозицій <a href="{{href('tender/'.$item->tenderID.'/print/awards/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/awards/html')}}" target="_blank">HTML</a></div>
+            @endif
+
             <table class="table table-striped margin-bottom small-text">
                 <thead>
                     <tr>

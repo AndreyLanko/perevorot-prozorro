@@ -3,6 +3,10 @@
         <div class="tender--offers margin-bottom-xl">
             <h3>Реєстр пропозицій</h3>
 
+            @if(1==1)
+                <div style="margin-top:-10px;margin-bottom:40px">Друкувати реєстр отриманих тендерних пропозицій <a href="{{href('tender/'.$item->tenderID.'/print/bids/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/bids/html')}}" target="_blank">HTML</a></div>
+            @endif
+            
             @if(!empty($item->auctionPeriod->endDate))
                 <p class="table-date">{{trans('tender.bids_open_time')}}: {{date('d.m.Y H:i', strtotime($item->auctionPeriod->endDate))}}</p>
             @elseif(!empty($item->tenderPeriod->endDate))

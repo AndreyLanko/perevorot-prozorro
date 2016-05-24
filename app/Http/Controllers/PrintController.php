@@ -11,7 +11,11 @@ class PrintController extends BaseController
         'open',
         'limited',
         'limited-reporting',
-        'report'
+        'report',
+        'bids',
+        'awards',
+        'qualifications',
+        'active-awards'
     ];
     
 	public function plan_list($output)
