@@ -928,7 +928,7 @@ class PageController extends BaseController
         if($is_lot)
             $bids=!empty($item->__bids)?$item->__bids:false;
         elseif(!empty($item->lots) && sizeof($item->lots)==1)
-            $bids=$item->bids;
+            $bids=!empty($item->bids)?$item->bids:false;
         else
             $bids=!empty($item->bids)?$item->bids:false;
 
