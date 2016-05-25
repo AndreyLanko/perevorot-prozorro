@@ -2,7 +2,13 @@
     <div class="container wide-table">
         <div class="tender--offers margin-bottom-xl">
             <h3>{{trans('tender.active_awards_title')}}</h3>
-            <p class="table-date">{{trans('tender.active_awards_date')}}: {{date('d.m.Y H:i', strtotime($item->__active_award->date))}}</p>
+            <p class="table-date">
+                @if(!empty($item->__active_award->awardDate))
+                    {{trans('tender.active_awards_date')}}: {{date('d.m.Y H:i', strtotime($item->__active_award->awardDate))}}
+                @elseif(!empty($item->__active_award->complaintPeriod->endDate))
+                    {{trans('tender.active_awards_date')}}: {{date('d.m.Y H:i', strtotime($item->__active_award->complaintPeriod->endDate)-60*60*24*10)}}
+                @endif
+            </p>
             <table class="table table-striped margin-bottom small-text{{$item->__features_price<1?' long':' contract'}}">
                 <thead>
                     <tr>
