@@ -10,7 +10,6 @@ use Request;
 use Redirect;
 use Config;
 use Session;
-use TesseractOCR;
 
 class PageController extends BaseController
 {
