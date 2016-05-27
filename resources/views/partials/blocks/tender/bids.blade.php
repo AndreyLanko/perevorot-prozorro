@@ -3,7 +3,7 @@
         <div class="tender--offers margin-bottom-xl">
             <h3>Реєстр пропозицій</h3>
 
-            @if(1==1)
+            @if(in_array($item->status, ['active.pre-qualification.stand-still', 'active.auction', 'active.qualification', 'active.awarded', 'active', 'cancelled', 'unsuccessful', 'complete']))
                 <div style="margin-top:-10px;margin-bottom:40px">Друкувати реєстр отриманих тендерних пропозицій <a href="{{href('tender/'.$item->tenderID.'/print/bids/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/bids/html')}}" target="_blank">HTML</a></div>
             @endif
             
