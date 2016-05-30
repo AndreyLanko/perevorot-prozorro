@@ -773,7 +773,7 @@ class PageController extends BaseController
     
                 $__complaints_claims[$k]->__status_name=trans('tender.complain_statuses.'.$claim->status);
             }
-
+            
             if(!$return)
             {
                 $item->__complaints_claims=new \StdClass();
@@ -819,6 +819,27 @@ class PageController extends BaseController
 
         if(sizeof($__complaints_complaints))
         {
+            foreach($__complaints_complaints as $key=>$claim)
+            {
+                if(in_array($claim->id, array_keys(Config::get('complaints'))))
+                {
+                    if(in_array($item->status, ['unsuccessful', 'cancelled']) && !in_array($claim->status, ['invalid', 'stopped', 'accepted', 'declined']))
+                    {
+                        $__complaints_complaints[$key]->documents=[];
+                        $__complaints_complaints[$key]->status='pre_stopping';                        
+                        
+                        foreach(Config::get('complaints')[$claim->id] as $complaint_documents)
+                        {
+                            $complaint_documents=(object)$complaint_documents;
+                            $complaint_documents->author='reviewers';
+    
+                            array_push($__complaints_complaints[$key]->documents, $complaint_documents);
+                        }
+                    }
+                }
+            }
+
+
             foreach($__complaints_complaints as $k=>$complaint)
             {
                 if(!empty($complaint->documents))
@@ -838,11 +859,14 @@ class PageController extends BaseController
             $__complaints_complaints=array_values($__complaints_complaints);
         }
 
-        foreach($__complaints_complaints as $k=>$complain)
+        if(empty($__complaints_complaints->__status_name))
         {
-            $key=($item->procurementMethodType!='belowThreshold' ? '!' : '').'belowThreshold';
-
-            $__complaints_complaints[$k]->__status_name=trans('tender.complaints_statuses.'.$key.'.'.$complain->status);
+            foreach($__complaints_complaints as $k=>$complain)
+            {
+                $key=($item->procurementMethodType!='belowThreshold' ? '!' : '').'belowThreshold';
+    
+                $__complaints_complaints[$k]->__status_name=trans('tender.complaints_statuses.'.$key.'.'.$complain->status);
+            }
         }
 
         $__complaints_complaints=array_where($__complaints_complaints, function($key, $complain){
@@ -1118,7 +1142,7 @@ class PageController extends BaseController
                 $lot->__items=new \StdClass();
 
                 $lot->__items=array_where($item->items, function($key, $it) use ($lot){
-                    return $it->relatedLot==$lot->id;
+                    return !empty($it->relatedLot) && $it->relatedLot==$lot->id;
                 });
 
                 $lot->__questions=new \StdClass();
