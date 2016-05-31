@@ -376,6 +376,7 @@ class PageController extends BaseController
 
         $this->get_active_apply($item);
         $this->get_contracts($item);
+        $this->get_contracts_changes($item);
         $this->get_signed_contracts($item);
         $this->get_initial_bids($item);
         $this->get_yaml_documents($item);
@@ -717,6 +718,8 @@ class PageController extends BaseController
                 }
             }
         }
+
+        $work_days=$this->parse_work_days();
 
         if(!empty($item->__isMultiLot))
             $item->__active_award=null;
@@ -1373,6 +1376,42 @@ class PageController extends BaseController
         }
     }
 
+    private function get_contracts_changes(&$item)
+    {
+        if(!empty($item->contracts))
+        {
+            $__contracts_active=array_first($item->contracts, function($key, $contract){
+                return !empty($contract->status) && $contract->status=='active';
+            });
+            
+            $item->__contracts_changes=null;
+            
+            if($__contracts_active)
+            {
+                $id=$__contracts_active->id;
+                $contracts=$this->parse_contracts_json($id);
+                $rationale_types=$this->parse_rationale_type();
+
+                if(!empty($contracts->changes))
+                {
+                    foreach($contracts->changes as $change)
+                    {
+                        $change->contract=array_first($contracts->documents, function($key, $document) use ($change){
+                            return !empty($document->documentOf) && $document->documentOf=='change' && $document->id=$change->id;
+                        });
+
+                        foreach($change->rationaleTypes as $k=>$rationaleType)
+                        {
+                            $change->rationaleTypes[$k]=!empty($rationale_types->$rationaleType) ? $rationale_types->$rationaleType->title : $rationaleType;
+                        }
+                    }
+
+                    $item->__contracts_changes=$contracts->changes;
+                }
+            }
+        }
+    }
+    
     private function get_eu_lots(&$item)
     {
         if($item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdEU')
@@ -1618,4 +1657,61 @@ class PageController extends BaseController
     
         return $html;
     }
+    
+    private function parse_contracts_json($id)
+    {
+        return Cache::remember('contracts_'.$id, 60, function() use ($id)
+        {
+            $url=env('API_TENDER_CONTRACT').'/'.$id;
+            $headers=get_headers($url);
+            $contents=false;
+
+            if(!empty($headers) && (int)substr($headers[0], 9, 3)==200)
+                $contents=file_get_contents($url);
+            
+            return $contents ? json_decode($contents)->data : false;
+        });            
+    }
+
+    private function parse_rationale_type()
+    {
+        return Cache::remember('rationale_type', 60, function()
+        {
+            $contents=file_get_contents('http://standards.openprocurement.org/codelists/contract-change-rationale_type/uk.json');
+
+            return $contents ? json_decode($contents) : false;
+        });            
+    }
+
+    private function parse_work_days()
+    {
+        return Cache::remember('work_days', 60, function()
+        {
+            $days=[];
+            
+            $off=file_get_contents('http://standards.openprocurement.org/calendar/workdays-off.json');
+            $on=file_get_contents('http://standards.openprocurement.org/calendar/weekends-on.json');
+
+            if($off)
+                $days=array_merge($days, json_decode($off, true));
+
+            if($on)
+                $days=array_merge($days, json_decode($on, true));
+
+            $daysInterval=[];
+
+            foreach($days as $day)
+            {   
+                $interval=(object)[
+                    'from'=>\DateTime::createFromFormat('Y-m-d H:i:s', $day.'00:00:00'),
+                    'to'=>\DateTime::createFromFormat('Y-m-d H:i:s', $day.'23:59:59')
+                ];
+                
+                array_push($daysInterval, $interval);
+            }
+
+            return $days;
+        });            
+    }
+    
 }

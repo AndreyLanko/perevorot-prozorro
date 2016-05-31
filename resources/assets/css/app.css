@@ -1297,6 +1297,12 @@ a:hover .sprite-pen-icon, .active .sprite-pen-icon, .sprite-pen-icon-a {
 .tender .tender--customer {
     width: 100%;
 }
+.wrapper-main .tender .tender--customer--table td {
+	padding: 3px 0px 3px 15px;
+}
+.wrapper-main .tender .tender--customer--table td:last-child {
+	padding: 3px 0px 3px 0px;
+}
 .tender .tender--customer td, .tender .tender--customer th {
     float: left;
     padding-top: 10px;
