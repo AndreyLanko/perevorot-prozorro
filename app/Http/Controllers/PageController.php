@@ -720,7 +720,41 @@ class PageController extends BaseController
         }
 
         $work_days=$this->parse_work_days();
+/*
+        if(!empty($item->__active_award->date))
+            $item->__active_award->__date=$item->__active_award->date;
+        else
+*/
+        if(!empty($item->__active_award->complaintPeriod->endDate))
+        {
+            $date=date_create($item->__active_award->complaintPeriod->endDate);
+            $sub_days=0;
 
+            if(in_array($item->procurementMethodType, ['abovethresholdUA', 'abovethresholdEU', 'negotiation']))
+                $sub_days=10;
+
+            elseif(in_array($item->procurementMethodType, ['negotiation.quick']))
+                $sub_days=5;
+            
+            elseif(in_array($item->procurementMethodType, ['belowthreshold']))
+                $sub_days=5;
+
+            $now=new \DateTime();
+
+            for($i=0;$i<$sub_days;$i++)
+            {
+                $now->sub(new \DateInterval('P1D'));
+
+                if(in_array($now->format('Y-m-d'), $work_days))
+                {
+                    $i--;
+                    $sub_days++;
+                }
+            }
+
+            $item->__active_award->__date=date_format($date->sub(new \DateInterval('P'.$sub_days.'D')), 'd.m.Y H:i');
+        }
+        
         if(!empty($item->__isMultiLot))
             $item->__active_award=null;
     }
@@ -1698,6 +1732,8 @@ class PageController extends BaseController
             if($on)
                 $days=array_merge($days, json_decode($on, true));
 
+            return $days;
+            /*
             $daysInterval=[];
 
             foreach($days as $day)
@@ -1710,8 +1746,8 @@ class PageController extends BaseController
                 array_push($daysInterval, $interval);
             }
 
-            return $days;
+            return $daysInterval;
+            */
         });            
     }
-    
 }
