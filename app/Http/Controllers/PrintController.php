@@ -101,13 +101,19 @@ class PrintController extends BaseController
             });
         }, $items);
 
+        $page=app('App\Http\Controllers\PageController');
+    
+        foreach($items as $item)
+            $page->plan_check_start_month($item);
+
         $main=array_where($items, function($key, $item){
             return in_array($item->__procedure, ['open', 'talk']);
         });
 
         $additional=array_where($items, function($key, $item){
             return in_array($item->__procedure, ['no', 'belowThreshold', 'reporting']);
-        });        
+        });
+         
         
         return view('pages/print/plan/list')
                 ->with('main', $main)

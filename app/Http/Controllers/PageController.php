@@ -10,6 +10,7 @@ use Request;
 use Redirect;
 use Config;
 use Session;
+use DateTime;
 
 class PageController extends BaseController
 {
@@ -206,11 +207,27 @@ class PageController extends BaseController
         $this->get_procedure($item->tender);
 
         $this->parse_is_sign($item);
+        $this->plan_check_start_month($item);
+
+        if(isset($_GET['dump']) && getenv('APP_ENV')=='local')
+            dd($item);
 
         return view('pages/plan')
                 ->with('item', $item)
                 ->with('html', $this->get_html())
                 ->with('error', $error);
+    }
+    
+    public function plan_check_start_month(&$item)
+    {
+        $item->__is_first_month=false;
+
+        if(!empty($item->tender->tenderPeriod->startDate))
+        {
+            $date = strtotime($item->tender->tenderPeriod->startDate);
+
+            $item->__is_first_month=date('j', $date)==1 ? strftime('%B, %Y', $date) : false;
+        }   
     }
     
     public function tender($id)
@@ -278,8 +295,8 @@ class PageController extends BaseController
         {
             usort($item->awards, function ($a, $b)
             {
-                $datea = new \DateTime($a->date);
-                $dateb = new \DateTime($b->date);
+                $datea = new DateTime($a->date);
+                $dateb = new DateTime($b->date);
     
                 return $datea>$dateb;
             });
@@ -739,7 +756,7 @@ class PageController extends BaseController
             elseif(in_array($item->procurementMethodType, ['belowthreshold']))
                 $sub_days=5;
 
-            $now=new \DateTime();
+            $now=new DateTime();
 
             for($i=0;$i<$sub_days;$i++)
             {
@@ -1400,8 +1417,8 @@ class PageController extends BaseController
 
             usort($documents, function ($a, $b)
             {
-                $datea = new \DateTime($a->datePublished);
-                $dateb = new \DateTime($b->datePublished);
+                $datea = new DateTime($a->datePublished);
+                $dateb = new DateTime($b->datePublished);
 
                 return $datea>$dateb;
             });
@@ -1739,8 +1756,8 @@ class PageController extends BaseController
             foreach($days as $day)
             {   
                 $interval=(object)[
-                    'from'=>\DateTime::createFromFormat('Y-m-d H:i:s', $day.'00:00:00'),
-                    'to'=>\DateTime::createFromFormat('Y-m-d H:i:s', $day.'23:59:59')
+                    'from'=>DateTime::createFromFormat('Y-m-d H:i:s', $day.'00:00:00'),
+                    'to'=>DateTime::createFromFormat('Y-m-d H:i:s', $day.'23:59:59')
                 ];
                 
                 array_push($daysInterval, $interval);

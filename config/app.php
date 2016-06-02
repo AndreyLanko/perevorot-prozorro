@@ -1,6 +1,6 @@
 <?php
 
-setlocale(LC_TIME, "uk_UA");
+setlocale(LC_TIME, "uk_UA.utf8");
 
 return [
 
