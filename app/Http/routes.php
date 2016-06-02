@@ -14,13 +14,14 @@
             
             Route::get('tender/{id}', 'PageController@tender');
             Route::get('plan/{id}', 'PageController@plan');
-                
+
             Route::post('form/data/{type}', 'FormController@data');
             Route::post('{search}/form/check/{type}', 'FormController@check');            
             Route::post('{search}/form/search', 'FormController@search');
             Route::post('form/autocomplete/{type}', 'FormController@autocomplete');            
 
             Route::get('tender/{id}/print/{type}/{print}', 'PrintController@one')->where('print', '(pdf|html)');;
+            Route::get('tender/{id}/print/{type}/{lot_id}/{print}', 'PrintController@one')->where('print', '(pdf|html)');
 		});
 	}
 
