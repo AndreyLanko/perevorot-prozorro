@@ -60,7 +60,7 @@
                                         @else
                                             <strong>Оцінка скаржника: Рішенням Замовника не задоволений</strong>
                                             @if(!empty($complaint->dateEscalated))
-                                                <div class="grey-light size12 question-date">Дата звернення до Комісії з розгляду звернень: {{date('d.m.Y H:i', strtotime($complaint->dateAnswered))}}</div>
+                                                <div class="grey-light size12 question-date">Дата звернення до Комісії з розгляду звернень: {{date('d.m.Y H:i', strtotime($complaint->dateEscalated))}}</div>
                                             @endif
                                         @endif
                                     </div>
