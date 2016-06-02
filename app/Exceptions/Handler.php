@@ -26,13 +26,23 @@ class Handler extends ExceptionHandler {
 	 */
 	public function report(Exception $e)
 	{
-        Log::info(Request::method().' '.Request::url());
+        	$url=Request::url();
+
+        Log::info(Request::method().' '.$url);
 
         if(!empty(Request::all())){
             Log::info('', Request::all());
         }
 
-        Log::info($e->getFile().' ('.$e->getLine().')');
+        $file=$e->getFile();
+        $line=$e->getLine();
+
+        $filename=storage_path('logs/'.str_replace(['http://', 'https://', 'www.', '.', '/'], ['', '', '', '-', '-'], $url).'-'.str_replace('.php', '', last(explode('/', $file))).'-'.$line.'.log');
+
+        if(!file_exists($filename))
+            file_put_contents($filename, $url."\n\n".$file.' ('.$line.")\n".$e->getMessage());
+            
+        Log::info($file.' ('.$line.')');
         Log::info($e->getMessage());
 
 		//return parent::report($e);

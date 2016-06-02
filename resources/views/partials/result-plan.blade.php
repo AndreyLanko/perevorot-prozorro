@@ -27,7 +27,11 @@
     </td>
     <td>
         @if (!empty($item->tender->tenderPeriod))
-            {{date('d.m.Y H:i', strtotime($item->tender->tenderPeriod->startDate))}}
+            @if ($item->__is_first_month)
+                {{$item->__is_first_month}}
+            @else
+                {{date('d.m.Y', strtotime($item->tender->tenderPeriod->startDate))}}
+            @endif
         @endif
     </td>
 </tr>

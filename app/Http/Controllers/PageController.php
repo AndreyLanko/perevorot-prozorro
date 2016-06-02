@@ -10,7 +10,7 @@ use Request;
 use Redirect;
 use Config;
 use Session;
-use TesseractOCR;
+use DateTime;
 
 class PageController extends BaseController
 {
@@ -207,11 +207,27 @@ class PageController extends BaseController
         $this->get_procedure($item->tender);
 
         $this->parse_is_sign($item);
+        $this->plan_check_start_month($item);
+
+        if(isset($_GET['dump']) && getenv('APP_ENV')=='local')
+            dd($item);
 
         return view('pages/plan')
                 ->with('item', $item)
                 ->with('html', $this->get_html())
                 ->with('error', $error);
+    }
+    
+    public function plan_check_start_month(&$item)
+    {
+        $item->__is_first_month=false;
+
+        if(!empty($item->tender->tenderPeriod->startDate))
+        {
+            $date = strtotime($item->tender->tenderPeriod->startDate);
+
+            $item->__is_first_month=date('j', $date)==1 ? strftime('%B, %Y', $date) : false;
+        }   
     }
     
     public function tender($id)
@@ -279,8 +295,8 @@ class PageController extends BaseController
         {
             usort($item->awards, function ($a, $b)
             {
-                $datea = new \DateTime($a->date);
-                $dateb = new \DateTime($b->date);
+                $datea = new DateTime($a->date);
+                $dateb = new DateTime($b->date);
     
                 return $datea>$dateb;
             });
@@ -377,6 +393,7 @@ class PageController extends BaseController
 
         $this->get_active_apply($item);
         $this->get_contracts($item);
+        $this->get_contracts_changes($item);
         $this->get_signed_contracts($item);
         $this->get_initial_bids($item);
         $this->get_yaml_documents($item);
@@ -719,6 +736,42 @@ class PageController extends BaseController
             }
         }
 
+        $work_days=$this->parse_work_days();
+/*
+        if(!empty($item->__active_award->date))
+            $item->__active_award->__date=$item->__active_award->date;
+        else
+*/
+        if(!empty($item->__active_award->complaintPeriod->endDate))
+        {
+            $date=date_create($item->__active_award->complaintPeriod->endDate);
+            $sub_days=0;
+
+            if(in_array($item->procurementMethodType, ['abovethresholdUA', 'abovethresholdEU', 'negotiation']))
+                $sub_days=10;
+
+            elseif(in_array($item->procurementMethodType, ['negotiation.quick']))
+                $sub_days=5;
+            
+            elseif(in_array($item->procurementMethodType, ['belowthreshold']))
+                $sub_days=5;
+
+            $now=new DateTime();
+
+            for($i=0;$i<$sub_days;$i++)
+            {
+                $now->sub(new \DateInterval('P1D'));
+
+                if(in_array($now->format('Y-m-d'), $work_days))
+                {
+                    $i--;
+                    $sub_days++;
+                }
+            }
+
+            $item->__active_award->__date=date_format($date->sub(new \DateInterval('P'.$sub_days.'D')), 'd.m.Y H:i');
+        }
+        
         if(!empty($item->__isMultiLot))
             $item->__active_award=null;
     }
@@ -774,7 +827,7 @@ class PageController extends BaseController
     
                 $__complaints_claims[$k]->__status_name=trans('tender.complain_statuses.'.$claim->status);
             }
-
+            
             if(!$return)
             {
                 $item->__complaints_claims=new \StdClass();
@@ -820,6 +873,27 @@ class PageController extends BaseController
 
         if(sizeof($__complaints_complaints))
         {
+            foreach($__complaints_complaints as $key=>$claim)
+            {
+                if(in_array($claim->id, array_keys(Config::get('complaints'))))
+                {
+                    if(in_array($item->status, ['unsuccessful', 'cancelled']) && !in_array($claim->status, ['invalid', 'stopped', 'accepted', 'declined']))
+                    {
+                        $__complaints_complaints[$key]->documents=[];
+                        $__complaints_complaints[$key]->status='pre_stopping';                        
+                        
+                        foreach(Config::get('complaints')[$claim->id] as $complaint_documents)
+                        {
+                            $complaint_documents=(object)$complaint_documents;
+                            $complaint_documents->author='reviewers';
+    
+                            array_push($__complaints_complaints[$key]->documents, $complaint_documents);
+                        }
+                    }
+                }
+            }
+
+
             foreach($__complaints_complaints as $k=>$complaint)
             {
                 if(!empty($complaint->documents))
@@ -839,11 +913,14 @@ class PageController extends BaseController
             $__complaints_complaints=array_values($__complaints_complaints);
         }
 
-        foreach($__complaints_complaints as $k=>$complain)
+        if(empty($__complaints_complaints->__status_name))
         {
-            $key=($item->procurementMethodType!='belowThreshold' ? '!' : '').'belowThreshold';
-
-            $__complaints_complaints[$k]->__status_name=trans('tender.complaints_statuses.'.$key.'.'.$complain->status);
+            foreach($__complaints_complaints as $k=>$complain)
+            {
+                $key=($item->procurementMethodType!='belowThreshold' ? '!' : '').'belowThreshold';
+    
+                $__complaints_complaints[$k]->__status_name=trans('tender.complaints_statuses.'.$key.'.'.$complain->status);
+            }
         }
 
         $__complaints_complaints=array_where($__complaints_complaints, function($key, $complain){
@@ -928,16 +1005,16 @@ class PageController extends BaseController
         if($is_lot)
             $bids=!empty($item->__bids)?$item->__bids:false;
         elseif(!empty($item->lots) && sizeof($item->lots)==1)
-            $bids=$item->bids;
+            $bids=!empty($item->bids)?$item->bids:false;
         else
             $bids=!empty($item->bids)?$item->bids:false;
 
-        $bids=array_where($bids, function($key, $bid){
-            return empty($bid->status) || !in_array($bid->status, ['deleted', 'invalid']);
-        });
-
         if(!empty($bids))
         {
+            $bids=array_where($bids, function($key, $bid){
+                return empty($bid->status) || !in_array($bid->status, ['deleted', 'invalid']);
+            });
+    
             $ids=[];
 
             foreach($bids as $award)
@@ -994,9 +1071,12 @@ class PageController extends BaseController
                         }
                     }
 
-                    $bids=array_where($bids, function($key, $bid){
-                        return empty($bid->status) || !in_array($bid->status, ['deleted', 'invalid']);
-                    });
+                    if(!empty($bids))
+                    {
+                        $bids=array_where($bids, function($key, $bid){
+                            return empty($bid->status) || !in_array($bid->status, ['deleted', 'invalid']);
+                        });
+                    }
 
                     if(!$return)
                         $item->__bids=$bids;
@@ -1035,9 +1115,12 @@ class PageController extends BaseController
                 if(starts_with($item->status, 'active.pre-qualification') || starts_with($item->status, 'active.auction') || starts_with($item->status, 'active.pre-qualification.stand-still'))
                     $qualification->__name='Учасник '.$cnt;
 
-                $item->bids=array_where($item->bids, function($key, $bid){
-                    return empty($bid->status) || !in_array($bid->status, ['deleted', 'invalid']);
-                });
+                if(!empty($item->bids))
+                {
+                    $item->bids=array_where($item->bids, function($key, $bid){
+                        return empty($bid->status) || !in_array($bid->status, ['deleted', 'invalid']);
+                    });
+                }
 
                 $bid=array_where($item->bids, function($key, $bid) use ($qualification){
                     return $qualification->bidID==$bid->id;
@@ -1113,7 +1196,7 @@ class PageController extends BaseController
                 $lot->__items=new \StdClass();
 
                 $lot->__items=array_where($item->items, function($key, $it) use ($lot){
-                    return $it->relatedLot==$lot->id;
+                    return !empty($it->relatedLot) && $it->relatedLot==$lot->id;
                 });
 
                 $lot->__questions=new \StdClass();
@@ -1334,8 +1417,8 @@ class PageController extends BaseController
 
             usort($documents, function ($a, $b)
             {
-                $datea = new \DateTime($a->datePublished);
-                $dateb = new \DateTime($b->datePublished);
+                $datea = new DateTime($a->datePublished);
+                $dateb = new DateTime($b->datePublished);
 
                 return $datea>$dateb;
             });
@@ -1344,6 +1427,42 @@ class PageController extends BaseController
         }
     }
 
+    private function get_contracts_changes(&$item)
+    {
+        if(!empty($item->contracts))
+        {
+            $__contracts_active=array_first($item->contracts, function($key, $contract){
+                return !empty($contract->status) && $contract->status=='active';
+            });
+            
+            $item->__contracts_changes=null;
+            
+            if($__contracts_active)
+            {
+                $id=$__contracts_active->id;
+                $contracts=$this->parse_contracts_json($id);
+                $rationale_types=$this->parse_rationale_type();
+
+                if(!empty($contracts->changes))
+                {
+                    foreach($contracts->changes as $change)
+                    {
+                        $change->contract=array_first($contracts->documents, function($key, $document) use ($change){
+                            return !empty($document->documentOf) && $document->documentOf=='change' && $document->id=$change->id;
+                        });
+
+                        foreach($change->rationaleTypes as $k=>$rationaleType)
+                        {
+                            $change->rationaleTypes[$k]=!empty($rationale_types->$rationaleType) ? $rationale_types->$rationaleType->title : $rationaleType;
+                        }
+                    }
+
+                    $item->__contracts_changes=$contracts->changes;
+                }
+            }
+        }
+    }
+    
     private function get_eu_lots(&$item)
     {
         if($item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdEU')
@@ -1588,5 +1707,64 @@ class PageController extends BaseController
         $html = preg_replace($search, $replace, $html);
     
         return $html;
+    }
+    
+    private function parse_contracts_json($id)
+    {
+        return Cache::remember('contracts_'.$id, 60, function() use ($id)
+        {
+            $url=env('API_TENDER_CONTRACT').'/'.$id;
+            $headers=get_headers($url);
+            $contents=false;
+
+            if(!empty($headers) && (int)substr($headers[0], 9, 3)==200)
+                $contents=file_get_contents($url);
+            
+            return $contents ? json_decode($contents)->data : false;
+        });            
+    }
+
+    private function parse_rationale_type()
+    {
+        return Cache::remember('rationale_type', 60, function()
+        {
+            $contents=file_get_contents('http://standards.openprocurement.org/codelists/contract-change-rationale_type/uk.json');
+
+            return $contents ? json_decode($contents) : false;
+        });            
+    }
+
+    private function parse_work_days()
+    {
+        return Cache::remember('work_days', 60, function()
+        {
+            $days=[];
+            
+            $off=file_get_contents('http://standards.openprocurement.org/calendar/workdays-off.json');
+            $on=file_get_contents('http://standards.openprocurement.org/calendar/weekends-on.json');
+
+            if($off)
+                $days=array_merge($days, json_decode($off, true));
+
+            if($on)
+                $days=array_merge($days, json_decode($on, true));
+
+            return $days;
+            /*
+            $daysInterval=[];
+
+            foreach($days as $day)
+            {   
+                $interval=(object)[
+                    'from'=>DateTime::createFromFormat('Y-m-d H:i:s', $day.'00:00:00'),
+                    'to'=>DateTime::createFromFormat('Y-m-d H:i:s', $day.'23:59:59')
+                ];
+                
+                array_push($daysInterval, $interval);
+            }
+
+            return $daysInterval;
+            */
+        });            
     }
 }

@@ -2,8 +2,11 @@
     <div class="container wide-table">
         <div class="tender--offers margin-bottom-xl">
             <h3>{{trans('tender.active_awards_title')}}</h3>
-            <p class="table-date">{{trans('tender.active_awards_date')}}: {{date('d.m.Y H:i', strtotime($item->__active_award->date))}}</p>
-
+            @if (!empty($item->__active_award->__date))
+                <p class="table-date">
+                    {{trans('tender.active_awards_date')}}: {{$item->__active_award->__date}}
+                </p>
+            @endif
             @if(in_array($item->procurementMethodType, ['aboveThesholdUA', 'aboveThesholdEU']))
                 <div style="margin-top:0px;margin-bottom:40px">Друкувати повідомлення про намір укласти договір <a href="{{href('tender/'.$item->tenderID.'/print/active-awards/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/active-awards/html')}}" target="_blank">HTML</a></div>
             @endif

@@ -137,7 +137,17 @@
                             <br>
                             <div>7. Процедура закупівлі: <strong>{{$item->tender->__procedure_name}}</strong></div>
                             <br>
-                            <div>8. Орієнтовний початок проведення процедури закупівлі: <strong>{{date('d.m.Y', strtotime($item->tender->tenderPeriod->startDate))}}{{--strftime('%B', strtotime($item->tender->tenderPeriod->startDate))--}}</strong></div>
+                            <div>
+                                8. Орієнтовний початок проведення процедури закупівлі:
+                                <strong>
+                                    @if ($item->__is_first_month)
+                                        {{$item->__is_first_month}}
+                                    @else
+                                        {{date('d.m.Y', strtotime($item->tender->tenderPeriod->startDate))}}
+                                    @endif
+                                </strong>
+                            </div>
+                            <br>
                             @if(!empty($item->budget->notes))
                                 <div>9. Примітки: <strong>{{$item->budget->notes}}</strong></div>
                             @endif

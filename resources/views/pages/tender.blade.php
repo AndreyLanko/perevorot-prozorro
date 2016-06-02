@@ -203,7 +203,10 @@
 
                 {{--Укладений договір--}}
                 @include('partials/blocks/tender/contract')
-                
+
+                {{--Зміни до договору--}}
+                @include('partials/blocks/tender/contract-changes')
+
                 @if (!$item->__isMultiLot)
                     {{--Інформація про скасування--}}
                     @include('partials/blocks/tender/cancelled', [

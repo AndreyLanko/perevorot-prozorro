@@ -60,7 +60,7 @@
                                         @else
                                             <strong>Оцінка скаржника: Рішенням Замовника не задоволений</strong>
                                             @if(!empty($complaint->dateEscalated))
-                                                <div class="grey-light size12 question-date">Дата звернення до Комісії з розгляду звернень: {{date('d.m.Y H:i', strtotime($complaint->dateAnswered))}}</div>
+                                                <div class="grey-light size12 question-date">Дата звернення до Комісії з розгляду звернень: {{date('d.m.Y H:i', strtotime($complaint->dateEscalated))}}</div>
                                             @endif
                                         @endif
                                     </div>
@@ -69,8 +69,10 @@
                             <div class="margin-bottom">
                                 <div>
                                     <strong>
-                                        @if(in_array($complaint->status, ['cancelled', 'stopping']))
-                                            Скарга скасована старжником
+                                        @if($complaint->status=='pre_stopping')
+                                            Рішення Органу оскарження:
+                                        @elseif(in_array($complaint->status, ['cancelled', 'stopping']))
+                                            Скарга скасована скаржником
                                         @else
                                             @if($item->procurementMethodType=='belowThreshold')
                                                 Рішення Комісії:

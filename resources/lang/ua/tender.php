@@ -119,6 +119,7 @@ return [
             'satisfied'=>'Розглянута',
             'declined'=>'Розглянута',
             'stopped'=>'Розглянута',
+            'pre_stopping'=>'Розгляд зупинено',
         ],
         'belowThreshold'=>[
             	'pending'=>'Очікує розгляду',
@@ -126,6 +127,7 @@ return [
             'invalid'=>'Залишена без розгляду',
             'declined'=>'Розглянута',
             'resolved'=>'Розглянута',
+            'pre_stopping'=>'Розгляд зупинено',
         ]
     ],
     'complain_statuses'=>[

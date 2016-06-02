@@ -95,13 +95,18 @@ class FormController extends BaseController
 
     private function preparePlan($data)
     {
+        $page=app('App\Http\Controllers\PageController');
+
+	    foreach($data->items as $item)
+            $page->plan_check_start_month($item);
+
 		$out=View::make('pages.results')
 			->with('total', $data->total)
 			->with('search_type', $this->search_type)
 			->with('error', false)
 			->with('start', ((int) Input::get('start') + Config::get('prozorro.page_limit')))
 			->with('items', $data->items)->render();
-        
+
         return $out;
     }
 

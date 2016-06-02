@@ -32,7 +32,7 @@
                         @endforeach
                         @if (sizeof($item->__questions)>2)
                             <a class="question--open"><i class="sprite-arrow-down"></i>
-                                <span class="question-up">{{trans('tender.expand_questions')}}: {{sizeof($item->questions)}}</span>
+                                <span class="question-up">{{trans('tender.expand_questions')}}: {{sizeof($item->__questions)}}</span>
                                 <span class="question-down">{{trans('tender.collapse_questions')}}</span>
                             </a>
                         @endif                                                
