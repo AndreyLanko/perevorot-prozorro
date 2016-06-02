@@ -173,7 +173,13 @@
     <table cellpadding="5" cellspacing="0" border="0" width="100%">
         <tr valign="top">
             <td width="302">{{$n++}}. Дата оприлюднення повідомлення про намір укласти договір:</td>
-            <td><strong>{{!empty($__item->__active_award->complaintPeriod->startDate) ? date('d.m.Y', strtotime($__item->__active_award->complaintPeriod->startDate)) : 'відсутня'}}</strong></td>
+            <td>
+                @if (!empty($lot->__active_award->__date))
+                    <strong>
+                        {{$lot->__active_award->__date}}
+                    </strong>
+                @endif
+            </td>
         </tr>
         <tr valign="top">
             <td width="302">{{$n++}}. Підстави для прийняття рішення про неукладення договору про закупівлю (у разі якщо в результаті проведення торгів не було укладено договір про закупівлю):</td>

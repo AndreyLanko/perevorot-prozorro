@@ -737,23 +737,18 @@ class PageController extends BaseController
         }
 
         $work_days=$this->parse_work_days();
-/*
-        if(!empty($item->__active_award->date))
-            $item->__active_award->__date=$item->__active_award->date;
-        else
-*/
+
         if(!empty($item->__active_award->complaintPeriod->endDate))
         {
             $date=date_create($item->__active_award->complaintPeriod->endDate);
             $sub_days=0;
-
-            if(in_array($item->procurementMethodType, ['abovethresholdUA', 'abovethresholdEU', 'negotiation']))
+            if(in_array($item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdEU', 'negotiation']))
                 $sub_days=10;
 
             elseif(in_array($item->procurementMethodType, ['negotiation.quick']))
                 $sub_days=5;
             
-            elseif(in_array($item->procurementMethodType, ['belowthreshold']))
+            elseif(in_array($item->procurementMethodType, ['belowThreshold']))
                 $sub_days=5;
 
             $now=new DateTime();
