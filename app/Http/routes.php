@@ -21,7 +21,7 @@
             Route::post('form/autocomplete/{type}', 'FormController@autocomplete');            
 
             Route::get('tender/{id}/print/{type}/{print}', 'PrintController@one')->where('print', '(pdf|html)');;
-            Route::get('tender/{id}/print/{type}/{lot_id}/{print}', 'PrintController@one')->where('print', '(pdf|html)');
+            Route::get('tender/{id}/print/{type}/{print}/{lot_id?}', 'PrintController@one')->where('print', '(pdf|html)');
 		});
 	}
 

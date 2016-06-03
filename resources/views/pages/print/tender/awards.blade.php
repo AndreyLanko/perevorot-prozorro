@@ -39,29 +39,24 @@
             <td width="302">{{$n++}}. Номер процедури закупівлі в електронній системі закупівель:</td>
             <td><strong>{{$item->tenderID}}</strong></td>
         </tr>
-        <tr>
-            <td width="302">{{$n++}}. Конкретна назва предмета закупівлі:</td>
-            <td>
-                @if(empty($item->lots))
-                    @include('partials/print/awards/items', [
-                        'lots'=>[$item],
-                        '__item'=>$item,
-                        'n'=>$n
-                    ])
-                @else
-                    @include('partials/print/awards/items', [
-                        'lots'=>$item->lots,
-                        '__item'=>$item,
-                        'n'=>$n
-                    ])
-                @endif                
-            </td>
-        </tr>
     </table>
-    <table cellpadding="5" cellspacing="0" border="0" width="100%">
-        <tr>
-            <td width="302">{{$n++}}. Дата та час розкриття тендерної пропозиції:</td>
-            <td><strong>{{date('d.m.Y H:i', strtotime($item->auctionPeriod->endDate))}}</strong></td>
-        </tr>
-    </table>
+
+    @if(empty($item->lots))
+        @include('partials/print/awards/items', [
+            'lot'=>$item,
+            '__item'=>$item,
+            'lot_id'=>$lot_id,
+            'n'=>$n
+        ])
+    @else
+        @include('partials/print/awards/items', [
+            'lot'=>array_first($item->lots, function($key, $lot) use ($lot_id){
+                return $lot->id==$lot_id;
+            }),
+            '__item'=>$item,
+            'lot_id'=>$lot_id,
+            'n'=>$n
+        ])
+    @endif
+
 @endsection
