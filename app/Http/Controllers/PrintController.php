@@ -11,7 +11,11 @@ class PrintController extends BaseController
         'open',
         'limited',
         'limited-reporting',
-        'report'
+        'report',
+        'bids',
+        'awards',
+        'qualifications',
+        'active-awards'
     ];
     
 	public function plan_list($output)
@@ -113,8 +117,7 @@ class PrintController extends BaseController
         $additional=array_where($items, function($key, $item){
             return in_array($item->__procedure, ['no', 'belowThreshold', 'reporting']);
         });
-         
-        
+
         return view('pages/print/plan/list')
                 ->with('main', $main)
                 ->with('additional', $additional)
@@ -122,27 +125,30 @@ class PrintController extends BaseController
                 ->with('procuringEntity', head($items)->procuringEntity);
 	}
 
-	public function one($tender_id, $type, $output)
+	public function one($tender_id, $type, $output='html', $lot_id=null)
 	{
 		if(!in_array($type, $this->types))
 			abort(404);
 
         $item=app('App\Http\Controllers\PageController')->tender_parse($tender_id);
 
-//        if($item->__print_href!=$type)
-//            abort(404);
+        //if($item->__print_href!=$type)
+        //abort(404);
 
         if($output=='pdf')
         {
             $pdf=\App::make('dompdf.wrapper');
     
             $pdf->loadView('pages/print/tender/'.$type, [
-                'item'=>$item
+                'item'=>$item,
+                'lot_id'=>$lot_id
             ]);
 
             return $pdf->stream();
         }
         
-        return view('pages/print/tender/'.$type)->with('item', $item);
+        return view('pages/print/tender/'.$type)
+                ->with('item', $item)
+                ->with('lot_id', $lot_id);
 	}
 }
