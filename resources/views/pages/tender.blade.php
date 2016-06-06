@@ -117,11 +117,12 @@
                 </div>
 
                 @if($item->__isMultiLot)
+                    <h2>Лоти</h2>
                     <div class="bs-example bs-example-tabs lots-tabs wide-table" data-js="lot_tabs" data-tab-class="tab-lot-content">
                         <ul class="nav nav-tabs" role="tablist">
                             @foreach($item->lots as $k=>$lot)
-                                <li role="presentation" class="{{$k==0?'active':''}}">
-                                    <a href="" role="tab" data-toggle="tab" aria-expanded="{{$k==0?'true':'false'}}">Лот {{$k+1}}</a>
+                                <li role="presentation" class="{{$k==0?'active':''}}" style="font-size:80%">
+                                    <a href="" role="tab" data-toggle="tab" aria-expanded="{{$k==0?'true':'false'}}">{{ !empty($lot->lotNumber) ? $lot->lotNumber : str_limit($lot->title, 20) }}{{--Лот {{$k+1}}--}}</a>
                                 </li>
                             @endforeach
                         </ul>

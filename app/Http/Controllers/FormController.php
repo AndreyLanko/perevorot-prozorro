@@ -196,10 +196,15 @@ class FormController extends BaseController
 			{
 				if(strpos(mb_strtolower($one['id']), $query)!==false || strpos(mb_strtolower($one['name']), $query)!==false)
 				{
-					array_push($out, [
+        				$item=[
 						'id'=>$one['id'],
 						'name'=>$one['name']
-					]);
+					];
+
+					if(!empty($one['location']))
+        					$item['location']=$one['location'];
+
+					array_push($out, $item);
 				}
 			}
 		}
@@ -313,6 +318,48 @@ class FormController extends BaseController
 
 	private function get_edrpou_data()
 	{
-		return $this->json('edrpou');
+        	return $this->json('edrpou');
+        	
+        	$query=mb_strtolower(Input::get('query'));
+
+        	if(mb_strlen($query)>1)
+        {
+            $data=[];
+
+            $response=file_get_contents(env('API_ORGSUGGEST').'?query='.$query);
+
+            if($response)
+            {
+                $response=json_decode($response);
+
+                if(sizeof($response->items))
+                {
+                    foreach($response->items as $item)
+                    {
+                        array_push($data, [
+                            'name'=>!empty($item->short) ? $item->short : $item->name,
+                            'id'=>$item->edrpou,
+                            'location'=>$item->location
+                        ]);
+                    }
+                }
+            }
+        }
+        else
+        {
+            $json=$this->json('edrpou');
+            $data=[];
+            
+            foreach($json as $item)
+            {
+                array_push($data, [
+                    'name'=>!empty($item['name'][2]) ? $item['name'][2] : $item['name'][1],
+                    'id'=>$item['name'][0],
+                    'location'=>$item['name'][3]
+                ]);
+            }
+        }
+        
+		return $data;
 	}
 }

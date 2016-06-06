@@ -1161,6 +1161,11 @@ class PageController extends BaseController
     {
         if(!empty($item->lots) && sizeof($item->lots)>1)
         {
+            usort($item->lots, function ($a, $b)
+            {
+                return strcmp($a->title, $b->title);
+            });
+            
             $tender_bids=$this->get_bids($item, true);
             $parsed_lots=[];
             

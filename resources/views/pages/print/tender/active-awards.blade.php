@@ -33,11 +33,13 @@
     @if(empty($item->lots))
         @include('partials/print/active-awards/lot', [
             'lots'=>[$item],
+            'lot_id'=>$lot_id,
             '__item'=>$item
         ])
     @else
         @include('partials/print/active-awards/lot', [
             'lots'=>$item->lots,
+            'lot_id'=>$lot_id,
             '__item'=>$item
         ])
     @endif

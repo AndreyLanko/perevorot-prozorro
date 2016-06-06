@@ -7,8 +7,8 @@
                     {{trans('tender.active_awards_date')}}: {{$item->__active_award->__date}}
                 </p>
             @endif
-            @if(1!=1 && in_array($item->procurementMethodType, ['aboveThesholdUA', 'aboveThesholdEU']))
-                <div style="margin-top:0px;margin-bottom:40px">Друкувати повідомлення про намір укласти договір <a href="{{href('tender/'.$item->tenderID.'/print/active-awards/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/active-awards/html')}}" target="_blank">HTML</a></div>
+            @if(in_array($item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdEU']))
+                <div style="margin-top:0px;margin-bottom:40px">Друкувати повідомлення про намір укласти договір <a href="{{href('tender/'.$item->tenderID.'/print/active-awards/pdf/'.(!empty($item->lots) && sizeof($item->lots)==1 ? $item->lots[0]->id : $item->id))}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/active-awards/html/'.(!empty($item->lots) && sizeof($item->lots)==1 ? $item->lots[0]->id : $item->id))}}" target="_blank">HTML</a></div>
             @endif
 
             <table class="table table-striped margin-bottom small-text{{$item->__features_price<1?' long':' contract'}}">
