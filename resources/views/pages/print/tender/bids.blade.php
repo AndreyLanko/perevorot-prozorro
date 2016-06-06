@@ -21,15 +21,23 @@
             <td>{{$n++}}. Код згідно з ЄДРПОУ учасника</td>
             <td>{{$n++}}. Дата та час подання тендерних пропозицій</td>
         </tr>
-        <?php
-            usort($item->bids, function ($a, $b)
-            {
-                $datea = new \DateTime($a->date);
-                $dateb = new \DateTime($b->date);
-    
-                return $datea>$dateb;
-            });
-        ?>
+        @if(empty($item->lots))
+            @include('partials/print/bids/bids', [
+                'lot'=>$item,
+                'lot_id'=>$lot_id,
+                '__item'=>$item
+            ])
+        @else
+            @include('partials/print/bids/bids', [
+                'lot'=>array_first($item->lots, function($key, $lot) use ($lot_id){
+                    return $lot->id==$lot_id;
+                }),
+                '__item'=>$item,
+                'lot_id'=>$lot_id,
+                'n'=>$n
+            ])
+        @endif
+{{--
         @foreach($item->bids as $bid)
             <tr valign="top">
                 <td>
@@ -47,5 +55,6 @@
                 </td>
             </tr>
         @endforeach
+--}}
     </table>
 @endsection
