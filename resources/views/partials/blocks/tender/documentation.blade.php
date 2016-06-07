@@ -50,7 +50,7 @@
                                                                     {{!empty($d->dateModified) ? date('d.m.Y H:i', strtotime($d->dateModified)) : trans('tender.no_date')}}
                                                                 </td>
                                                                 <td>
-                                                                    <a href="{{$document->url}}" target="_blank" class="word-break stroked">{{$d->title=='sign.p7s'?'Електронний цифровий підпис':$d->title}}</a>
+                                                                    <a href="{{$d->url}}" target="_blank" class="word-break stroked">{{$d->title=='sign.p7s'?'Електронний цифровий підпис':$d->title}}</a>
                                                                 </td>
                                                             </tr>
                                                         @endif

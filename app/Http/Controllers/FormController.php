@@ -326,7 +326,7 @@ class FormController extends BaseController
         {
             $data=[];
 
-            $response=file_get_contents(env('API_ORGSUGGEST').'?query='.$query);
+            $response=file_get_contents(env('API_ORGSUGGEST').'?query='.urlencode($query));
 
             if($response)
             {
