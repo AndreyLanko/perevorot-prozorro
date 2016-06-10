@@ -98,71 +98,82 @@
             <td>{{$n++}}. Інформація про наявність і відповідність установленим законодавством вимогам документів, що підтверджують відповідність учасників кваліфікаційним критеріям згідно зі статтею 16 Закону України “Про публічні закупівлі”, та наявність/відсутність обставин, установлених статтею 17 цього Закону</td>
         </tr>
 
-        @if(!empty($lot->__bids))
-            <?php $bidsOrAwards=$lot->__bids; ?>
-        @elseif(!empty($__item->__bids))
-            <?php $bidsOrAwards=$__item->__bids; ?>
-        @elseif(!empty($lot->awards))
-            <?php $bidsOrAwards=$lot->awards; ?>
-        @endif
+        <?php
+            if(!empty($lot->__bids))
+                $bids=$lot->__bids;
+            elseif(!empty($__item->__bids))
+                $bids=$__item->__bids;
+            else
+                $bids=[];
+        ?>
         
-        @if(!empty($bidsOrAwards))
-            @foreach($bidsOrAwards as $one)
+        @if(!empty($bids))
+            @foreach($bids as $one)
                 <tr valign="top">
                     <td>
-                        @if($__item->procurementMethod=='open')
-                            @if(!empty($one->tenderers[0]->identifier->legalName))
-                                {{$one->tenderers[0]->identifier->legalName}}<br>
-                            @elseif(!empty($one->tenderers[0]->name))
-                                {{$one->tenderers[0]->name}}<br>
+                        <strong>
+                            @if($__item->procurementMethod=='open')
+                                @if(!empty($one->tenderers[0]->identifier->legalName))
+                                    {{$one->tenderers[0]->identifier->legalName}}<br>
+                                @elseif(!empty($one->tenderers[0]->name))
+                                    {{$one->tenderers[0]->name}}<br>
+                                @endif
+                            @elseif($__item->procurementMethod=='limited')
+                                @if(!empty($one->suppliers[0]->identifier->legalName))
+                                    {{$one->suppliers[0]->identifier->legalName}}<br>
+                                @elseif(!empty($one->suppliers[0]->name))
+                                    {{$one->suppliers[0]->name}}<br>
+                                @endif
                             @endif
-                        @elseif($__item->procurementMethod=='limited')
-                            @if(!empty($one->suppliers[0]->identifier->legalName))
-                                {{$one->suppliers[0]->identifier->legalName}}<br>
-                            @elseif(!empty($one->suppliers[0]->name))
-                                {{$one->suppliers[0]->name}}<br>
-                            @endif
-                        @endif
+                        </strong>
                     </td>
                     <td>
-                        @if($__item->procurementMethod=='open')
-                            @if(!empty($one->__initial_bids[$one->id]))
-                                {{str_replace('.00', '', number_format($one->__initial_bids[$one->id], 2, '.', ' '))}}
-                                {{$one->value->currency}}{{$one->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
-                            @elseif(!empty($one->value))
-                                {{str_replace('.00', '', number_format($one->value->amount, 2, '.', ' '))}}  {{$one->value->currency}}{{$one->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
-                            @elseif(!empty($one->bids_values[$k]->value))
+                        <strong>
+                            @if($__item->procurementMethod=='open')
+                                @if(!empty($one->__initial_bids[$one->id]))
+                                    {{str_replace('.00', '', number_format($one->__initial_bids[$one->id], 2, '.', ' '))}}
+                                    {{$one->value->currency}}{{$one->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
+                                @elseif(!empty($one->value))
+                                    {{str_replace('.00', '', number_format($one->value->amount, 2, '.', ' '))}}  {{$one->value->currency}}{{$one->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
+                                @elseif(!empty($one->bids_values[$k]->value))
+                                    {{str_replace('.00', '', number_format($one->bids_values[$k]->value->amount, 2, '.', ' '))}} {{$one->bids_values[$k]->value->currency}}{{$one->bids_values[$k]->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
+                                @else
+                                    — 
+                                @endif
+                            @elseif($__item->procurementMethod=='limited')
+                                {{str_replace('.00', '', number_format($one->value->amount, 2, '.', ' '))}} {{$one->value->currency}}{{$one->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
+                            @endif
+                        </strong>
+                    </td>
+                    <td>
+                        <strong>
+                            @if(!empty($one->value))
+                                {{str_replace('.00', '', number_format($one->value->amount, 2, '.', ' '))}} {{$one->value->currency}}{{$one->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
+                            @elseif(!empty($lot->bids_values[$k]->value))
                                 {{str_replace('.00', '', number_format($one->bids_values[$k]->value->amount, 2, '.', ' '))}} {{$one->bids_values[$k]->value->currency}}{{$one->bids_values[$k]->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
+                            @endif
+                        </strong>
+                    </td>
+                    <td>
+                        <strong>
+                            @if(!empty($one->__award)){{--it's award--}}
+                                @if(!empty($one->__award->qualified) && !empty($one->__award->eligible))
+                                    Відповідає кваліфікаційним критеріям, встановленим в тендерній документації. Відсутні підстави для відмови, установлені  ст. 17 Закону України ”Про публічні закупівлі”
+                                @endif
+                                @if($one->__award->status=='unsuccessful')
+                                    @if(!empty($one->__award->title))
+                                        {{$one->__award->title}}<br>
+                                    @endif
+                                    @if(!empty($one->__award->description))
+                                        {{$one->__award->description}}
+                                    @endif
+                                @elseif($one->__award->status=='pending')
+                                    Не розглядався
+                                @endif
                             @else
-                                — 
+                                Не розглядався
                             @endif
-                        @elseif($__item->procurementMethod=='limited')
-                            {{str_replace('.00', '', number_format($one->value->amount, 2, '.', ' '))}} {{$one->value->currency}}{{$one->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
-                        @endif
-                    </td>
-                    <td>
-                        @if(!empty($one->value))
-                            {{str_replace('.00', '', number_format($one->value->amount, 2, '.', ' '))}} {{$one->value->currency}}{{$one->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
-                        @elseif(!empty($lot->bids_values[$k]->value))
-                            {{str_replace('.00', '', number_format($one->bids_values[$k]->value->amount, 2, '.', ' '))}} {{$one->bids_values[$k]->value->currency}}{{$one->bids_values[$k]->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
-                        @endif
-                    </td>
-                    <td>
-                        @if(!empty($one->suppliers)){{--it's award--}}
-                            @if(!empty($one->qualified) && !empty($one->eligible))
-                                Відповідає кваліфікаційним критеріям, встановленим в тендерній документації. Відсутні підстави для відмови, установлені  ст. 17 Закону України ”Про публічні закупівлі”
-                            @endif
-                            @if($one->status=='unsuccessful')
-                                @if(!empty($one->title))
-                                    <strong>{{$one->title}}</strong><br>
-                                @endif
-                                @if(!empty($one->description))
-                                    {{$one->description}}
-                                @endif
-                            @endif
-                        @else
-                            Не розглядався
-                        @endif
+                        </strong>
                     </td>
                 </tr>
             @endforeach
@@ -174,10 +185,18 @@
         <tr valign="top">
             <td width="302">{{$n++}}. Дата оприлюднення повідомлення про намір укласти договір:</td>
             <td>
-                @if (!empty($lot->__active_award->__date))
-                    <strong>
-                        {{$lot->__active_award->__date}}
-                    </strong>
+                @if (empty($lot->__active_award) && !empty($__item->lots) && sizeof($__item->lots)==1)
+                    @if (!empty($__item->__active_award->__date))
+                        <strong>
+                            {{$__item->__active_award->__date}}
+                        </strong>
+                    @endif
+                @else                
+                    @if (!empty($lot->__active_award->__date))
+                        <strong>
+                            {{$lot->__active_award->__date}}
+                        </strong>
+                    @endif
                 @endif
             </td>
         </tr>

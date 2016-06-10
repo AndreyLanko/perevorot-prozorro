@@ -1064,6 +1064,17 @@ class PageController extends BaseController
                                 return !empty($document->confidentiality) && $document->confidentiality=='buyerOnly';
                             });
                         }
+
+                        if(!empty($item->awards))
+                        {
+                            foreach($item->awards as $award)
+                            {
+                                if(!empty($award->bid_id) && $award->bid_id==$bid->id)
+                                {
+                                    $bid->__award=$award;
+                                }
+                            }
+                        }
                     }
 
                     if(!empty($bids))
