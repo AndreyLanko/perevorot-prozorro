@@ -724,16 +724,21 @@ class PageController extends BaseController
     {
         $item->__active_award=new \StdClass();
         $item->__active_award=null;
-    
+        $count_unsuccessful_awards=0;
+
         if(!empty($item->awards))
         {
             foreach($item->awards as $award)
             {
                 if($award->status=='active')
-                {
                     $item->__active_award=$award;
-                }
+
+                if($award->status=='unsuccessful')
+                    $count_unsuccessful_awards++;
             }
+            
+            if($count_unsuccessful_awards==sizeof($item->awards))
+                $item->__unsuccessful_awards=true;
         }
 
         $work_days=$this->parse_work_days();
