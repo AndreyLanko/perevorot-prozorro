@@ -2,7 +2,7 @@
     <h3>Інформація про предмет закупівлі</h3>
     <div class="row">
         @if (!empty($item->description))
-            <div class="col-md-12 description-wr croped margin-bottom">
+            <div class="col-md-12 description-wr margin-bottom">
                 <div class="tender--description--text description{{mb_strlen($item->description)>350?' croped':' open'}}">
                     {!!nl2br($item->description)!!}
                 </div>
