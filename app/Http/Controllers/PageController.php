@@ -392,8 +392,9 @@ class PageController extends BaseController
         $item->__icon=starts_with($item->tenderID, 'ocds-random-ua')?'pen':'mouse';
 
         $this->get_active_apply($item);
-        $this->get_contracts($item);
-        $this->get_contracts_changes($item);
+        $this->get_contracts($item, !empty($item->contracts) ? $item->contracts : false);
+        $this->get_contracts_changes($item, !empty($item->contracts) ? $item->contracts : false);
+        $this->get_contracts_ongoing($item, !empty($item->contracts) ? $item->contracts : false);
         $this->get_signed_contracts($item);
         $this->get_initial_bids($item);
         $this->get_yaml_documents($item);
@@ -415,6 +416,7 @@ class PageController extends BaseController
         $this->get_cancellations($item);
         $this->get_action_url_singlelot($item);
         $this->get_auction_period($item);
+        $this->get_button_007($item, $item->procuringEntity);
         
         if(isset($_GET['dump']) && getenv('APP_ENV')=='local')
             dd($item);
@@ -747,6 +749,7 @@ class PageController extends BaseController
         {
             $date=date_create($item->__active_award->complaintPeriod->endDate);
             $sub_days=0;
+
             if(in_array($item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdEU', 'negotiation']))
                 $sub_days=10;
 
@@ -1097,6 +1100,58 @@ class PageController extends BaseController
             }
         }
     }
+
+    private function get_button_007(&$item, $procuringEntity)
+    {
+        $item->__button_007=false;
+
+        if(($item->procurementMethod=='open' && in_array($item->procurementMethodType, ['aboveThresholdEU', 'aboveThresholdUA', 'aboveThresholdUA.defense'])) || ($item->procurementMethod=='limited' && in_array($item->procurementMethodType, ['negotiation', 'negotiation.quick'])))
+        {
+            if(!empty($item->__documents))
+            {
+                $has_active_contracts=array_first($item->__documents, function($key, $contract){
+                    return $contract->status=='active';
+                });
+
+                if($has_active_contracts && $item->status=='complete' && !empty($item->__active_award->complaintPeriod->endDate))
+                {
+                    $date=date_create($item->__active_award->complaintPeriod->endDate);
+                    $sub_days=0;
+
+                    if(in_array($item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdEU', 'negotiation']))
+                        $sub_days=10;
+        
+                    elseif(in_array($item->procurementMethodType, ['negotiation.quick']))
+                        $sub_days=5;
+                    
+                    elseif(in_array($item->procurementMethodType, ['aboveThresholdUA.defense']))
+                        $sub_days=4;
+        
+                    $now=new DateTime();
+                    $work_days=$this->parse_work_days();
+
+                    for($i=0;$i<$sub_days;$i++)
+                    {
+                        $now->sub(new \DateInterval('P1D'));
+        
+                        if(in_array($now->format('Y-m-d'), $work_days))
+                        {
+                            $i--;
+                            $sub_days++;
+                        }
+                    }
+
+                    $date_from=date_format($date->sub(new \DateInterval('P'.$sub_days.'D')), 'Y.m.d');
+
+                    $item->__button_007=(object) [
+                        'edrpou'=>$procuringEntity->identifier->id,
+                        'date_from'=>$date_from,
+                        'partner'=>$item->__active_award->suppliers[0]->identifier->id,
+                    ];
+                }
+            }
+        }
+    }
     
     private function get_qualifications(&$item, $return=false)
     {
@@ -1177,10 +1232,12 @@ class PageController extends BaseController
     {
         if(!empty($item->lots) && sizeof($item->lots)>1)
         {
+            /*
             usort($item->lots, function ($a, $b)
             {
                 return strcmp($a->title, $b->title);
             });
+            */
             
             $tender_bids=$this->get_bids($item, true);
             $parsed_lots=[];
@@ -1386,6 +1443,10 @@ class PageController extends BaseController
                 $this->get_uniqie_awards($lot);
                 $this->get_uniqie_bids($lot, true);
                 $this->get_awards($lot);
+                $this->get_contracts($lot, !empty($item->contracts) ? $item->contracts : false, $lot->id);
+                $this->get_contracts_changes($lot, !empty($item->contracts) ? $item->contracts : false, $lot->id);
+                $this->get_contracts_ongoing($lot, !empty($item->contracts) ? $item->contracts : false, $lot->id);
+                $this->get_button_007($lot, $item->procuringEntity);
 
                 $parsed_lots[]=$lot;
             }
@@ -1404,29 +1465,50 @@ class PageController extends BaseController
         }
     }
     
-    private function get_contracts(&$item)
+    private function get_contracts(&$item, $contracts=false, $lotID=false)
     {
-        if(!empty($item->contracts))
+        if(!empty($contracts))
         {
-            $item->__contracts=new \StdClass();
+            $contracts_by_lotid=[];
             $documents=[];
 
-            foreach($item->contracts as $contract)
+            if(!empty($item->awards))
             {
-                if(!empty($contract->documents))
+                foreach($item->awards as $award)
                 {
-                    foreach($contract->documents as $document)
+                    if(!empty($award->lotID))
                     {
-                        if(!empty($contract->dateSigned))
+                        $contracts_by_lotid[$award->lotID]=array_where($contracts, function($key, $contract) use($award){
+                            return $contract->awardID==$award->id;
+                        });
+                    }
+                }
+            }
+
+            if(!empty($lotID))
+                $contracts=!empty($contracts_by_lotid[$lotID]) ? $contracts_by_lotid[$lotID] : [];
+
+            $item->__contracts=new \StdClass();
+
+            if(!empty($contracts))
+            {
+                foreach($contracts as $contract)
+                {
+                    if(!empty($contract->documents))
+                    {
+                        foreach($contract->documents as $document)
                         {
-                            $document->dateSigned=new \StdClass();
-                            $document->dateSigned=$contract->dateSigned;
+                            if(!empty($contract->dateSigned))
+                            {
+                                $document->dateSigned=new \StdClass();
+                                $document->dateSigned=$contract->dateSigned;
+                            }
+        
+                            $document->status=new \StdClass();
+                            $document->status=$contract->status;
+                            
+                            $documents[]=$document;
                         }
-    
-                        $document->status=new \StdClass();
-                        $document->status=$contract->status;
-                        
-                        $documents[]=$document;
                     }
                 }
             }
@@ -1438,19 +1520,75 @@ class PageController extends BaseController
 
                 return $datea>$dateb;
             });
-
+            
             $item->__documents=$documents;
         }
     }
 
-    private function get_contracts_changes(&$item)
+    private function get_contracts_ongoing(&$item, $contracts=false, $lotID=false)
     {
-        if(!empty($item->contracts))
+        if(!empty($contracts))
         {
-            $__contracts_active=array_first($item->contracts, function($key, $contract){
+            $contracts_by_lotid=[];
+            $documents=[];
+
+            if(!empty($item->awards))
+            {
+                foreach($item->awards as $award)
+                {
+                    if(!empty($award->lotID))
+                    {
+                        $contracts_by_lotid[$award->lotID]=array_where($contracts, function($key, $contract) use($award){
+                            return $contract->awardID==$award->id;
+                        });
+                    }
+                }
+            }
+
+            if(!empty($lotID))
+                $contracts=!empty($contracts_by_lotid[$lotID]) ? $contracts_by_lotid[$lotID] : [];
+
+            $__contract_active=array_first($contracts, function($key, $contract){
                 return !empty($contract->status) && $contract->status=='active';
             });
+
+            $item->__contract_ongoing=null;
             
+            if($__contract_active)
+            {
+                $id=$__contract_active->id;
+                $item->__contract_ongoing=$this->parse_contracts_json($id);
+            }
+        }
+    }
+    
+    private function get_contracts_changes(&$item, $contracts=false, $lotID=false)
+    {
+        if(!empty($contracts))
+        {
+            $contracts_by_lotid=[];
+            $documents=[];
+
+            if(!empty($item->awards))
+            {
+                foreach($item->awards as $award)
+                {
+                    if(!empty($award->lotID))
+                    {
+                        $contracts_by_lotid[$award->lotID]=array_where($contracts, function($key, $contract) use($award){
+                            return $contract->awardID==$award->id;
+                        });
+                    }
+                }
+            }
+
+            if(!empty($lotID))
+                $contracts=!empty($contracts_by_lotid[$lotID]) ? $contracts_by_lotid[$lotID] : [];
+
+            $__contracts_active=array_first($contracts, function($key, $contract){
+                return !empty($contract->status) && $contract->status=='active';
+            });
+
             $item->__contracts_changes=null;
             
             if($__contracts_active)
@@ -1671,7 +1809,7 @@ class PageController extends BaseController
             $name='Без застосування електронної системи';
 
         if($item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdUA.defense')
-            $name='Відкриті торги (особливості оборони)';
+            $name='Переговорна процедура для потреб оборони';
             
         $item->__procedure_name=new \StdClass();
         $item->__procedure_name=$name;
@@ -1712,7 +1850,6 @@ class PageController extends BaseController
                 //    unset($item->bids);
             }
         }
-        
     }
 
     private function sanitize_html($html)
@@ -1766,21 +1903,6 @@ class PageController extends BaseController
                 $days=array_merge($days, json_decode($on, true));
 
             return $days;
-            /*
-            $daysInterval=[];
-
-            foreach($days as $day)
-            {   
-                $interval=(object)[
-                    'from'=>DateTime::createFromFormat('Y-m-d H:i:s', $day.'00:00:00'),
-                    'to'=>DateTime::createFromFormat('Y-m-d H:i:s', $day.'23:59:59')
-                ];
-                
-                array_push($daysInterval, $interval);
-            }
-
-            return $daysInterval;
-            */
         });            
     }
 }

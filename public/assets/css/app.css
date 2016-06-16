@@ -7007,5 +7007,9 @@ button.close {
 body {
   background: #EEE;
 }
-
+.href-left, .href-right {
+    display: inline-block;
+}
+.href-right {
+    margin-left: 20px;
 /*# sourceMappingURL=app.css.map */

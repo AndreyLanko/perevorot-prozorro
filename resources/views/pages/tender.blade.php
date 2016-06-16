@@ -111,6 +111,23 @@
                                 
                                 {{--Повідомлення про намір укласти договір--}}                
                                 @include('partials/blocks/tender/active-awards')                
+
+                                {{--Укладений договір--}}
+                                @include('partials/blocks/tender/contract')
+                
+                                {{--Зміни до договору--}}
+                                @include('partials/blocks/tender/contract-changes')
+            
+                                {{--Виконання договору--}}
+                                @include('partials/blocks/tender/contract-ongoing')
+            
+                                {{--Інформація про скасування--}}
+                                @include('partials/blocks/tender/cancelled', [
+                                    'numberOfBids'=>!empty($item->numberOfBids) ? $item->numberOfBids : 0,
+                                    'tenderPeriod'=>!empty($item->tenderPeriod) ? $item->tenderPeriod : false,
+                                    'qualificationPeriod'=>!empty($item->qualificationPeriod) ? $item->qualificationPeriod : false
+                                ])
+
                             @endif
                         </div>
                     </div>
@@ -197,24 +214,28 @@
                                     'tenderPeriod'=>!empty($item->tenderPeriod) ? $item->tenderPeriod : false,
                                     'qualificationPeriod'=>!empty($item->qualificationPeriod) ? $item->qualificationPeriod : false
                                 ])
+                                
+                                {{--Укладений договір--}}
+                                @include('partials/blocks/tender/contract', [
+                                    'item'=>$lot,
+                                    'lotID'=>$lot->id,
+                                ])
+                
+                                {{--Зміни до договору--}}
+                                @include('partials/blocks/tender/contract-changes', [
+                                    'item'=>$lot,
+                                    'lotID'=>$lot->id,
+                                ])
+
+                                {{--Виконання договору--}}
+                                @include('partials/blocks/tender/contract-ongoing', [
+                                    'item'=>$lot,
+                                    'lotID'=>$lot->id,
+                                ])
+                                
                             </div>
                         @endforeach
                     </div>
-                @endif
-
-                {{--Укладений договір--}}
-                @include('partials/blocks/tender/contract')
-
-                {{--Зміни до договору--}}
-                @include('partials/blocks/tender/contract-changes')
-
-                @if (!$item->__isMultiLot)
-                    {{--Інформація про скасування--}}
-                    @include('partials/blocks/tender/cancelled', [
-                        'numberOfBids'=>!empty($item->numberOfBids) ? $item->numberOfBids : 0,
-                        'tenderPeriod'=>!empty($item->tenderPeriod) ? $item->tenderPeriod : false,
-                        'qualificationPeriod'=>!empty($item->qualificationPeriod) ? $item->qualificationPeriod : false
-                    ])
                 @endif
 
                 {{--Подати пропозицію--}}

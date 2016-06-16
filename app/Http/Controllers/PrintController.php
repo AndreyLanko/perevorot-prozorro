@@ -15,7 +15,9 @@ class PrintController extends BaseController
         'bids',
         'awards',
         'qualifications',
-        'active-awards'
+        'active-awards',
+        'contract-ongoing',
+        'contract-changes'
     ];
     
 	public function plan_list($output)

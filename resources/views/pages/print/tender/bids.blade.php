@@ -37,24 +37,5 @@
                 'n'=>$n
             ])
         @endif
-{{--
-        @foreach($item->bids as $bid)
-            <tr valign="top">
-                <td>
-                    @if(!empty($bid->tenderers[0]->identifier->legalName))
-                        {{$bid->tenderers[0]->identifier->legalName}}
-                    @else
-                        {{$bid->tenderers[0]->identifier->name}}
-                    @endif
-                </td>
-                <td>
-                    {{$bid->tenderers[0]->identifier->id}}
-                </td>
-                <td>
-                    {{date('d.m.Y H:i', strtotime($bid->date))}}
-                </td>
-            </tr>
-        @endforeach
---}}
     </table>
 @endsection
