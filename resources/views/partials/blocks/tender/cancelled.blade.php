@@ -89,8 +89,14 @@
                         @elseif($item->procurementMethodType=='aboveThresholdEU' && $numberOfBids >= 2)
                             <div class="row">
                                 <div class="col-md-12 margin-bottom">
-                                    <strong>Дата відміни</strong>
-                                    <div>{{date('d.m.Y H:i', strtotime($qualificationPeriod->endDate))}}</div>
+                                    <strong>Дата відміни, {{$numberOfBids}}</strong>
+                                    <div>
+                                        @if(!empty($qualificationPeriod->endDate))
+                                            {{date('d.m.Y H:i', strtotime($qualificationPeriod->endDate))}}
+                                        @else
+                                            відсутня
+                                        @endif
+                                    </div>
                                 </div>
                                 <div class="col-md-12">
                                     <strong>Причина відміни</strong>
