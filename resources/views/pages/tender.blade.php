@@ -40,20 +40,24 @@
                 <div class="margin-bottom-xl">
                     <div class="row">
                         <div class="col-sm-9">
-                            @if(!empty($item->__open_name))
-                                <h2>{{$item->__open_name}}</h2>
-                            @endif
-                            
-                            @if($item->__print_href)
-                                @if(starts_with($item->__print_href, 'limited'))
-                                    @if(empty($item->__active_award))
-                                        <div style="margin-top:-30px;margin-bottom:40px">Для друку форми необхідно завершити дії на майданчику</div>
+                            @if(!empty($item->__open_name) && $item->__open_name!='hide')
+                                @if(!empty($item->__open_name))
+                                    <h2>{{$item->__open_name}}</h2>
+                                @endif
+                                
+                                @if($item->__print_href)
+                                    @if(starts_with($item->__print_href, 'limited'))
+                                        @if(empty($item->__active_award))
+                                            <div style="margin-top:-30px;margin-bottom:40px">Для друку форми необхідно завершити дії на майданчику</div>
+                                        @else
+                                            <div style="margin-top:-30px;margin-bottom:40px">Друкувати форму оголшення <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/html')}}" target="_blank">HTML</a></div>
+                                        @endif
                                     @else
                                         <div style="margin-top:-30px;margin-bottom:40px">Друкувати форму оголшення <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/html')}}" target="_blank">HTML</a></div>
                                     @endif
-                                @else
-                                    <div style="margin-top:-30px;margin-bottom:40px">Друкувати форму оголшення <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/html')}}" target="_blank">HTML</a></div>
                                 @endif
+                            @else
+                                <h2></h2>
                             @endif
 
                             @if(in_array($item->status, ['complete', 'unsuccessful', 'cancelled']) && $item->procurementMethod=='open' && in_array($item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdEU']))

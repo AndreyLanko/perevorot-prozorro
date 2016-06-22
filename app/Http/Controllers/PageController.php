@@ -1821,21 +1821,29 @@ class PageController extends BaseController
     
     private function get_open_title(&$item)
     {
-            $title=false;
+        $title=false;
 
-            if($item->procurementMethod=='open' && $item->procurementMethodType!='belowThreshold')
-                $title=1;
+        if($item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdUA.defense')
+            $title='hide';
 
-            if($item->procurementMethod=='open' && $item->procurementMethodType=='belowThreshold')
-                $title=2;
+        elseif($item->procurementMethod=='open' && $item->procurementMethodType!='belowThreshold')
+            $title=1;
 
-            if($item->procurementMethod=='limited' && $item->procurementMethodType!='reporting')
-                $title=3;
+        elseif($item->procurementMethod=='open' && $item->procurementMethodType=='belowThreshold')
+            $title=2;
 
-            if($item->procurementMethod=='limited' && $item->procurementMethodType=='reporting')
-                $title=4;
+        elseif($item->procurementMethod=='limited' && $item->procurementMethodType!='reporting')
+            $title=3;
 
-        if($title)
+        elseif($item->procurementMethod=='limited' && $item->procurementMethodType=='reporting')
+            $title=4;
+
+        if($title=='hide')
+        {
+            $item->__open_name=new \StdClass();
+            $item->__open_name='hide';
+        }
+        elseif($title)
         {
             $item->__open_name=new \StdClass();
             $item->__open_name=trans('tender.info_title.title'.$title);
