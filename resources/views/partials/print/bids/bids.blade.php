@@ -20,7 +20,11 @@
             {{$bid->tenderers[0]->identifier->id}}
         </td>
         <td>
-            {{date('d.m.Y H:i', strtotime($bid->date))}}
+            @if (!empty($lot->__initial_bids_dates[$bid->id]))
+                {{date('d.m.Y H:i', strtotime($lot->__initial_bids_dates[$bid->id]))}}<br>
+            @else
+                {{date('d.m.Y H:i', strtotime($bid->date))}}
+            @endif
         </td>
     </tr>
 @endforeach

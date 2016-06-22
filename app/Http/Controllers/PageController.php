@@ -397,6 +397,7 @@ class PageController extends BaseController
         $this->get_contracts_ongoing($item, !empty($item->contracts) ? $item->contracts : false);
         $this->get_signed_contracts($item);
         $this->get_initial_bids($item);
+        $this->get_initial_bids_dates($item);
         $this->get_yaml_documents($item);
         $this->get_tender_documents($item);        
         $this->get_bids($item);        
@@ -646,6 +647,54 @@ class PageController extends BaseController
         $item->__initial_bids_by_lot=new \StdClass();
         $item->__initial_bids_by_lot=$bidders_by_lot;
     }
+    
+    private function get_initial_bids_dates(&$item)
+    {
+        $bidders_by_lot=[];
+        $bid_by_bidders=[];
+
+        if(!empty($item->bids))
+        {
+            foreach($item->bids as $bid)
+                $bid_by_bidders[$bid->id]=0;
+        }
+
+        if(!empty($item->documents))
+        {
+            foreach($item->documents as $document)
+            {
+                if(pathinfo($document->title, PATHINFO_EXTENSION)=='yaml' && !empty($document->url))
+                {
+                    try
+                    {
+                        $yaml=Cache::remember('yaml_'.md5($document->url), 60, function() use ($document){
+                            $yaml_file=file_get_contents($document->url);
+
+                            return !empty($yaml_file) ? Yaml::parse($yaml_file) : [];
+                        });
+
+                        if(!empty($yaml['timeline']['auction_start']['initial_bids']))
+                        {
+                            foreach($yaml['timeline']['auction_start']['initial_bids'] as $bid)
+                            {
+                                if(!empty($yaml['lot_id']))
+                                    $bidders_by_lot[$yaml['lot_id']][$bid['bidder']]=$bid['date'];
+
+                                $bid_by_bidders[$bid['bidder']]=$bid['date'];
+                            }
+                        }
+                    }
+                    catch (ParseException $e) {}
+                }
+            }
+        }
+
+        $item->__initial_bids_dates=new \StdClass();
+        $item->__initial_bids_dates=$bid_by_bidders;
+
+        $item->__initial_bids_dates_by_lot=new \StdClass();
+        $item->__initial_bids_dates_by_lot=$bidders_by_lot;
+    }    
     
     private function get_action_url_singlelot(&$item)
     {
@@ -1262,6 +1311,14 @@ class PageController extends BaseController
                 }
                 else
                     $lot->__initial_bids=$item->__initial_bids;
+
+                if(!empty($item->__initial_bids_dates_by_lot))
+                {
+                    if(!empty($item->__initial_bids_dates_by_lot[$lot->id]))
+                        $lot->__initial_bids_dates=$item->__initial_bids_dates_by_lot[$lot->id];
+                }
+                else
+                    $lot->__initial_bids_dates=$item->__initial_bids_dates;
 
                 $lot->__icon=new \StdClass();
                 $lot->__icon=false;
