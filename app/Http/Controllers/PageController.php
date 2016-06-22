@@ -806,18 +806,21 @@ class PageController extends BaseController
                 $sub_days=5;
             
             elseif(in_array($item->procurementMethodType, ['belowThreshold']))
-                $sub_days=5;
+                $sub_days=2;
 
-            $now=new DateTime();
-
-            for($i=0;$i<$sub_days;$i++)
+            if(in_array($item->procurementMethodType, ['belowThreshold', 'aboveThresholdUA.defense']))
             {
-                $now->sub(new \DateInterval('P1D'));
-
-                if(in_array($now->format('Y-m-d'), $work_days))
+                $now=new DateTime();
+    
+                for($i=0;$i<$sub_days;$i++)
                 {
-                    $i--;
-                    $sub_days++;
+                    $now->sub(new \DateInterval('P1D'));
+    
+                    if(in_array($now->format('Y-m-d'), $work_days))
+                    {
+                        $i--;
+                        $sub_days++;
+                    }
                 }
             }
 
