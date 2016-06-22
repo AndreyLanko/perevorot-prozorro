@@ -123,7 +123,6 @@
             
                                 {{--Інформація про скасування--}}
                                 @include('partials/blocks/tender/cancelled', [
-                                    'numberOfBids'=>!empty($item->numberOfBids) ? $item->numberOfBids : 0,
                                     'tenderPeriod'=>!empty($item->tenderPeriod) ? $item->tenderPeriod : false,
                                     'qualificationPeriod'=>!empty($item->qualificationPeriod) ? $item->qualificationPeriod : false
                                 ])
@@ -210,7 +209,6 @@
                                 {{--Інформація про скасування--}}
                                 @include('partials/blocks/tender/cancelled', [
                                     'item'=>$lot,
-                                    'numberOfBids'=>!empty($item->numberOfBids) ? $item->numberOfBids : 0,
                                     'tenderPeriod'=>!empty($item->tenderPeriod) ? $item->tenderPeriod : false,
                                     'qualificationPeriod'=>!empty($item->qualificationPeriod) ? $item->qualificationPeriod : false
                                 ])
@@ -237,6 +235,13 @@
                         @endforeach
                     </div>
                 @endif
+
+                {{--Інформація про скасування--}}
+                @include('partials/blocks/tender/cancelled', [
+                    'item'=>$item,
+                    'tenderPeriod'=>!empty($item->tenderPeriod) ? $item->tenderPeriod : false,
+                    'qualificationPeriod'=>!empty($item->qualificationPeriod) ? $item->qualificationPeriod : false
+                ])
 
                 {{--Подати пропозицію--}}
                 @include('partials/blocks/tender/apply')
