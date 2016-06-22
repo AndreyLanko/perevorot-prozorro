@@ -21,7 +21,7 @@
             <td>{{$n++}}. Код згідно з ЄДРПОУ учасника</td>
             <td>{{$n++}}. Дата та час подання тендерних пропозицій</td>
         </tr>
-        @if(empty($item->lots))
+        @if(empty($item->lots) || (!empty($item->lots) && sizeof($item->lots)==1))
             @include('partials/print/bids/bids', [
                 'lot'=>$item,
                 'lot_id'=>$lot_id,
