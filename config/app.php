@@ -148,6 +148,7 @@ return [
 		'App\Providers\RouteServiceProvider',
 		
 		Barryvdh\DomPDF\ServiceProvider::class,
+		Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
 
 	],
 
@@ -197,6 +198,7 @@ return [
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
 		'PDF'       => Barryvdh\DomPDF\Facade::class,
+		'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
 	],
 
 ];

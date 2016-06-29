@@ -23,7 +23,9 @@
             Route::get('tender/{id}/print/{type}/{print}', 'PrintController@one')->where('print', '(pdf|html)');;
             Route::get('tender/{id}/print/{type}/{print}/{lot_id?}', 'PrintController@one')->where('print', '(pdf|html)');
 		});
+
 	}
+    Route::post('feedback', 'FeedbackController@store');
 
     Route::get('json/platforms/{type}', 'JsonController@platforms');
     

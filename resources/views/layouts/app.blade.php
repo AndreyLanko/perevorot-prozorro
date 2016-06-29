@@ -15,6 +15,7 @@
     <![endif]-->
     <link rel='shortcut icon' type='image/x-icon' href='/assets/images/favicon.ico' />
     @yield('head')
+    @yield('recaptcha')    
 </head>
 <body>
     @if (env('GA_CODE'))

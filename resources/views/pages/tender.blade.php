@@ -61,10 +61,10 @@
                             @endif
 
                             @if(in_array($item->status, ['complete', 'unsuccessful', 'cancelled']) && $item->procurementMethod=='open' && in_array($item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdEU']))
-                                <div style="margin-top:-30px;margin-bottom:40px">Друкувати звіт про результати проведення процедури <a href="{{href('tender/'.$item->tenderID.'/print/report/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/report/html')}}" target="_blank">HTML</a></div>
+                                <div style="margin-top:-30px;margin-bottom:40px">1Друкувати звіт про результати проведення процедури <a href="{{href('tender/'.$item->tenderID.'/print/report/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/report/html')}}" target="_blank">HTML</a></div>
                             @endif
-                            @if(in_array($item->status, ['complete', 'cancelled']) && $item->procurementMethod=='limited')
-                                <div style="margin-top:-30px;margin-bottom:40px">Друкувати звіт про результати проведення процедури <a href="{{href('tender/'.$item->tenderID.'/print/report/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/report/html')}}" target="_blank">HTML</a></div>
+                            @if(in_array($item->status, ['complete', 'cancelled']) && $item->procurementMethod=='limited' && in_array($item->procurementMethodType, ['negotiation', 'negotiation.quick']))
+                                <div style="margin-top:-30px;margin-bottom:40px">2Друкувати звіт про результати проведення процедури <a href="{{href('tender/'.$item->tenderID.'/print/report/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/report/html')}}" target="_blank">HTML</a></div>
                             @endif
 
                             {{--Інформація про замовника--}}

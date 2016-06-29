@@ -1,5 +1,7 @@
 @extends('layouts/app')
 
+@include('forms/feedback')
+
 @section('head')
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="{{trans('facebook.site_name')}}">
@@ -32,6 +34,8 @@
 <a href="" class="back-to-top hidden-xs hidden-xm"></a>
 
 @include('partials/form')
+
+@yield('error-form')
 
 <div class="container" homepage>
     <h1 class="homepage size48 margin-bottom margin-top-x">{{trans('home.welcome_title')}}</h1>
