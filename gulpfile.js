@@ -68,6 +68,9 @@ gulp.task("copyfiles", function() {
   gulp.src("resources/vendor/jquery-sticky/jquery.sticky.js")
     .pipe(gulp.dest("resources/assets/js/vendor/"));
 
+  gulp.src("resources/vendor/slick-carousel/slick/slick.js")
+    .pipe(gulp.dest("resources/assets/js/vendor/"));
+
 
 });
 
@@ -87,6 +90,7 @@ elixir(function(mix) {
       'js/vendor/jquery.spin.js',
       'js/vendor/jquery.highlight.js',
       'js/vendor/jquery.sticky.js',
+      'js/vendor/slick.js',
       'js/libs/selectize.js',
       'js/blocks/**/*.js',
       'js/app.js'

@@ -29,238 +29,237 @@
 
 @section('content')
 
-@if ($item && !$error)
-
-    <div class="tender" data-js="tender">
-
-        @include('partials/blocks/tender/header')
-
-        <div class="tender--description">
-            <div class="container">
-                <div class="margin-bottom-xl">
-                    <div class="row">
-                        <div class="col-sm-9">
-                            @if(!empty($item->__open_name) && $item->__open_name!='hide')
-                                @if(!empty($item->__open_name))
-                                    <h2>{{$item->__open_name}}</h2>
-                                @endif
-                                
-                                @if($item->__print_href)
-                                    @if(starts_with($item->__print_href, 'limited'))
-                                        @if(empty($item->__active_award))
-                                            <div style="margin-top:-30px;margin-bottom:40px">Для друку форми необхідно завершити дії на майданчику</div>
+    @if ($item && !$error)
+        <div class="tender" data-js="tender">
+    
+            @include('partials/blocks/tender/header')
+    
+            <div class="tender--description">
+                <div class="container">
+                    <div class="margin-bottom-xl">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                @if(!empty($item->__open_name) && $item->__open_name!='hide')
+                                    @if(!empty($item->__open_name))
+                                        <h2>{{$item->__open_name}}</h2>
+                                    @endif
+                                    
+                                    @if($item->__print_href)
+                                        @if(starts_with($item->__print_href, 'limited'))
+                                            @if(empty($item->__active_award))
+                                                <div style="margin-top:-30px;margin-bottom:40px">Для друку форми необхідно завершити дії на майданчику</div>
+                                            @else
+                                                <div style="margin-top:-30px;margin-bottom:40px">Друкувати форму оголшення <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/html')}}" target="_blank">HTML</a></div>
+                                            @endif
                                         @else
                                             <div style="margin-top:-30px;margin-bottom:40px">Друкувати форму оголшення <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/html')}}" target="_blank">HTML</a></div>
                                         @endif
-                                    @else
-                                        <div style="margin-top:-30px;margin-bottom:40px">Друкувати форму оголшення <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/html')}}" target="_blank">HTML</a></div>
                                     @endif
+                                @else
+                                    <h2></h2>
                                 @endif
-                            @else
-                                <h2></h2>
-                            @endif
-
-                            @if(in_array($item->status, ['complete', 'unsuccessful', 'cancelled']) && $item->procurementMethod=='open' && in_array($item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdEU']))
-                                <div style="margin-top:-30px;margin-bottom:40px">1Друкувати звіт про результати проведення процедури <a href="{{href('tender/'.$item->tenderID.'/print/report/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/report/html')}}" target="_blank">HTML</a></div>
-                            @endif
-                            @if(in_array($item->status, ['complete', 'cancelled']) && $item->procurementMethod=='limited' && in_array($item->procurementMethodType, ['negotiation', 'negotiation.quick']))
-                                <div style="margin-top:-30px;margin-bottom:40px">2Друкувати звіт про результати проведення процедури <a href="{{href('tender/'.$item->tenderID.'/print/report/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/report/html')}}" target="_blank">HTML</a></div>
-                            @endif
-
-                            {{--Інформація про замовника--}}
-                            @include('partials/blocks/tender/procuring-entity')
-
-                            {{--Обгрунтування застосування переговорної процедури--}}
-                            @include('partials/blocks/tender/negotiation')
-                            
-                            {{--Інформація про процедуру--}}
-                            @include('partials/blocks/tender/dates')
-
-                            {{--Інформація про предмет закупівлі--}}
-                            @include('partials/blocks/tender/info')
-
-                            <h2>Документація</h2>
-
-                            {{--Критерії вибору переможця--}}
-                            @include('partials/blocks/tender/criteria')
-
-                            {{--Тендерна документація--}}
-                            @include('partials/blocks/tender/documentation')
-
-
-                            @if (!empty($item->__complaints_claims) ||!empty($item->__questions))
-                                <h2>Роз’яснення до процедури</h2>
-
-                                {{--Запитання до процедури--}}
-                                @include('partials/blocks/tender/questions')
     
-                                {{--Вимоги про усунення порушення--}}
-                                @include('partials/blocks/tender/claims')
-
-                            @endif
-
-                            {{--Скарги до процедури--}}
-                            @include('partials/blocks/tender/complaints', ['title'=>'Скарги до процедури'])
-
-                            @if (!$item->__isMultiLot)
-
-                                {{--Протокол розгляду--}}
-                                @include('partials/blocks/tender/qualifications')
-
-                                {{--Реєстр пропозицій--}}
-                                @include('partials/blocks/tender/bids')
-
-                                {{--Протокол розкриття--}}
-                                @include('partials/blocks/tender/awards')
+                                @if(in_array($item->status, ['complete', 'unsuccessful', 'cancelled']) && $item->procurementMethod=='open' && in_array($item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdEU']))
+                                    <div style="margin-top:-30px;margin-bottom:40px">1Друкувати звіт про результати проведення процедури <a href="{{href('tender/'.$item->tenderID.'/print/report/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/report/html')}}" target="_blank">HTML</a></div>
+                                @endif
+                                @if(in_array($item->status, ['complete', 'cancelled']) && $item->procurementMethod=='limited' && in_array($item->procurementMethodType, ['negotiation', 'negotiation.quick']))
+                                    <div style="margin-top:-30px;margin-bottom:40px">2Друкувати звіт про результати проведення процедури <a href="{{href('tender/'.$item->tenderID.'/print/report/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/report/html')}}" target="_blank">HTML</a></div>
+                                @endif
+    
+                                {{--Інформація про замовника--}}
+                                @include('partials/blocks/tender/procuring-entity')
+    
+                                {{--Обгрунтування застосування переговорної процедури--}}
+                                @include('partials/blocks/tender/negotiation')
                                 
-                                {{--Повідомлення про намір укласти договір--}}                
-                                @include('partials/blocks/tender/active-awards')                
-
-                                {{--Укладений договір--}}
-                                @include('partials/blocks/tender/contract')
+                                {{--Інформація про процедуру--}}
+                                @include('partials/blocks/tender/dates')
+    
+                                {{--Інформація про предмет закупівлі--}}
+                                @include('partials/blocks/tender/info')
+    
+                                <h2>Документація</h2>
+    
+                                {{--Критерії вибору переможця--}}
+                                @include('partials/blocks/tender/criteria')
+    
+                                {{--Тендерна документація--}}
+                                @include('partials/blocks/tender/documentation')
+    
+    
+                                @if (!empty($item->__complaints_claims) ||!empty($item->__questions))
+                                    <h2>Роз’яснення до процедури</h2>
+    
+                                    {{--Запитання до процедури--}}
+                                    @include('partials/blocks/tender/questions')
+        
+                                    {{--Вимоги про усунення порушення--}}
+                                    @include('partials/blocks/tender/claims')
+    
+                                @endif
+    
+                                {{--Скарги до процедури--}}
+                                @include('partials/blocks/tender/complaints', ['title'=>'Скарги до процедури'])
+    
+                                @if (!$item->__isMultiLot)
+    
+                                    {{--Протокол розгляду--}}
+                                    @include('partials/blocks/tender/qualifications')
+    
+                                    {{--Реєстр пропозицій--}}
+                                    @include('partials/blocks/tender/bids')
+    
+                                    {{--Протокол розкриття--}}
+                                    @include('partials/blocks/tender/awards')
+                                    
+                                    {{--Повідомлення про намір укласти договір--}}                
+                                    @include('partials/blocks/tender/active-awards')                
+    
+                                    {{--Укладений договір--}}
+                                    @include('partials/blocks/tender/contract')
+                    
+                                    {{--Зміни до договору--}}
+                                    @include('partials/blocks/tender/contract-changes')
                 
-                                {{--Зміни до договору--}}
-                                @include('partials/blocks/tender/contract-changes')
-            
-                                {{--Виконання договору--}}
-                                @include('partials/blocks/tender/contract-ongoing')
-            
-                                {{--Інформація про скасування--}}
-                                @include('partials/blocks/tender/cancelled', [
-                                    'tenderPeriod'=>!empty($item->tenderPeriod) ? $item->tenderPeriod : false,
-                                    'qualificationPeriod'=>!empty($item->qualificationPeriod) ? $item->qualificationPeriod : false
-                                ])
-
-                            @endif
+                                    {{--Виконання договору--}}
+                                    @include('partials/blocks/tender/contract-ongoing')
+                
+                                    {{--Інформація про скасування--}}
+                                    @include('partials/blocks/tender/cancelled', [
+                                        'tenderPeriod'=>!empty($item->tenderPeriod) ? $item->tenderPeriod : false,
+                                        'qualificationPeriod'=>!empty($item->qualificationPeriod) ? $item->qualificationPeriod : false
+                                    ])
+    
+                                @endif
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                @if($item->__isMultiLot)
-                    <h2>Лоти</h2>
-                    <div class="bs-example bs-example-tabs lots-tabs wide-table" data-js="lot_tabs" data-tab-class="tab-lot-content">
-                        <ul class="nav nav-tabs" role="tablist">
+    
+                    @if($item->__isMultiLot)
+                        <h2>Лоти</h2>
+                        <div class="bs-example bs-example-tabs lots-tabs wide-table" data-js="lot_tabs" data-tab-class="tab-lot-content">
+                            <ul class="nav nav-tabs" role="tablist">
+                                @foreach($item->lots as $k=>$lot)
+                                    <li role="presentation" class="{{$k==0?'active':''}}" style="font-size:80%">
+                                        <a href="" role="tab" data-toggle="tab" aria-expanded="{{$k==0?'true':'false'}}">{{ !empty($lot->lotNumber) ? $lot->lotNumber : str_limit($lot->title, 20) }}{{--Лот {{$k+1}}--}}</a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="lots-container">
                             @foreach($item->lots as $k=>$lot)
-                                <li role="presentation" class="{{$k==0?'active':''}}" style="font-size:80%">
-                                    <a href="" role="tab" data-toggle="tab" aria-expanded="{{$k==0?'true':'false'}}">{{ !empty($lot->lotNumber) ? $lot->lotNumber : str_limit($lot->title, 20) }}{{--Лот {{$k+1}}--}}</a>
-                                </li>
+                                <div class="tab-content tab-lot-content{{$k==0?' active':''}}">
+                                    {{--Опис--}}
+                                    @include('partials/blocks/lots/info', [
+                                        'item'=>$lot,
+                                        'tender'=>$item
+                                    ])
+    
+                                    {{--Позиції--}}
+                                    @include('partials/blocks/lots/items', [
+                                        'item'=>$lot
+                                    ])
+    
+                                    {{--<h2>Документація</h2>--}}
+    
+                                    {{--Критерії вибору переможця--}}
+                                    @include('partials/blocks/lots/criteria', [
+                                        'item'=>$lot
+                                    ])
+    
+                                    {{--Документація--}}
+                                    @include('partials/blocks/tender/documentation',[
+                                        'item'=>$lot,
+                                        'lot_id'=>$lot->id
+                                    ])
+    
+                                    {{--Запитання до лоту--}}
+                                    @include('partials/blocks/tender/questions', [
+                                        'item'=>$lot
+                                    ])
+                                    
+                                    {{--Вимоги про усунення порушення до лоту--}}
+                                    @include('partials/blocks/tender/claims', [
+                                        'item'=>$lot
+                                    ])
+    
+                                    {{--Скарги до лоту--}}
+                                    @include('partials/blocks/tender/complaints', [
+                                        'item'=>$lot,
+                                        'title'=>'Скарги до лоту'
+                                    ])
+    
+                                    {{--Протокол розгляду--}}
+                                    @include('partials/blocks/tender/qualifications', [
+                                        'item'=>$lot
+                                    ])
+    
+                                    {{--Реєстр пропозицій--}}
+                                    @include('partials/blocks/tender/bids', [
+                                        'item'=>$lot
+                                    ])
+                                    
+                                    {{--Протокол розкриття--}}
+                                    @include('partials/blocks/tender/awards', [
+                                        'item'=>$lot
+                                    ])
+    
+                                    {{--Повідомлення про намір укласти договір--}}                
+                                    @include('partials/blocks/tender/active-awards', [
+                                        'item'=>$lot
+                                    ])
+    
+                                    {{--Інформація про скасування--}}
+                                    @include('partials/blocks/tender/cancelled', [
+                                        'item'=>$lot,
+                                        'tenderPeriod'=>!empty($item->tenderPeriod) ? $item->tenderPeriod : false,
+                                        'qualificationPeriod'=>!empty($item->qualificationPeriod) ? $item->qualificationPeriod : false
+                                    ])
+                                    
+                                    {{--Укладений договір--}}
+                                    @include('partials/blocks/tender/contract', [
+                                        'item'=>$lot,
+                                        'lotID'=>$lot->id,
+                                    ])
+                    
+                                    {{--Зміни до договору--}}
+                                    @include('partials/blocks/tender/contract-changes', [
+                                        'item'=>$lot,
+                                        'lotID'=>$lot->id,
+                                    ])
+    
+                                    {{--Виконання договору--}}
+                                    @include('partials/blocks/tender/contract-ongoing', [
+                                        'item'=>$lot,
+                                        'lotID'=>$lot->id,
+                                    ])
+                                    
+                                </div>
                             @endforeach
-                        </ul>
-                    </div>
-                    <div class="lots-container">
-                        @foreach($item->lots as $k=>$lot)
-                            <div class="tab-content tab-lot-content{{$k==0?' active':''}}">
-                                {{--Опис--}}
-                                @include('partials/blocks/lots/info', [
-                                    'item'=>$lot,
-                                    'tender'=>$item
-                                ])
-
-                                {{--Позиції--}}
-                                @include('partials/blocks/lots/items', [
-                                    'item'=>$lot
-                                ])
-
-                                {{--<h2>Документація</h2>--}}
-
-                                {{--Критерії вибору переможця--}}
-                                @include('partials/blocks/lots/criteria', [
-                                    'item'=>$lot
-                                ])
-
-                                {{--Документація--}}
-                                @include('partials/blocks/tender/documentation',[
-                                    'item'=>$lot,
-                                    'lot_id'=>$lot->id
-                                ])
-
-                                {{--Запитання до лоту--}}
-                                @include('partials/blocks/tender/questions', [
-                                    'item'=>$lot
-                                ])
-                                
-                                {{--Вимоги про усунення порушення до лоту--}}
-                                @include('partials/blocks/tender/claims', [
-                                    'item'=>$lot
-                                ])
-
-                                {{--Скарги до лоту--}}
-                                @include('partials/blocks/tender/complaints', [
-                                    'item'=>$lot,
-                                    'title'=>'Скарги до лоту'
-                                ])
-
-                                {{--Протокол розгляду--}}
-                                @include('partials/blocks/tender/qualifications', [
-                                    'item'=>$lot
-                                ])
-
-                                {{--Реєстр пропозицій--}}
-                                @include('partials/blocks/tender/bids', [
-                                    'item'=>$lot
-                                ])
-                                
-                                {{--Протокол розкриття--}}
-                                @include('partials/blocks/tender/awards', [
-                                    'item'=>$lot
-                                ])
-
-                                {{--Повідомлення про намір укласти договір--}}                
-                                @include('partials/blocks/tender/active-awards', [
-                                    'item'=>$lot
-                                ])
-
-                                {{--Інформація про скасування--}}
-                                @include('partials/blocks/tender/cancelled', [
-                                    'item'=>$lot,
-                                    'tenderPeriod'=>!empty($item->tenderPeriod) ? $item->tenderPeriod : false,
-                                    'qualificationPeriod'=>!empty($item->qualificationPeriod) ? $item->qualificationPeriod : false
-                                ])
-                                
-                                {{--Укладений договір--}}
-                                @include('partials/blocks/tender/contract', [
-                                    'item'=>$lot,
-                                    'lotID'=>$lot->id,
-                                ])
-                
-                                {{--Зміни до договору--}}
-                                @include('partials/blocks/tender/contract-changes', [
-                                    'item'=>$lot,
-                                    'lotID'=>$lot->id,
-                                ])
-
-                                {{--Виконання договору--}}
-                                @include('partials/blocks/tender/contract-ongoing', [
-                                    'item'=>$lot,
-                                    'lotID'=>$lot->id,
-                                ])
-                                
-                            </div>
-                        @endforeach
-                    </div>
-                @endif
-
-                {{--Інформація про скасування--}}
-                @include('partials/blocks/tender/cancelled', [
-                    'item'=>$item,
-                    'tenderPeriod'=>!empty($item->tenderPeriod) ? $item->tenderPeriod : false,
-                    'qualificationPeriod'=>!empty($item->qualificationPeriod) ? $item->qualificationPeriod : false
-                ])
-
-                {{--Подати пропозицію--}}
-                @include('partials/blocks/tender/apply')
-
+                        </div>
+                    @endif
+    
+                    {{--Інформація про скасування--}}
+                    @include('partials/blocks/tender/cancelled', [
+                        'item'=>$item,
+                        'tenderPeriod'=>!empty($item->tenderPeriod) ? $item->tenderPeriod : false,
+                        'qualificationPeriod'=>!empty($item->qualificationPeriod) ? $item->qualificationPeriod : false
+                    ])
+    
+                    {{--Подати пропозицію--}}
+                    @include('partials/blocks/tender/apply')
+    
+                </div>
             </div>
         </div>
-    </div>
-@elseif ($error)
-    <div style="padding:20px 20px 40px 10px;text-align:center">
-        {!!$error!!}
-    </div>
-@else
-    <div style="padding:20px 20px 40px 10px;text-align:center">
-        {{trans('tender.tender_not_found')}}
-    </div>
-@endif
+    @elseif ($error)
+        <div style="padding:20px 20px 40px 10px;text-align:center">
+            {!!$error!!}
+        </div>
+    @else
+        <div style="padding:20px 20px 40px 10px;text-align:center">
+            {{trans('tender.tender_not_found')}}
+        </div>
+    @endif
 
 @endsection

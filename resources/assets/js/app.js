@@ -7,6 +7,7 @@
  * © 2015
  *
  */
+
 var APP,
     INPUT,
     SEARCH_BUTTON,
@@ -99,6 +100,109 @@ var APP,
             },
 
             js: {
+                feedback_thanks: function(_self){
+                    var send_more=_self.find('.send-more'),
+                        close=_self.find('.close'),
+                        opened=_self.is(':visible');
+                    
+                    send_more.click(function(e){
+                        e.preventDefault();
+                        _self.fadeOut();
+
+                        opened=false;
+                        $('.form-button').click();
+                    });
+                    
+                    close.click(function(e){
+                        e.preventDefault();
+
+                        $('.form-button').fadeIn();
+                        opened=false;
+                        _self.fadeOut();
+                    });
+
+                    if(!$('.center-page-form').length){
+                        $(document).on('keydown', function(e) {
+                            if(opened){
+                                switch (e.keyCode){
+                                    case KEY_ESC:
+                                        close.click();
+                                        return;
+                                    break;
+                                }
+                            }
+                        }).click(function(e){
+                            if(opened && !$(e.target).closest('.form-container').length){
+                                close.click();
+                            }
+                        });
+                    }
+                },
+                feedback: function(_self){
+                    var button=_self.next(),
+                        form=_self.find('form'),
+                        close=_self.find('.close'),
+                        footer=$('.navbar.footer'),
+                        opened=false;
+
+                    _self.find('[name="phone"]').inputmask({
+                        "mask": "+99 (999) 999-99-99"
+                    });
+                    
+                    close.click(function(e){
+                        e.preventDefault();
+
+                        opened=false;
+                        _self.fadeOut();
+                        button.fadeIn();
+                    });
+
+                    button.click(function(e){
+                        e.preventDefault();
+
+                        opened=true;   
+                        form.show();                     
+                        _self.fadeIn();
+                        button.fadeOut();
+                        scrollForm();
+                    });
+
+                    var toggleButton=function() {
+                        if ($(this).scrollTop()+viewport().height > parseInt(footer.offset().top)-50) {
+                            button.fadeOut('fast');
+                        } else {
+                           button.fadeIn('fast');
+                        }
+                    }
+
+                    var scrollForm=function(){
+                        _self[form.outerHeight()>viewport().height ? 'addClass':'removeClass']('form-scrolled');
+                        
+                    }
+                    
+                    $(window).resize(scrollForm);
+
+                    //toggleButton();
+
+                    //$(window).scroll(toggleButton);
+
+                    if(!$('.center-page-form').length){
+                        $(document).on('keydown', function(e) {
+                            if(opened){
+                                switch (e.keyCode){
+                                    case KEY_ESC:
+                                        close.click();
+                                        return;
+                                    break;
+                                }
+                            }
+                        }).click(function(e){
+                            if(opened && !$(e.target).closest('.form-container').length){
+                                close.click();
+                            }
+                        });
+                    }
+                },
                 lot_tabs: function(_self){
                     var tabs_content=$('.'+_self.data('tab-class')),
                         tabs=_self.find('a');
@@ -184,14 +288,25 @@ var APP,
                     check_height();
                     
                     _self.click(function(e){
-                        e.preventDefault();
-                        $(this).closest('.description').toggleClass('opened');
-
-                        text.animate({
-                            height: !opened ? text_height : 0
-                    }, 400);
-
-                    opened=!opened;
+                            e.preventDefault();
+                            $(this).closest('.description').toggleClass('opened');
+    
+                            text.animate({
+                                height: !opened ? text_height : 0
+                        }, 400);
+    
+                        opened=!opened;
+                    });
+                    
+                    $('.slider-list').slick({
+                        dots: true,
+                        arrows: true,
+                        speed: 300,
+                        slidesToShow: 1,
+                        pauseOnDotsHover: true, 
+                        pauseOnHover: true,
+                        autoplay: true,
+                        infinite: false
                     });
                 },
                 home_equal_height: function(_self){

@@ -27,6 +27,7 @@
 @endsection
 
 @section('content')
+    
     @if ($item && !$error)
         <div class="tender">
             <div class="tender--head gray-bg">
@@ -165,4 +166,5 @@
             {{trans('tender.tender_not_found')}}
         </div>
     @endif
+
 @endsection

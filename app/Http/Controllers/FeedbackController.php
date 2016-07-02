@@ -9,24 +9,35 @@ class FeedbackController extends Controller
 {
     public function store(FeedbackRequest $request)
     {
-        //dump($request->all());
+                return redirect()->back()->withErrors([
+                    'done'=>true
+                ]);
+                        $data=$request->input();
 
         $url=env('WORKSECTION_URL').'/api/admin/';
         $action='post_task';
         $page='/project/'.env('WORKSECTION_PROJECT_ID').'/';
         
         $data=[
-            'email_user_from'=>'',/**/
-            'email_user_to'=>'',/**/
-            'title'=>'',/**/
-            'text'=>'',
+            'email_user_from'=>'andriy.kucherenko@gmail.com',
+            'email_user_to'=>'andriy.kucherenko@gmail.com',
+            'title'=>trans('feedback.type.'.$data['type']).(!empty($data['id'])?' '.$data['id']:''),
+            'text'=>sprintf('%s<br>%s<br><br><strong>URL</strong>: <a href="%s">%s</a><br><strong>Контактна особа</strong>: %s <%s> %s',
+                $data['subject'],
+                $data['message'],
+                $request->server('HTTP_REFERER'),
+                $request->server('HTTP_REFERER'),
+                $data['name'],
+                $data['email'],
+                $data['phone']
+            ),
             'action'=>$action,
             'page'=>$page,
-            'hidden'=>'email,email',
-            'subscribe'=>'email,email',
-            'priority'=>'',
-            'datestart'=>'DD.MM.YYYYY',
-            'dateend'=>'DD.MM.YYYYY',
+            #'hidden'=>'email,email',
+            #'subscribe'=>'email,email',
+            #'priority'=>'',
+            'datestart'=>date('d.m.Y'),
+            #'dateend'=>'DD.MM.YYYYY',
             'hash'=>md5($page.$action.env('WORKSECTION_KEY')),
         ];
 
@@ -49,18 +60,18 @@ class FeedbackController extends Controller
                 if(!empty($json->status) && $json->status=='error')
                 {
                     return redirect()->back()->withErrors([
-                        'api'=>'API error'
+                        'api'=>'Помилка підключення до API'
                     ]);
                 }
 
-                return redirect('/thanks/');
+                return redirect()->back()->withErrors([
+                    'done'=>true
+                ]);
             }
         }
 
         return redirect()->back()->withErrors([
-            'api'=>'API error'
+            'api'=>'Помилка підключення до API'
         ]);
-        //  /api/admin/?action=post_task&page=/project/PROJECT_ID/&email_user_from=USER_EMAIL&email_user_to=USER_EMAIL&hidden=USER_EMAIL,USER_EMAIL&subscribe=USER_EMAIL,USER_EMAIL&title=TASK_NAME&text=TASK_TEXT&priority=7&datestart=DD.MM.YYYYY&dateend=DD.MM.YYYYY&hash=HASH
-
     }
 }

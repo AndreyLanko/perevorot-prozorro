@@ -15,7 +15,6 @@
     <![endif]-->
     <link rel='shortcut icon' type='image/x-icon' href='/assets/images/favicon.ico' />
     @yield('head')
-    @yield('recaptcha')    
 </head>
 <body>
     @if (env('GA_CODE'))
@@ -76,7 +75,10 @@
 		
         @yield('content')
         <div class="last"></div>
+
+        @include('forms/feedback')
     </div>
+
     
     @yield('html_footer')
     

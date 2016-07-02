@@ -20,12 +20,15 @@
             Route::post('{search}/form/search', 'FormController@search');
             Route::post('form/autocomplete/{type}', 'FormController@autocomplete');            
 
-            Route::get('tender/{id}/print/{type}/{print}', 'PrintController@one')->where('print', '(pdf|html)');;
+            Route::get('tender/{id}/print/{type}/{print}', 'PrintController@one')->where('print', '(pdf|html)');
             Route::get('tender/{id}/print/{type}/{print}/{lot_id?}', 'PrintController@one')->where('print', '(pdf|html)');
-		});
 
+            Route::get('{url}', 'ErrorController@notfound');
+            #Route::get('error/404', 'ErrorController@notfound');
+            #Route::get('error/500', 'ErrorController@systemerror');
+		});
 	}
+
     Route::post('feedback', 'FeedbackController@store');
 
     Route::get('json/platforms/{type}', 'JsonController@platforms');
-    

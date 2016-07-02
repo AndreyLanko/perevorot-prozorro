@@ -12,9 +12,12 @@ class FeedbackRequest extends Request
     public function rules()
     {
         $rules=[
-            'name' => 'required|regex:/^[(\w\s)]+$/u',
             'email' => 'required|email',
-            'phone' => 'regex:(38\d{10})',
+            'phone' => 'required|regex:(\+\d{2} \(\d{3}\) \d{3}\-\d{2}\-\d{2})',
+            'name' => 'required|regex:/^[(\w\s)]+$/u',
+            'subject' => 'required',
+            'message' => 'required',
+            'type' => 'required',
             'g-recaptcha-response' => 'required|recaptcha',
         ];
         

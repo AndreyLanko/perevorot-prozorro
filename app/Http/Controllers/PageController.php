@@ -1786,7 +1786,7 @@ class PageController extends BaseController
         }
     }
     
-    private function get_html()
+    public function get_html()
     {
         $html=Cache::remember('get_html_'.Config::get('locales.current'), 60, function()
         {
