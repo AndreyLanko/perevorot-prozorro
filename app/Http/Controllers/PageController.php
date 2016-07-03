@@ -1021,6 +1021,8 @@ class PageController extends BaseController
 
             if($type=='tender' && (empty($item->lots) || (!empty($item->lots) && sizeof($item->lots)==1)))
                 $type=['tender', 'lot', 'item'];
+            elseif($type=='tender')
+                $type=['tender', 'item'];
             else
                 $type=[$type];
 
