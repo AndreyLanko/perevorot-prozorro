@@ -29,7 +29,15 @@
                 <tbody>
                     @foreach($item->__bids as $k=>$bid)
                         <tr>
-                            <td>{{!empty($bid->tenderers[0]->name) ? $bid->tenderers[0]->name : 'Учасник'}}</td>
+                            <td>
+                                @if(!empty($bid->tenderers[0]->identifier->legalName))
+                                    {{$bid->tenderers[0]->identifier->legalName}}
+                                @elseif(!empty($bid->tenderers[0]->name))
+                                    {{$bid->tenderers[0]->name}}
+                                @else
+                                    Учасник
+                                @endif
+                            </td>
                             <td>
                                 @if(!empty($item->__initial_bids[$bid->id]))
                                     {{str_replace('.00', '', number_format($item->__initial_bids[$bid->id], 2, '.', ' '))}}
