@@ -79,7 +79,7 @@
                             </li>
                         </ul>
                         --}}
-                        <ul class="nav nav-list last">
+                        <ul class="nav nav-list">{{--last--}}
                             {{--
                             <li>
                                 <a href="#"><i class="sprite-print"></i> Роздрукувати</a>
