@@ -79,7 +79,7 @@
                                 </h4>
                                 @foreach($bid->__documents_public as $document)
                                     <div class="document-info">
-                                        <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+                                        <div class="document-date">{{date('d.m.Y H:i', strtotime($document->dateModified))}}</div>
                                         <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
                                     </div>
                                 @endforeach
@@ -90,7 +90,7 @@
                                 </h4>
                                 @foreach($bid->__documents_confident as $document)
                                     <div class="document-info">
-                                        <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+                                        <div class="document-date">{{date('d.m.Y H:i', strtotime($document->dateModified))}}</div>
                                         <div>{{$document->title}}</div>
                                         <p style="font-size:80%;margin-top:10px;margin-bottom:4px;color:#AAA">Обгрунтування конфіденційності</p>
                                         <p style="font-size:80%;">{{$document->confidentialityRationale}}</p>
@@ -145,7 +145,7 @@
                                     </h4>
                                     @foreach($bid->__documents_public as $document)
                                         <div class="document-info">
-                                            <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+                                            <div class="document-date">{{date('d.m.Y H:i', strtotime($document->dateModified))}}</div>
                                             <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
                                         </div>
                                     @endforeach
@@ -158,7 +158,7 @@
                                     </h4>
                                     @foreach($bid->__documents_confident as $document)
                                         <div class="document-info">
-                                            <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+                                            <div class="document-date">{{date('d.m.Y H:i', strtotime($document->dateModified))}}</div>
                                             <div>{{$document->title}}</div>
                                             <p style="font-size:80%;margin-top:10px;margin-bottom:4px;color:#AAA">Обгрунтування конфіденційності</p>
                                             <p style="font-size:80%;">{{$document->confidentialityRationale}}</p>
