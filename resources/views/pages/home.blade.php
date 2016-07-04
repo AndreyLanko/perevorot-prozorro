@@ -48,15 +48,14 @@
         </div>
     </div>
     <div class="slider-list-inner col-xs-12 col-md-10">
-<!--         https://prozorro.gov.ua/ua/habarmen/ -->
         <div class="slider-list">
-            <a href="https://prozorro.gov.ua/ua/habarmen/" class="slide" style="background-image: url('/assets/images/slider/gos-online-service_1.jpg')">
+            <a href="https://prozorro.gov.ua/ua/habarmen/" class="slide" style="background-image: url('/assets/images/slider/{{Lang::getLocale()}}/gos-online-service_1.jpg')">
                 <img src="/assets/images/slider/empty-slider.png" alt=""/>
             </a>
-            <a href="https://prozorro.gov.ua/ua/habarmen/" class="slide" style="background-image: url('/assets/images/slider/gos-online-service_2.jpg')">
+            <a href="https://prozorro.gov.ua/ua/habarmen/" class="slide" style="background-image: url('/assets/images/slider/{{Lang::getLocale()}}/gos-online-service_2.jpg')">
                 <img src="/assets/images/slider/empty-slider.png" alt=""/>
             </a>
-            <a href="https://prozorro.gov.ua/ua/habarmen/" class="slide" style="background-image: url('/assets/images/slider/gos-online-service_3.jpg')">
+            <a href="https://prozorro.gov.ua/ua/habarmen/" class="slide" style="background-image: url('/assets/images/slider/{{Lang::getLocale()}}/gos-online-service_3.jpg')">
                 <img src="/assets/images/slider/empty-slider.png" alt=""/>
             </a>
         </div>

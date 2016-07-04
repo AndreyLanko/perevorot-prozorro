@@ -1159,7 +1159,7 @@ class PageController extends BaseController
     {
         $item->__button_007=false;
 
-        if(($item->procurementMethod=='open' && in_array($item->procurementMethodType, ['aboveThresholdEU', 'aboveThresholdUA', 'aboveThresholdUA.defense'])) || ($item->procurementMethod=='limited' && in_array($item->procurementMethodType, ['negotiation', 'negotiation.quick'])))
+        if(($item->procurementMethod=='open' && in_array($item->procurementMethodType, ['aboveThresholdEU', 'aboveThresholdUA', 'aboveThresholdUA.defense', 'belowThreshold'])) || ($item->procurementMethod=='limited' && in_array($item->procurementMethodType, ['negotiation', 'negotiation.quick', 'reporting'])))
         {
             if(!empty($item->__documents))
             {
@@ -1167,9 +1167,9 @@ class PageController extends BaseController
                     return $contract->status=='active';
                 });
 
-                if($has_active_contracts && $item->status=='complete' && !empty($item->__active_award->complaintPeriod->endDate))
+                if($has_active_contracts && $item->status=='complete' && (!empty($item->__active_award->complaintPeriod->endDate) || !empty($item->__active_award->date)))
                 {
-                    $date=date_create($item->__active_award->complaintPeriod->endDate);
+                    $date=!empty($item->__active_award->complaintPeriod) ? date_create($item->__active_award->complaintPeriod->endDate) : date_create($item->__active_award->date);
                     $sub_days=0;
 
                     if(in_array($item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdEU', 'negotiation']))
@@ -1180,6 +1180,15 @@ class PageController extends BaseController
                     
                     elseif(in_array($item->procurementMethodType, ['aboveThresholdUA.defense']))
                         $sub_days=4;
+
+                    elseif(in_array($item->procurementMethodType, ['belowThreshold']))
+                        $sub_days=2;
+
+                    elseif(in_array($item->procurementMethodType, ['reporting']))
+                    {
+                        $sub_days=0;
+                        $date=date_create($item->__active_award->date);
+                    }
         
                     $now=new DateTime();
                     $work_days=$this->parse_work_days();

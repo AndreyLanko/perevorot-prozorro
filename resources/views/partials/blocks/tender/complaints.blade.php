@@ -17,7 +17,11 @@
                                 @if (!empty($complaint->author->identifier->id))
                                     Скаржник: {{!empty($complaint->author->identifier->legalName) ? $complaint->author->identifier->legalName : $complaint->author->name}}, Код ЄДРПОУ:{{$complaint->author->identifier->id}}<br>
                                 @endif
-                                Дата подання: {{!empty($complaint->dateSubmitted) ? date('d.m.Y H:i', strtotime($complaint->dateSubmitted)) : 'відсутня'}}
+                                @if($item->procurementMethodType!='belowThreshold')
+                                    Дата подання: {{!empty($complaint->dateSubmitted) ? date('d.m.Y H:i', strtotime($complaint->dateSubmitted)) : 'відсутня'}}
+                                @else
+                                    Дата подання: {{!empty($complaint->dateEscalated) ? date('d.m.Y H:i', strtotime($complaint->dateEscalated)) : 'відсутня'}}
+                                @endif
                             </div>
                             
                             <div class="margin-bottom" style="margin-left:40px">
