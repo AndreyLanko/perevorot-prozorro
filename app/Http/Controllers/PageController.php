@@ -1946,7 +1946,7 @@ class PageController extends BaseController
     
     private function parse_contracts_json($id)
     {
-        return Cache::remember('contracts_'.$id, 60, function() use ($id)
+        return Cache::remember('contracts_'.$id, 15, function() use ($id)
         {
             $url=env('API_TENDER_CONTRACT').'/'.$id;
             $headers=get_headers($url);
