@@ -1003,7 +1003,7 @@ class PageController extends BaseController
             if(!$return)
             {
                 $item->__questions=new \StdClass();
-                $item->__questions=$questions;
+                $item->__questions=array_values($questions);
             }
             else
                 return $questions;
@@ -1347,6 +1347,9 @@ class PageController extends BaseController
                 $lot->__questions=array_where($this->get_questions($item, 'lot', true), function($key, $question) use ($lot){
                     return !empty($question->relatedItem) && $question->relatedItem==$lot->id;
                 });
+
+                if(!empty($lot->__questions))
+                    $lot->__questions=array_values($lot->__questions);
 
                 $lot->__complaints_claims=new \StdClass();
                 $lot->__complaints_claims=array_where($this->get_claims($item, 'lot', true), function($key, $claim) use ($lot){
