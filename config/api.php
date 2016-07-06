@@ -9,12 +9,13 @@
     {
         $api['__switcher']['tender']=[
             	'prozorro'=>env('API_TENDER_PROZORRO'),
-            'v2'=>env('API_TENDER_V2'),
+            'v24'=>env('API_TENDER_V2'),
             	'23'=>env('API_TENDER_SANDBOX'),
         ];
 
         $api['__switcher']['plan']=[
             	'plan'=>env('API_PLAN'),
+            'plan24'=>env('API_PLAN_V2'),
             	'plan23'=>env('API_PLAN2')
         ];
 
