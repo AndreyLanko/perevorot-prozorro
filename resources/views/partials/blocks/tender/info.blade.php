@@ -41,10 +41,10 @@
                         @else
                             <div class="tender-date padding-left-more">{{trans('tender.no_cpv')}}</div>
                         @endif
-                        @if(!empty($one->additionalClassifications[0]))
-                            <div class="tender-date padding-left-more">{{trans('tender.dkpp')}}: {{$one->additionalClassifications[0]->id}} — {{$one->additionalClassifications[0]->description}}</div>
-                        @else
-                            <div class="tender-date padding-left-more">{{trans('tender.no_dkpp')}}</div>
+                        @if(!empty($one->additionalClassifications))
+                            @foreach($one->additionalClassifications as $classification)
+                                <div class="tender-date padding-left-more">{{trans('scheme.'.$classification->scheme)}}: {{$classification->id}} — {{$classification->description}}</div>
+                            @endforeach
                         @endif
                     </div>
                 </div>
