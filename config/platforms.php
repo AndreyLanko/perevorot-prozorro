@@ -36,9 +36,9 @@ return [
 		'tender'=>true,
 		'type1'=>false,
 		'type2'=>false,
-		'level1'=>false,
+		'level1'=>true,
 		'level2'=>true,
-		'level3'=>false,
+		'level3'=>true,
 		'level4'=>true,		
 	],
 	[
@@ -51,7 +51,7 @@ return [
 		'type2'=>false,
 		'level1'=>true,
 		'level2'=>true,
-		'level3'=>false,
+		'level3'=>true,
 		'level4'=>true,		
 	],
 	[
