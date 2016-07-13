@@ -1281,6 +1281,13 @@ class PageController extends BaseController
                 $cnt++;
             }
 
+            if($item->procurementMethodType=='aboveThresholdEU')
+            {
+                $__qualifications=array_where($__qualifications, function($key, $qualification){
+                    return empty($qualification->status) || !in_array($qualification->status, ['cancelled']);
+                });
+            }
+
             if(!$return)
             {
                 $item->__qualifications=new \StdClass();
