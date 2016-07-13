@@ -1,6 +1,7 @@
 (function(){
 	'use strict';
-
+    //return;
+ 
 	var BLOCK = function(){
 		var _input,
 			pattern=/^UA\-20\d{2}\-\d{2}\-\d{2}\-\d{6}$/,			

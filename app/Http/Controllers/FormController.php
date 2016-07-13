@@ -336,11 +336,14 @@ class FormController extends BaseController
                 {
                     foreach($response->items as $item)
                     {
-                        array_push($data, [
-                            'name'=>!empty($item->short) ? $item->short : $item->name,
-                            'id'=>$item->edrpou,
-                            'location'=>$item->location
-                        ]);
+                        if(!empty($item->name))
+                        {
+                            array_push($data, [
+                                'name'=>$item->name,
+                                'id'=>$item->edrpou,
+                                'location'=>$item->location
+                            ]);
+                        }
                     }
                 }
             }
