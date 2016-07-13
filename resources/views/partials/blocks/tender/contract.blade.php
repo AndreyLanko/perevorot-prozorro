@@ -18,7 +18,13 @@
                     @foreach($item->__documents as $document)
                         <tr>
                             <td><a href="{{$document->url}}" target="_blank">{{$document->title}}</a></td>
-                            <td>{{$document->status}}</td>
+                            <td>
+                                @if(trans('contract.'.$document->status))
+                                    {{trans('contract.'.$document->status)}}
+                                @else
+                                    {{$document->status}}
+                                @endif
+                            </td>
                             <td>
                                 {{--
                                 @if (!empty($document->dateSigned))
