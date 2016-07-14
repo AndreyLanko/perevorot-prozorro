@@ -336,7 +336,7 @@ class FormController extends BaseController
 
 	private function get_edrpou_data()
 	{
-        //	return $this->json('edrpou');
+        	return $this->json('edrpou');
         	
         	$query=mb_strtolower(Input::get('query'));
 

@@ -112,7 +112,7 @@
                                 @endforeach
                                 @if($item->classification)
                                     <div class="tender--description--text description" style="margin-left:20px;">
-                                       {{trans('tender.cpv')}}: {{$item->classification->id}} — {!!nl2br($item->classification->description)!!}
+                                       {{trans('scheme.'.$item->classification->scheme)}}: {{$item->classification->id}} — {!!nl2br($item->classification->description)!!}
                                     </div>
                                 @endif
                             @else
