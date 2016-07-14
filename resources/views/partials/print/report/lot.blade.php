@@ -81,9 +81,9 @@
             <td>
                 <strong>
                     @if(in_array($__item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdEU']))
-                        {{!empty($lot->__unique_bids) ? $lot->__unique_bids : $__item->__unique_bids}}
+                        {{!empty($lot) ? (int) (!empty($lot->__unique_bids) ? $lot->__unique_bids : 0) : $__item->__unique_bids}}
                     @elseif(in_array($__item->procurementMethodType, ['negotiation', 'negotiation.quick']))
-                        {{!empty($lot->__unique_awards) ? $lot->__unique_awards : $__item->__unique_awards}}
+                        {{!empty($lot) ? (int) (!empty($lot->__unique_awards) ? $lot->__unique_awards : 0) : $__item->__unique_awards}}
                     @endif
                 </strong>
             </td>
@@ -165,7 +165,7 @@
                                         {{$one->__award->title}}<br>
                                     @endif
                                     @if(!empty($one->__award->description))
-                                        {{$one->__award->description}}
+                                        {!! nl2br($one->__award->description) !!}
                                     @endif
                                 @elseif($one->__award->status=='pending')
                                     Не розглядався
@@ -203,22 +203,74 @@
         <tr valign="top">
             <td width="302">{{$n++}}. Підстави для прийняття рішення про неукладення договору про закупівлю (у разі якщо в результаті проведення торгів не було укладено договір про закупівлю):</td>
             <td>
-                <strong>
-                    @if(!empty($lot->__cancellations))
+                @if(in_array($item->status, ['cancelled', 'unsuccessful']))
+                    @if($lot->status=='cancelled' && !empty($lot->__cancellations))
                         @foreach($lot->__cancellations as $cancellation)
-                            <div>{{$cancellation->reason}}</div>
+                            @if(!empty($cancellation->reason))
+                                <div>{{$cancellation->reason}}</div>
+                            @endif
                         @endforeach
+                    @elseif(in_array($item->procurementMethodType, ['aboveThresholdEU', 'aboveThresholdUA', 'aboveThresholdUA.defense']) && !empty($lot->__unsuccessful_awards))
+                        <div>Відхилення всіх тендерних пропозицій згідно з Законом про публічні закупівлі</div>
                     @else
-                        Відсутні
+                        <?php
+                            $tenderPeriod=!empty($item->tenderPeriod) ? $item->tenderPeriod : false;
+                            $numberOfBids=0;
+    
+                            if(!empty($lot->__bids))
+                            {
+                                $numberOfBids=array_where($lot->__bids, function($key, $bid){
+                                    return !empty($bid->status) && $bid->status=='active';
+                                });
+                            
+                                $numberOfBids=$numberOfBids ? sizeof($numberOfBids) : 0;
+                            }
+    
+                            $numberOfQualifications=0;
+    
+                            if(!empty($lot->__qualifications))
+                            {
+                                $numberOfQualifications=array_where($lot->__qualifications, function($key, $qualification){
+                                    return !empty($qualification->status) && $qualification->status=='active';
+                                });
+                                
+                                $numberOfQualifications=$numberOfQualifications ? sizeof($numberOfQualifications) : 0;
+                            }
+                        ?>
+                        @if($lot->status=='unsuccessful')
+                            @if(in_array($item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdUA.defense']))
+                                <div>подання для участі в торгах менше двох тендерних пропозицій</div>
+                            @elseif($item->procurementMethodType=='belowThresholdUA')
+                                <div>відсутність тендерних пропозицій</div>
+                            @elseif($item->procurementMethodType=='aboveThresholdEU' && $numberOfBids < 2)
+                                <div>подання для участі в торгах менше двох тендерних пропозицій</div>
+                            @elseif($item->procurementMethodType=='aboveThresholdEU' && $numberOfQualifications < 2)
+                                <div>допущення до оцінки менше двох тендерних пропозицій</div>
+                            @else
+                                <div>відсутність пропозицій</div>
+                            @endif
+                        @endif
                     @endif
-                </strong>
+                @else
+                    Відсутні
+                @endif
             </td>
         </tr>
+        <?php
+            $contracts=[];
+
+            if(!empty($__item->__signed_contracts) && !empty($__item->lots))
+            {
+                $contracts=array_where($__item->__signed_contracts, function($key, $contract) use ($lot_id){
+                    return !empty($contract->items[0]) && $contract->items[0]->relatedLot==$lot_id;
+                });
+            }
+        ?>
         <tr valign="top">
             <td width="302">{{$n++}}. Дата укладення договору про закупівлю:</td>
             <td>
-                @if(!empty($__item->__signed_contracts))
-                    <strong>@foreach($__item->__signed_contracts as $contract){{date('d.m.Y', strtotime($contract->dateSigned))}}@endforeach</strong>
+                @if(!empty($contracts))
+                    <strong>@foreach($contracts as $contract)<div>{{date('d.m.Y', strtotime($contract->dateSigned))}}</div>@endforeach</strong>
                 @else
                     Відсутні
                 @endif
@@ -227,9 +279,9 @@
         <tr valign="top">
             <td width="302">{{$n++}}. Найменування учасника (для юридичної особи) або прізвище, ім’я, по батькові (для фізичної особи), з яким укладено договір про закупівлю:</td>
             <td>
-                @if(!empty($__item->__signed_contracts))
+                @if(!empty($contracts))
                     <strong>
-                        @foreach($__item->__signed_contracts as $contract)
+                        @foreach($contracts as $contract)
                             @if(!empty($contract->suppliers[0]->identifier->legalName))
                                 {{$contract->suppliers[0]->identifier->legalName}}<br>
                             @elseif(!empty($contract->suppliers[0]->name))
@@ -245,9 +297,9 @@
         <tr valign="top">
             <td width="302">{{$n++}}. Місцезнаходження учасника, з яким укладено договір про закупівлю:</td>
             <td>
-                @if(!empty($__item->__signed_contracts))
+               @if(!empty($contracts))
                     <strong>
-                        @foreach($__item->__signed_contracts as $contract)
+                        @foreach($contracts as $contract)
                             @if (!empty($contract->suppliers[0]->address))
                                 {{!empty($contract->suppliers[0]->address->postalCode) ? $contract->suppliers[0]->address->postalCode.', ' : ''}}{{!empty($contract->suppliers[0]->address->countryName) ? $contract->suppliers[0]->address->countryName.', ' : '' }}{{!empty($contract->suppliers[0]->address->region) ? $contract->suppliers[0]->address->region.trans('tender.region') : ''}}{{!empty($contract->suppliers[0]->address->locality) ? $contract->suppliers[0]->address->locality.', ' : ''}}{{!empty($contract->suppliers[0]->address->streetAddress) ? $contract->suppliers[0]->address->streetAddress : ''}}
                             @endif
@@ -265,11 +317,11 @@
         <tr valign="top">
             <td width="302">{{$n++}}. Сума, визначена в договорі про закупівлю:</td>
             <td>
-                @if(!empty($__item->__signed_contracts))
+                @if(!empty($contracts))
                     <strong>
-                        @foreach($__item->__signed_contracts as $contract)
+                        @foreach($contracts as $contract)
                             @if (!empty($contract->value->amount))
-                                {{str_replace('.00', '', number_format($contract->value->amount, 2, '.', ' '))}}  {{$contract->value->currency}}{{$contract->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
+                                <div>{{str_replace('.00', '', number_format($contract->value->amount, 2, '.', ' '))}}  {{$contract->value->currency}}{{$contract->value->valueAddedTaxIncluded?trans('tender.vat'):''}}</div>
                             @endif
                         @endforeach
                     </strong>

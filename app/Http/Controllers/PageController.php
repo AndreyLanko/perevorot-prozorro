@@ -289,6 +289,8 @@ class PageController extends BaseController
         
         $this->get_print_href($item);
         $this->get_multi_lot($item);
+        $this->get_single_lot($item);
+
         $this->get_eu_lots($item);
 
         if(!empty($item->awards))
@@ -709,6 +711,12 @@ class PageController extends BaseController
     {
         $item->__isMultiLot=new \StdClass();
         $item->__isMultiLot=(!empty($item->lots) && sizeof($item->lots)>1);
+    }
+
+    private function get_single_lot(&$item)
+    {
+        $item->__isSingleLot=new \StdClass();
+        $item->__isSingleLot=(!empty($item->lots) && sizeof($item->lots)==1) || empty($item->lots);
     }
     
     private function get_opened_questions(&$item)
@@ -1472,7 +1480,7 @@ class PageController extends BaseController
                                 return $value->relatedLot===$lot->id;
                             });
                         }
-                        
+
                         if(!empty($lot_bid))
                         {
                             $bid_value=array_values($lot_bid)[0];
@@ -1493,6 +1501,12 @@ class PageController extends BaseController
 
                             $lot->__bids[]=clone $bid;
                         }
+                    }
+
+                    foreach($lot->__bids as $__bid)
+                    {
+                        if(!empty($__bid->__award) && $__bid->__award->lotID!=$lot->id)
+                            $__bid->__award=null;
                     }
 
                     usort($lot->__bids, function ($a, $b)

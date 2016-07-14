@@ -4,6 +4,11 @@
     <center>
         <h2>ЗВІТ</h2>
         <div>про результати проведення процедури закупівлі<br>{{$item->tenderID}}</div>
+        @if (!empty($lot_id))
+            {{array_first($item->lots, function($key, $lot) use ($lot_id){
+                    return $lot->id==$lot_id;
+            })->title}}</div>
+        @endif
     </center>
 
     <br><br>
@@ -24,15 +29,21 @@
             @endif
         </tr>
     </table>
-
     @if(empty($item->lots))
         @include('partials/print/report/lot', [
             'lots'=>[$item],
             '__item'=>$item
         ])
+    @elseif(!empty($item->lots) && sizeof($item->lots)==1)
+        @include('partials/print/report/lot', [
+            'lots'=>[$item->lots[0]],
+            '__item'=>$item
+        ])
     @else
         @include('partials/print/report/lot', [
-            'lots'=>$item->lots,
+            'lots'=>array_where($item->lots, function($key, $lot) use ($lot_id){
+                return $lot->id==$lot_id;
+            }),
             '__item'=>$item
         ])
     @endif
