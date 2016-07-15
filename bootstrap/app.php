@@ -22,6 +22,8 @@ $app->configureMonologUsing(function(Monolog\Logger $monolog) {
     $monolog->pushHandler($handler);
 });
 
+require('env.php');
+
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces

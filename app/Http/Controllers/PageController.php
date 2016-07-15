@@ -9,68 +9,14 @@ use Symfony\Component\Yaml\Exception\ParseException;
 use Request;
 use Redirect;
 use Config;
-use Session;
 use DateTime;
 
 class PageController extends BaseController
 {
     public function home()
     {
-        if(env('APP_ENV')=='local' && Input::get())
-        {
-            if(Input::get())
-            {
-                $switch_to=array_keys(Input::get())[0];
-                list($search_type, $new_api)=explode('-', $switch_to);
-            }
-
-            foreach(Config::get('api.__switcher.'.$search_type) as $api=>$url)
-            {
-                if($api==$new_api)
-                {
-                    Session::set('api_'.$search_type, $url);
-
-                    return redirect(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/');
-                }
-            }
-        }
-        
         $last=null;
         $auctions_items=null;
-        
-        /*   
-        $last=Cache::remember('get_last_homepage', 60, function()
-        {
-            return app('App\Http\Controllers\FormController')->getSearchResults([
-                'procedure=open'
-            ]);
-        });            
-
-        $auctions_items=Cache::remember('get_last_auctions', 60, function()
-        {
-            $auctions=app('App\Http\Controllers\FormController')->getSearchResults([
-                'status=active.auction'
-            ]);
-
-            $auctions=json_decode($auctions);
-            $auctions_items=false;
-    
-            if(!empty($auctions->items))
-            {
-                    $active_auctions=[];
-
-                    foreach($auctions->items as $one)
-                    {
-                        if(!empty($one->auctionPeriod))
-                            $active_auctions[]=$one;
-                }
-
-                $auctions_items=array_chunk(array_slice($active_auctions, 0, 9), 3);
-            }
-
-            return $auctions_items;
-        });
-        */
         
         $dataStatus=[];
 
@@ -183,7 +129,7 @@ class PageController extends BaseController
                 $error=$data->error;
         
             if(!$item)
-                $error='План не найден'.(Config::get('api.__switcher')?', попробуйте другой API':'');
+                $error='План не найден';
 
             if($error)
             {
@@ -270,7 +216,7 @@ class PageController extends BaseController
                 $this->error=$data->error;
 
             if(!$item)
-                $this->error='Тендер не найден'.(Config::get('api.__switcher')?', попробуйте другой API':'');
+                $this->error='Тендер не найден';
 
             if($this->error)
             {
@@ -490,11 +436,7 @@ class PageController extends BaseController
     
     public function getSearchResults($query)
     {
-		if(!empty(Session::get('api_pmtype')))
-        		$query[]='proc_type='.Session::get('api_pmtype');
-
-        $url=Session::get('api_'.$this->search_type, Config::get('api.'.$this->search_type)).'?'.implode('&', $query);
-        $url=!empty($url) ? $url : env('PROZORRO_API');
+        $url=Config::get('api.'.$this->search_type).'?'.implode('&', $query);
 
         if(isset($_GET['api']) && getenv('APP_ENV')=='local')
             dd($url);
@@ -1969,7 +1911,8 @@ class PageController extends BaseController
     {
         return Cache::remember('contracts_'.$id, 15, function() use ($id)
         {
-            $url=env('API_TENDER_CONTRACT').'/'.$id;
+            $url=env('API_CONTRACT').'/'.$id;
+
             $headers=get_headers($url);
             $contents=false;
 
