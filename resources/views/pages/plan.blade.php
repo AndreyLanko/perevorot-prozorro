@@ -105,7 +105,7 @@
                                     <div class="margin-bottom">
                                         <div class="description-wr">
                                             <div class="tender--description--text description" style="margin-left:20px;">
-                                               {{trans('interface.scheme.'.$one->scheme)}}: {{$one->id}} — {!!nl2br($one->description)!!}
+                                               {{trans('scheme.'.$one->scheme)}}: {{$one->id}} — {!!nl2br($one->description)!!}
                                             </div>
                                         </div>
                                     </div>
