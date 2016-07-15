@@ -1,6 +1,7 @@
 /vendor
 /node_modules
 .env
+*.env
 composer.lock
 /resources/vendor
 /resources/assets/js/vendor
