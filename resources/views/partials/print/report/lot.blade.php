@@ -265,6 +265,8 @@
                     return !empty($contract->items[0]) && $contract->items[0]->relatedLot==$lot_id;
                 });
             }
+            elseif(!empty($__item->__signed_contracts))
+                $contracts=$__item->__signed_contracts;
         ?>
         <tr valign="top">
             <td width="302">{{$n++}}. Дата укладення договору про закупівлю:</td>
