@@ -962,6 +962,25 @@ class PageController extends BaseController
         if($return)
             return [];
     }
+    
+    private function get_questions_lots($item, $lot)
+    {
+        if(!empty($item->questions))
+        {
+            $item_ids=[];
+            
+            if(!empty($lot->__items))
+                $item_ids=array_pluck($lot->__items, 'id');
+
+            $questions=array_where($item->questions, function($key, $question) use ($item, $lot, $item_ids){
+                return !empty($question->relatedItem) && ($question->questionOf=='lot' && $question->relatedItem==$lot->id) || ($question->questionOf=='item' && in_array($question->relatedItem, $item_ids));
+            });
+
+            return $questions;
+        }
+        
+        return [];
+    }
 
     private function get_tender_documents(&$item, $type='tender')
     {
@@ -1301,12 +1320,7 @@ class PageController extends BaseController
                 });
 
                 $lot->__questions=new \StdClass();
-                $lot->__questions=array_where($this->get_questions($item, 'lot', true), function($key, $question) use ($lot){
-                    return !empty($question->relatedItem) && $question->relatedItem==$lot->id;
-                });
-
-                if(!empty($lot->__questions))
-                    $lot->__questions=array_values($lot->__questions);
+                $lot->__questions=$this->get_questions_lots($item, $lot);
 
                 $lot->__complaints_claims=new \StdClass();
                 $lot->__complaints_claims=array_where($this->get_claims($item, 'lot', true), function($key, $claim) use ($lot){
