@@ -63,6 +63,15 @@
         <br>
     @endif
 
+    <?php
+        if(!empty($lot->__bids))
+            $bids=$lot->__bids;
+        elseif(!empty($__item->__bids))
+            $bids=$__item->__bids;
+        else
+            $bids=[];
+    ?>
+
     <table cellpadding="5" cellspacing="0" border="0" width="100%">
         <tr valign="top">
             <td width="302">{{$n++}}. Дата оприлюднення оголошення про проведення процедури закупівлі:</td>
@@ -81,7 +90,7 @@
             <td>
                 <strong>
                     @if(in_array($__item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdEU']))
-                        {{!empty($lot) ? (int) (!empty($lot->__unique_bids) ? $lot->__unique_bids : 0) : $__item->__unique_bids}}
+                        {{sizeof($bids)}}
                     @elseif(in_array($__item->procurementMethodType, ['negotiation', 'negotiation.quick']))
                         {{!empty($lot) ? (int) (!empty($lot->__unique_awards) ? $lot->__unique_awards : 0) : $__item->__unique_awards}}
                     @endif
@@ -96,17 +105,7 @@
             <td>{{$n++}}. Ціна пропозицій учасника до початку аукціону (ціна пропозиції на переговорах у разі застосування переговорної процедури закупівлі)</td>
             <td>{{$n++}}. Ціна пропозицій учасника після закінчення аукціону</td>
             <td>{{$n++}}. Інформація про наявність і відповідність установленим законодавством вимогам документів, що підтверджують відповідність учасників кваліфікаційним критеріям згідно зі статтею 16 Закону України “Про публічні закупівлі”, та наявність/відсутність обставин, установлених статтею 17 цього Закону</td>
-        </tr>
-
-        <?php
-            if(!empty($lot->__bids))
-                $bids=$lot->__bids;
-            elseif(!empty($__item->__bids))
-                $bids=$__item->__bids;
-            else
-                $bids=[];
-        ?>
-        
+        </tr>        
         @if(!empty($bids))
             @foreach($bids as $one)
                 <tr valign="top">
@@ -225,7 +224,7 @@
                             
                                 $numberOfBids=$numberOfBids ? sizeof($numberOfBids) : 0;
                             }
-    
+
                             $numberOfQualifications=0;
     
                             if(!empty($lot->__qualifications))

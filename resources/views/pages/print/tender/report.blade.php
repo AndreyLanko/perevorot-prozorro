@@ -5,9 +5,39 @@
         <h2>ЗВІТ</h2>
         <div>про результати проведення процедури закупівлі<br>{{$item->tenderID}}</div>
         @if (!empty($lot_id))
-            {{array_first($item->lots, function($key, $lot) use ($lot_id){
+            <div><strong>{{array_first($item->lots, function($key, $lot) use ($lot_id){
+                return $lot->id==$lot_id;
+            })->title}}</strong></div>
+        @endif
+        <?php
+            $active_contract=false;
+
+            if(empty($item->lots))
+            {
+                $active_contract=array_first($item->contracts, function($key, $contract){
+                    return $contract->status=='active';
+                });
+            }
+            elseif(!empty($item->lots) && sizeof($item->lots)==1)
+            {
+                $active_contract=array_first($item->__documents, function($key, $contract){
+                    return $contract->title=='sign.p7s';
+                });
+            }
+            else
+            {
+                $current_lot=array_first($item->lots, function($key, $lot) use ($lot_id){
                     return $lot->id==$lot_id;
-            })->title}}</div>
+                });
+
+                $active_contract=array_first($current_lot->__documents, function($key, $contract){
+                    return $contract->title=='sign.p7s';
+                });
+                
+            }
+        ?>
+        @if (!empty($active_contract->datePublished))
+            <div>Дата формування звіту: {{date('d.m.Y', strtotime($active_contract->datePublished))}}</div>
         @endif
     </center>
 
