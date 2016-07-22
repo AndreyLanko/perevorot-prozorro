@@ -129,8 +129,8 @@
                     <td>
                         <strong>
                             @if($__item->procurementMethod=='open')
-                                @if(!empty($one->__initial_bids[$one->id]))
-                                    {{str_replace('.00', '', number_format($one->__initial_bids[$one->id], 2, '.', ' '))}}
+                                @if(!empty($__item->__initial_bids[$one->id]))
+                                    {{str_replace('.00', '', number_format($__item->__initial_bids[$one->id], 2, '.', ' '))}}
                                     {{$one->value->currency}}{{$one->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
                                 @elseif(!empty($one->value))
                                     {{str_replace('.00', '', number_format($one->value->amount, 2, '.', ' '))}}  {{$one->value->currency}}{{$one->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
