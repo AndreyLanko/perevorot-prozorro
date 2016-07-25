@@ -41,7 +41,11 @@
                 }
             }
         ?>
-        @if (!empty($active_contract->datePublished))
+        @if (!empty($current_lot->date))
+            <div>Дата формування звіту: {{date('d.m.Y', strtotime($current_lot->date))}}</div>        
+        @elseif (!empty($item->date))
+            <div>Дата формування звіту: {{date('d.m.Y', strtotime($item->date))}}</div>        
+        @elseif (!empty($active_contract->datePublished))
             <div>Дата формування звіту: {{date('d.m.Y', strtotime($active_contract->datePublished))}}</div>
         @endif
     </center>
