@@ -1120,6 +1120,19 @@ class PageController extends BaseController
                     else
                         return $bids;
                 }
+                
+                    /*
+                    $lot->__tender_documents=array_where($item->documents, function($key, $document) use ($lot){
+                        return $document->documentOf=='lot' && $document->relatedItem==$lot->id;
+                    });
+
+                    usort($lot->__tender_documents, function ($a, $b)
+                    {
+                        return intval(strtotime($b->dateModified))>intval(strtotime($a->dateModified));
+                    });
+                        
+                    */
+                
             }
         }
     }
@@ -1455,7 +1468,17 @@ class PageController extends BaseController
                             $bid->value=new \StdClass();
                             $bid->value=clone $bid_value->value;
 
-                            $lot->__bids[]=clone $bid;
+                            $cloned_bid=clone $bid;
+                            
+                            $cloned_bid->__documents_public=array_where($cloned_bid->__documents_public, function($key, $document) use ($lot){
+                                return $document->documentOf=='tender' || (($document->documentOf=='lot' || $document->documentOf=='item') && $document->relatedItem==$lot->id);
+                            });
+
+                            $cloned_bid->__documents_confident=array_where($cloned_bid->__documents_confident, function($key, $document) use ($lot){
+                                return $document->documentOf=='tender' || (($document->documentOf=='lot' || $document->documentOf=='item') && $document->relatedItem==$lot->id);
+                            });
+                            
+                            $lot->__bids[]=$cloned_bid;
                         }
                     }
 

@@ -20,9 +20,12 @@
             }
             elseif(!empty($item->lots) && sizeof($item->lots)==1)
             {
-                $active_contract=array_first($item->__documents, function($key, $contract){
-                    return $contract->title=='sign.p7s';
-                });
+                if(!empty($item->__documents))
+                {
+                    $active_contract=array_first($item->__documents, function($key, $contract){
+                        return $contract->title=='sign.p7s';
+                    });
+                }
             }
             else
             {
@@ -30,10 +33,12 @@
                     return $lot->id==$lot_id;
                 });
 
-                $active_contract=array_first($current_lot->__documents, function($key, $contract){
-                    return $contract->title=='sign.p7s';
-                });
-                
+                if(!empty($current_lot->__documents))
+                {
+                    $active_contract=array_first($current_lot->__documents, function($key, $contract){
+                        return $contract->title=='sign.p7s';
+                    });
+                }
             }
         ?>
         @if (!empty($active_contract->datePublished))
