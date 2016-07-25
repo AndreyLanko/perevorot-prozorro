@@ -72,7 +72,7 @@
                         }
                     ?>
                     @if($item->status=='unsuccessful')
-                        @if(in_array($item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdUA.defense']))
+                        @if(in_array($item->procurementMethodType, ['aboveThresholdUA']))
                             <div class="row">
                                 <div class="col-md-12 margin-bottom">
                                     <strong>Дата відміни</strong>
@@ -81,6 +81,17 @@
                                 <div class="col-md-12">
                                     <strong>Причина відміни</strong>
                                     <div>подання для участі в торгах менше двох тендерних пропозицій</div>
+                                </div>
+                            </div>
+                        @elseif(in_array($item->procurementMethodType, ['aboveThresholdUA.defense']))
+                            <div class="row">
+                                <div class="col-md-12 margin-bottom">
+                                    <strong>Дата відміни</strong>
+                                    <div>{{date('d.m.Y H:i', strtotime($tenderPeriod->endDate))}}</div>
+                                </div>
+                                <div class="col-md-12">
+                                    <strong>Причина відміни</strong>
+                                    <div>не подання для участі в торгах жодної тендерної пропозиції</div>
                                 </div>
                             </div>
                         @elseif($item->procurementMethodType=='belowThresholdUA')

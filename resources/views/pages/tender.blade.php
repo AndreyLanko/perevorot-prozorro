@@ -246,14 +246,19 @@
                                 </div>
                             @endforeach
                         </div>
+                        <?php
+                            $lotted=true;
+                        ?>
                     @endif
-    
-                    {{--Інформація про скасування--}}
-                    @include('partials/blocks/tender/cancelled', [
-                        'item'=>$item,
-                        'tenderPeriod'=>!empty($item->tenderPeriod) ? $item->tenderPeriod : false,
-                        'qualificationPeriod'=>!empty($item->qualificationPeriod) ? $item->qualificationPeriod : false
-                    ])
+
+                    @if(!empty($lotted))
+                        {{--Інформація про скасування--}}
+                        @include('partials/blocks/tender/cancelled', [
+                            'item'=>$item,
+                            'tenderPeriod'=>!empty($item->tenderPeriod) ? $item->tenderPeriod : false,
+                            'qualificationPeriod'=>!empty($item->qualificationPeriod) ? $item->qualificationPeriod : false
+                        ])
+                    @endif
     
                     {{--Подати пропозицію--}}
                     @include('partials/blocks/tender/apply')
