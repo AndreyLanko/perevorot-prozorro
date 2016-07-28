@@ -1595,6 +1595,10 @@ class PageController extends BaseController
                 return $datea>$dateb;
             });
             
+            $documents=array_where($documents, function($key, $document){
+                return !in_array($document->status, ['cancelled']);
+            });
+            
             $item->__documents=$documents;
         }
     }
