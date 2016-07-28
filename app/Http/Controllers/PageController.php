@@ -743,6 +743,7 @@ class PageController extends BaseController
                 $item->__unsuccessful_awards=true;
         }
 
+        /*
         $work_days=$this->parse_work_days();
 
         if(!empty($item->__active_award->complaintPeriod->endDate))
@@ -775,8 +776,10 @@ class PageController extends BaseController
                 }
             }
 
-            $item->__active_award->__date=date_format($date->sub(new \DateInterval('P'.$sub_days.'D')), 'd.m.Y H:i');
         }
+        */
+
+        $item->__active_award->__date=date('d.m.Y H:i', strtotime($item->__active_award->date));
         
         if(!empty($item->__isMultiLot))
             $item->__active_award=null;

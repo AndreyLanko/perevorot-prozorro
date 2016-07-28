@@ -19,6 +19,10 @@
                     $active_contract=array_first($item->contracts, function($key, $contract){
                         return $contract->status=='active';
                     });
+
+                    $active_contract=array_first($active_contract->documents, function($key, $contract){
+                        return $contract->title=='sign.p7s';
+                    });
                 }
             }
             elseif(!empty($item->lots) && sizeof($item->lots)==1)
