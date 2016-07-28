@@ -10,6 +10,7 @@ use Request;
 use Redirect;
 use Config;
 use DateTime;
+use DB;
 
 class PageController extends BaseController
 {
@@ -880,16 +881,16 @@ class PageController extends BaseController
         {
             foreach($__complaints_complaints as $key=>$claim)
             {
-                if(in_array($claim->id, array_keys(Config::get('complaints'))))
+                if($cancelled_claims=DB::table('prozorro_claims_documents_cancellation')->where('claim_id', '=', $claim->id)->get())
                 {
                     if(in_array($item->status, ['unsuccessful', 'cancelled']) && !in_array($claim->status, ['invalid', 'stopped', 'accepted', 'declined']))
                     {
                         $__complaints_complaints[$key]->documents=[];
                         $__complaints_complaints[$key]->status='pre_stopping';                        
-                        
-                        foreach(Config::get('complaints')[$claim->id] as $complaint_documents)
+
+                        foreach($cancelled_claims as $complaint_documents)
                         {
-                            $complaint_documents=(object)$complaint_documents;
+                            $complaint_documents=json_decode($complaint_documents->json);
                             $complaint_documents->author='reviewers';
     
                             array_push($__complaints_complaints[$key]->documents, $complaint_documents);
@@ -897,7 +898,6 @@ class PageController extends BaseController
                     }
                 }
             }
-
 
             foreach($__complaints_complaints as $k=>$complaint)
             {
