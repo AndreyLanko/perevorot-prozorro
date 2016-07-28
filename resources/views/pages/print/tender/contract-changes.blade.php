@@ -17,7 +17,10 @@
                 return $lot->id==$lot_id;
             });
         }
-        
+
+        if(!property_exists($item, '__contracts_changes'))
+            $item=$tender;
+
         $contract=array_first($item->__contracts_changes, function($key, $document){
             return $document->id==$_GET['contract'];
         });
