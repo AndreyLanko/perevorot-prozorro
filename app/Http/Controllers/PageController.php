@@ -1469,14 +1469,14 @@ class PageController extends BaseController
                             $bid->value=clone $bid_value->value;
 
                             $cloned_bid=clone $bid;
-                            
-                            $cloned_bid->__documents_public=array_where($cloned_bid->__documents_public, function($key, $document) use ($lot){
-                                return $document->documentOf=='tender' || (($document->documentOf=='lot' || $document->documentOf=='item') && $document->relatedItem==$lot->id);
-                            });
 
-                            $cloned_bid->__documents_confident=array_where($cloned_bid->__documents_confident, function($key, $document) use ($lot){
+                            $cloned_bid->__documents_public=!empty($cloned_bid->__documents_public) ? array_where($cloned_bid->__documents_public, function($key, $document) use ($lot){
                                 return $document->documentOf=='tender' || (($document->documentOf=='lot' || $document->documentOf=='item') && $document->relatedItem==$lot->id);
-                            });
+                            }):[];
+
+                            $cloned_bid->__documents_confident=!empty($cloned_bid->__documents_confident) ? array_where($cloned_bid->__documents_confident, function($key, $document) use ($lot){
+                                return $document->documentOf=='tender' || (($document->documentOf=='lot' || $document->documentOf=='item') && $document->relatedItem==$lot->id);
+                            }):[];
                             
                             $lot->__bids[]=$cloned_bid;
                         }
