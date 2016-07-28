@@ -14,9 +14,12 @@
 
             if(empty($item->lots))
             {
-                $active_contract=array_first($item->contracts, function($key, $contract){
-                    return $contract->status=='active';
-                });
+                if(!empty($item->contracts))
+                {
+                    $active_contract=array_first($item->contracts, function($key, $contract){
+                        return $contract->status=='active';
+                    });
+                }
             }
             elseif(!empty($item->lots) && sizeof($item->lots)==1)
             {
