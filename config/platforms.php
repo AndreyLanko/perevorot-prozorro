@@ -106,6 +106,20 @@ return [
 		'level2'=>true,
 		'level3'=>false,
 		'level4'=>false,		
+	],
+	[
+		'name'=>'Прозора Торгівля',
+		'slug'=>'proztorg',
+		'href'=>'http://proztorg.com.ua/tender/{tenderID}',
+		'contractor'=>true,
+		'tender'=>false,
+		'type1'=>false,
+		'type2'=>false,
+		'level1'=>true,
+		'level2'=>true,
+		'level3'=>false,
+		'level4'=>false,		
 	]
+
 
 ];
