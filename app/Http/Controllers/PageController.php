@@ -779,7 +779,8 @@ class PageController extends BaseController
         }
         */
 
-        $item->__active_award->__date=date('d.m.Y H:i', strtotime($item->__active_award->date));
+        if(!empty($item->__active_award))
+            $item->__active_award->__date=date('d.m.Y H:i', strtotime($item->__active_award->date));
         
         if(!empty($item->__isMultiLot))
             $item->__active_award=null;
@@ -886,8 +887,8 @@ class PageController extends BaseController
             {
                 if($cancelled_claims=DB::table('prozorro_claims_documents_cancellation')->where('claim_id', '=', $claim->id)->get())
                 {
-                    if(in_array($item->status, ['unsuccessful', 'cancelled']) && !in_array($claim->status, ['invalid', 'stopped', 'accepted', 'declined']))
-                    {
+                    //if(in_array($item->status, ['unsuccessful', 'cancelled']) && !in_array($claim->status, ['invalid', 'stopped', 'accepted', 'declined']))
+                    //{
                         $__complaints_complaints[$key]->documents=[];
                         $__complaints_complaints[$key]->status='pre_stopping';                        
 
@@ -898,7 +899,7 @@ class PageController extends BaseController
     
                             array_push($__complaints_complaints[$key]->documents, $complaint_documents);
                         }
-                    }
+                    //}
                 }
             }
 
