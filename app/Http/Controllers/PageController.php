@@ -887,19 +887,19 @@ class PageController extends BaseController
             {
                 if($cancelled_claims=DB::table('prozorro_claims_documents_cancellation')->where('claim_id', '=', $claim->id)->get())
                 {
-                    //if(in_array($item->status, ['unsuccessful', 'cancelled']) && !in_array($claim->status, ['invalid', 'stopped', 'accepted', 'declined']))
-                    //{
-                        $__complaints_complaints[$key]->documents=[];
-                        $__complaints_complaints[$key]->status='pre_stopping';                        
+                    if(in_array($item->status, ['unsuccessful', 'cancelled'])/* && !in_array($claim->status, ['invalid', 'stopped', 'accepted', 'declined']) */)
+                    {
+                        //$__complaints_complaints[$key]->documents=[];
+                        //$__complaints_complaints[$key]->status='pre_stopping';                        
 
                         foreach($cancelled_claims as $complaint_documents)
                         {
-                            $complaint_documents=json_decode($complaint_documents->json);
-                            $complaint_documents->author='reviewers';
-    
-                            array_push($__complaints_complaints[$key]->documents, $complaint_documents);
+                            $documents=json_decode($complaint_documents->json);
+                            $documents->author='reviewers';
+
+                            array_push($__complaints_complaints[$key]->documents, $documents);
                         }
-                    //}
+                    }
                 }
             }
 
