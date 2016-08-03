@@ -115,11 +115,15 @@ return [
             'cancelled'=>'Скасована скаржником',
             'accepted'=>'Прийнята до розгляду',
             'stopping'=>'Прийнята до розгляду',
-            'invalid'=>'Залишена без розгляду',
+            'invalid'=>'Залишено без розгляду',
             'satisfied'=>'Розглянута',
             'declined'=>'Розглянута',
-            'stopped'=>'Розглянута',
+            'stopped'=>'Розгляд припинено',
             'pre_stopping'=>'Розгляд зупинено',
+            'resolved'=>'Виконано Замовником',
+            'stopping+dateAccepted'=>'Прийнято до розгляду',
+            'stopping-dateAccepted'=>'Очікує прийняття до розгляду',
+            'stopped-dateAccepted'=>'Розглянута'
         ],
         'belowThreshold'=>[
             	'pending'=>'Очікує розгляду',
@@ -128,6 +132,10 @@ return [
             'declined'=>'Розглянута',
             'resolved'=>'Розглянута',
             'pre_stopping'=>'Розгляд зупинено',
+            'stopped'=>'Розгляд припинено',
+            'stopping+dateAccepted'=>'Прийнято до розгляду',
+            'stopping-dateAccepted'=>'Очікує прийняття до розгляду',
+            'stopped-dateAccepted'=>'Розглянута'
         ]
     ],
     'complain_statuses'=>[
@@ -138,6 +146,7 @@ return [
         	'invalid'=>'Залишена без розгляду',
         'declined'=>'Не задоволена',
         'resolved'=>'Вирішена',
+        'stopped'=>'Розгляд припинено'
     ],
     'qualification_status'=>[
         'pending'=>'Очікується рішення',

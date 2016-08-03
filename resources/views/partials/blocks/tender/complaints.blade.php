@@ -73,9 +73,16 @@
                             <div class="margin-bottom">
                                 <div>
                                     <strong>
-                                        @if($complaint->status=='pre_stopping')
+                                        @if($complaint->status=='stopped')
+                                            Рішення органу оскарження: Розгляд припинено
+                                        @elseif($complaint->status=='stopping')
+                                            @if(!empty($complaint->dateAccepted))
+                                                <div>Рішення органу оскарження: Очікується</div>
+                                            @endif
+                                            Відкликана скаржником
+                                        @elseif($complaint->status=='pre_stopping')
                                             Рішення Органу оскарження:
-                                        @elseif(in_array($complaint->status, ['cancelled', 'stopping']))
+                                        @elseif($complaint->status=='cancelled')
                                             Скарга скасована скаржником
                                         @else
                                             @if($item->procurementMethodType=='belowThreshold')
@@ -86,13 +93,18 @@
                                             @if(in_array($complaint->status, ['pending', 'stopping']))
                                                 Очікується
                                             @elseif($complaint->status=='stopped')
-                                                Розгляд зупинено
+                                                Розгляд припинено
                                             @elseif($complaint->status=='invalid')
                                                 Залишено без розгляду
                                             @elseif($complaint->status=='satisfied')
                                                 Задоволена
                                             @elseif($complaint->status=='declined')
                                                 Не задоволена
+                                            @endif
+                                            @if($item->procurementMethodType!='belowThreshold')
+                                                @if($complaint->status=='resolved')
+                                                    Задоволена
+                                                @endif
                                             @endif
                                         @endif
                                     </strong>
@@ -105,10 +117,13 @@
                                         <div class="grey-light size12 question-date" style="margin-top: -10px;">Дата рішення: {{date('d.m.Y H:i', strtotime($complaint->dateDecision))}}</div>
                                     @endif
                                 @endif
-                                @if(in_array($complaint->status, ['cancelled', 'stopping']))
+                                @if(in_array($complaint->status, ['cancelled', 'stopping', 'stopped', 'invalid']))
                                     @if(!empty($complaint->dateCanceled))
-                                        <div class="grey-light size12 question-date">Дата: {{date('d.m.Y H:i', strtotime($complaint->dateCanceled))}}</div>
+                                        @if(in_array($complaint->status, ['invalid']))
+                                            <div><strong>Відкликана скаржником</strong></div>
+                                        @endif
                                         Причина: {{$complaint->cancellationReason}}
+                                        <div class="grey-light size12 question-date">Дата: {{date('d.m.Y H:i', strtotime($complaint->dateCanceled))}}</div>
                                     @endif
                                 @endif
                             </div>

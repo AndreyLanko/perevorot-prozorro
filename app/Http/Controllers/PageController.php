@@ -885,21 +885,26 @@ class PageController extends BaseController
         {
             foreach($__complaints_complaints as $key=>$claim)
             {
-                if($cancelled_claims=DB::table('prozorro_claims_documents_cancellation')->where('claim_id', '=', $claim->id)->get())
+                if($cancelled_claim=DB::table('complaints_cancellation')->where('complaint_id', '=', $claim->id)->first())
+                    $claim->status=$cancelled_claim->complaint_status;
+
+                if($cancelled_claim_documents=DB::table('prozorro_claims_documents_cancellation')->where('claim_id', '=', $claim->id)->get())
                 {
-                    if(in_array($item->status, ['unsuccessful', 'cancelled'])/* && !in_array($claim->status, ['invalid', 'stopped', 'accepted', 'declined']) */)
-                    {
-                        //$__complaints_complaints[$key]->documents=[];
-                        //$__complaints_complaints[$key]->status='pre_stopping';                        
-
-                        foreach($cancelled_claims as $complaint_documents)
+                    //if(in_array($item->status, ['unsuccessful', 'cancelled', 'stopped']))//&& !in_array($claim->status, ['invalid', 'stopped', 'accepted', 'declined'])
+                    //{
+                        foreach($cancelled_claim_documents as $document)
                         {
-                            $documents=json_decode($complaint_documents->json);
-                            $documents->author='reviewers';
+                            $doc=json_decode($document->json);
+                            $doc->author='reviewers';
 
-                            array_push($__complaints_complaints[$key]->documents, $documents);
+                            $document_exists=array_first($__complaints_complaints[$key]->documents, function($k, $check_document) use ($doc){
+                                return $check_document->url==$doc->url;
+                            });
+
+                            if(!$document_exists)
+                                array_push($__complaints_complaints[$key]->documents, $doc);
                         }
-                    }
+                    //}
                 }
             }
 
@@ -922,15 +927,22 @@ class PageController extends BaseController
             $__complaints_complaints=array_values($__complaints_complaints);
         }
 
-        if(empty($__complaints_complaints->__status_name))
-        {
+        //if(empty($__complaints_complaints->__status_name))
+        //{
             foreach($__complaints_complaints as $k=>$complain)
             {
-                $key=($item->procurementMethodType!='belowThreshold' ? '!' : '').'belowThreshold';
+                //if(empty($complain->__status_name))
+                //{
+                    $key=($item->procurementMethodType!='belowThreshold' ? '!' : '').'belowThreshold';
+                    $status_key=$complain->status;
     
-                $__complaints_complaints[$k]->__status_name=trans('tender.complaints_statuses.'.$key.'.'.$complain->status);
+                    if($complain->status=='stopping')
+                        $status_key=$complain->status.(!empty($complain->dateAccepted) ? '+' : '-').'dateAccepted';
+
+                    $__complaints_complaints[$k]->__status_name=trans('tender.complaints_statuses.'.$key.'.'.$status_key);
+                //}
             }
-        }
+        //}
 
         $__complaints_complaints=array_where($__complaints_complaints, function($key, $complain){
             return $complain->status!='draft';
