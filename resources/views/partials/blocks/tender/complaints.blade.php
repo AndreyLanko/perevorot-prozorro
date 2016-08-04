@@ -122,7 +122,9 @@
                                         @if(in_array($complaint->status, ['invalid']))
                                             <div><strong>Відкликана скаржником</strong></div>
                                         @endif
-                                        Причина: {{$complaint->cancellationReason}}
+                                        @if(!empty($complaint->cancellationReason))
+                                            Причина: {{$complaint->cancellationReason}}
+                                        @endif
                                         <div class="grey-light size12 question-date">Дата: {{date('d.m.Y H:i', strtotime($complaint->dateCanceled))}}</div>
                                     @endif
                                 @endif
