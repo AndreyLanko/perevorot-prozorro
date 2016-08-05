@@ -1092,7 +1092,7 @@ class PageController extends BaseController
                 if(!empty($item->bids))
                 {
                     $bids=$item->bids;
-                    
+
                     foreach($bids as $k=>$bid)
                     {
                         if(!empty($bid->eligibilityDocuments))
@@ -1260,7 +1260,7 @@ class PageController extends BaseController
                     });
                 }
 
-                $bid=array_where($item->bids, function($key, $bid) use ($qualification){
+                $bid=array_first($item->bids, function($key, $bid) use ($qualification){
                     return $qualification->bidID==$bid->id;
                 });
 
@@ -1269,23 +1269,15 @@ class PageController extends BaseController
 
                 if(!empty($bid))
                 {
-                    $bid=head($bid);
+                    $documents=!empty($bid->documents) ? $bid->documents : [];
+                    $eligibilityDocuments=!empty($bid->eligibilityDocuments) ? $bid->eligibilityDocuments : [];
 
-                    if(!empty($bid->eligibilityDocuments))
-                    {
-                        if(empty($bid->documents))
-                        {
-                            $bid->documents=new \StdClass();
-                            $bid->documents=[];
-                        }
-
-                        $bid->documents=array_merge($bid->documents, $bid->eligibilityDocuments);
-                    }                    
+                    $documents=array_merge($documents, $eligibilityDocuments);
 
                     if(!empty($bid->tenderers[0]))
                         $qualification->__name=$bid->tenderers[0]->name;
 
-                    $qualification->__bid_documents=!empty($bid->documents) ? $bid->documents : [];
+                    $qualification->__bid_documents=$documents;
 
                     $qualification->__bid_documents_public=array_where($qualification->__bid_documents, function($key, $document){
                         return empty($document->confidentiality) || $document->confidentiality!='buyerOnly';

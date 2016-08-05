@@ -198,11 +198,12 @@
                                         'title'=>'Скарги до лоту'
                                     ])
     
+@if (1==1)
                                     {{--Протокол розгляду--}}
                                     @include('partials/blocks/tender/qualifications', [
                                         'item'=>$lot
                                     ])
-    
+@endif
                                     {{--Реєстр пропозицій--}}
                                     @include('partials/blocks/tender/bids', [
                                         'item'=>$lot
