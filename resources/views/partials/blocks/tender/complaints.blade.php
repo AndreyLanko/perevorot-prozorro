@@ -83,7 +83,7 @@
                                         @elseif($complaint->status=='pre_stopping')
                                             Рішення Органу оскарження:
                                         @elseif($complaint->status=='cancelled')
-                                            Скарга скасована скаржником
+                                            Скасована
                                         @else
                                             @if($item->procurementMethodType=='belowThreshold')
                                                 Рішення Комісії:

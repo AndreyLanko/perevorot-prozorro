@@ -1095,6 +1095,17 @@ class PageController extends BaseController
                     
                     foreach($bids as $k=>$bid)
                     {
+                        if(!empty($bid->eligibilityDocuments))
+                        {
+                            if(empty($bid->documents))
+                            {
+                                $bid->documents=new \StdClass();
+                                $bid->documents=[];
+                            }
+
+                            $bid->documents=array_merge($bid->documents, $bid->eligibilityDocuments);
+                        }
+                        
                         if(!empty($bid->documents))
                         {
                             $bids[$k]->__documents_public=new \StdClass();
@@ -1259,6 +1270,17 @@ class PageController extends BaseController
                 if(!empty($bid))
                 {
                     $bid=head($bid);
+
+                    if(!empty($bid->eligibilityDocuments))
+                    {
+                        if(empty($bid->documents))
+                        {
+                            $bid->documents=new \StdClass();
+                            $bid->documents=[];
+                        }
+
+                        $bid->documents=array_merge($bid->documents, $bid->eligibilityDocuments);
+                    }                    
 
                     if(!empty($bid->tenderers[0]))
                         $qualification->__name=$bid->tenderers[0]->name;
