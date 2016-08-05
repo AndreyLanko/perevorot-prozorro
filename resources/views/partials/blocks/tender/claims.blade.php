@@ -46,7 +46,7 @@
                             
                             @if(in_array($complaint->status, ['cancelled']))
                                 <div class="m-10">
-                                    <div><strong>Вимога скасована Учасником</strong></div>
+                                    <div><strong>Скасована</strong></div>
                                     @if(!empty($complaint->dateCanceled))
                                         <div class="grey-light size12 question-date">Дата: {{date('d.m.Y H:i', strtotime($complaint->dateCanceled))}}</div>
                                         Причина: {{$complaint->cancellationReason}}
