@@ -107,6 +107,7 @@ return [
 		'level3'=>false,
 		'level4'=>false,		
 	],
+    /*
 	[
 		'name'=>'Прозора Торгівля',
 		'slug'=>'proztorg',
@@ -120,6 +121,6 @@ return [
 		'level3'=>false,
 		'level4'=>false,		
 	]
-
+    */
 
 ];
