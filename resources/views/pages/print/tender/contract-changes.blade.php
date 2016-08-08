@@ -57,11 +57,9 @@
             <td width="302">{{$n++}}. Номер процедури закупівлі в електронній системі:</td>
             <td><strong>{{$tender->tenderID}}</strong></td>
         </tr>
-
-        
         <tr valign="top">
             <td width="302">{{$n++}}. Номер договору про закупівлю:</td>
-            <td><strong>{{$contract->contractNumber}}</strong></td>
+            <td><strong>{{!empty($contract->contractNumber) ? $contract->contractNumber : 'не вказано'}}</strong></td>
         </tr>
         <tr valign="top">
             <td width="302">{{$n++}}. Дата укладення договору:</td>
