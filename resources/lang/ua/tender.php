@@ -123,7 +123,8 @@ return [
             'resolved'=>'Виконано Замовником',
             'stopping+dateAccepted'=>'Прийнято до розгляду',
             'stopping-dateAccepted'=>'Очікує прийняття до розгляду',
-            'stopped-dateAccepted'=>'Розглянута'
+            'stopped-dateAccepted'=>'Розглянута',
+            'mistaken'=>'Повернуто, як помилково направлену',
         ],
         'belowThreshold'=>[
             	'pending'=>'Очікує розгляду',
@@ -135,7 +136,8 @@ return [
             'stopped'=>'Розгляд припинено',
             'stopping+dateAccepted'=>'Прийнято до розгляду',
             'stopping-dateAccepted'=>'Очікує прийняття до розгляду',
-            'stopped-dateAccepted'=>'Розглянута'
+            'stopped-dateAccepted'=>'Розглянута',
+            'mistaken'=>'Повернуто, як помилково направлену',
         ]
     ],
     'complain_statuses'=>[
@@ -146,7 +148,8 @@ return [
         	'invalid'=>'Залишена без розгляду',
         'declined'=>'Не задоволена',
         'resolved'=>'Вирішена',
-        'stopped'=>'Розгляд припинено'
+        'stopped'=>'Розгляд припинено',
+        'mistaken'=>'Повернуто, як помилково направлену',
     ],
     'qualification_status'=>[
         'pending'=>'Очікується рішення',

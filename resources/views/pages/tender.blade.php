@@ -44,15 +44,15 @@
                                         <h2>{{$item->__open_name}}</h2>
                                     @endif
                                     
-                                    @if($item->__print_href)
+                                    @if($item->__print_href && !in_array($item->procurementMethodType, ['negotiation', 'negotiation.quick']))
                                         @if(starts_with($item->__print_href, 'limited'))
                                             @if(empty($item->__active_award))
                                                 <div style="margin-top:-30px;margin-bottom:40px">Для друку форми необхідно завершити дії на майданчику</div>
                                             @else
-                                                <div style="margin-top:-30px;margin-bottom:40px">Друкувати форму оголшення <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/html')}}" target="_blank">HTML</a></div>
+                                                <div style="margin-top:-30px;margin-bottom:40px">Друкувати форму оголошення <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/html')}}" target="_blank">HTML</a></div>
                                             @endif
                                         @else
-                                            <div style="margin-top:-30px;margin-bottom:40px">Друкувати форму оголшення <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/html')}}" target="_blank">HTML</a></div>
+                                            <div style="margin-top:-30px;margin-bottom:40px">Друкувати форму оголошення <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/html')}}" target="_blank">HTML</a></div>
                                         @endif
                                     @endif
                                 @else

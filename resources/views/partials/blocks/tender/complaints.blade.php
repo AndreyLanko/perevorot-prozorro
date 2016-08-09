@@ -73,7 +73,9 @@
                             <div class="margin-bottom">
                                 <div>
                                     <strong>
-                                        @if($complaint->status=='stopped')
+                                        @if($complaint->status=='mistaken')
+                                            Рішення органу оскарження: Повернуто, як помилково направлену
+                                        @elseif($complaint->status=='stopped')
                                             Рішення органу оскарження: Розгляд припинено
                                         @elseif($complaint->status=='stopping')
                                             @if(!empty($complaint->dateAccepted))
