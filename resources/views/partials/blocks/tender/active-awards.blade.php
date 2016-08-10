@@ -8,11 +8,11 @@
                 </p>
             @endif
 
-            @if($item->__print_href && in_array($item->procurementMethodType, ['negotiation', 'negotiation.quick']))
+            @if(!empty($item->__print_href) && in_array($item->procurementMethodType, ['negotiation', 'negotiation.quick']))
                 <div style="margin-top:0px;margin-bottom:40px">Друкувати форму повідомлення <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/html')}}" target="_blank">HTML</a></div>
             @endif
 
-            @if(in_array($item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdEU']))
+            @if(in_array($item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdUA.defense', 'aboveThresholdEU']))
                 <div style="margin-top:0px;margin-bottom:40px">Друкувати повідомлення про намір укласти договір <a href="{{href('tender/'.$item->tenderID.'/print/active-awards/pdf/'.(!empty($item->lots) && sizeof($item->lots)==1 ? $item->lots[0]->id : $item->id))}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/active-awards/html/'.(!empty($item->lots) && sizeof($item->lots)==1 ? $item->lots[0]->id : $item->id))}}" target="_blank">HTML</a></div>
             @endif
 
