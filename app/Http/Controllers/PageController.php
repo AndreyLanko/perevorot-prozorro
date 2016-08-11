@@ -11,6 +11,7 @@ use Redirect;
 use Config;
 use DateTime;
 use DB;
+use Lang;
 
 class PageController extends BaseController
 {
@@ -173,7 +174,8 @@ class PageController extends BaseController
         {
             $date = strtotime($item->tender->tenderPeriod->startDate);
 
-            $item->__is_first_month=date('j', $date)==1 ? strftime('%B, %Y', $date) : false;
+            //$item->__is_first_month=date('j', $date)==1 ? strftime('%B, %Y', $date) : false;
+            $item->__is_first_month=date('j', $date)==1 ? Lang::get('months.'.date('n', $date)).', '.date('Y', $date) : false;
         }   
     }
     
