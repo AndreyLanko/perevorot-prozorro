@@ -1513,9 +1513,15 @@ class PageController extends BaseController
                     }
 
                     foreach($lot->__bids as $__bid)
+                        $__bid->__award=null;
+
+                    foreach($lot->__bids as $__bid)
                     {
-                        if(!empty($__bid->__award) && $__bid->__award->lotID!=$lot->id)
-                            $__bid->__award=null;
+                        foreach($item->awards as $award)
+                        {
+                            if($award->bid_id==$__bid->id && $award->lotID==$lot->id)
+                                $__bid->__award=$award;
+                        }
                     }
 
                     usort($lot->__bids, function ($a, $b)
@@ -1710,7 +1716,7 @@ class PageController extends BaseController
                     foreach($contracts->changes as $change)
                     {
                         $change->contract=array_first($contracts->documents, function($key, $document) use ($change){
-                            return !empty($document->documentOf) && $document->documentOf=='change' && $document->id=$change->id;
+                            return !empty($document->documentOf) && $document->documentOf=='change' && $document->relatedItem==$change->id;
                         });
 
                         foreach($change->rationaleTypes as $k=>$rationaleType)
