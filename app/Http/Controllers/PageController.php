@@ -1325,6 +1325,19 @@ class PageController extends BaseController
             
             $tender_bids=$this->get_bids($item, true);
             $parsed_lots=[];
+
+            if($item->status=='cancelled')
+            {
+                foreach($item->lots as $lot)
+                {
+                    $lot->status='cancelled';
+
+                    if(!empty($item->cancellations))
+                    {
+                        $lot->__cancellations=$item->cancellations;
+                    }
+                }
+            }
             
             foreach($item->lots as $k=>$lot)
             {
@@ -1541,7 +1554,7 @@ class PageController extends BaseController
                     });
                 }
 
-                if(!empty($item->cancellations))
+                if(!empty($item->cancellations) && empty($lot->__cancellations))
                 {
                     $lot->__cancellations=new \StdClass();
     
