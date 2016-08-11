@@ -17,7 +17,7 @@
                 @endforeach
             @endif
         </td>
-        <td>{{number_format($item->budget->amount, 0, '', ' ')}}{{-- {{$item->budget->currency}} <nobr>{{!empty($item->budget->valueAddedTaxIncluded) ? 'з ПДВ' : 'без ПДВ'}}</nobr>--}}</td>
+        <td>{{str_replace(',00', '', number_format($item->budget->amount, 2, ',', ' '))}}{{-- {{$item->budget->currency}} <nobr>{{!empty($item->budget->valueAddedTaxIncluded) ? 'з ПДВ' : 'без ПДВ'}}</nobr>--}}</td>
         <td>{{trans('plan.procedure.'.$item->__procedure)}}</td>
         <td>
             @if ($item->__is_first_month)

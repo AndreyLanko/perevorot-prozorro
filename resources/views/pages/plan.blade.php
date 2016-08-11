@@ -37,7 +37,7 @@
                             <div class="gray-bg padding margin-bottom tender--description--cost">
                                 {{trans('plan.table.sum')}}
                                 <div class="green tender--description--cost--number">
-                                    <strong>{{number_format($item->budget->amount, 0, '', ' ')}} <span class="small">{{$item->budget->currency}}</span></strong>
+                                    <strong>{{str_replace(',00', '', number_format($item->budget->amount, 2, ',', ' '))}} <span class="small">{{$item->budget->currency}}</span></strong>
                                 </div>
                             </div>
                         </div>
@@ -134,7 +134,7 @@
                                 <div class="margin-bottom">5. Код згідно з КЕКВ: <strong>відсутній</strong></div>
                             @endif
                             <br>
-                            <div>6. Розмір бюджетного призначення за кошторисом або очікувана вартість предмета закупівлі: <strong>{{number_format($item->budget->amount, 0, '', ' ')}} {{$item->budget->currency}}</strong></div>
+                            <div>6. Розмір бюджетного призначення за кошторисом або очікувана вартість предмета закупівлі: <strong>{{str_replace(',00', '', number_format($item->budget->amount, 2, ',', ' '))}} {{$item->budget->currency}}</strong></div>
                             <br>
                             <div>7. Процедура закупівлі: <strong>{{$item->tender->__procedure_name}}</strong></div>
                             <br>
