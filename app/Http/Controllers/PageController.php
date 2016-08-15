@@ -1559,12 +1559,15 @@ class PageController extends BaseController
                     foreach($lot->__bids as $__bid)
                         $__bid->__award=null;
 
-                    foreach($lot->__bids as $__bid)
+                    if(!empty($item->awards))
                     {
-                        foreach($item->awards as $award)
+                        foreach($lot->__bids as $__bid)
                         {
-                            if($award->bid_id==$__bid->id && $award->lotID==$lot->id)
-                                $__bid->__award=$award;
+                            foreach($item->awards as $award)
+                            {
+                                if($award->bid_id==$__bid->id && $award->lotID==$lot->id)
+                                    $__bid->__award=$award;
+                            }
                         }
                     }
 
