@@ -77,7 +77,7 @@
             <td width="302">{{$n++}}. Дата оприлюднення оголошення про проведення процедури закупівлі:</td>
             <td>
                 <strong>
-                    @if(in_array($__item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdEU']))
+                    @if(in_array($__item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdEU', 'aboveThresholdUA.defense']))
                         {{!empty($__item->enquiryPeriod) ? date('d.m.Y H:i', strtotime($__item->enquiryPeriod->startDate)) : 'відсутня'}}
                     @elseif(in_array($__item->procurementMethodType, ['negotiation', 'negotiation.quick']))
                         {{!empty($__item->__active_award->complaintPeriod->startDate) ? date('d.m.Y H:i', strtotime($__item->__active_award->complaintPeriod->startDate)) : 'відсутня'}}
@@ -89,7 +89,7 @@
             <td width="302">{{$n++}}. Кількість учасників процедури закупівлі:</td>
             <td>
                 <strong>
-                    @if(in_array($__item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdEU']))
+                    @if(in_array($__item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdEU', 'aboveThresholdUA.defense']))
                         {{sizeof($bids)}}
                     @elseif(in_array($__item->procurementMethodType, ['negotiation', 'negotiation.quick']))
                         {{!empty($lot) ? (int) (!empty($lot->__unique_awards) ? $lot->__unique_awards : 0) : $__item->__unique_awards}}
