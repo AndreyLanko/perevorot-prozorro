@@ -32,7 +32,9 @@
         <div class="tender">
             <div class="tender--head gray-bg">
                 <div class="container">
-                    <div class="tender--head--title col-sm-9">{{$item->budget->description}}</div>
+                    <div class="tender--head--title col-sm-9">
+                        {{$item->budget->description}}
+                    </div>
                         <div class="col-md-3 col-sm-3 tender--description--cost--wr">
                             <div class="gray-bg padding margin-bottom tender--description--cost">
                                 {{trans('plan.table.sum')}}
@@ -97,7 +99,11 @@
                     <div class="row">
                         <div class="col-sm-9">
                             <h3>Інформація про предмет закупівлі</h3>
-                            <div>3. Конкретна назва предмета закупівлі: <strong>{{$item->budget->description}}</strong></div>
+                            <div>3. Конкретна назва предмета закупівлі:
+                                <strong>
+                                    {{$item->budget->description}}@if(!empty($item->items)), {{implode(', ', array_pluck($item->items, 'description'))}}@endif
+                                </strong>
+                            </div>
                             <br>
                             @if(!empty($item->__items))
                                 <div class="margin-bottom">4. Коди відповідних класифікаторів предмета закупівлі:</div>
@@ -111,9 +117,11 @@
                                     </div>
                                 @endforeach
                                 @if($item->classification)
-                                    <div class="tender--description--text description" style="margin-left:20px;">
-                                       {{trans('scheme.'.$item->classification->scheme)}}: {{$item->classification->id}} — {!!nl2br($item->classification->description)!!}
-                                    </div>
+                                    @foreach($item->classification as $one)
+                                        <div class="tender--description--text description" style="margin-left:20px;">
+                                           {{trans('scheme.'.$one->scheme)}}: {{$one->id}} — {!!nl2br($one->description)!!}
+                                        </div>
+                                    @endforeach
                                 @endif
                             @else
                                 <div class="margin-bottom">4. Коди відповідних класифікаторів предмета закупівлі: <strong>відсутні</strong></div>

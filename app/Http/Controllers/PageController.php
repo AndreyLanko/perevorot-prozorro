@@ -143,12 +143,41 @@ class PageController extends BaseController
         }
 
         $item->__items=new \StdClass();
-        $item->__items=array_where($item->additionalClassifications, function($key, $one){
+        $classification=[$item->classification];
+
+        if(!empty($item->items))
+        {
+            foreach($item->items as $one)
+            {
+                if(!empty($one->classification))
+                {
+                    $classification[]=$one->classification;
+                }
+            }
+        }
+
+        $item->classification=$classification;
+
+        $additionalClassifications=$item->additionalClassifications;
+
+        if(!empty($item->items))
+        {
+            foreach($item->items as $one)
+            {
+                if(!empty($one->additionalClassifications))
+                {
+                    foreach($one->additionalClassifications as $c)
+                        $additionalClassifications[]=$c;
+                }
+            }
+        }
+
+        $item->__items=array_where($additionalClassifications, function($key, $one){
             return $one->scheme!='КЕКВ';
         });
 
         $item->__items_kekv=new \StdClass();
-        $item->__items_kekv=array_where($item->additionalClassifications, function($key, $one){
+        $item->__items_kekv=array_where($additionalClassifications, function($key, $one){
             return $one->scheme=='КЕКВ';
         });
         
