@@ -143,7 +143,7 @@
                             <ul class="nav nav-tabs" role="tablist">
                                 @foreach($item->lots as $k=>$lot)
                                     <li role="presentation" class="{{$k==0?'active':''}}" style="font-size:80%">
-                                        <a href="" role="tab" data-toggle="tab" aria-expanded="{{$k==0?'true':'false'}}">{{ !empty($lot->lotNumber) ? $lot->lotNumber : str_limit($lot->title, 20) }}{{--Лот {{$k+1}}--}}</a>
+                                        <a href="" role="tab" data-toggle="tab" aria-expanded="{{$k==0?'true':'false'}}">{{ !empty($lot->lotNumber) ? $lot->lotNumber : str_limit((!empty($lot->title) ? $lot->title : 'Лот '.($k+1)), 20) }}{{--Лот {{$k+1}}--}}</a>
                                     </li>
                                 @endforeach
                             </ul>
