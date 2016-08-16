@@ -471,7 +471,7 @@ class PageController extends BaseController
         $url=Config::get('api.'.$this->search_type).'?'.implode('&', $query);
 
         if(isset($_GET['api']) && getenv('APP_ENV')=='local')
-            dd($url);
+            dump($url);
 
         $header=get_headers($url)[0];
 
@@ -493,6 +493,9 @@ class PageController extends BaseController
                 'error'=>$header
             ], JSON_UNESCAPED_UNICODE);
         }
+
+        if(isset($_GET['api']) && getenv('APP_ENV')=='local')
+            dd(json_decode($result));
 
         return $result;
     }    
@@ -1423,7 +1426,7 @@ class PageController extends BaseController
                 {
                     $lot->__tender_documents=new \StdClass();
                     $lot->__tender_documents=array_where($item->documents, function($key, $document) use ($lot){
-                        return $document->documentOf=='lot' && $document->relatedItem==$lot->id;
+                        return !empty($document->documentOf) && $document->documentOf=='lot' && $document->relatedItem==$lot->id;
                     });
 
                     usort($lot->__tender_documents, function ($a, $b)

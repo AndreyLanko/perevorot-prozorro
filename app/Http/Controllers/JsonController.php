@@ -43,7 +43,8 @@ class JsonController extends BaseController
         $last=Cache::remember('get_last_homepage', 60, function()
         {
             return app('App\Http\Controllers\FormController')->getSearchResults([
-                'procedure=open'
+                'status=active.enquiries',
+                'status=active.tendering'
             ]);
         });
 
