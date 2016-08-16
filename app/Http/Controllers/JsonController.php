@@ -1,7 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
-
+use Cache;
 use Config;
 
 class JsonController extends BaseController
@@ -37,4 +37,37 @@ class JsonController extends BaseController
             'charset' => 'UTF-8'
         ], JSON_UNESCAPED_UNICODE);
 	}
+	
+	public function announced_tenders()
+	{
+        $last=Cache::remember('get_last_homepage', 60, function()
+        {
+            return app('App\Http\Controllers\FormController')->getSearchResults([
+                'procedure=open'
+            ]);
+        });
+
+        $last=json_decode($last);
+        $out=[];
+        
+        if(!empty($last->items))
+        {
+            foreach($last->items as $item)
+            {
+                array_push($out, [
+                    'amount'=>$item->value->amount,
+                    'currency'=>$item->value->currency,
+                    'title'=>$item->title,
+                    'tenderID'=>$item->tenderID,
+                    'locality'=>!empty($item->procuringEntity->address->locality) ? $item->procuringEntity->address->locality : '',
+                    'name'=>!empty($item->procuringEntity->name) ? $item->procuringEntity->name : '',
+                ]);
+            }
+        }
+
+        return response()->json($out, 200, [
+            'Content-Type' => 'application/json; charset=UTF-8',
+            'charset' => 'UTF-8'
+        ], JSON_UNESCAPED_UNICODE);
+    	}
 }

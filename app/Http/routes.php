@@ -32,3 +32,5 @@
     Route::post('feedback', 'FeedbackController@store');
 
     Route::get('json/platforms/{type}', 'JsonController@platforms');
+    Route::get('json/announced', 'JsonController@announced_tenders');
+    
