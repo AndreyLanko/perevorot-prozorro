@@ -1259,7 +1259,7 @@ class PageController extends BaseController
         }
     }
     
-    private function get_qualifications(&$item, $return=false)
+    private function get_qualifications(&$item, $return=false, $lot=false)
     {
         if(!empty($item->qualifications))
         {
@@ -1329,8 +1329,15 @@ class PageController extends BaseController
 
             if($item->procurementMethodType=='aboveThresholdEU')
             {
-                $__qualifications=array_where($__qualifications, function($key, $qualification){
-                    return empty($qualification->status) || !in_array($qualification->status, ['cancelled']);
+                $__qualifications=array_where($__qualifications, function($key, $qualification) use ($lot){
+                    if($lot && $lot->status=='cancelled')
+                        $out=!empty($qualification->lotID) && $lot->id==$qualification->lotID;
+                    elseif($lot)
+                        $out=$lot->id==$qualification->lotID && (empty($qualification->status) || !in_array($qualification->status, ['cancelled']));
+                    else
+                        $out=empty($qualification->status) || !in_array($qualification->status, ['cancelled']);
+
+                    return $out;
                 });
             }
 
@@ -1584,7 +1591,7 @@ class PageController extends BaseController
                 {
                     $lot->__qualifications=new \StdClass();
 
-                    $lot->__qualifications=array_where($this->get_qualifications($item, true), function($key, $qualification) use ($lot){
+                    $lot->__qualifications=array_where($this->get_qualifications($item, true, $lot), function($key, $qualification) use ($lot){
                         return !empty($qualification->lotID) && $qualification->lotID==$lot->id;
                     });
                 }

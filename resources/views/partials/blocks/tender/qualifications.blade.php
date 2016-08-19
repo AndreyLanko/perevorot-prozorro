@@ -25,7 +25,17 @@
                                 @endif
                             </td>
                             <td>
-                                <div>{{trans('tender.qualification_status.'.$qualification->status)}}</div>
+                                <div>
+                                    @if($item->status=='cancelled')
+                                        @if($qualification->eligible && $qualification->qualified)
+                                            Відхилено
+                                        @else
+                                            Допущено до аукціону
+                                        @endif
+                                    @else
+                                        {{trans('tender.qualification_status.'.$qualification->status)}}
+                                    @endif
+                                </div>
                                 @if(!empty($qualification->documents))
                                     <a href="" class="document-link" data-id="{{$qualification->id}}-status">{{trans('tender.bids_documents')}}</a>
                                 @endif
