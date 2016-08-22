@@ -771,6 +771,9 @@ class PageController extends BaseController
 
                 if($award->status=='unsuccessful')
                     $count_unsuccessful_awards++;
+
+                if($award->status=='cancelled')
+                    $count_unsuccessful_awards++;
             }
             
             if($count_unsuccessful_awards==sizeof($item->awards))
@@ -1181,7 +1184,6 @@ class PageController extends BaseController
                     else
                         return $bids;
                 }
-                
                     /*
                     $lot->__tender_documents=array_where($item->documents, function($key, $document) use ($lot){
                         return $document->documentOf=='lot' && $document->relatedItem==$lot->id;
@@ -1335,10 +1337,12 @@ class PageController extends BaseController
                     elseif($lot)
                         $out=$lot->id==$qualification->lotID && (empty($qualification->status) || !in_array($qualification->status, ['cancelled']));
                     else
-                        $out=empty($qualification->status) || !in_array($qualification->status, ['cancelled']);
+                        $out=true;
+                        //$out=empty($qualification->status) || !in_array($qualification->status, ['cancelled']);
 
                     return $out;
                 });
+
             }
 
             if(!$return)
