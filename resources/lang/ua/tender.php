@@ -153,8 +153,8 @@ return [
     ],
     'qualification_status'=>[
         'pending'=>'Очікується рішення',
-        'unsuccessful'=>'Дискваліфіковано',
-        'active'=>'Кваліфіковано',        
+        'unsuccessful'=>'Відхилено',
+        'active'=>'Допущено до аукціону',        
     ],
     'lot_status'=>[
         'active'=>'Активний',
