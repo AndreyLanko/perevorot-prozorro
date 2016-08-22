@@ -28,9 +28,9 @@
                                 <div>
                                     @if($item->status=='cancelled')
                                         @if($qualification->eligible && $qualification->qualified)
-                                            Відхилено
-                                        @else
                                             Допущено до аукціону
+                                        @else
+                                            Відхилено
                                         @endif
                                     @else
                                         {{trans('tender.qualification_status.'.$qualification->status)}}
