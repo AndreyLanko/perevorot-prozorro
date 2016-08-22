@@ -11,7 +11,7 @@
         $n=1;
         $tender=$item;
         
-        if(!empty($item->lots))
+        if(!empty($item->lots) && sizeof($item->lots)>1)
         {
             $item=array_first($item->lots, function($key, $lot) use ($lot_id){
                 return $lot->id==$lot_id;
@@ -26,7 +26,7 @@
         </tr>
         <tr valign="top">
             <td width="302">{{$n++}}. Номер договору про закупівлю:</td>
-            <td><strong>{{$item->__contract_ongoing->contractNumber}}</strong></td>
+            <td><strong>{{!empty($item->__contract_ongoing->contractNumber) ? $item->__contract_ongoing->contractNumber : 'відсутній'}}</strong></td>
         </tr>
         <tr valign="top">
             <td width="302">{{$n++}}. Дата укладення договору:</td>
