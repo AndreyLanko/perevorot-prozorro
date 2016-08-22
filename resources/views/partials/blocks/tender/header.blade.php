@@ -7,7 +7,7 @@
                     <div class="gray-bg padding margin-bottom tender--description--cost">
                         {{trans('tender.wait_sum')}}
                         <div class="green tender--description--cost--number">
-                            <strong>{{number_format($item->value->amount, 0, '', ' ')}} <span class="small">{{$item->value->currency}}</span></strong>
+                            <strong>{{str_replace('.00', '', number_format($item->value->amount, 2, '.', ' '))}} <span class="small">{{$item->value->currency}}</span></strong>
                         </div>
                     </div>
                 @endif
