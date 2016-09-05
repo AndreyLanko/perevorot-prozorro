@@ -107,6 +107,19 @@ return [
 		'level3'=>false,
 		'level4'=>false,		
 	],
+	[
+		'name'=>'Українська універсальна біржа',
+		'slug'=>'uub',
+		'href'=>'https://tender.uub.com.ua/tender/{tenderID}',
+		'contractor'=>true,
+		'tender'=>false,
+		'type1'=>false,
+		'type2'=>false,
+		'level1'=>true,
+		'level2'=>true,
+		'level3'=>true,
+		'level4'=>true,		
+	],
     /*
 	[
 		'name'=>'Прозора Торгівля',
