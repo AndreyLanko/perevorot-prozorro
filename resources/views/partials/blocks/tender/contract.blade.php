@@ -33,7 +33,7 @@
                                 --}}
                             </td>
                             <td>
-                                <div>{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+                                <div>{{date('d.m.Y H:i', strtotime($document->dateModified))}}</div>
                             </td>
                         </tr>
                     @endforeach
