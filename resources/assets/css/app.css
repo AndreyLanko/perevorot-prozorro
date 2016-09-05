@@ -3276,22 +3276,20 @@ body .main-menu .btn-fixed-form {
     line-height: 1.32;
 }
 }
+
 .nav .green-bg a,
 .nav .gray-bg a,
 .nav .blue-bg a {
     width: 100%;
-    height: 100%;
 }
-
-.nav li.gray-bg span, .nav li.green-bg span, .nav li.blue-bg span {
-    margin-top: 28px;
+.nav li.green-bg span, .nav li.blue-bg span {
+    margin-top: 21px;
 }
 .nav .green-bg .sprite-provider,
 .nav .gray-bg .sprite-tender-search,
 .nav .blue-bg .sprite-customer {
     float: left;
     width: 100px;
-    height: 100%;
     margin: 0;
 }
 .nav .gray-bg .sprite-tender-search {
@@ -3304,16 +3302,30 @@ body .main-menu .btn-fixed-form {
 }
 
 .nav .green-bg .sprite-provider {   
-    background: url(../images/provider.png) no-repeat center center;  
+    margin: -12px 0 0 -16px;   
+    background: url(../images/sprite-kozak.png) no-repeat;
+    background-position: -148px -300px;
 }
 .nav .gray-bg .sprite-tender-search {
-    background: url(../images/tender-search.png) no-repeat center center;
+    margin-left: 5px;
+    background: url(../images/sprite-kozak.png) no-repeat;
+    background-position: -299px -101px;
 }
 .nav .blue-bg .sprite-customer {
-    background: url(../images/customer.png) no-repeat center center;
+    margin: -12px -11px -3px 0;
+    background: url(../images/sprite-kozak.png) no-repeat;
+    background-position: -333px -200px;
     float: right;
 }
+@media (min-width: 1201px) {
+    .nav .green-bg a,
+    .nav .gray-bg a,
+    .nav .blue-bg a {
+        height: 100%;
+    }
+}
 @media (max-width: 1200px) {
+/*
     .nav .green-bg .sprite-provider,
     .nav .blue-bg .sprite-customer {
         width: 75px;
@@ -3331,9 +3343,11 @@ body .main-menu .btn-fixed-form {
     .nav li.gray-bg span {
         margin-right: 0;
     }
+*/
 
 }
 @media (max-width: 991px) {
+/*
     .nav li.gray-bg span, .nav li.green-bg span, .nav li.blue-bg span {
         font-size: 14px;
     }
@@ -3348,29 +3362,75 @@ body .main-menu .btn-fixed-form {
         margin-left: -15px;
         background-size: cover;
     }
+*/
+    .nav li.gray-bg span {
+        letter-spacing: -.25px;
+    }
 }
 @media (max-width: 769px) {
     .nav.sections {
         display: block;
     }
+    .nav .green-bg a,
+    .nav .gray-bg a,
+    .nav .blue-bg a {
+        height: 100px;
+    }
     .nav li.gray-bg span, .nav li.green-bg span, .nav li.blue-bg span {
-        font-size: 18px;
-        width: 100%;
-        margin: 0;
-        padding: 29px 0 29px 75px;
+        display: inline-block;
     }
     .nav li.gray-bg span {
-        max-width: 100%; 
+        margin-top: 21px;
     }
-    .nav .green-bg .sprite-provider,
-    .nav .gray-bg .sprite-tender-search,
-    .nav .blue-bg .sprite-customer {
-        position: absolute;
-        top: 0;
-        left: 0;
+    .nav li.gray-bg span {
+        letter-spacing: normal;
     }
-    .nav .gray-bg .sprite-tender-search {
-        width: 139px;
-        margin: 0;
-    }  
+    .nav .green-bg.active .sprite-provider, .nav .green-bg .sprite-provider {
+        width: 100px;
+        height: 100px;
+        background-position: -148px -300px;
+        margin: -12px 0 0 2px;
+        float: left;
+    } 
+    .nav .gray-bg .sprite-tender-search, .nav .expanded .gray-bg .sprite-tender-search {
+        width: 100px;
+        height: 100px;
+        background-position: -63px -304px;
+        margin-left: 5px;
+        margin-bottom: 0;
+        margin-top: -12px;
+        float: left;
+    }
+    .nav .blue-bg.active .sprite-customer, .nav .blue-bg .sprite-customer {
+        width: 100px;
+        height: 100px;
+        background-position: -333px -200px;
+        margin: -12px -2px -3px 0;
+        float: left;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .container .nav.sections > li, .container .nav.sections.expanded > li {
+        width: 100%;
+        height: 100px;
+        display: block;
+    }
+    .nav li.blue-bg .sprite-customer, 
+    .nav li.green-bg .sprite-provider, 
+    .nav li.gray-bg .sprite-tender-search, 
+    .expanded .nav li.blue-bg .sprite-customer, 
+    .expanded .nav li.green-bg .sprite-provider, 
+    .expanded .nav li.gray-bg .sprite-tender-search {
+        float: left;
+        margin-left: 1px;
+    }
+    .nav li.green-bg.active span, 
+    .nav li.blue-bg.active span, 
+    .nav li.green-bg span, 
+    .nav li.blue-bg span, 
+    .nav li.gray-bg span {
+        margin-top: 28px;
+        white-space: nowrap;
+        display: inline-block !important;
+    }
 }
