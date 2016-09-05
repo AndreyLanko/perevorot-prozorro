@@ -54,7 +54,7 @@
                         if(!empty($item->__bids))
                         {
                             $numberOfBids=array_where($item->__bids, function($key, $bid){
-                                return !empty($bid->status) && $bid->status=='active';
+                                return !empty($bid->status) && ($bid->status=='active' || $bid->status=='unsuccessful');
                             });
                         
                             $numberOfBids=$numberOfBids ? sizeof($numberOfBids) : 0;
