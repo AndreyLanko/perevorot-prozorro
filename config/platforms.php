@@ -111,6 +111,7 @@ return [
 		'name'=>'Українська універсальна біржа',
 		'slug'=>'uub',
 		'href'=>'https://tender.uub.com.ua/tender/{tenderID}',
+		'public'=>'https://tender.uub.com.ua/',
 		'contractor'=>true,
 		'tender'=>false,
 		'type1'=>false,
