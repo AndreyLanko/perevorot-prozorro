@@ -1,4 +1,6 @@
-<?php $start_n=$n; ?>
+<?php
+    $start_n=$n;
+?>
 
 <br>
 @foreach($lots as $k=>$lot)
@@ -6,6 +8,10 @@
     @if(!empty($lot->title) && sizeof($lots)>1)
         <center>
             <h3>ЛОТ {{$k+1}} — {{$lot->title}}</h3>
+            @if ($eng && !empty($lot->title_en))
+                <div><strong>Title: {{$lot->title_en}}</strong></div>
+                <br><br>
+            @endif
         </center>
         <?php $n=$start_n; ?>
     @endif
@@ -22,7 +28,10 @@
             @foreach((!empty($lot->__items) ? $lot->__items : $item->items) as $one)
                 <tr valign="top">
                     <td>
-                        {{$one->description}}
+                        <div>{{$one->description}}</div>
+                        @if($eng && !empty($one->description_en))
+                            <div>Description: {{$one->description_en}}</div>
+                        @endif
                     </td>
                     <td>
                         @if (!empty($one->classification))
