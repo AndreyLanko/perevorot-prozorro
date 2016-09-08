@@ -1029,7 +1029,7 @@ class PageController extends BaseController
                 return !empty($question->relatedItem) && ($question->questionOf=='lot' && $question->relatedItem==$lot->id) || ($question->questionOf=='item' && in_array($question->relatedItem, $item_ids));
             });
 
-            return $questions;
+            return array_values($questions);
         }
         
         return [];

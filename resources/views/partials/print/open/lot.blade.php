@@ -35,7 +35,10 @@
                     </td>
                     <td>
                         @if (!empty($one->classification))
-                            {{trans('tender.cpv')}}: {{$one->classification->id}} — {{$one->classification->description}}
+                            <div>{{trans('tender.cpv')}}: {{$one->classification->id}} — {{$one->classification->description}}</div>
+                            @if($eng)
+                                <div>CPV: {{$one->classification->id}}</div>
+                            @endif
                         @else
                             {{trans('tender.no_cpv')}}
                         @endif
