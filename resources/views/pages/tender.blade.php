@@ -56,7 +56,13 @@
                                         @endif
                                     @endif
                                 @else
-                                    <h2></h2>
+                                    @if ($item->procurementMethod == 'open' && in_array($item->procurementMethodType, ['aboveThresholdEU', 'competitiveDialogueEU', 'aboveThresholdUA.defense']))
+                                        @if (Lang::getLocale() == 'en' )
+                                            <h2>Tender notice</h2>
+                                        @else
+                                            <h2></h2>
+                                        @endif
+                                    @endif
                                 @endif
 
                                 @if ($item->__isSingleLot)
@@ -68,9 +74,7 @@
                                     @endif
                                 @endif
 
-                                @if (Lang::getLocale() == 'en' && $item->procurementMethod == 'open' && in_array($item->procurementMethodType, ['aboveThresholdEU']))
-                                    <h2>Tender notice</h2>
-                                @endif
+
     
                                 {{--Інформація про замовника--}}
                                 @include('partials/blocks/tender/procuring-entity')
