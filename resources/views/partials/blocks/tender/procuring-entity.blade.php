@@ -55,7 +55,7 @@
                     </tbody>
                 </table>
             </div>
-        @elseif (Lang::getLocale() == 'en' && is_array($item->procurementMethodType, ["aboveThresholdEU", "aboveThresholdUA.defense"]))
+        @elseif (Lang::getLocale() == 'en' && in_array($item->procurementMethodType, ["aboveThresholdEU", "aboveThresholdUA.defense"]))
             <h3>Purchasing Body</h3>
             <h4>Інформація про замовника</h4>
 
