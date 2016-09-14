@@ -56,7 +56,7 @@
                                         @endif
                                     @endif
                                 @else
-                                    @if ($item->procurementMethod == 'open' && in_array($item->procurementMethodType, ['aboveThresholdEU', 'competitiveDialogueEU', 'aboveThresholdUA.defense']))
+                                    @if ($item->procurementMethod == 'open' && in_array($item->procurementMethodType, ['aboveThresholdEU', 'competitiveDialogueEU', 'aboveThresholdUA.defense']) && ($item->procurementMethodType == 'aboveThresholdUA.defense' && !empty($item->title_en)))
                                         @if (Lang::getLocale() == 'en' )
                                             <h2>Tender notice</h2>
                                         @else

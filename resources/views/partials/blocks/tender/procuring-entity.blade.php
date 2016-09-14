@@ -1,6 +1,6 @@
 @if (!empty($item->procuringEntity))
     <div class="col-sm-9 tender--customer--inner margin-bottom-more">
-        @if (in_array($item->procurementMethodType, ['aboveThresholdEU', 'competitiveDialogueEU', 'aboveThresholdUA.defense']))
+        @if (in_array($item->procurementMethodType, ['aboveThresholdEU', 'competitiveDialogueEU', 'aboveThresholdUA.defense']) && ($item->procurementMethodType == 'aboveThresholdUA.defense' && !empty($item->title_en)))
             @if (Lang::getLocale() == 'ua')
                 <h3>Інформація про замовника</h3>
                 <h4>Purchasing Body</h4>

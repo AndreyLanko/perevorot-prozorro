@@ -1,9 +1,11 @@
 @if($item->procurementMethod=='open' || ($item->procurementMethod=='limited' && in_array($item->procurementMethodType, ['negotiation', 'negotiation.quick'])))
     <div class="col-sm-9 tender--customer--inner margin-bottom margin-bottom-more">
-        <h3>Інформація про процедуру</h3>
-        <div class="row">
-            <table class="tender--customer margin-bottom">
-                <tbody>
+
+
+            <h3>Інформація про процедуру</h3>
+            <div class="row">
+                <table class="tender--customer margin-bottom">
+                    <tbody>
                     @if($item->procurementMethod=='open')
                         @if(!empty($item->enquiryPeriod->endDate))
                             <tr>
@@ -41,7 +43,7 @@
                                 <td class="col-sm-4">{{number_format($item->value->amount, 0, '', ' ')}} {{$item->value->currency}} {{!empty($item->value->valueAddedTaxIncluded)?'з ПДВ':'без ПДВ'}}</td>
                             </tr>
                         @endif
-    
+
                         @if (!empty($item->guarantee) && (int) $item->guarantee->amount>0)
                             <tr>
                                 <td class="col-sm-8"><strong>Вид тендерного забезпечення:</strong></td>
@@ -76,10 +78,12 @@
                         <tr>
                             <td class="col-sm-8"><strong>Оскарження наміру укласти договір:</strong></td>
                             <td class="col-sm-4">{{!empty($item->__active_award->complaintPeriod) ? 'до '.date('d.m.Y H:i', strtotime($item->__active_award->complaintPeriod->endDate)) : 'Відсутнє'}}</td>
-                        </tr>                    
+                        </tr>
                     @endif
-                </tbody>
-            </table>
-        </div>
+                    </tbody>
+                </table>
+            </div>
+
+
     </div>
 @endif
