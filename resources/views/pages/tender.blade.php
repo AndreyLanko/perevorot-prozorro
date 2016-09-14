@@ -67,6 +67,10 @@
                                         <div style="margin-top:-30px;margin-bottom:40px">Друкувати звіт про результати проведення процедури <a href="{{href('tender/'.$item->tenderID.'/print/report/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/report/html')}}" target="_blank">HTML</a></div>
                                     @endif
                                 @endif
+
+                                @if (Lang::getLocale() == 'en' && $item->procurementMethod == 'open' && in_array($item->procurementMethodType, ['aboveThresholdEU']))
+                                    <h2>Tender notice</h2>
+                                @endif
     
                                 {{--Інформація про замовника--}}
                                 @include('partials/blocks/tender/procuring-entity')
