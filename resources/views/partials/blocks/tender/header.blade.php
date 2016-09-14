@@ -1,13 +1,19 @@
     <div class="tender--head gray-bg">
         <div class="container">
-            {{--<div class="tender--head--title col-sm-9">{{!empty($item->title) ? $item->title : trans('facebook.tender_no_name')}}</div>--}}
-            <h3>{{!empty($item->title) ? $item->title : trans('facebook.tender_no_name')}}</h3>
-
-            @if ((in_array($item->procurementMethodType, ['aboveThresholdEU']) && App::getLocale() == 'ua'))
-                <h4>{{!empty($item->title_en) ? $item->title_en : trans('facebook.tender_no_name')}}</h4>
+            @if (App::getLocale() == 'ua')
+                <div class="tender--head--title col-sm-9">
+                    {{!empty($item->title) ? $item->title : trans('facebook.tender_no_name')}}
+                    <br>
+                    @if (in_array($item->procurementMethodType, ['aboveThresholdEU']))
+                        <b>{{!empty($item->title_en) ? $item->title_en : trans('facebook.tender_no_name')}}</b>
+                    @endif
+                </div>
             @elseif ((in_array($item->procurementMethodType, ['aboveThresholdEU']) && App::getLocale() == 'en'))
-                <h3>{{!empty($item->title_en) ? $item->title_en : trans('facebook.tender_no_name')}}</h3>
-                <h4>{{!empty($item->title) ? $item->title : trans('facebook.tender_no_name')}}</h4>
+                <div class="tender--head--title col-sm-9">
+                    {{!empty($item->title_en) ? $item->title_en : trans('facebook.tender_no_name')}}
+                    <br>
+                    <b>{{!empty($item->title) ? $item->title : trans('facebook.tender_no_name')}}</b>
+                </div>
             @endif
 
             <div class="col-md-3 col-sm-3 tender--description--cost--wr">
