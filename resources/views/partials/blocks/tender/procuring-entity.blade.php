@@ -19,30 +19,64 @@
                                 <td class="col-sm-6">{{$item->procuringEntity->name}}</td>
                             </tr>
                         @endif
+                        @if(!empty($item->procuringEntity->identifier->legalName_en))
+                            <tr>
+                                <td class="col-sm-4"><strong>Official name:</strong></td>
+                                <td class="col-sm-6">{{$item->procuringEntity->identifier->legalName_en}}</td>
+                            </tr>
+                        @endif
+
+
                         @if (!empty($item->procuringEntity->identifier->id))
                             <tr>
                                 <td class="col-sm-4"><strong>{{trans('tender.customer_code')}}:</strong></td>
                                 <td class="col-sm-6">{{$item->procuringEntity->identifier->id}}</td>
                             </tr>
                         @endif
+                        @if (!empty($item->procuringEntity->identifier->id))
+                            <tr>
+                                <td class="col-sm-4"><strong>National ID:</strong></td>
+                                <td class="col-sm-6">{{$item->procuringEntity->identifier->id}}</td>
+                            </tr>
+                        @endif
+
+
                         @if (!empty($item->procuringEntity->contactPoint->url))
                             <tr>
                                 <td class="col-sm-4"><strong>{{trans('tender.customer_website')}}:</strong></td>
                                 <td class="col-sm-6"><a href="{{$item->procuringEntity->contactPoint->url}}" target="_blank">{{$item->procuringEntity->contactPoint->url}}</a></td>
                             </tr>
                         @endif
+
                         @if (!empty($item->procuringEntity->address))
                             <tr>
                                 <td class="col-sm-4"><strong>{{trans('tender.customer_addr')}}:</strong></td>
                                 <td class="col-sm-6">{{!empty($item->procuringEntity->address->postalCode) ? $item->procuringEntity->address->postalCode.', ': ''}}{{$item->procuringEntity->address->countryName}}, {{!empty($item->procuringEntity->address->region) ? $item->procuringEntity->address->region.trans('tender.region') : ''}}{{!empty($item->procuringEntity->address->locality) ? $item->procuringEntity->address->locality.', ' : ''}}{{!empty($item->procuringEntity->address->streetAddress) ? $item->procuringEntity->address->streetAddress : ''}}</td>
                             </tr>
                         @endif
+
                         @if (!empty($item->procuringEntity->contactPoint))
                             <tr>
                                 <td class="col-sm-4"><strong>{{trans('tender.customer_contact')}}:</strong></td>
                                 <td class="col-sm-6">
                                     @if (!empty($item->procuringEntity->contactPoint->name))
                                         {{$item->procuringEntity->contactPoint->name}}<br>
+                                    @endif
+                                    @if (!empty($item->procuringEntity->contactPoint->telephone))
+                                        {{$item->procuringEntity->contactPoint->telephone}}<br>
+                                    @endif
+                                    @if (!empty($item->procuringEntity->contactPoint->email))
+                                        <a href="mailto:{{$item->procuringEntity->contactPoint->email}}">{{$item->procuringEntity->contactPoint->email}}</a><br>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endif
+                        @if (!empty($item->procuringEntity->contactPoint))
+                            <tr>
+                                <td class="col-sm-4"><strong>Contact point:</strong></td>
+                                <td class="col-sm-6">
+                                    @if (!empty($item->procuringEntity->contactPoint->name_en))
+                                        {{$item->procuringEntity->contactPoint->name_en}}<br>
                                     @endif
                                     @if (!empty($item->procuringEntity->contactPoint->telephone))
                                         {{$item->procuringEntity->contactPoint->telephone}}<br>
