@@ -56,7 +56,13 @@
                                         @endif
                                     @endif
                                 @else
-                                    <h2></h2>
+                                    @if ($item->procurementMethod == 'open' && in_array($item->procurementMethodType, ['aboveThresholdEU', 'competitiveDialogueEU', 'aboveThresholdUA.defense']) && ($item->procurementMethodType == 'aboveThresholdUA.defense' && !empty($item->title_en)))
+                                        @if (Lang::getLocale() == 'en' )
+                                            <h2>Tender notice</h2>
+                                        @else
+                                            <h2></h2>
+                                        @endif
+                                    @endif
                                 @endif
 
                                 @if ($item->__isSingleLot)
@@ -67,6 +73,8 @@
                                         <div style="margin-top:-30px;margin-bottom:40px">Друкувати звіт про результати проведення процедури <a href="{{href('tender/'.$item->tenderID.'/print/report/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/report/html')}}" target="_blank">HTML</a></div>
                                     @endif
                                 @endif
+
+
     
                                 {{--Інформація про замовника--}}
                                 @include('partials/blocks/tender/procuring-entity')
