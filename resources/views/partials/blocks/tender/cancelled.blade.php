@@ -40,7 +40,7 @@
                     <div class="row">
                         <div class="col-md-12 margin-bottom">
                             <strong>Дата відміни</strong>
-                            <div>{{!empty($item->dateModified) ? date('d.m.Y H:i', strtotime($item->dateModified)) : 'не вказано'}}</div>
+                            <div>{{!empty($item->awardPeriod->endDate) ? date('d.m.Y H:i', strtotime($item->awardPeriod->endDate)) : 'не вказано'}}</div>
                         </div>
                         <div class="col-md-12">
                             <strong>Причина відміни</strong>
