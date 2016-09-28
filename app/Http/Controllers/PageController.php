@@ -1142,6 +1142,17 @@ class PageController extends BaseController
 
                             $bid->documents=array_merge($bid->documents, $bid->eligibilityDocuments);
                         }
+
+                        if(!empty($bid->financialDocuments))
+                        {
+                            if(empty($bid->documents))
+                            {
+                                $bid->documents=new \StdClass();
+                                $bid->documents=[];
+                            }
+
+                            $bid->documents=array_merge($bid->documents, $bid->financialDocuments);
+                        }
                         
                         if(!empty($bid->documents))
                         {
@@ -1309,6 +1320,10 @@ class PageController extends BaseController
                     $eligibilityDocuments=!empty($bid->eligibilityDocuments) ? $bid->eligibilityDocuments : [];
 
                     $documents=array_merge($documents, $eligibilityDocuments);
+
+                    $financialDocuments=!empty($bid->financialDocuments) ? $bid->financialDocuments : [];
+
+                    $documents=array_merge($documents, $financialDocuments);
 
                     if(!empty($bid->tenderers[0]))
                         $qualification->__name=$bid->tenderers[0]->name;
