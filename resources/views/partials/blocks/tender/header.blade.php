@@ -15,7 +15,7 @@
                     </div>
                 @endif
             @else
-                {{!empty($item->title) ? $item->title : trans('facebook.tender_no_name')}}
+                <div class="tender--head--title col-sm-9">{{!empty($item->title) ? $item->title : trans('facebook.tender_no_name')}}</div>
             @endif
 
             <div class="col-md-3 col-sm-3 tender--description--cost--wr">
