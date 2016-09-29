@@ -1,8 +1,8 @@
 <div class="col-sm-9 margin-bottom margin-bottom-more">    
-    @if (in_array($item->procurementMethodType, ['aboveThresholdEU', 'competitiveDialogueEU', 'aboveThresholdUA.defense']) && ($item->procurementMethodType == 'aboveThresholdUA.defense' && !empty($item->title_en)))
+    @if (in_array($item->procurementMethodType, ['aboveThresholdEU', 'competitiveDialogueEU', 'aboveThresholdUA.defense']))
         @if (App::getLocale() == 'ua')
             <h3>Інформація про предмет закупівлі</h3>
-            <h4>Scope of the procurement</h4>
+            <div style="margin-top:-15px;margin-bottom:20px">Scope of the procurement</div>
             <div class="row">
                 @if (!empty($item->description))
                     <div class="col-md-12 description-wr margin-bottom">
@@ -55,17 +55,6 @@
                                         </a>
                                     @endif
                                 @endif
-                                @if (!empty($one->description_en))
-                                    <div class="tender--description--text description padding-side">
-                                        {!!nl2br($one->description_en)!!}
-                                    </div>
-                                    @if (mb_strlen($one->description_en)>350)
-                                        <a class="search-form--open"><i class="sprite-arrow-down"></i>
-                                            <span>{{trans('interface.expand')}}</span>
-                                            <span>{{trans('interface.collapse')}}</span>
-                                        </a>
-                                    @endif
-                                @endif
                                 @if (!empty($one->classification))
                                     <div class="tender-date padding-left-more">{{trans('tender.cpv')}}: {{$one->classification->id}} — {{$one->classification->description}}</div>
                                 @else
@@ -76,6 +65,21 @@
                                         <div class="tender-date padding-left-more">{{trans('scheme.'.$classification->scheme)}}: {{$classification->id}} — {{$classification->description}}</div>
                                     @endforeach
                                 @endif
+                                @if (!empty($one->description_en))
+                                    <br>
+                                    <div class="tender--description--text description padding-side">
+                                        {!!nl2br($one->description_en)!!}
+                                    </div>
+                                    @if (mb_strlen($one->description_en)>350)
+                                        <a class="search-form--open"><i class="sprite-arrow-down"></i>
+                                            <span>{{trans('interface.expand')}}</span>
+                                            <span>{{trans('interface.collapse')}}</span>
+                                        </a>
+                                    @endif
+                                    @if (!empty($one->classification))
+                                        <div class="tender-date padding-left-more">CPV: {{$one->classification->id}}</div>
+                                    @endif
+                                @endif
                             </div>
                         </div>
                     @endforeach
@@ -83,7 +87,6 @@
             </div>
         @else
             <h3>Scope of the procurement</h3>
-            <h4>Інформація про предмет закупівлі</h4>
             <div class="row">
                 @if (!empty($item->description_en))
                     <div class="col-md-12 description-wr margin-bottom">

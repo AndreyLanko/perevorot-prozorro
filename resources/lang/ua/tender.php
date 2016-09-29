@@ -168,6 +168,12 @@ return [
         'unsuccessful'=>'Торги відмінено',
         'complete'=>'Завершений',
     ],
+    'lot_status_en'=>[
+        'active'=>'Active',
+        'cancelled'=>'Cancelled',
+        'unsuccessful'=>'Unsuccessful',
+        'complete'=>'Complete',
+    ],
     'info_title'=>[
         'title1'=>'Оголошення про проведення відкритих торгів',
         'title2'=>'Оголошення про проведення допорогової закупівлі',

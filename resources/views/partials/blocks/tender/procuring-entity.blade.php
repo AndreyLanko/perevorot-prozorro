@@ -1,9 +1,9 @@
 @if (!empty($item->procuringEntity))
     <div class="col-sm-9 tender--customer--inner margin-bottom-more">
-        @if (in_array($item->procurementMethodType, ['aboveThresholdEU', 'competitiveDialogueEU', 'aboveThresholdUA.defense']) && ($item->procurementMethodType == 'aboveThresholdUA.defense' && !empty($item->title_en)))
+        @if (in_array($item->procurementMethodType, ['aboveThresholdEU', 'competitiveDialogueEU', 'aboveThresholdUA.defense']))
             @if (Lang::getLocale() == 'ua')
                 <h3>Інформація про замовника</h3>
-                <h4>Purchasing Body</h4>
+                <div style="margin-top:-15px;margin-bottom:20px">Purchasing Body</div>
 
                 <div class="row">
                     <table class="tender--customer margin-bottom">
@@ -19,42 +19,24 @@
                                 <td class="col-sm-6">{{$item->procuringEntity->name}}</td>
                             </tr>
                         @endif
-                        @if(!empty($item->procuringEntity->identifier->legalName_en))
-                            <tr>
-                                <td class="col-sm-4"><strong>Official name:</strong></td>
-                                <td class="col-sm-6">{{$item->procuringEntity->identifier->legalName_en}}</td>
-                            </tr>
-                        @endif
-
-
                         @if (!empty($item->procuringEntity->identifier->id))
                             <tr>
                                 <td class="col-sm-4"><strong>{{trans('tender.customer_code')}}:</strong></td>
                                 <td class="col-sm-6">{{$item->procuringEntity->identifier->id}}</td>
                             </tr>
                         @endif
-                        @if (!empty($item->procuringEntity->identifier->id))
-                            <tr>
-                                <td class="col-sm-4"><strong>National ID:</strong></td>
-                                <td class="col-sm-6">{{$item->procuringEntity->identifier->id}}</td>
-                            </tr>
-                        @endif
-
-
                         @if (!empty($item->procuringEntity->contactPoint->url))
                             <tr>
                                 <td class="col-sm-4"><strong>{{trans('tender.customer_website')}}:</strong></td>
                                 <td class="col-sm-6"><a href="{{$item->procuringEntity->contactPoint->url}}" target="_blank">{{$item->procuringEntity->contactPoint->url}}</a></td>
                             </tr>
                         @endif
-
                         @if (!empty($item->procuringEntity->address))
                             <tr>
                                 <td class="col-sm-4"><strong>{{trans('tender.customer_addr')}}:</strong></td>
                                 <td class="col-sm-6">{{!empty($item->procuringEntity->address->postalCode) ? $item->procuringEntity->address->postalCode.', ': ''}}{{$item->procuringEntity->address->countryName}}, {{!empty($item->procuringEntity->address->region) ? $item->procuringEntity->address->region.trans('tender.region') : ''}}{{!empty($item->procuringEntity->address->locality) ? $item->procuringEntity->address->locality.', ' : ''}}{{!empty($item->procuringEntity->address->streetAddress) ? $item->procuringEntity->address->streetAddress : ''}}</td>
                             </tr>
                         @endif
-
                         @if (!empty($item->procuringEntity->contactPoint))
                             <tr>
                                 <td class="col-sm-4"><strong>{{trans('tender.customer_contact')}}:</strong></td>
@@ -69,6 +51,22 @@
                                         <a href="mailto:{{$item->procuringEntity->contactPoint->email}}">{{$item->procuringEntity->contactPoint->email}}</a><br>
                                     @endif
                                 </td>
+                            </tr>
+                        @endif
+                        @if(!empty($item->procuringEntity->identifier->legalName_en))
+                            <tr>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="col-sm-4"><strong>Official name:</strong></td>
+                                <td class="col-sm-6">{{$item->procuringEntity->identifier->legalName_en}}</td>
+                            </tr>
+                        @endif
+                        @if (!empty($item->procuringEntity->identifier->id))
+                            <tr>
+                                <td class="col-sm-4"><strong>National ID:</strong></td>
+                                <td class="col-sm-6">{{$item->procuringEntity->identifier->id}}</td>
                             </tr>
                         @endif
                         @if (!empty($item->procuringEntity->contactPoint))

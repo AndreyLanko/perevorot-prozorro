@@ -1,12 +1,11 @@
 <div class="margin-bottom">    
     <div class="row">
-        @if (in_array($item->procurementMethodType, ['aboveThresholdEU', 'competitiveDialogueEU', 'aboveThresholdUA.defense']) && ($item->procurementMethodType == 'aboveThresholdUA.defense' && !empty($item->title_en)))
+        @if (in_array($item->procurementMethodType, ['aboveThresholdEU', 'competitiveDialogueEU', 'aboveThresholdUA.defense']))
             @if (Lang::getLocale() == 'ua')
                 <h3>Інформація про лот</h3>
-                <h4>Information about lots</h4>
+                <div style="margin-top:-15px;margin-bottom:20px">Information about lots</div>
                 <div class="margin-bottom-more" >
                     <div>Предмет закупівлі: {{!empty($item->title) ? $item->title : 'без назви'}}</div>
-                    <div>Title: {{!empty($item->title_en) ? $item->title_en : 'без назви'}}</div>
                     @if (!empty($item->description))
                         <div class="col-md-12 description-wr croped">
                             <div class="tender--description--text description{{mb_strlen($item->description)>350?' croped':' open'}}">
@@ -21,6 +20,40 @@
                             @endif
                         </div>
                     @endif
+
+                    <div>Статус: {{trans('tender.lot_status.'.$item->status)}}</div>
+                    
+                    @if (!empty($item->value))
+                        <div>
+                            Очікувана вартість: <strong>{{number_format($item->value->amount, 0, '', ' ')}} <span class="small">{{$item->value->currency}}</span></strong>
+                            @if($item->value->valueAddedTaxIncluded)
+                                з ПДВ
+                            @else
+                                без ПДВ
+                            @endif
+                        </div>
+                    @endif
+
+                    @if (!empty($item->minimalStep))
+                        <div>Мінімальний крок аукціону: <strong>{{number_format($item->minimalStep->amount, 0, '', ' ')}} <span class="small">{{$item->minimalStep->currency}}</span></strong>
+                            @if($item->minimalStep->valueAddedTaxIncluded)
+                                з ПДВ
+                            @else
+                                без ПДВ
+                            @endif
+                        </div>
+                    @endif
+
+
+                    @if (!empty($item->guarantee) && (int) $item->guarantee->amount>0)
+                        <div>Вид тендерного забезпечення: <strong>Електронна банківська гарантія</strong></div>
+                        <div>Сума тендерного забезпечення: <strong>{{str_replace('.00', '', number_format($item->guarantee->amount, 2, '.', ' '))}} {{$item->guarantee->currency}}</strong></div>
+                    @else
+                        <div>Вид тендерного забезпечення: <strong>Відсутній</strong></div>
+                    @endif
+
+                    <br><br>
+                    <div>Title: {{!empty($item->title_en) ? $item->title_en : 'без назви'}}</div>
                     @if (!empty($item->description_en))
                         <div class="col-md-12 description-wr croped">
                             <div class="tender--description--text description{{mb_strlen($item->description_en)>350?' croped':' open'}}">
@@ -35,19 +68,7 @@
                             @endif
                         </div>
                     @endif
-                    <div>Статус: {{trans('tender.lot_status.'.$item->status)}}</div>
-                    <div>Current status: {{trans('tender.lot_status.'.$item->status)}}</div>
-
-                    @if (!empty($item->value))
-                        <div>
-                            Очікувана вартість: <strong>{{number_format($item->value->amount, 0, '', ' ')}} <span class="small">{{$item->value->currency}}</span></strong>
-                            @if($item->value->valueAddedTaxIncluded)
-                                з ПДВ
-                            @else
-                                без ПДВ
-                            @endif
-                        </div>
-                    @endif
+                    <div>Current status: {{trans('tender.lot_status_en.'.$item->status)}}</div>
                     @if (!empty($item->value))
                         <div>
                             Estimated total value: <strong>{{number_format($item->value->amount, 0, '', ' ')}} <span class="small">{{$item->value->currency}}</span></strong>
@@ -55,16 +76,6 @@
                                 including VAT
                             @else
                                 excluding VAT
-                            @endif
-                        </div>
-                    @endif
-
-                    @if (!empty($item->minimalStep))
-                        <div>Мінімальний крок аукціону: <strong>{{number_format($item->minimalStep->amount, 0, '', ' ')}} <span class="small">{{$item->minimalStep->currency}}</span></strong>
-                            @if($item->minimalStep->valueAddedTaxIncluded)
-                                з ПДВ
-                            @else
-                                без ПДВ
                             @endif
                         </div>
                     @endif
@@ -77,16 +88,13 @@
                             @endif
                         </div>
                     @endif
-
                     @if (!empty($item->guarantee) && (int) $item->guarantee->amount>0)
-                        <div>Вид тендерного забезпечення: <strong>Електронна банківська гарантія</strong></div>
                         <div>Type of tender guarantee: <strong>Electronic guarantee</strong></div>
-                        <div>Сума тендерного забезпечення: <strong>{{str_replace('.00', '', number_format($item->guarantee->amount, 2, '.', ' '))}} {{$item->guarantee->currency}}</strong></div>
                         <div>Sum of tender guarantee: <strong>{{str_replace('.00', '', number_format($item->guarantee->amount, 2, '.', ' '))}} {{$item->guarantee->currency}}</strong></div>
                     @else
-                        <div>Вид тендерного забезпечення: <strong>Відсутній</strong></div>
                         <div>Type of tender guarantee: <strong>Nothing</strong></div>
                     @endif
+                    
                 </div>
 
                 @if (!empty($item->auctionPeriod->startDate) || !empty($item->auctionPeriod->endDate) || !empty($item->auctionUrl))
