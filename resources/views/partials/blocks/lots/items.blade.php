@@ -42,6 +42,21 @@
 	                @elseif(!empty($one->deliveryDate))
 	                    <div class="tender-date dark">Дата доставки: {{date('d.m.Y H:i', strtotime($one->deliveryDate))}}</div>
 	                @endif
+	                @if (!empty($one->description_en))
+	                    <br>
+                        <div class="tender--description--text description">
+                            {!!nl2br($one->description_en)!!}
+                        </div>
+                        @if (mb_strlen($one->description_en)>350)
+                            <a class="search-form--open"><i class="sprite-arrow-down"></i>
+                                <span>{{trans('interface.expand')}}</span>
+                                <span>{{trans('interface.collapse')}}</span>
+                            </a>
+                        @endif
+        	                @if (!empty($one->classification))
+        	                    <div class="tender-date">CPV: {{$one->classification->id}}</div>
+        	                @endif
+	                @endif	                
 	            </div>
 	        </div>
         </div>

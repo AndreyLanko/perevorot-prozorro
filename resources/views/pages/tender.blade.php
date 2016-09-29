@@ -42,6 +42,9 @@
                                 @if(!empty($item->__open_name) && $item->__open_name!='hide')
                                     @if(!empty($item->__open_name))
                                         <h2>{{$item->__open_name}}</h2>
+                                        @if(!empty($item->title_en))
+                                            <div style="margin-top:-35px;margin-bottom:60px">Tender notice</div>
+                                        @endif
                                     @endif
                                     
                                     @if($item->__print_href && !in_array($item->procurementMethodType, ['negotiation', 'negotiation.quick']))
@@ -56,7 +59,13 @@
                                         @endif
                                     @endif
                                 @else
-                                    <h2></h2>
+                                    @if ($item->procurementMethod == 'open' && in_array($item->procurementMethodType, ['aboveThresholdEU', 'competitiveDialogueEU', 'aboveThresholdUA.defense']))
+                                        @if (Lang::getLocale() == 'en' )
+                                            <h2>Tender notice</h2>
+                                        @else
+                                            <h2></h2>
+                                        @endif
+                                    @endif
                                 @endif
 
                                 @if ($item->__isSingleLot)

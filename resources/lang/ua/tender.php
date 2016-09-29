@@ -30,6 +30,7 @@ return [
     'all_documents'=>'Всі документи',
     'no_documents'=>'Відсутня',
     'dates'=>'Дати процедури',
+    'period0'=>'Дата оголошення процедури',
     'period1'=>'Звернення за роз’ясненнями',
     'period2'=>'Оскарження умов закупівлі',
     'period3'=>'Кінцевий строк подання тендерних пропозицій',
@@ -98,6 +99,11 @@ return [
     'collapse_claims'=>'Згорнути вимоги',
     'expand_complaints'=>'Розгорнути всі скарги',
     'collapse_complaints'=>'Згорнути скарги',
+    'estimated_value' => 'Очікувана вартість',
+    'minimal_lowering_step' => '',
+    'minimal_lowering_step_with_percent' => '',
+    'type_of_tender_guarentee' => '',
+    'sum_of_tender_guarantee' => '',
     'claim_statuses'=>[
         'pending'=>'Подана',
         'accepted'=>'Розглядається',
@@ -161,6 +167,12 @@ return [
         'cancelled'=>'Скасований',
         'unsuccessful'=>'Торги відмінено',
         'complete'=>'Завершений',
+    ],
+    'lot_status_en'=>[
+        'active'=>'Active',
+        'cancelled'=>'Cancelled',
+        'unsuccessful'=>'Unsuccessful',
+        'complete'=>'Complete',
     ],
     'info_title'=>[
         'title1'=>'Оголошення про проведення відкритих торгів',
