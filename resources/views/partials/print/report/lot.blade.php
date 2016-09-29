@@ -235,7 +235,7 @@
                                 <div>{{$cancellation->reason}}</div>
                             @endif
                         @endforeach
-                    @elseif(in_array($item->procurementMethodType, ['aboveThresholdEU', 'aboveThresholdUA', 'aboveThresholdUA.defense']) && !empty($lot->__unsuccessful_awards))
+                    @elseif(in_array($item->procurementMethodType, ['aboveThresholdEU', 'aboveThresholdUA', 'aboveThresholdUA.defense']) && !empty($item->__unsuccessful_awards))
                         <div>Відхилення всіх тендерних пропозицій згідно з Законом про публічні закупівлі</div>
                     @else
                         <?php
