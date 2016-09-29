@@ -1481,7 +1481,7 @@ class PageController extends BaseController
                 }
 
                 $features_price=1;
-                
+
                 if(!empty($tender_features))
                 {
                     foreach($tender_features as $k=>$feature)
@@ -1510,7 +1510,7 @@ class PageController extends BaseController
 
                 $lot->__features_price=new \StdClass();
                 $lot->__features_price=$features_price;
-            
+
                 if(!empty($tender_bids))
                 {
                     $bids=array_where($tender_bids, function($key, $bid) use ($lot){
@@ -1520,6 +1520,14 @@ class PageController extends BaseController
                     });
                 }
 
+                if(!empty($item->features))
+                {
+                    $features_by_lot=array_where($item->features, function($k, $feature) use ($lot){
+                        return $feature->relatedItem==$lot->id && $feature->featureOf=='lot';
+                    });
+                }else
+                    $features_by_lot=[];
+                
                 if(!empty($tender_bids))
                 {
                     $lot->__bids=new \StdClass();
@@ -1547,7 +1555,18 @@ class PageController extends BaseController
 
                             if(!empty($bid->parameters))
                             {
-                                $featured_coef=trim(number_format(1+array_sum(array_pluck($bid->parameters, 'value'))/$lot->__features_price, 10, '.', ' '), '.0');
+                                $value=0;
+
+                                foreach($features_by_lot as $feature)
+                                {
+                                    $param=array_first($bid->parameters, function($k, $param) use($feature){
+                                        return $param->code==$feature->code;
+                                    });
+
+                                    $value+=$param->value;
+                                }
+
+                                $featured_coef=trim(number_format(1+$value/$lot->__features_price, 10, '.', ' '), '.0');
              
                                 $bid->__featured_coef=$featured_coef;
                                 $bid->__featured_price=str_replace('.00', '', number_format($bid_value->value->amount/$featured_coef, 2, '.', ' '));
