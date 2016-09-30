@@ -1538,7 +1538,7 @@ class PageController extends BaseController
                 if(!empty($item->features))
                 {
                     $features_by_lot=array_where($item->features, function($k, $feature) use ($lot){
-                        return $feature->relatedItem==$lot->id && $feature->featureOf=='lot';
+                        return $feature->featureOf!='lot' || ($feature->featureOf=='lot' && $feature->relatedItem==$lot->id);
                     });
                 }else
                     $features_by_lot=[];
