@@ -339,7 +339,22 @@
         </tr>
         <tr valign="top">
             <td width="302">{{$n++}}. Інформація про субпідрядника (у разі залучення до виконання робіт або надання послуг):</td>
-            <td><strong>Відсутня</strong></td>
+            <td>
+                <?php
+                    if(!empty($__item->bids))
+                    {
+                        $subcontracting=array_first($__item->bids, function($id, $bid) use ($__item){
+                            return $bid->id==$__item->__active_award->bid_id;
+                        });
+                    }
+                ?>
+                @if(!empty($subcontracting->subcontractingDetails))
+                    {{ $subcontracting->subcontractingDetails }}
+                @else
+                    <strong>Відсутня</strong>
+                @endif
+                
+            </td>
         </tr>
         <tr valign="top">
             <td width="302">{{$n++}}. Сума, визначена в договорі про закупівлю:</td>
