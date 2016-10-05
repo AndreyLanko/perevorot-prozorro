@@ -341,7 +341,7 @@
             <td width="302">{{$n++}}. Інформація про субпідрядника (у разі залучення до виконання робіт або надання послуг):</td>
             <td>
                 <?php
-                    if(!empty($__item->bids))
+                    if(!empty($__item->__active_award) && !empty($__item->bids))
                     {
                         $subcontracting=array_first($__item->bids, function($id, $bid) use ($__item){
                             return $bid->id==$__item->__active_award->bid_id;

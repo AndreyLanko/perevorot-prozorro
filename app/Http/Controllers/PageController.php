@@ -1578,7 +1578,8 @@ class PageController extends BaseController
                                         return $param->code==$feature->code;
                                     });
 
-                                    $value+=$param->value;
+                                    if($param)
+                                        $value+=$param->value;
                                 }
 
                                 $featured_coef=trim(number_format(1+$value/$lot->__features_price, 10, '.', ' '), '.0');
