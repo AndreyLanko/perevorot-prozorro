@@ -1858,16 +1858,19 @@ class PageController extends BaseController
 
                         $eu_bids=[];
                         
-                        $lots=array_where($item->qualifications, function($key, $qualification) use ($bid){
-                            return $qualification->bidID==$bid->id;
-                        });
-    
-                        foreach($lots as $lot)
+                        if(!empty($item->qualifications))
                         {
-                            if(empty($item->__eu_bids[$lot->lotID]))
-                                $item->__eu_bids[$lot->lotID]=[];
-    
-                            $item->__eu_bids[$lot->lotID][]=clone $bid;
+                            $lots=array_where($item->qualifications, function($key, $qualification) use ($bid){
+                                return $qualification->bidID==$bid->id;
+                            });
+        
+                            foreach($lots as $lot)
+                            {
+                                if(empty($item->__eu_bids[$lot->lotID]))
+                                    $item->__eu_bids[$lot->lotID]=[];
+        
+                                $item->__eu_bids[$lot->lotID][]=clone $bid;
+                            }
                         }
                     }
                 }
