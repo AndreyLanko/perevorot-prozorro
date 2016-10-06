@@ -336,7 +336,7 @@ var APP,
                                 return;
                             }
                             var certInfo = "Підписувач:  <b>" + ownerInfo.GetSubjCN() + "</b><br/>" +
-                                    "ЦСК:  <b>" + ownerInfo.GetIssuerCN() + "</b>";
+                                    "ЦСК:  <b>" + ownerInfo.GetIssuerCN() + "</b><br/>";
                 
                             var timeMark;
                             if (timeInfo.IsTimeAvail()) {
