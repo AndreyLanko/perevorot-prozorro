@@ -398,6 +398,7 @@ class PageController extends BaseController
         $this->get_action_url_singlelot($item);
         $this->get_auction_period($item);
         $this->get_button_007($item, $item->procuringEntity);
+        $this->get_stage2TenderID($item);
         
         if(isset($_GET['dump']) && getenv('APP_ENV')=='local')
             dd($item);
@@ -1811,7 +1812,7 @@ class PageController extends BaseController
                 {
                     foreach($contracts->changes as $change)
                     {
-                        $change->contract=array_first($contracts->documents, function($key, $document) use ($change){
+                        $change->contract=array_where($contracts->documents, function($key, $document) use ($change){
                             return !empty($document->documentOf) && $document->documentOf=='change' && $document->relatedItem==$change->id;
                         });
 
@@ -1823,6 +1824,7 @@ class PageController extends BaseController
 
                     $item->__contracts_changes=$contracts->changes;
                 }
+                //dd($item->__contracts_changes);
             }
         }
     }
@@ -1982,6 +1984,12 @@ class PageController extends BaseController
         if($item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdUA.defense')
             $title='hide';
 
+        elseif($item->procurementMethod=='open' && in_array($item->procurementMethodType, ['competitiveDialogueUA', 'competitiveDialogueEU']))
+            $title=5;
+
+        elseif($item->procurementMethod=='open' && in_array($item->procurementMethodType, ['competitiveDialogueUA.stage2', 'competitiveDialogueEU.stage2']))
+            $title=6;
+
         elseif($item->procurementMethod=='open' && $item->procurementMethodType!='belowThreshold')
             $title=1;
 
@@ -2005,7 +2013,23 @@ class PageController extends BaseController
             $item->__open_name=trans('tender.info_title.title'.$title);
         }
     }
-        
+
+    private function get_stage2TenderID(&$item)
+    {
+        if(!empty($item->stage2TenderID))
+        {
+            $stage2Tender=file_get_contents(env('API').'/tenders/'.$item->stage2TenderID);
+    
+            if(!empty($stage2Tender))
+            {
+                $stage2Tender=json_decode($stage2Tender);
+    
+                if(!empty($stage2Tender->data->tenderID))
+                    $item->__stage2TenderID=$stage2Tender->data->tenderID;
+            }
+        }
+    }
+
     private function get_procedure(&$item)
     {
         if($item->procurementMethod=='open' && $item->procurementMethodType=='belowThreshold')
@@ -2031,6 +2055,18 @@ class PageController extends BaseController
 
         if($item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdUA.defense')
             $name='Переговорна процедура для потреб оборони';
+
+        if($item->procurementMethod=='open' && $item->procurementMethodType=='competitiveDialogueUA')
+            $name='Конкурентний діалог';
+
+        if($item->procurementMethod=='open' && $item->procurementMethodType=='competitiveDialogueEU')
+            $name='Конкурентний діалог з публікацією на англ. мові';
+
+        if($item->procurementMethod=='open' && $item->procurementMethodType=='competitiveDialogueUA.stage2')
+            $name='Конкурентний діалог (2ий етап)';
+
+        if($item->procurementMethod=='open' && $item->procurementMethodType=='competitiveDialogueEU.stage2')
+            $name='Конкурентний діалог з публікацією на англ. мові (2ий етап)';
             
         $item->__procedure_name=new \StdClass();
         $item->__procedure_name=$name;
