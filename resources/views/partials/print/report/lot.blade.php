@@ -171,7 +171,7 @@
                                         @if($q->status=='active')
                                             Відповідає кваліфікаційним критеріям, встановленим в тендерній документації. Відсутні підстави для відмови, установлені  ст. 17 Закону України ”Про публічні закупівлі”
                                         @elseif($q->status=='unsuccessful')
-                                            {{$q->title}}<br>{{$q->description}}
+                                            {{$q->title}}@if(!empty($q->description))<br>{{$q->description}}@endif
                                         @elseif($q->status=='pending')
                                             Не розглядався
                                         @elseif($q->status=='cancelled')
