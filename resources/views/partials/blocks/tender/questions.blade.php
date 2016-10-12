@@ -9,7 +9,10 @@
                         @foreach($item->__questions as $k=>$question)
                             <div class="questions-row{{$k>1?' none':' visible'}}">
                                 <div><strong>{{$question->title}}</strong></div>
-                                <div class="grey-light size12 question-date">{{date('d.m.Y H:i', strtotime($question->date))}}</div>
+                                <div class="grey-light size12{{ empty($question->dateAnswered) ? ' question-date':'' }}">Дата подання: {{date('d.m.Y H:i', strtotime($question->date))}}</div>
+                                @if(!empty($question->dateAnswered))
+                                    <div class="grey-light size12 question-date">Дата відповіді: {{date('d.m.Y H:i', strtotime($question->dateAnswered))}}</div>                                
+                                @endif
                                 @if (!empty($question->description))
                                     <div class="question-one description-wr margin-bottom{{mb_strlen($question->description)>350?' croped':' open'}}">
                                         <div class="description">
