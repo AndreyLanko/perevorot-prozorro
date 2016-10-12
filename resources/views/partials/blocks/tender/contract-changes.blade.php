@@ -26,8 +26,10 @@
 	                        <tr>
 	                            <td class="col-sm-8">Договір:</td>
 	                            <td class="col-sm-4">
-    	                                @if($document->contract)
-        	                                <a href="{{$document->contract->url}}" target="_blank">{{$document->contract->title}}</a>
+    	                                @if(!empty($document->contract))
+    	                                    @foreach($document->contract as $contract)
+            	                                <div><a href="{{$contract->url}}" target="_blank">{{$contract->title}}</a></div>
+        	                                @endforeach
     	                                @else
         	                                не вказано
     	                                @endif
