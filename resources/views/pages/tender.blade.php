@@ -41,12 +41,23 @@
                             <div class="col-sm-9">
                                 @if(!empty($item->__open_name) && $item->__open_name!='hide')
                                     @if(!empty($item->__open_name))
-                                        <h2>{{$item->__open_name}}</h2>
-                                        @if(!empty($item->title_en))
-                                            <div style="margin-top:-35px;margin-bottom:60px">Tender notice</div>
+                                        <h2>
+                                            {!!$item->__open_name!!}
+                                        </h2>
+                                        @if(!empty($item->__stage2TenderID))
+                                            <div style="margin-top:-35px;margin-bottom:60px">
+                                                <a href="/tender/{{$item->__stage2TenderID}}">Перейти на 2-ий етап</a>
+                                            </div>
                                         @endif
-                                    @endif
-                                    
+                                        @if(!empty($item->__stage1TenderID))
+                                            <div style="margin-top:-35px;margin-bottom:60px">
+                                                <a href="/tender/{{$item->__stage1TenderID}}">Перейти на 1-ий етап</a>
+                                            </div>
+                                        @endif
+                                        @if(!empty($item->title_en))
+                                            <div style="margin-top:-{{ !empty($item->__stage2TenderID) || !empty($item->__stage1TenderID) ? '55':'35' }}px;margin-bottom:60px">Tender notice</div>
+                                        @endif
+                                    @endif                 
                                     @if($item->__print_href && !in_array($item->procurementMethodType, ['negotiation', 'negotiation.quick']))
                                         @if(starts_with($item->__print_href, 'limited'))
                                             @if(empty($item->__active_award))
@@ -57,6 +68,12 @@
                                         @else
                                             <div style="margin-top:-30px;margin-bottom:40px">Друкувати форму оголошення <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->tenderID.'/print/'.$item->__print_href.'/html')}}" target="_blank">HTML</a></div>
                                         @endif
+                                    @endif
+                                    @if(!empty($item->__stage2TenderID))
+                                        <div style="margin-top:-30px;margin-bottom:40px">Друкувати форму оголошення 2-го етапу <a href="{{href('tender/'.$item->__stage2TenderID.'/print/'.$item->__print_href.'/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->__stage2TenderID.'/print/'.$item->__print_href.'/html')}}" target="_blank">HTML</a></div>
+                                    @endif
+                                    @if(!empty($item->__stage1TenderID))
+                                        <div style="margin-top:-30px;margin-bottom:40px">Друкувати форму оголошення 1-го етапу <a href="{{href('tender/'.$item->__stage1TenderID.'/print/'.$item->__print_href.'/pdf')}}" target="_blank">PDF</a> ● <a href="{{href('tender/'.$item->__stage1TenderID.'/print/'.$item->__print_href.'/html')}}" target="_blank">HTML</a></div>
                                     @endif
                                 @else
                                     @if ($item->procurementMethod == 'open' && in_array($item->procurementMethodType, ['aboveThresholdEU', 'competitiveDialogueEU', 'aboveThresholdUA.defense']))

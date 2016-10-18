@@ -241,8 +241,9 @@ class PageController extends BaseController
 
             if(empty($data->error))
             {
-                if(!empty($data->items[0]))
-                    $item=$data->items[0];
+                $item=array_first($data->items, function($k, $one) use ($id) {
+                    return $one->tenderID===$id;
+                });
             }
             else
                 $this->error=$data->error;
@@ -399,6 +400,7 @@ class PageController extends BaseController
         $this->get_auction_period($item);
         $this->get_button_007($item, $item->procuringEntity);
         $this->get_stage2TenderID($item);
+        $this->get_stage1TenderID($item);
         
         if(isset($_GET['dump']) && getenv('APP_ENV')=='local')
             dd($item);
@@ -422,9 +424,9 @@ class PageController extends BaseController
         
         if(!empty($item->procurementMethodType))
         {
-            if($item->procurementMethod=='open' && $item->procurementMethodType!='belowThreshold')
+            if(in_array($item->procurementMethod, ['open', 'selective']) && $item->procurementMethodType!='belowThreshold')
                 $item->__print_href='open';
-    
+
             if($item->procurementMethod=='limited' && $item->procurementMethodType!='reporting')
                 $item->__print_href='limited';        
     
@@ -1984,11 +1986,17 @@ class PageController extends BaseController
         if($item->procurementMethod=='open' && $item->procurementMethodType=='aboveThresholdUA.defense')
             $title='hide';
 
-        elseif($item->procurementMethod=='open' && in_array($item->procurementMethodType, ['competitiveDialogueUA', 'competitiveDialogueEU']))
+        elseif($item->procurementMethod=='open' && in_array($item->procurementMethodType, ['competitiveDialogueUA']))
             $title=5;
 
-        elseif($item->procurementMethod=='open' && in_array($item->procurementMethodType, ['competitiveDialogueUA.stage2', 'competitiveDialogueEU.stage2']))
+        elseif($item->procurementMethod=='open' && in_array($item->procurementMethodType, ['competitiveDialogueEU']))
             $title=6;
+
+        elseif($item->procurementMethod=='selective' && in_array($item->procurementMethodType, ['competitiveDialogueUA.stage2']))
+            $title=7;
+
+        elseif($item->procurementMethod=='selective' && in_array($item->procurementMethodType, ['competitiveDialogueEU.stage2']))
+            $title=8;
 
         elseif($item->procurementMethod=='open' && $item->procurementMethodType!='belowThreshold')
             $title=1;
@@ -2011,6 +2019,22 @@ class PageController extends BaseController
         {
             $item->__open_name=new \StdClass();
             $item->__open_name=trans('tender.info_title.title'.$title);
+        }
+    }
+
+    private function get_stage1TenderID(&$item)
+    {
+        if(!empty($item->dialogueID))
+        {
+            $stage1Tender=file_get_contents(env('API').'/tenders/'.$item->dialogueID);
+    
+            if(!empty($stage1Tender))
+            {
+                $stage1Tender=json_decode($stage1Tender);
+    
+                if(!empty($stage1Tender->data->tenderID))
+                    $item->__stage1TenderID=$stage1Tender->data->tenderID;
+            }
         }
     }
 
@@ -2062,10 +2086,10 @@ class PageController extends BaseController
         if($item->procurementMethod=='open' && $item->procurementMethodType=='competitiveDialogueEU')
             $name='Конкурентний діалог з публікацією на англ. мові';
 
-        if($item->procurementMethod=='open' && $item->procurementMethodType=='competitiveDialogueUA.stage2')
+        if($item->procurementMethod=='selective' && $item->procurementMethodType=='competitiveDialogueUA.stage2')
             $name='Конкурентний діалог (2ий етап)';
 
-        if($item->procurementMethod=='open' && $item->procurementMethodType=='competitiveDialogueEU.stage2')
+        if($item->procurementMethod=='selective' && $item->procurementMethodType=='competitiveDialogueEU.stage2')
             $name='Конкурентний діалог з публікацією на англ. мові (2ий етап)';
             
         $item->__procedure_name=new \StdClass();

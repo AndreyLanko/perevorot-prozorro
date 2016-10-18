@@ -36,7 +36,7 @@
                             </div>
                         </div>
                     @endforeach
-                @elseif(in_array($item->procurementMethodType, ['aboveThresholdEU', 'aboveThresholdUA', 'aboveThresholdUA.defense']) && !empty($item->__unsuccessful_awards))
+                @elseif(in_array($item->procurementMethodType, ['aboveThresholdEU', 'aboveThresholdUA', 'aboveThresholdUA.defense', 'competitiveDialogueUA.stage2', 'competitiveDialogueEU.stage2']) && !empty($item->__unsuccessful_awards))
                     <div class="row">
                         <div class="col-md-12 margin-bottom">
                             <strong>Дата відміни</strong>
@@ -72,7 +72,7 @@
                         }
                     ?>
                     @if($item->status=='unsuccessful')
-                        @if(in_array($item->procurementMethodType, ['aboveThresholdUA']))
+                        @if(in_array($item->procurementMethodType, ['aboveThresholdUA', 'competitiveDialogueUA.stage2', 'competitiveDialogueEU.stage2']))
                             <div class="row">
                                 <div class="col-md-12 margin-bottom">
                                     <strong>Дата відміни</strong>
@@ -81,6 +81,17 @@
                                 <div class="col-md-12">
                                     <strong>Причина відміни</strong>
                                     <div>подання для участі в торгах менше двох тендерних пропозицій</div>
+                                </div>
+                            </div>
+                        @elseif(in_array($item->procurementMethodType, ['competitiveDialogueUA', 'competitiveDialogueEU']))
+                            <div class="row">
+                                <div class="col-md-12 margin-bottom">
+                                    <strong>Дата відміни</strong>
+                                    <div>{{date('d.m.Y H:i', strtotime($tenderPeriod->endDate))}}</div>
+                                </div>
+                                <div class="col-md-12">
+                                    <strong>Причина відміни</strong>
+                                    <div>подання для участі в торгах менше трьох тендерних пропозицій</div>
                                 </div>
                             </div>
                         @elseif(in_array($item->procurementMethodType, ['aboveThresholdUA.defense']))
@@ -105,7 +116,7 @@
                                     <div>відсутність тендерних пропозицій</div>
                                 </div>
                             </div>
-                        @elseif($item->procurementMethodType=='aboveThresholdEU' && $numberOfBids < 2)
+                        @elseif(in_array($item->procurementMethodType, ['aboveThresholdEU', 'competitiveDialogueEU.stage2']) && $numberOfBids < 2)
                             <div class="row">
                                 <div class="col-md-12 margin-bottom">
                                     <strong>Дата відміни</strong>
@@ -116,7 +127,7 @@
                                     <div>подання для участі в торгах менше двох тендерних пропозицій</div>
                                 </div>
                             </div>                        
-                        @elseif($item->procurementMethodType=='aboveThresholdEU' && $numberOfQualifications < 2)
+                        @elseif(in_array($item->procurementMethodType, ['aboveThresholdEU', 'competitiveDialogueEU.stage2']) && $numberOfQualifications < 2)
                             <div class="row">
                                 <div class="col-md-12 margin-bottom">
                                     <strong>Дата відміни</strong>
@@ -131,6 +142,23 @@
                                 <div class="col-md-12">
                                     <strong>Причина відміни</strong>
                                     <div>допущення до оцінки менше двох тендерних пропозицій</div>
+                                </div>
+                            </div>
+                        @elseif(in_array($item->procurementMethodType, ['competitiveDialogueEU', 'competitiveDialogueUA']) && $numberOfQualifications < 3)
+                            <div class="row">
+                                <div class="col-md-12 margin-bottom">
+                                    <strong>Дата відміни</strong>
+                                    <div>
+                                        @if(!empty($qualificationPeriod->endDate))
+                                            {{date('d.m.Y H:i', strtotime($qualificationPeriod->endDate))}}
+                                        @else
+                                            відсутня
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <strong>Причина відміни</strong>
+                                    <div>допущення до переговорів менше трьох тендерних пропозицій</div>
                                 </div>
                             </div>
                         @else

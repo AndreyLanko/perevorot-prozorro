@@ -101,7 +101,9 @@
                                         <div class="document-date">{{date('d.m.Y H:i', strtotime($document->dateModified))}}</div>
                                         <div>{{$document->title}}</div>
                                         <p style="font-size:80%;margin-top:10px;margin-bottom:4px;color:#AAA">Обгрунтування конфіденційності</p>
-                                        <p style="font-size:80%;">{{$document->confidentialityRationale}}</p>
+                                        @if(!empty($document->confidentialityRationale))
+                                            <p style="font-size:80%;">{{$document->confidentialityRationale}}</p>
+                                        @endif
                                     </div>
                                 @endforeach
                             @endif

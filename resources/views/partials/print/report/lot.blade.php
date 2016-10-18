@@ -235,7 +235,7 @@
                                 <div>{{$cancellation->reason}}</div>
                             @endif
                         @endforeach
-                    @elseif(in_array($item->procurementMethodType, ['aboveThresholdEU', 'aboveThresholdUA', 'aboveThresholdUA.defense']) && !empty($item->__unsuccessful_awards))
+                    @elseif(in_array($item->procurementMethodType, ['aboveThresholdEU', 'aboveThresholdUA', 'aboveThresholdUA.defense', 'competitiveDialogueUA.stage2', 'competitiveDialogueEU.stage2']) && !empty($item->__unsuccessful_awards))
                         <div>Відхилення всіх тендерних пропозицій згідно з Законом про публічні закупівлі</div>
                     @else
                         <?php
@@ -265,12 +265,16 @@
                         @if($lot->status=='unsuccessful')
                             @if(in_array($item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdUA.defense']))
                                 <div>подання для участі в торгах менше двох тендерних пропозицій</div>
+                            @elseif(in_array($item->procurementMethodType, ['competitiveDialogueUA', 'competitiveDialogueEU']))
+                                <div>подання для участі в торгах менше трьох тендерних пропозицій</div>
                             @elseif($item->procurementMethodType=='belowThresholdUA')
                                 <div>відсутність тендерних пропозицій</div>
-                            @elseif($item->procurementMethodType=='aboveThresholdEU' && $numberOfBids < 2)
+                            @elseif(in_array($item->procurementMethodType, ['aboveThresholdEU', 'competitiveDialogueEU.stage2'] && $numberOfBids < 2)
                                 <div>подання для участі в торгах менше двох тендерних пропозицій</div>
                             @elseif($item->procurementMethodType=='aboveThresholdEU' && $numberOfQualifications < 2)
                                 <div>допущення до оцінки менше двох тендерних пропозицій</div>
+                            @elseif(in_array($item->procurementMethodType, ['competitiveDialogueEU', 'competitiveDialogueUA']) && $numberOfQualifications < 3)
+                                <div>допущення до переговорів менше трьох тендерних пропозицій</div>
                             @else
                                 <div>відсутність пропозицій</div>
                             @endif
