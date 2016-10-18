@@ -92,7 +92,7 @@
                         <div>Type of tender guarantee: <strong>Electronic guarantee</strong></div>
                         <div>Sum of tender guarantee: <strong>{{str_replace('.00', '', number_format($item->guarantee->amount, 2, '.', ' '))}} {{$item->guarantee->currency}}</strong></div>
                     @else
-                        <div>Type of tender guarantee: <strong>Nothing</strong></div>
+                        <div>Type of tender guarantee: <strong>none</strong></div>
                     @endif
                     
                 </div>
