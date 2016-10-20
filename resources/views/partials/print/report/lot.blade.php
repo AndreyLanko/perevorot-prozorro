@@ -269,7 +269,7 @@
                                 <div>подання для участі в торгах менше трьох тендерних пропозицій</div>
                             @elseif($item->procurementMethodType=='belowThresholdUA')
                                 <div>відсутність тендерних пропозицій</div>
-                            @elseif(in_array($item->procurementMethodType, ['aboveThresholdEU', 'competitiveDialogueEU.stage2'] && $numberOfBids < 2)
+                            @elseif(in_array($item->procurementMethodType, ['aboveThresholdEU', 'competitiveDialogueEU.stage2']) && $numberOfBids < 2)
                                 <div>подання для участі в торгах менше двох тендерних пропозицій</div>
                             @elseif($item->procurementMethodType=='aboveThresholdEU' && $numberOfQualifications < 2)
                                 <div>допущення до оцінки менше двох тендерних пропозицій</div>
