@@ -18,7 +18,7 @@ return [
 	[
 		'name'=>'Smart Tender',
 		'slug'=>'smart-tender',
-		'href'=>'https://smarttender.biz/tenders?mode=gov&TenderID={tenderID}',
+		'href'=>'https://smarttender.biz/government/details/{tenderID}',
 		'contractor'=>true,
 		'tender'=>true,
 		'type1'=>false,
