@@ -1057,7 +1057,7 @@ class PageController extends BaseController
 
             usort($item->__tender_documents, function ($a, $b)
             {
-                return intval(strtotime($b->dateModified))>intval(strtotime($a->dateModified));
+                return !empty($b->dateModified) && intval(strtotime($b->dateModified))>intval(strtotime($a->dateModified));
             });
 
             $ids=[];
