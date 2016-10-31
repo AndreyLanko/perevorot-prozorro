@@ -374,8 +374,13 @@ class PageController extends BaseController
 
         $this->get_active_apply($item);
         $this->get_contracts($item, !empty($item->contracts) ? $item->contracts : false);
-        $this->get_contracts_changes($item, !empty($item->contracts) ? $item->contracts : false);
-        $this->get_contracts_ongoing($item, !empty($item->contracts) ? $item->contracts : false);
+
+        if(sizeof($item->contracts)<=10)
+        {
+            $this->get_contracts_changes($item, !empty($item->contracts) ? $item->contracts : false);
+            $this->get_contracts_ongoing($item, !empty($item->contracts) ? $item->contracts : false);
+        }
+
         $this->get_signed_contracts($item);
         $this->get_initial_bids($item);
         $this->get_initial_bids_dates($item);
@@ -1657,8 +1662,13 @@ class PageController extends BaseController
                 $this->get_uniqie_bids($lot, true);
                 $this->get_awards($lot);
                 $this->get_contracts($lot, !empty($item->contracts) ? $item->contracts : false, $lot->id);
-                $this->get_contracts_changes($lot, !empty($item->contracts) ? $item->contracts : false, $lot->id);
-                $this->get_contracts_ongoing($lot, !empty($item->contracts) ? $item->contracts : false, $lot->id);
+
+                if(sizeof($item->contracts)<=10)
+                {
+                    $this->get_contracts_changes($lot, !empty($item->contracts) ? $item->contracts : false, $lot->id);
+                    $this->get_contracts_ongoing($lot, !empty($item->contracts) ? $item->contracts : false, $lot->id);
+                }
+
                 $this->get_button_007($lot, $item->procuringEntity);
 
                 $parsed_lots[]=$lot;
@@ -1811,7 +1821,7 @@ class PageController extends BaseController
             if($__contracts_active)
             {
                 $id=$__contracts_active->id;
-                $contracts=$this->parse_contracts_json($id);
+                //$contracts=$this->parse_contracts_json($id);
                 $rationale_types=$this->parse_rationale_type();
 
                 if(!empty($contracts->changes))
