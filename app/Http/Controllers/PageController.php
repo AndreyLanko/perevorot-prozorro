@@ -936,13 +936,17 @@ class PageController extends BaseController
                         {
                             $doc=json_decode($document->json);
                             $doc->author='reviewers';
+                            
+                            $document_exists=false;
+                            
+                            if(!empty($__complaints_complaints[$key]->documents)){
+                                $document_exists=array_first($__complaints_complaints[$key]->documents, function($k, $check_document) use ($doc){
+                                    return $check_document->url==$doc->url;
+                                });
 
-                            $document_exists=array_first($__complaints_complaints[$key]->documents, function($k, $check_document) use ($doc){
-                                return $check_document->url==$doc->url;
-                            });
-
-                            if(!$document_exists)
-                                array_push($__complaints_complaints[$key]->documents, $doc);
+                                if(!$document_exists)
+                                    array_push($__complaints_complaints[$key]->documents, $doc);
+                            }
                         }
                     //}
                 }
