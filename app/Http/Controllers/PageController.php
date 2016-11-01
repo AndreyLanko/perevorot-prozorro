@@ -40,6 +40,7 @@ class PageController extends BaseController
     }
     
     var $search_type;
+    var $current_lot;
     
     public function search($search_type='tender')
     {
@@ -219,6 +220,7 @@ class PageController extends BaseController
 
         return view('pages/tender')
                 ->with('item', $item)
+                ->with('lot', $this->current_lot)
                 ->with('html', $this->get_html())
                 ->with('back', starts_with(Request::server('HTTP_REFERER'), env('ROOT_URL').'/search') ? Request::server('HTTP_REFERER') : false)
                 ->with('dataStatus', $dataStatus)
@@ -375,11 +377,8 @@ class PageController extends BaseController
         $this->get_active_apply($item);
         $this->get_contracts($item, !empty($item->contracts) ? $item->contracts : false);
 
-        if(sizeof($item->contracts)<=10)
-        {
-            $this->get_contracts_changes($item, !empty($item->contracts) ? $item->contracts : false);
-            $this->get_contracts_ongoing($item, !empty($item->contracts) ? $item->contracts : false);
-        }
+        $this->get_contracts_changes($item, !empty($item->contracts) ? $item->contracts : false);
+        $this->get_contracts_ongoing($item, !empty($item->contracts) ? $item->contracts : false);
 
         $this->get_signed_contracts($item);
         $this->get_initial_bids($item);
@@ -1409,267 +1408,274 @@ class PageController extends BaseController
                 }
             }
             
+            $current_lot=Input::get('lot_id') ? Input::get('lot_id') : array_pluck($item->lots, 'id')[0];
+            
+            if(empty($current_lot))
+                abort(404);
+            
             foreach($item->lots as $k=>$lot)
             {
-                $lot=clone $lot;
-
-                if(!empty($item->__eu_bids[$lot->id]))
+                if($lot->id == $current_lot)
                 {
-                    $lot->__eu_bids=new \StdClass();
-                    $lot->__eu_bids=$item->__eu_bids[$lot->id];
-                }
-                
-                $lot->procurementMethod=$item->procurementMethod;
-                $lot->procurementMethodType=$item->procurementMethodType;
-
-                if(!empty($item->__initial_bids_by_lot))
-                {
-                    if(!empty($item->__initial_bids_by_lot[$lot->id]))
-                        $lot->__initial_bids=$item->__initial_bids_by_lot[$lot->id];
-                }
-                else
-                    $lot->__initial_bids=$item->__initial_bids;
-
-                if(!empty($item->__initial_bids_dates_by_lot))
-                {
-                    if(!empty($item->__initial_bids_dates_by_lot[$lot->id]))
-                        $lot->__initial_bids_dates=$item->__initial_bids_dates_by_lot[$lot->id];
-                }
-                else
-                    $lot->__initial_bids_dates=$item->__initial_bids_dates;
-
-                $lot->__icon=new \StdClass();
-                $lot->__icon=false;
-
-                $lot->__items=new \StdClass();
-
-                $lot->__items=array_where($item->items, function($key, $it) use ($lot){
-                    return !empty($it->relatedLot) && $it->relatedLot==$lot->id;
-                });
-
-                $lot->__questions=new \StdClass();
-                $lot->__questions=$this->get_questions_lots($item, $lot);
-
-                $lot->__complaints_claims=new \StdClass();
-                $lot->__complaints_claims=array_where($this->get_claims($item, 'lot', true), function($key, $claim) use ($lot){
-                    return !empty($claim->relatedLot) && $claim->relatedLot==$lot->id;
-                });
-
-                $lot->__complaints_complaints=new \StdClass();
-                $lot->__complaints_complaints=array_where($this->get_complaints($item, 'lot', true), function($key, $complaint) use ($lot){
-                    return !empty($complaint->relatedLot) && $complaint->relatedLot==$lot->id;
-                });
-
-                if(!empty($item->documents))
-                {
-                    $lot->__tender_documents=new \StdClass();
-                    $lot->__tender_documents=array_where($item->documents, function($key, $document) use ($lot){
-                        return !empty($document->documentOf) && $document->documentOf=='lot' && $document->relatedItem==$lot->id;
-                    });
-
-                    usort($lot->__tender_documents, function ($a, $b)
+                    $lot=clone $lot;
+    
+                    if(!empty($item->__eu_bids[$lot->id]))
                     {
-                        return intval(strtotime($b->dateModified))>intval(strtotime($a->dateModified));
-                    });
-        
-                    $ids=[];
- 
-                    foreach($lot->__tender_documents as $document)
-                    {
-                        if(in_array($document->id, $ids))
-                        {
-                            $document->stroked=new \StdClass();
-                            $document->stroked=true;
-                        }
-        
-                        $ids[]=$document->id;
+                        $lot->__eu_bids=new \StdClass();
+                        $lot->__eu_bids=$item->__eu_bids[$lot->id];
                     }
                     
-                    $lot->__tender_documents_stroked=sizeof(array_where($lot->__tender_documents, function($key, $document){
-                        return !empty($document->stroked);
-                    }))>0;                    
-                }
-                
-                $lot->awards=new \StdClass();
-                $lot->awards=[];
-
-                if(!empty($item->awards))
-                {
-                    $lot->awards=array_where($item->awards, function($key, $award) use ($lot){
-                        return !empty($award->lotID) && $award->lotID==$lot->id;
-                    });
-                }
-
-                if(!empty($item->features))
-                {
-                    $tender_features=array_where($item->features, function($key, $feature) use ($lot){
-                        return $feature->featureOf=='tenderer' || ($feature->featureOf=='lot' && $feature->relatedItem==$lot->id);
-                    });
-                }
-
-                $features_price=1;
-
-                if(!empty($tender_features))
-                {
-                    foreach($tender_features as $k=>$feature)
+                    $lot->procurementMethod=$item->procurementMethod;
+                    $lot->procurementMethodType=$item->procurementMethodType;
+    
+                    if(!empty($item->__initial_bids_by_lot))
                     {
-                        $max=0;
-        
-                        foreach($feature->enum as $one)
-                            $max=max($max, floatval($one->value));
-        
-                        $tender_features[$k]->max = new \stdClass();
-                        $tender_features[$k]->max=$max;
-        
-                        $features_price-=$max;
-        
-                        usort($feature->enum, function ($a, $b)
-                        {
-                            return strcmp($b->value, $a->value);
+                        if(!empty($item->__initial_bids_by_lot[$lot->id]))
+                            $lot->__initial_bids=$item->__initial_bids_by_lot[$lot->id];
+                    }
+                    else
+                        $lot->__initial_bids=$item->__initial_bids;
+    
+                    if(!empty($item->__initial_bids_dates_by_lot))
+                    {
+                        if(!empty($item->__initial_bids_dates_by_lot[$lot->id]))
+                            $lot->__initial_bids_dates=$item->__initial_bids_dates_by_lot[$lot->id];
+                    }
+                    else
+                        $lot->__initial_bids_dates=$item->__initial_bids_dates;
+    
+                    $lot->__icon=new \StdClass();
+                    $lot->__icon=false;
+    
+                    $lot->__items=new \StdClass();
+    
+                    $lot->__items=array_where($item->items, function($key, $it) use ($lot){
+                        return !empty($it->relatedLot) && $it->relatedLot==$lot->id;
+                    });
+    
+                    $lot->__questions=new \StdClass();
+                    $lot->__questions=$this->get_questions_lots($item, $lot);
+    
+                    $lot->__complaints_claims=new \StdClass();
+                    $lot->__complaints_claims=array_where($this->get_claims($item, 'lot', true), function($key, $claim) use ($lot){
+                        return !empty($claim->relatedLot) && $claim->relatedLot==$lot->id;
+                    });
+    
+                    $lot->__complaints_complaints=new \StdClass();
+                    $lot->__complaints_complaints=array_where($this->get_complaints($item, 'lot', true), function($key, $complaint) use ($lot){
+                        return !empty($complaint->relatedLot) && $complaint->relatedLot==$lot->id;
+                    });
+    
+                    if(!empty($item->documents))
+                    {
+                        $lot->__tender_documents=new \StdClass();
+                        $lot->__tender_documents=array_where($item->documents, function($key, $document) use ($lot){
+                            return !empty($document->documentOf) && $document->documentOf=='lot' && $document->relatedItem==$lot->id;
                         });
-        
-                        $tender_features[$k]->enum=$feature->enum;
-                    }
-
-                    $lot->features=new \StdClass();
-                    $lot->features=$tender_features;
-                }
-
-                $lot->__features_price=new \StdClass();
-                $lot->__features_price=$features_price;
-
-                if(!empty($tender_bids))
-                {
-                    $bids=array_where($tender_bids, function($key, $bid) use ($lot){
-                        return !empty($bid->lotValues) && (!empty(array_where($bid->lotValues, function($k, $value) use ($lot){
-                            return $value->relatedLot==$lot->id;
-                        })));
-                    });
-                }
-
-                if(!empty($item->features))
-                {
-                    $features_by_lot=array_where($item->features, function($k, $feature) use ($lot){
-                        return $feature->featureOf!='lot' || ($feature->featureOf=='lot' && $feature->relatedItem==$lot->id);
-                    });
-                }else
-                    $features_by_lot=[];
-                
-                if(!empty($tender_bids))
-                {
-                    $lot->__bids=new \StdClass();
-                    $lot->__bids=[];
-                    $lot->bids_values=new \StdClass();
-                    $lot->bids_values=[];
-
-                    foreach($tender_bids as $bid)
-                    {
-                        $lot_bid=false;
-
-                        if(!empty($bid->lotValues))
+    
+                        usort($lot->__tender_documents, function ($a, $b)
                         {
-                            $lot_bid=array_where($bid->lotValues, function($key, $value) use ($lot) {
-                                return $value->relatedLot===$lot->id;
-                            });
-                        }
-
-                        if(!empty($lot_bid))
+                            return intval(strtotime($b->dateModified))>intval(strtotime($a->dateModified));
+                        });
+            
+                        $ids=[];
+     
+                        foreach($lot->__tender_documents as $document)
                         {
-                            $bid_value=array_values($lot_bid)[0];
-
-                            $bid->__featured_coef=new \StdClass();
-                            $bid->__featured_price=new \StdClass();
-
-                            if(!empty($bid->parameters))
+                            if(in_array($document->id, $ids))
                             {
-                                $value=0;
-
-                                foreach($features_by_lot as $feature)
-                                {
-                                    $param=array_first($bid->parameters, function($k, $param) use($feature){
-                                        return $param->code==$feature->code;
-                                    });
-
-                                    if($param)
-                                        $value+=$param->value;
-                                }
-
-                                $featured_coef=trim(number_format(1+$value/$lot->__features_price, 10, '.', ' '), '.0');
-             
-                                $bid->__featured_coef=$featured_coef;
-                                $bid->__featured_price=str_replace('.00', '', number_format($bid_value->value->amount/$featured_coef, 2, '.', ' '));
+                                $document->stroked=new \StdClass();
+                                $document->stroked=true;
                             }
-
-                            $bid->value=new \StdClass();
-                            $bid->value=clone $bid_value->value;
-
-                            $cloned_bid=clone $bid;
-
-                            $cloned_bid->__documents_public=!empty($cloned_bid->__documents_public) ? array_where($cloned_bid->__documents_public, function($key, $document) use ($lot){
-                                return $document->documentOf=='tender' || (($document->documentOf=='lot' || $document->documentOf=='item') && $document->relatedItem==$lot->id);
-                            }):[];
-
-                            $cloned_bid->__documents_confident=!empty($cloned_bid->__documents_confident) ? array_where($cloned_bid->__documents_confident, function($key, $document) use ($lot){
-                                return $document->documentOf=='tender' || (($document->documentOf=='lot' || $document->documentOf=='item') && $document->relatedItem==$lot->id);
-                            }):[];
-                            
-                            $lot->__bids[]=$cloned_bid;
+            
+                            $ids[]=$document->id;
                         }
+                        
+                        $lot->__tender_documents_stroked=sizeof(array_where($lot->__tender_documents, function($key, $document){
+                            return !empty($document->stroked);
+                        }))>0;                    
                     }
-
-                    foreach($lot->__bids as $__bid)
-                        $__bid->__award=null;
-
+                    
+                    $lot->awards=new \StdClass();
+                    $lot->awards=[];
+    
                     if(!empty($item->awards))
                     {
-                        foreach($lot->__bids as $__bid)
+                        $lot->awards=array_where($item->awards, function($key, $award) use ($lot){
+                            return !empty($award->lotID) && $award->lotID==$lot->id;
+                        });
+                    }
+    
+                    if(!empty($item->features))
+                    {
+                        $tender_features=array_where($item->features, function($key, $feature) use ($lot){
+                            return $feature->featureOf=='tenderer' || ($feature->featureOf=='lot' && $feature->relatedItem==$lot->id);
+                        });
+                    }
+    
+                    $features_price=1;
+    
+                    if(!empty($tender_features))
+                    {
+                        foreach($tender_features as $k=>$feature)
                         {
-                            foreach($item->awards as $award)
+                            $max=0;
+            
+                            foreach($feature->enum as $one)
+                                $max=max($max, floatval($one->value));
+            
+                            $tender_features[$k]->max = new \stdClass();
+                            $tender_features[$k]->max=$max;
+            
+                            $features_price-=$max;
+            
+                            usort($feature->enum, function ($a, $b)
                             {
-                                if($award->bid_id==$__bid->id && $award->lotID==$lot->id)
-                                    $__bid->__award=$award;
+                                return strcmp($b->value, $a->value);
+                            });
+            
+                            $tender_features[$k]->enum=$feature->enum;
+                        }
+    
+                        $lot->features=new \StdClass();
+                        $lot->features=$tender_features;
+                    }
+    
+                    $lot->__features_price=new \StdClass();
+                    $lot->__features_price=$features_price;
+    
+                    if(!empty($tender_bids))
+                    {
+                        $bids=array_where($tender_bids, function($key, $bid) use ($lot){
+                            return !empty($bid->lotValues) && (!empty(array_where($bid->lotValues, function($k, $value) use ($lot){
+                                return $value->relatedLot==$lot->id;
+                            })));
+                        });
+                    }
+    
+                    if(!empty($item->features))
+                    {
+                        $features_by_lot=array_where($item->features, function($k, $feature) use ($lot){
+                            return $feature->featureOf!='lot' || ($feature->featureOf=='lot' && $feature->relatedItem==$lot->id);
+                        });
+                    }else
+                        $features_by_lot=[];
+                    
+                    if(!empty($tender_bids))
+                    {
+                        $lot->__bids=new \StdClass();
+                        $lot->__bids=[];
+                        $lot->bids_values=new \StdClass();
+                        $lot->bids_values=[];
+    
+                        foreach($tender_bids as $bid)
+                        {
+                            $lot_bid=false;
+    
+                            if(!empty($bid->lotValues))
+                            {
+                                $lot_bid=array_where($bid->lotValues, function($key, $value) use ($lot) {
+                                    return $value->relatedLot===$lot->id;
+                                });
+                            }
+    
+                            if(!empty($lot_bid))
+                            {
+                                $bid_value=array_values($lot_bid)[0];
+    
+                                $bid->__featured_coef=new \StdClass();
+                                $bid->__featured_price=new \StdClass();
+    
+                                if(!empty($bid->parameters))
+                                {
+                                    $value=0;
+    
+                                    foreach($features_by_lot as $feature)
+                                    {
+                                        $param=array_first($bid->parameters, function($k, $param) use($feature){
+                                            return $param->code==$feature->code;
+                                        });
+    
+                                        if($param)
+                                            $value+=$param->value;
+                                    }
+    
+                                    $featured_coef=trim(number_format(1+$value/$lot->__features_price, 10, '.', ' '), '.0');
+                 
+                                    $bid->__featured_coef=$featured_coef;
+                                    $bid->__featured_price=str_replace('.00', '', number_format($bid_value->value->amount/$featured_coef, 2, '.', ' '));
+                                }
+    
+                                $bid->value=new \StdClass();
+                                $bid->value=clone $bid_value->value;
+    
+                                $cloned_bid=clone $bid;
+    
+                                $cloned_bid->__documents_public=!empty($cloned_bid->__documents_public) ? array_where($cloned_bid->__documents_public, function($key, $document) use ($lot){
+                                    return $document->documentOf=='tender' || (($document->documentOf=='lot' || $document->documentOf=='item') && $document->relatedItem==$lot->id);
+                                }):[];
+    
+                                $cloned_bid->__documents_confident=!empty($cloned_bid->__documents_confident) ? array_where($cloned_bid->__documents_confident, function($key, $document) use ($lot){
+                                    return $document->documentOf=='tender' || (($document->documentOf=='lot' || $document->documentOf=='item') && $document->relatedItem==$lot->id);
+                                }):[];
+                                
+                                $lot->__bids[]=$cloned_bid;
                             }
                         }
-                    }
-
-                    usort($lot->__bids, function ($a, $b)
-                    {
-                        return floatval($a->value->amount)<floatval($b->value->amount);
-                    });
-                }
-
-                if(!empty($item->qualifications))
-                {
-                    $lot->__qualifications=new \StdClass();
-
-                    $lot->__qualifications=array_where($this->get_qualifications($item, true, $lot), function($key, $qualification) use ($lot){
-                        return !empty($qualification->lotID) && $qualification->lotID==$lot->id;
-                    });
-                }
-
-                if(!empty($item->cancellations) && empty($lot->__cancellations))
-                {
-                    $lot->__cancellations=new \StdClass();
     
-                    $lot->__cancellations=array_where($item->cancellations, function($key, $cancellation) use ($lot){
-                        return $cancellation->cancellationOf=='lot' && $cancellation->relatedLot==$lot->id;
-                    });
-                }
-
-                $lot->tenderID=$item->tenderID;
-
-                $this->get_uniqie_awards($lot);
-                $this->get_uniqie_bids($lot, true);
-                $this->get_awards($lot);
-                $this->get_contracts($lot, !empty($item->contracts) ? $item->contracts : false, $lot->id);
-
-                if(sizeof($item->contracts)<=10)
-                {
+                        foreach($lot->__bids as $__bid)
+                            $__bid->__award=null;
+    
+                        if(!empty($item->awards))
+                        {
+                            foreach($lot->__bids as $__bid)
+                            {
+                                foreach($item->awards as $award)
+                                {
+                                    if($award->bid_id==$__bid->id && $award->lotID==$lot->id)
+                                        $__bid->__award=$award;
+                                }
+                            }
+                        }
+    
+                        usort($lot->__bids, function ($a, $b)
+                        {
+                            return floatval($a->value->amount)<floatval($b->value->amount);
+                        });
+                    }
+    
+                    if(!empty($item->qualifications))
+                    {
+                        $lot->__qualifications=new \StdClass();
+    
+                        $lot->__qualifications=array_where($this->get_qualifications($item, true, $lot), function($key, $qualification) use ($lot){
+                            return !empty($qualification->lotID) && $qualification->lotID==$lot->id;
+                        });
+                    }
+    
+                    if(!empty($item->cancellations) && empty($lot->__cancellations))
+                    {
+                        $lot->__cancellations=new \StdClass();
+        
+                        $lot->__cancellations=array_where($item->cancellations, function($key, $cancellation) use ($lot){
+                            return $cancellation->cancellationOf=='lot' && $cancellation->relatedLot==$lot->id;
+                        });
+                    }
+    
+                    $lot->tenderID=$item->tenderID;
+    
+                    $this->get_uniqie_awards($lot);
+                    $this->get_uniqie_bids($lot, true);
+                    $this->get_awards($lot);
+                    $this->get_contracts($lot, !empty($item->contracts) ? $item->contracts : false, $lot->id);
+    
                     $this->get_contracts_changes($lot, !empty($item->contracts) ? $item->contracts : false, $lot->id);
                     $this->get_contracts_ongoing($lot, !empty($item->contracts) ? $item->contracts : false, $lot->id);
-                }
+    
+                    $this->get_button_007($lot, $item->procuringEntity);
 
-                $this->get_button_007($lot, $item->procuringEntity);
+                    $this->current_lot=$lot;
+                }
 
                 $parsed_lots[]=$lot;
             }
