@@ -28,7 +28,7 @@
                             <div class="tender-date">{{trans('tender.no_cpv')}}</div>
                         @endif
                         @if(!empty($one->additionalClassifications[0]))
-                            <div class="tender-date">{{trans('tender.dkpp')}}: {{$one->additionalClassifications[0]->id}} — {{$one->additionalClassifications[0]->description}}</div>
+                            <div class="tender-date">{{trans('scheme.'.$one->additionalClassifications[0]->scheme)}}: {{$one->additionalClassifications[0]->id}} — {{$one->additionalClassifications[0]->description}}</div>
                         @else
                             <div class="tender-date">{{trans('tender.no_dkpp')}}</div>
                         @endif

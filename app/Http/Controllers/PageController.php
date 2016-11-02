@@ -1827,7 +1827,7 @@ class PageController extends BaseController
             if($__contracts_active)
             {
                 $id=$__contracts_active->id;
-                //$contracts=$this->parse_contracts_json($id);
+                $contracts=$this->parse_contracts_json($id);
                 $rationale_types=$this->parse_rationale_type();
 
                 if(!empty($contracts->changes))
@@ -1846,7 +1846,6 @@ class PageController extends BaseController
 
                     $item->__contracts_changes=$contracts->changes;
                 }
-                //dd($item->__contracts_changes);
             }
         }
     }
