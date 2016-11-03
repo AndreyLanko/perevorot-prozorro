@@ -229,7 +229,7 @@ class PageController extends BaseController
 
     var $error;
 
-    public function tender_parse($id)
+    public function tender_parse($id, $preselected_lot_id=null)
     {
         $this->search_type='tender';
         $this->error=false;
@@ -395,7 +395,7 @@ class PageController extends BaseController
         $this->get_opened_claims($item);
         $this->get_questions($item);
         $this->get_qualifications($item);
-        $this->get_lots($item);
+        $this->get_lots($item, $preselected_lot_id);
         $this->get_procedure($item);
         $this->get_open_title($item);
         $this->parse_is_sign($item);
@@ -1381,7 +1381,7 @@ class PageController extends BaseController
         }   
     }
     
-    private function get_lots(&$item)
+    private function get_lots(&$item, $preselected_lot_id=false)
     {
         if(!empty($item->lots) && sizeof($item->lots)>1)
         {
@@ -1408,11 +1408,14 @@ class PageController extends BaseController
                 }
             }
             
-            $current_lot=Input::get('lot_id') ? Input::get('lot_id') : array_pluck($item->lots, 'id')[0];
-            
+            if($preselected_lot_id)
+                $current_lot=$preselected_lot_id;
+            else
+                $current_lot=Input::get('lot_id') ? Input::get('lot_id') : array_pluck($item->lots, 'id')[0];
+
             if(empty($current_lot))
                 abort(404);
-            
+
             foreach($item->lots as $k=>$lot)
             {
                 if($lot->id == $current_lot)

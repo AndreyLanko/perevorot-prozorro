@@ -132,7 +132,7 @@ class PrintController extends BaseController
 		if(!in_array($type, $this->types))
 			abort(404);
 
-        $item=app('App\Http\Controllers\PageController')->tender_parse($tender_id);
+        $item=app('App\Http\Controllers\PageController')->tender_parse($tender_id, $lot_id);
 
         if(!empty($item->lots) && sizeof($item->lots)==1)
             $lot_id=$item->lots[0]->id;
