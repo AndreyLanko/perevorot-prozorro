@@ -1418,6 +1418,12 @@ class PageController extends BaseController
 
             foreach($item->lots as $k=>$lot)
             {
+                $lot->__items=new \StdClass();
+
+                $lot->__items=array_where($item->items, function($key, $it) use ($lot){
+                    return !empty($it->relatedLot) && $it->relatedLot==$lot->id;
+                });
+
                 if($lot->id == $current_lot)
                 {
                     $lot=clone $lot;
@@ -1449,12 +1455,6 @@ class PageController extends BaseController
     
                     $lot->__icon=new \StdClass();
                     $lot->__icon=false;
-    
-                    $lot->__items=new \StdClass();
-    
-                    $lot->__items=array_where($item->items, function($key, $it) use ($lot){
-                        return !empty($it->relatedLot) && $it->relatedLot==$lot->id;
-                    });
     
                     $lot->__questions=new \StdClass();
                     $lot->__questions=$this->get_questions_lots($item, $lot);
