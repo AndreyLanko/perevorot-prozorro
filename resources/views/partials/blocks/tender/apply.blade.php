@@ -8,13 +8,19 @@
                     @foreach($item->__is_apply_platforms as $platform)
                         <div class="item">
                             <div class="img-wr">
-                                <a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank">
-                                    <img src="/assets/images/platforms/{{$platform['slug']}}.png" alt="{{strip_tags($platform['name'])}}" title="{{strip_tags($platform['name'])}}">
-                                </a>
+                                @if(!empty($platform['disabled']))
+                                    <a><img src="/assets/images/platforms/{{$platform['slug']}}.png" alt="{{strip_tags($platform['name'])}}" title="{{strip_tags($platform['name'])}}" style="opacity:.5"></a>
+                                @else
+                                    <a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank">
+                                        <img src="/assets/images/platforms/{{$platform['slug']}}.png" alt="{{strip_tags($platform['name'])}}" title="{{strip_tags($platform['name'])}}">
+                                    </a>
+                                @endif
                             </div>
-                            <div class="border-hover">
-                                <div class="btn-wr"><a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank" class="btn">{{trans('tender.apply_go')}}</a></div>
-                            </div>
+                            @if(empty($platform['disabled']))
+                                <div class="border-hover">
+                                    <div class="btn-wr"><a href="{{str_replace('{tenderID}', $item->tenderID, $platform['href'])}}" target="_blank" class="btn">{{trans('tender.apply_go')}}</a></div>
+                                </div>
+                            @endif
                         </div>
                     @endforeach
                 </div>

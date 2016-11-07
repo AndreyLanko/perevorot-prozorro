@@ -112,6 +112,7 @@ return [
 		'slug'=>'brizol',
 		'href'=>'https://www.brizol.net/tenders/view/{tenderID}',
 		'public'=>'https://www.brizol.net/',
+		'disabled'=>true,
 		'contractor'=>true,
 		'tender'=>false,
 		'type1'=>false,
