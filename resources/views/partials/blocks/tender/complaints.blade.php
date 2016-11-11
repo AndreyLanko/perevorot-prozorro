@@ -54,7 +54,7 @@
                                     <div class="grey-light size12 question-date">Дата: {{date('d.m.Y H:i', strtotime($complaint->dateAnswered))}}</div>
                                     <div>{!!nl2br($complaint->resolution)!!}</div>
                                 @endif
-                                @if(!empty($complaint->__documents_owner))
+                                @if(!empty($complaint->__documents_owner) || !empty($complaint->__documents_owner_tender))
                                     <a href="" class="document-link" style="margin-top:5px; display:block" data-id="{{$complaint->id}}-owner-complaint">{{trans('tender.bids_documents')}}</a>
                                 @endif
                                 @if(property_exists($complaint, 'satisfied'))
@@ -160,17 +160,33 @@
                     <div class="overlay-close overlay-close-layout"></div>
                     <div class="overlay-box">
                         @foreach($item->__complaints_complaints as $complaint)
-                            @if(!empty($complaint->__documents_owner))
+                            @if(!empty($complaint->__documents_owner) || !empty($complaint->__documents_owner_tender))
                                 <div class="tender--offers documents" data-id="{{$complaint->id}}-owner-complaint">
-                                    <h4 class="overlay-title">
-                                        Документи подані скаржником
-                                    </h4>
-                                    @foreach($complaint->__documents_owner as $document)
-                                        <div class="document-info">
-                                            <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
-                                            <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
-                                        </div>
-                                    @endforeach
+                                    @if(!empty($complaint->__documents_owner))
+                                        <h4 class="overlay-title">
+                                            Документи подані скаржником
+                                        </h4>
+                                        @foreach($complaint->__documents_owner as $document)
+                                            <div class="document-info">
+                                                <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+                                                <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                    @if(!empty($complaint->__documents_owner_tender))
+                                        @if(!empty($complaint->__documents_owner))
+                                            <br>
+                                        @endif
+                                        <h4 class="overlay-title">
+                                            Документи подані замовником
+                                        </h4>
+                                        @foreach($complaint->__documents_owner_tender as $document)
+                                            <div class="document-info">
+                                                <div class="document-date">{{date('d.m.Y H:i', strtotime($document->datePublished))}}</div>
+                                                <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
+                                            </div>
+                                        @endforeach
+                                    @endif
                                 </div>
                             @endif
                             @if(!empty($complaint->__documents_reviewer))

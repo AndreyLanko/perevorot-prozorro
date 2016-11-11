@@ -962,7 +962,12 @@ class PageController extends BaseController
                 {
                     $__complaints_complaints[$k]->__documents_owner=new \StdClass();
                     $__complaints_complaints[$k]->__documents_owner=array_where($complaint->documents, function($key, $document){
-                        return $document->author=='complaint_owner' || $document->author=='tender_owner';
+                        return $document->author=='complaint_owner';
+                    });
+
+                    $__complaints_complaints[$k]->__documents_owner_tender=new \StdClass();
+                    $__complaints_complaints[$k]->__documents_owner_tender=array_where($complaint->documents, function($key, $document){
+                        return $document->author=='tender_owner';
                     });
 
                     $__complaints_complaints[$k]->__documents_reviewer=new \StdClass();
@@ -971,7 +976,7 @@ class PageController extends BaseController
                     });
                 }
             }
-            
+
             $__complaints_complaints=array_values($__complaints_complaints);
         }
 
