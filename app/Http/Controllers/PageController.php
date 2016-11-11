@@ -962,7 +962,7 @@ class PageController extends BaseController
                 {
                     $__complaints_complaints[$k]->__documents_owner=new \StdClass();
                     $__complaints_complaints[$k]->__documents_owner=array_where($complaint->documents, function($key, $document){
-                        return $document->author=='complaint_owner';
+                        return $document->author=='complaint_owner' || $document->author=='tender_owner';
                     });
 
                     $__complaints_complaints[$k]->__documents_reviewer=new \StdClass();
