@@ -49,7 +49,10 @@
                                 {{$item->planID}} ● {{$item->id}}
                             </div>
                             <div class="tender--head--inf margin-bottom">
-                                Опубліковано/змінено: {{date('d.m.Y H:i', strtotime($item->dateModified))}}
+                                Опубліковано: {{date('d.m.Y H:i', strtotime($item->datePublished))}}<br>
+                                @if(strtotime($item->dateModified)-strtotime($item->datePublished)>=60*15)
+                                    Змінено: {{date('d.m.Y H:i', strtotime($item->dateModified))}}
+                                @endif
                             </div>
                             @if(!empty($item->__is_sign))
                                 <div data-js="tender_sign_check" data-url="{{$item->__sign_url}}">

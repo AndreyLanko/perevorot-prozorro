@@ -101,7 +101,7 @@
     <br>
     <table cellpadding="5" cellspacing="1" border="0" width="100%" class="border">
         <tr valign="top">
-            <td>{{$n++}}. Найменування  учасників  процедури  закупівлі  (для юридичної особи) або прізвище, ім’я, по батькові (для фізичної особи)</td>
+            <td>{{$n++}}. Найменування учасників процедури закупівлі (для юридичної особи) або прізвище, ім’я, по батькові (для фізичної особи)</td>
             <td>{{$n++}}. Ціна пропозицій учасника до початку аукціону (ціна пропозиції на переговорах у разі застосування переговорної процедури закупівлі)</td>
             <td>{{$n++}}. Ціна пропозицій учасника після закінчення аукціону</td>
             <td>{{$n++}}. Інформація про наявність і відповідність установленим законодавством вимогам документів, що підтверджують відповідність учасників кваліфікаційним критеріям згідно зі статтею 16 Закону України “Про публічні закупівлі”, та наявність/відсутність обставин, установлених статтею 17 цього Закону</td>
@@ -110,12 +110,12 @@
             @foreach($bids as $one)
                 @if ($__item->procurementMethodType=='aboveThresholdEU')
                     <?php
-                        $q=array_first($__item->qualifications, function($key, $qualification) use ($one){
-                            return $qualification->bidID==$one->id;
+                        $q=array_last($__item->qualifications, function($k, $qualification) use ($lot, $one){
+                            return (empty($lot->id) || (!empty($lot->id) && $qualification->lotID==$lot->id)) && $qualification->bidID==$one->id;
                         });
                     ?>
                 @endif
-                @if ($__item->procurementMethodType!='aboveThresholdEU' || ($__item->procurementMethodType=='aboveThresholdEU' && $q->status!='cancelled'))
+                @if ($__item->procurementMethodType!='aboveThresholdEU' || ($__item->procurementMethodType=='aboveThresholdEU' && $q && $q->status!='cancelled'))
                     <tr valign="top">
                         <td>
                             <strong>
@@ -140,7 +140,7 @@
                                     @if(!empty($__item->__initial_bids_by_lot[$lot->id][$one->id]))
                                         {{str_replace('.00', '', number_format($__item->__initial_bids_by_lot[$lot->id][$one->id], 2, '.', ' '))}}
                                         {{$one->value->currency}}{{$one->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
-                                    @elseif(!empty($__item->__initial_bids[$one->id]))
+                                    @elseif(empty($lot->id) && !empty($__item->__initial_bids[$one->id]))
                                         {{str_replace('.00', '', number_format($__item->__initial_bids[$one->id], 2, '.', ' '))}}
                                         {{$one->value->currency}}{{$one->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
                                     @elseif(!empty($one->value))
