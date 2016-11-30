@@ -110,8 +110,10 @@
             @foreach($bids as $one)
                 @if ($__item->procurementMethodType=='aboveThresholdEU')
                     <?php
-                        $q=array_last($__item->qualifications, function($k, $qualification) use ($lot, $one){
-                            return (empty($lot->id) || (!empty($lot->id) && !empty($qualification->lotID) && $qualification->lotID==$lot->id)) && $qualification->bidID==$one->id;
+	                    $singleLot=empty($__item->lots) || (!empty($__item->lots) && sizeof($__item->lots)==1);
+
+                        $q=array_last($__item->qualifications, function($k, $qualification) use ($lot, $one, $singleLot){
+                            return ($singleLot || (!$singleLot && !empty($qualification->lotID) && $qualification->lotID==$lot->id)) && $qualification->bidID==$one->id;
                         });
                     ?>
                 @endif
