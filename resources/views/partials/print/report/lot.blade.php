@@ -108,13 +108,20 @@
         </tr>        
         @if(!empty($bids))
             @foreach($bids as $one)
+                <?php
+		            $singleLot=empty($__item->lots) || (!empty($__item->lots) && sizeof($__item->lots)==1);
+		        ?>
+
                 @if ($__item->procurementMethodType=='aboveThresholdEU')
                     <?php
-	                    $singleLot=empty($__item->lots) || (!empty($__item->lots) && sizeof($__item->lots)==1);
+	                    $q=false;
 
-                        $q=array_last($__item->qualifications, function($k, $qualification) use ($lot, $one, $singleLot){
-                            return ($singleLot || (!$singleLot && !empty($qualification->lotID) && $qualification->lotID==$lot->id)) && $qualification->bidID==$one->id;
-                        });
+	                    if(!empty($__item->qualifications))
+	                    {
+	                        $q=array_last($__item->qualifications, function($k, $qualification) use ($lot, $one, $singleLot){
+	                            return ($singleLot || (!$singleLot && !empty($qualification->lotID) && $qualification->lotID==$lot->id)) && $qualification->bidID==$one->id;
+	                        });
+	                    }
                     ?>
                 @endif
                 @if ($__item->procurementMethodType!='aboveThresholdEU' || ($__item->procurementMethodType=='aboveThresholdEU' && $q && $q->status!='cancelled'))
@@ -142,7 +149,7 @@
                                     @if(!empty($__item->__initial_bids_by_lot[$lot->id][$one->id]))
                                         {{str_replace('.00', '', number_format($__item->__initial_bids_by_lot[$lot->id][$one->id], 2, '.', ' '))}}
                                         {{$one->value->currency}}{{$one->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
-                                    @elseif(empty($lot->id) && !empty($__item->__initial_bids[$one->id]))
+                                    @elseif($singleLot || empty($lot->id) && !empty($__item->__initial_bids[$one->id]))
                                         {{str_replace('.00', '', number_format($__item->__initial_bids[$one->id], 2, '.', ' '))}}
                                         {{$one->value->currency}}{{$one->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
                                     @elseif(!empty($one->value))
