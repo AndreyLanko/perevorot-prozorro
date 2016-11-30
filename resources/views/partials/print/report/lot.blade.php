@@ -149,7 +149,7 @@
                                     @if(!empty($__item->__initial_bids_by_lot[$lot->id][$one->id]))
                                         {{str_replace('.00', '', number_format($__item->__initial_bids_by_lot[$lot->id][$one->id], 2, '.', ' '))}}
                                         {{$one->value->currency}}{{$one->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
-                                    @elseif($singleLot || empty($lot->id) && !empty($__item->__initial_bids[$one->id]))
+                                    @elseif(($singleLot || empty($lot->id)) && !empty($__item->__initial_bids[$one->id]))
                                         {{str_replace('.00', '', number_format($__item->__initial_bids[$one->id], 2, '.', ' '))}}
                                         {{$one->value->currency}}{{$one->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
                                     @elseif(!empty($one->value))
@@ -250,11 +250,11 @@
                         <?php
                             $tenderPeriod=!empty($item->tenderPeriod) ? $item->tenderPeriod : false;
                             $numberOfBids=0;
-    
-                            if(!empty($lot->__bids))
+
+                            if(!empty($bids))
                             {
-                                $numberOfBids=array_where($lot->__bids, function($key, $bid){
-                                    return !empty($bid->status) && $bid->status=='active';
+                                $numberOfBids=array_where($bids, function($key, $bid){
+                                    return !empty($bid->status) && ($bid->status=='active' || $bid->status=='unsuccessful');
                                 });
                             
                                 $numberOfBids=$numberOfBids ? sizeof($numberOfBids) : 0;
