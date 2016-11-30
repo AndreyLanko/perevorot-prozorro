@@ -1853,6 +1853,12 @@ class PageController extends BaseController
                     }
 
                     $item->__contracts_changes=$contracts->changes;
+                    
+                    foreach($item->__contracts_changes as $change)
+                    {
+	                    if(empty($change->contractNumber))
+		                    $change->contractNumber=$contracts->contractNumber;
+                    }
                 }
             }
         }

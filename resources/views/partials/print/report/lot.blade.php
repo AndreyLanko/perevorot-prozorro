@@ -251,9 +251,9 @@
                             $tenderPeriod=!empty($item->tenderPeriod) ? $item->tenderPeriod : false;
                             $numberOfBids=0;
 
-                            if(!empty($bids))
+                            if(!empty($__item->__bids))
                             {
-                                $numberOfBids=array_where($bids, function($key, $bid){
+                                $numberOfBids=array_where($__item->__bids, function($key, $bid){
                                     return !empty($bid->status) && ($bid->status=='active' || $bid->status=='unsuccessful');
                                 });
                             
@@ -261,7 +261,7 @@
                             }
 
                             $numberOfQualifications=0;
-    
+
                             if(!empty($lot->__qualifications))
                             {
                                 $numberOfQualifications=array_where($lot->__qualifications, function($key, $qualification){
