@@ -121,7 +121,13 @@
     <table cellpadding="5" cellspacing="0" border="0" width="100%">
         <tr>
             <td width="302">{{$n++}}. Строк дії договору:</td>
-            <td><strong>{{date('d.m.Y', strtotime($item->__contract_ongoing->period->startDate))}} — {{date('d.m.Y', strtotime($item->__contract_ongoing->dateModified))}}</strong></td>
+            <td><strong>
+	            @if(!empty($item->__contract_ongoing->period->startDate))
+		            {{date('d.m.Y', strtotime($item->__contract_ongoing->period->startDate))}} — {{date('d.m.Y', strtotime($item->__contract_ongoing->dateModified))}}
+		        @else
+		        	Дата початку дії договору не вказана
+				@endif
+			</strong></td>			
         </tr>
         <tr>
             <td width="302">{{$n++}}. Сума оплати за договором:</td>

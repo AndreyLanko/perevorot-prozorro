@@ -23,7 +23,7 @@
         {{$item->budget->description}}
     </td>
     <td>
-        {{number_format($item->budget->amount, 0, '', ' ')}} <span class="small val">{{$item->budget->currency}}</span>
+        {{number_format($item->budget->amount, 2, ',', ' ')}} <span class="small val">{{$item->budget->currency}}</span>
     </td>
     <td>
         @if (!empty($item->tender->tenderPeriod))
