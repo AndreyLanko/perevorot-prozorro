@@ -106,6 +106,44 @@
             <td>{{$n++}}. Ціна пропозицій учасника після закінчення аукціону</td>
             <td>{{$n++}}. Інформація про наявність і відповідність установленим законодавством вимогам документів, що підтверджують відповідність учасників кваліфікаційним критеріям згідно зі статтею 16 Закону України “Про публічні закупівлі”, та наявність/відсутність обставин, установлених статтею 17 цього Закону</td>
         </tr>        
+        @if($__item->procurementMethod=='limited' && !empty($__item->__active_award))
+        	<tr valign="top">
+                <td>
+                    <strong>
+                    	@if(!empty($__item->__active_award->suppliers[0]->identifier->legalName))
+                    		{{ $__item->__active_award->suppliers[0]->identifier->legalName }}
+                    	@else
+	                    	{{ $__item->__active_award->suppliers[0]->identifier->name }}
+                    	@endif
+                    </strong>
+                </td>
+                <td>
+                    <strong>
+	                    {{str_replace('.00', '', number_format($__item->__active_award->value->amount, 2, '.', ' '))}} {{$__item->__active_award->value->currency}}{{$__item->__active_award->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
+                    </strong>
+                </td>
+                <td>
+                    <strong>
+                    </strong>
+                </td>
+                <td>
+                    <strong>
+                    	@if(in_array($__item->procurementMethodType, ['negotiation', 'negotiation.quick']))
+                    		@if($__item->__active_award->status=='active')
+	                    		Відповідає кваліфікаційним критеріям, встановленим в тендерній документації.
+                    		@else
+                                @if(!empty($__item->__active_award->title))
+                                    {{$__item->__active_award->title}}<br>
+                                @endif
+                                @if(!empty($__item->__active_award->description))
+                                    {!! nl2br($__item->__active_award->description) !!}
+                                @endif                    		
+                    		@endif
+                    	@endif
+                    </strong>
+                </td>
+        	</tr>
+        @endif
         @if(!empty($bids))
             @foreach($bids as $one)
                 <?php
