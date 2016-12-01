@@ -251,9 +251,9 @@
                             $tenderPeriod=!empty($item->tenderPeriod) ? $item->tenderPeriod : false;
                             $numberOfBids=0;
 
-                            if(!empty($__item->__bids))
+                            if(!empty($bids))
                             {
-                                $numberOfBids=array_where($__item->__bids, function($key, $bid){
+                                $numberOfBids=array_where($bids, function($key, $bid){
                                     return !empty($bid->status) && ($bid->status=='active' || $bid->status=='unsuccessful');
                                 });
                             
