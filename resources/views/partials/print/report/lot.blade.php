@@ -112,8 +112,10 @@
                     <strong>
                     	@if(!empty($__item->__active_award->suppliers[0]->identifier->legalName))
                     		{{ $__item->__active_award->suppliers[0]->identifier->legalName }}
-                    	@else
-	                    	{{ $__item->__active_award->suppliers[0]->identifier->name }}
+                    	@elseif(!empty($__item->__active_award->suppliers[0]->name))
+	                    	{{ $__item->__active_award->suppliers[0]->name }}
+	                    @else
+	                        не вказано
                     	@endif
                     </strong>
                 </td>
