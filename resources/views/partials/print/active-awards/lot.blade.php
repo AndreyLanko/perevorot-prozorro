@@ -73,7 +73,7 @@
                         @if(!empty($__active_award->suppliers[0]->identifier->legalName))
                             {{$__active_award->suppliers[0]->identifier->legalName}}
                         @else
-                            {{$__active_award->suppliers[0]->identifier->name}}
+                            {{$__active_award->suppliers[0]->name}}
                         @endif
                     </strong></td>
                 </tr>
