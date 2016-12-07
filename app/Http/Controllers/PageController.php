@@ -2141,11 +2141,13 @@ class PageController extends BaseController
                 return $document->title=='sign.p7s';
             });
         }
-        
+
         if($is_sign)
         {
             $url=head($is_sign)->url;
-            $url=substr($url, 0, strpos($url, 'documents/')-1);
+
+            if(strpos($url, 'documents/')!==false)
+                $url=substr($url, 0, strpos($url, 'documents/')-1);
 
             $item->__sign_url=new \StdClass();
             $item->__sign_url=$url;
