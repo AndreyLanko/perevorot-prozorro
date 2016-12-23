@@ -9,7 +9,7 @@
 	                    <tbody>
 	                        <tr>
 	                            <td class="col-sm-8"><strong>Дата внесення змін до договору:</strong></td>
-	                            <td class="col-sm-4"><strong>{{date('d.m.Y H:i', strtotime($document->date))}}</strong></td>
+	                            <td class="col-sm-4"><strong>{{!empty($document->dateSigned)?date('d.m.Y H:i', strtotime($document->dateSigned)):'?'}}</strong></td>
 	                        </tr>
 	                        <tr>
 	                            <td class="col-sm-8">Випадки для внесення змін до істотних умов договору:</td>
