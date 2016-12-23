@@ -339,13 +339,15 @@ class PageController extends BaseController
     
                     $item->bids[$k]->__featured_price=new \StdClass();
                     $item->bids[$k]->__featured_price=null;
-    
+
                     if(!empty($bid->parameters))
                     {
                         $featured_coef=trim(number_format(1+array_sum(array_pluck($bid->parameters, 'value'))/$features_price, 10, '.', ' '), '.0');
      
                         $item->bids[$k]->__featured_coef=$featured_coef;
-                        $item->bids[$k]->__featured_price=str_replace('.00', '', number_format($bid->value->amount/$featured_coef, 2, '.', ' '));
+
+                        if(!empty($bid->value->amount))
+                            $item->bids[$k]->__featured_price=str_replace('.00', '', number_format($bid->value->amount/$featured_coef, 2, '.', ' '));
                     }
                 }
             }
@@ -480,10 +482,10 @@ class PageController extends BaseController
         if(isset($_GET['api']) && getenv('APP_ENV')=='local')
             dump($url);
 
-        $header=get_headers($url)[0];
+        //$header=get_headers($url)[0];
 
-        if(strpos($header, '200 OK')!==false)
-        {
+        //if(strpos($header, '200 OK')!==false)
+        //{
             $ch=curl_init();
     
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -493,6 +495,7 @@ class PageController extends BaseController
             $result=curl_exec($ch);
     
             curl_close($ch);
+        /*
         }
         else
         {
@@ -500,6 +503,7 @@ class PageController extends BaseController
                 'error'=>$header
             ], JSON_UNESCAPED_UNICODE);
         }
+        */
 
         if(isset($_GET['api']) && getenv('APP_ENV')=='local')
             dd(json_decode($result));
@@ -838,16 +842,16 @@ class PageController extends BaseController
         {
             $path=explode('/', $type);
 
-            if(!empty($item->$path[0]))
+            if(!empty($item->{$path[0]}))
             {
-                $array=$item->$path[0];
+                $array=$item->{$path[0]};
                 $found_claims=[];
 
                 if(sizeof($path)>1)
                 {
                     foreach($array as $item_claim)
                     {
-                        if(!empty($item_claim->$path[1]))
+                        if(!empty($item_claim->{$path[1]}))
                             $found_claims=array_merge($found_claims, $item_claim->complaints);
                     }
                 }
@@ -900,16 +904,16 @@ class PageController extends BaseController
         {
             $path=explode('/', $type);
 
-            if(!empty($item->$path[0]))
+            if(!empty($item->{$path[0]}))
             {
-                $array=$item->$path[0];
+                $array=$item->{$path[0]};
                 $found_complaints=[];
 
                 if(sizeof($path)>1)
                 {
                     foreach($array as $item_complaint)
                     {
-                        if(!empty($item_complaint->$path[1]))
+                        if(!empty($item_complaint->{$path[1]}))
                             $found_complaints=array_merge($found_complaints, $item_complaint->complaints);
                     }
                 }
@@ -1593,7 +1597,7 @@ class PageController extends BaseController
     
                                 $bid->__featured_coef=new \StdClass();
                                 $bid->__featured_price=new \StdClass();
-    
+
                                 if(!empty($bid->parameters))
                                 {
                                     $value=0;
@@ -1848,7 +1852,7 @@ class PageController extends BaseController
 
                         foreach($change->rationaleTypes as $k=>$rationaleType)
                         {
-                            $change->rationaleTypes[$k]=!empty($rationale_types->$rationaleType) ? $rationale_types->$rationaleType->title : $rationaleType;
+                            $change->rationaleTypes[$k]=!empty($rationale_types->{$rationaleType}) ? $rationale_types->{$rationaleType}->title : $rationaleType;
                         }
                     }
 
@@ -2150,7 +2154,7 @@ class PageController extends BaseController
                 $url=substr($url, 0, strpos($url, 'documents/')-1);
 
             $item->__sign_url=new \StdClass();
-            $item->__sign_url=$url;
+            $item->__sign_url=env('API').'/'.($this->search_type=='plan'?'plans':'tender').'/'.$item->id;
         }
         
         $item->__is_sign=!empty($is_sign);
