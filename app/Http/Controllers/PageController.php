@@ -1359,6 +1359,9 @@ class PageController extends BaseController
                     });
                 }
 
+                if(empty($qualification->__name))
+                    $qualification->__name='Учасник '.$cnt;                
+
                 array_push($__qualifications, $qualification);
 
                 $cnt++;
@@ -2154,7 +2157,7 @@ class PageController extends BaseController
                 $url=substr($url, 0, strpos($url, 'documents/')-1);
 
             $item->__sign_url=new \StdClass();
-            $item->__sign_url=env('API').'/'.($this->search_type=='plan'?'plans':'tender').'/'.$item->id;
+            $item->__sign_url=env('API').'/'.($this->search_type=='plan'?'plans':'tenders').'/'.$item->id;
         }
         
         $item->__is_sign=!empty($is_sign);
