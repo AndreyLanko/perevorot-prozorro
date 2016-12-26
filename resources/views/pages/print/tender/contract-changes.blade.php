@@ -85,7 +85,7 @@
         </tr>
         <tr valign="top">
             <td width="302">{{$n++}}. Дата внесення змін до договору:</td>
-            <td><strong>{{date('d.m.Y H:i', strtotime($contract->date))}}</strong></td>
+            <td><strong>{{date('d.m.Y H:i', strtotime(!empty($contract->dateSigned) ? $contract->dateSigned : $contract->date))}}</strong></td>
         </tr>
         <tr>
             <td width="302">{{$n++}}. Випадки для внесення змін до істотних умов договору згідно з частиною четвертою статті 36 Закону України «Про публічні закупівлі»:</td>
