@@ -408,12 +408,13 @@
                         });
                     }
                 ?>
-                @if(!empty($subcontracting->subcontractingDetails))
-                    {{ $subcontracting->subcontractingDetails }}
+                @if($__item->__isSingleLot && !empty($__item->__active_award->subcontractingDetails))
+                    {!! nl2br(trim($__item->__active_award->subcontractingDetails)) !!}
+                @elseif(!empty($subcontracting->subcontractingDetails))
+                    {!! nl2br(trim($subcontracting->subcontractingDetails)) !!}
                 @else
                     <strong>Відсутня</strong>
-                @endif
-                
+                @endif                
             </td>
         </tr>
         <tr valign="top">

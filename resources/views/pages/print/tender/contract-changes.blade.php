@@ -92,9 +92,9 @@
             <td><strong>{!!implode('<br>', $contract->rationaleTypes)!!}</strong></td>
         </tr>
         <tr>
-            <td width="302">{{$n++}}. Опис змін, що внесені до істотних умов договору:</td>
-            <td>
-                <strong>{{!empty($contract->rationale) ? $contract->rationale : 'відсутні'}}</strong>
+            <td width="302" valign="top">{{$n++}}. Опис змін, що внесені до істотних умов договору:</td>
+            <td valign="top">
+                <strong>{!! !empty($contract->rationale) ? nl2br(trim($contract->rationale)) : 'відсутні'!!}</strong>
             </td>
         </tr>
     </table>
