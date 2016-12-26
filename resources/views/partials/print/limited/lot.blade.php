@@ -76,10 +76,20 @@
                 </tr>
                 <?php
                     $awards=(!empty($lot->awards) ? $lot->awards : $item->awards);
-    
-                    $awards=array_where($awards, function($key, $award){
-                        return in_array($award->status, ['unsuccessful', 'active']);
+
+                    $awards=array_where($awards, function($key, $award) use($lot_id){
+                        return in_array($award->status, ['unsuccessful', 'active']) && (!$lot_id || ($lot_id && $award->lotID==$lot_id));
                     });
+
+                    $exists=[];
+
+                    foreach($awards as $k=>$award){
+                        if(!in_array($award->suppliers[0]->identifier->id, $exists)){
+                            array_push($exists, $award->suppliers[0]->identifier->id);
+                        }else{
+                            unset($awards[$k]);
+                        }
+                    }
                 ?>
                 @foreach($awards as $award)
                     <tr valign="top">
