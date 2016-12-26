@@ -1683,7 +1683,7 @@ class PageController extends BaseController
                     $this->get_uniqie_bids($lot, true);
                     $this->get_awards($lot);
                     $this->get_contracts($lot, !empty($item->contracts) ? $item->contracts : false, $lot->id);
-    
+                    $this->get_print_href($lot);
                     $this->get_contracts_changes($lot, !empty($item->contracts) ? $item->contracts : false, $lot->id);
                     $this->get_contracts_ongoing($lot, !empty($item->contracts) ? $item->contracts : false, $lot->id);
     

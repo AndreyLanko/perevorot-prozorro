@@ -36,12 +36,14 @@
     @if(empty($item->lots))
         @include('partials/print/limited/lot', [
             'lots'=>[$item],
-            '__item'=>$item
+            '__item'=>$item,
+            'lot_id'=>$lot_id
         ])
     @else
         @include('partials/print/limited/lot', [
             'lots'=>$item->lots,
-            '__item'=>$item
+            '__item'=>$item,
+            'lot_id'=>$lot_id
         ])
     @endif
 @endsection
