@@ -1524,7 +1524,8 @@ class PageController extends BaseController
                     if(!empty($item->features))
                     {
                         $tender_features=array_where($item->features, function($key, $feature) use ($lot){
-                            return $feature->featureOf=='tenderer' || ($feature->featureOf=='lot' && $feature->relatedItem==$lot->id);
+                            $lotItems=!empty($lot->__items) ? array_pluck($lot->__items, 'id') : [];
+                            return $feature->featureOf=='tenderer' || ($feature->featureOf=='lot' && $feature->relatedItem==$lot->id) || ($feature->featureOf=='item' && in_array($feature->relatedItem, $lotItems));
                         });
                     }
     
@@ -1571,11 +1572,14 @@ class PageController extends BaseController
                     if(!empty($item->features))
                     {
                         $features_by_lot=array_where($item->features, function($k, $feature) use ($lot){
-                            return $feature->featureOf!='lot' || ($feature->featureOf=='lot' && $feature->relatedItem==$lot->id);
+                            $lotItems=!empty($lot->__items) ? array_pluck($lot->__items, 'id') : [];
+                            return ($feature->featureOf!='lot' && $feature->featureOf!='item') || ($feature->featureOf=='lot' && $feature->relatedItem==$lot->id) || ($feature->featureOf=='item' && in_array($feature->relatedItem, $lotItems));
                         });
                     }else
                         $features_by_lot=[];
                     
+                    $lot->features=$features_by_lot;
+
                     if(!empty($tender_bids))
                     {
                         $lot->__bids=new \StdClass();
@@ -1678,7 +1682,7 @@ class PageController extends BaseController
                     }
     
                     $lot->tenderID=$item->tenderID;
-    
+
                     $this->get_uniqie_awards($lot);
                     $this->get_uniqie_bids($lot, true);
                     $this->get_awards($lot);
