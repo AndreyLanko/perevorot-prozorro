@@ -78,7 +78,7 @@
                     $awards=(!empty($lot->awards) ? $lot->awards : $item->awards);
 
                     $awards=array_where($awards, function($key, $award) use($lot_id){
-                        return in_array($award->status, ['unsuccessful', 'active']) && (!$lot_id || ($lot_id && $award->lotID==$lot_id));
+                        return in_array($award->status, ['unsuccessful', 'active']) && (!$lot_id || empty($award->lotID) || ($lot_id && $award->lotID==$lot_id));
                     });
 
                     $exists=[];
