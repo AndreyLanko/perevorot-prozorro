@@ -9,7 +9,7 @@
                     <tbody>
                         <tr>
                             <td class="col-sm-8"><strong>Строк дії за договором:</strong></td>
-                            <td class="col-sm-4"><strong>{{!empty($item->__contract_ongoing->period->startDate) ? date('d.m.Y', strtotime($item->__contract_ongoing->period->startDate)) : 'не вказанa'}} — {{date('d.m.Y', strtotime($item->__contract_ongoing->dateModified))}}</strong></td>
+                            <td class="col-sm-4"><strong>{{!empty($item->__contract_ongoing->period->startDate) ? date('d.m.Y', strtotime($item->__contract_ongoing->period->startDate)) : 'не вказанa'}} — {{date('d.m.Y', strtotime($item->__contract_ongoing->period->endDate))}}</strong></td>
                         </tr>
                         <tr>
                             <td class="col-sm-8">Сума оплати за договором:</td>
