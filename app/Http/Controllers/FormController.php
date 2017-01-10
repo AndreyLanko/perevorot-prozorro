@@ -127,12 +127,36 @@ class FormController extends BaseController
                 foreach(explode(',', $url[1]) as $u)
                     $query[]='proc_type='.$u;
             }
+            elseif(substr($q, 0, 5)=='dkpp=')
+            {
+                $url=explode('=', $q, 2);
+                $dkpp=explode('-', $url[1]);
+
+                $query[$k]='dkpp_like='.$dkpp[0];
+            }
+            elseif(substr($q, 0, 4)=='tid=')
+            {
+                $url=explode('=', $q, 2);
+                $tid=explode('-', $url[1]);
+
+                $query[$k]='tid_like='.$tid[0];
+            }
+            elseif(substr($q, 0, 4)=='pid=')
+            {
+                $url=explode('=', $q, 2);
+                $tid=explode('-', $url[1]);
+
+                $query[$k]='pid_like='.$tid[0];
+            }
             elseif(substr($q, 0, 4)=='cpv=')
             {
                 $url=explode('=', $q, 2);
                 $cpv=explode('-', $url[1]);
 
-                $query[$k]=$url[0].'='.rtrim($cpv[0], '0');
+                if($this->search_type=='plan')
+                    $query[$k]='plan_cpv_like='.rtrim($cpv[0], '0');
+                else
+                    $query[$k]='cpv_like='.rtrim($cpv[0], '0');
             }
             elseif(substr($q, 0, 5)=='date[' || substr($q, 0, 9)=='dateplan[')
             {
@@ -160,9 +184,6 @@ class FormController extends BaseController
         }
 
         $query[]='start='.Input::get('start');
-
-//      if(!empty(Session::get('api_pmtype')))
-//          $query[]='proc_type='.Session::get('api_pmtype');
 
         $path=Session::get('api_'.$this->search_type, Config::get('api.'.$this->search_type)).'?'.implode('&', $query);
 

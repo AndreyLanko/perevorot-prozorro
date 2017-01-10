@@ -206,6 +206,20 @@ return [
 		'level3'=>false,
 		'level4'=>false,
 	],	
+    [
+		'name'=>'EPU',
+		'slug'=>'epu',
+		'href'=>'https://epu.com.ua/',
+		'public'=>'https://epu.com.ua/?TendersSearch[tender_cbd_id]={tenderID}',
+		'contractor'=>true,
+		'tender'=>true,
+		'type1'=>false,
+		'type2'=>false,
+		'level1'=>true,
+		'level2'=>true,
+		'level3'=>false,
+		'level4'=>false,
+	],	
     /*
 	[
 		'name'=>'Прозора Торгівля',
