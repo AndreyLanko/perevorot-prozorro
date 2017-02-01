@@ -30,11 +30,17 @@
         </tr>
         <tr valign="top">
             <td width="302">{{$n++}}. Дата укладення договору:</td>
-            <td><strong>{{date('d.m.Y H:i', strtotime($item->__contract_ongoing->dateSigned))}}</strong></td>
+            <td><strong>{{!empty($item->__contract_ongoing->dateSigned) ? date('d.m.Y H:i', strtotime($item->__contract_ongoing->dateSigned)) : 'відсутня'}}</strong></td>
         </tr>
         <tr valign="top">
             <td width="302">{{$n++}}. Ціна договору про закупівлю:</td>
-            <td><strong>{{str_replace('.00', '', number_format($item->__contract_ongoing->amountPaid->amount, 2, '.', ' '))}} {{$item->__contract_ongoing->amountPaid->currency}}{{$item->__contract_ongoing->amountPaid->valueAddedTaxIncluded?trans('tender.vat'):''}}</strong></td>
+            <td><strong>
+                @if(!empty($item->__contract_ongoing->amountPaid->amount))
+                    {{str_replace('.00', '', number_format($item->__contract_ongoing->amountPaid->amount, 2, '.', ' '))}} {{$item->__contract_ongoing->amountPaid->currency}}{{$item->__contract_ongoing->amountPaid->valueAddedTaxIncluded?trans('tender.vat'):''}}
+                @else
+                    відсутня
+                @endif
+            </strong></td>
         </tr>
         <tr valign="top">
             <td width="302">{{$n++}}. Найменування замовника:</td>
@@ -43,7 +49,7 @@
                     @if(!empty($tender->procuringEntity->identifier->legalName))
                         {{$tender->procuringEntity->identifier->legalName}}
                     @else
-                        {{$tender->procuringEntity->identifier->name}}
+                        {{$tender->procuringEntity->name}}
                     @endif
                 </strong>
             </td>
@@ -77,6 +83,7 @@
                     @if (!empty($item->__active_award->suppliers[0]->address))
                         {{!empty($item->__active_award->suppliers[0]->address->postalCode) ? $item->__active_award->suppliers[0]->address->postalCode.', ' : ''}}{{!empty($item->__active_award->suppliers[0]->address->countryName) ? $item->__active_award->suppliers[0]->address->countryName.', ' : '' }}{{!empty($item->__active_award->suppliers[0]->address->region) ? $item->__active_award->suppliers[0]->address->region.trans('tender.region') : ''}}{{!empty($item->__active_award->suppliers[0]->address->locality) ? $item->__active_award->suppliers[0]->address->locality.', ' : ''}}{{!empty($item->__active_award->suppliers[0]->address->streetAddress) ? $item->__active_award->suppliers[0]->address->streetAddress : ''}}
                     @endif
+                    {{!empty($item->__active_award->suppliers[0]->contactPoint->telephone) ? ', тел.: '.$item->__active_award->suppliers[0]->contactPoint->telephone : ''}}{{!empty($item->__active_award->suppliers[0]->contactPoint->faxNumber) ? ', факс: '.$item->__active_award->suppliers[0]->contactPoint->faxNumber : ''}}
                 </strong>
             </td>
         </tr>
@@ -123,7 +130,12 @@
             <td width="302">{{$n++}}. Строк дії договору:</td>
             <td><strong>
 	            @if(!empty($item->__contract_ongoing->period->startDate))
-		            {{date('d.m.Y', strtotime($item->__contract_ongoing->period->startDate))}} — {{date('d.m.Y', strtotime($item->__contract_ongoing->dateModified))}}
+		            {{date('d.m.Y', strtotime($item->__contract_ongoing->period->startDate))}}
+		            @if(!empty($item->__contract_ongoing->period->endDate))
+		                — {{date('d.m.Y', strtotime($item->__contract_ongoing->period->endDate))}}
+                    @else
+                        відсутня
+		            @endif
 		        @else
 		        	Дата початку дії договору не вказана
 				@endif
@@ -133,7 +145,11 @@
             <td width="302">{{$n++}}. Сума оплати за договором:</td>
             <td>
                 <strong>
-                    {{str_replace('.00', '', number_format($item->__contract_ongoing->amountPaid->amount, 2, '.', ' '))}} {{$item->__contract_ongoing->amountPaid->currency}}{{$item->__contract_ongoing->amountPaid->valueAddedTaxIncluded?trans('tender.vat'):''}}
+                    @if(!empty($item->__contract_ongoing->amountPaid->amount))
+                        {{str_replace('.00', '', number_format($item->__contract_ongoing->amountPaid->amount, 2, '.', ' '))}} {{$item->__contract_ongoing->amountPaid->currency}}{{$item->__contract_ongoing->amountPaid->valueAddedTaxIncluded?trans('tender.vat'):''}}
+                    @else
+                        відсутня
+                    @endif
                 </strong>
             </td>
         </tr>

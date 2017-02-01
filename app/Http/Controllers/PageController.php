@@ -159,28 +159,31 @@ class PageController extends BaseController
 
         $item->classification=$classification;
 
-        $additionalClassifications=$item->additionalClassifications;
-
-        if(!empty($item->items))
+        if(!empty($item->additionalClassifications))
         {
-            foreach($item->items as $one)
+            $additionalClassifications=$item->additionalClassifications;
+    
+            if(!empty($item->items))
             {
-                if(!empty($one->additionalClassifications))
+                foreach($item->items as $one)
                 {
-                    foreach($one->additionalClassifications as $c)
-                        $additionalClassifications[]=$c;
+                    if(!empty($one->additionalClassifications))
+                    {
+                        foreach($one->additionalClassifications as $c)
+                            $additionalClassifications[]=$c;
+                    }
                 }
             }
+    
+            $item->__items=array_where($additionalClassifications, function($key, $one){
+                return $one->scheme!='КЕКВ';
+            });
+    
+            $item->__items_kekv=new \StdClass();
+            $item->__items_kekv=array_where($additionalClassifications, function($key, $one){
+                return $one->scheme=='КЕКВ';
+            });
         }
-
-        $item->__items=array_where($additionalClassifications, function($key, $one){
-            return $one->scheme!='КЕКВ';
-        });
-
-        $item->__items_kekv=new \StdClass();
-        $item->__items_kekv=array_where($additionalClassifications, function($key, $one){
-            return $one->scheme=='КЕКВ';
-        });
         
         $this->get_procedure($item->tender);
 
@@ -1189,6 +1192,8 @@ class PageController extends BaseController
                             $bids[$k]->__documents_confident=array_where($bid->documents, function($key, $document){
                                 return !empty($document->confidentiality) && $document->confidentiality=='buyerOnly';
                             });
+                            
+                            $this->parse_document_changes($bids[$k]->__documents_public);
                         }
 
                         if(!empty($item->awards))
@@ -1597,7 +1602,7 @@ class PageController extends BaseController
                                     return $value->relatedLot===$lot->id;
                                 });
                             }
-    
+
                             if(!empty($lot_bid))
                             {
                                 $bid_value=array_values($lot_bid)[0];
@@ -1624,9 +1629,9 @@ class PageController extends BaseController
                                     $bid->__featured_coef=$featured_coef;
                                     $bid->__featured_price=str_replace('.00', '', number_format($bid_value->value->amount/$featured_coef, 2, '.', ' '));
                                 }
-    
+
                                 $bid->value=new \StdClass();
-                                $bid->value=clone $bid_value->value;
+                                $bid->value=!empty($bid_value->value) ? clone $bid_value->value : false;
     
                                 $cloned_bid=clone $bid;
     
@@ -1659,6 +1664,9 @@ class PageController extends BaseController
     
                         usort($lot->__bids, function ($a, $b)
                         {
+                            if(empty($a->value))
+                                return 0;
+                            
                             return floatval($a->value->amount)<floatval($b->value->amount);
                         });
                     }
@@ -2232,5 +2240,29 @@ class PageController extends BaseController
 
             return $days;
         });            
+    }
+
+    private function parse_document_changes(&$documents)
+    {
+        $ids=[];
+
+        usort($documents, function ($a, $b)
+        {
+            $datea = new \DateTime($a->dateModified);
+            $dateb = new \DateTime($b->dateModified);
+
+            return $datea<$dateb;
+        });
+
+        foreach($documents as $document)
+        {
+            if(in_array($document->id, $ids))
+            {
+                $document->stroked=new \StdClass();
+                $document->stroked=true;
+            }
+
+            $ids[]=$document->id;
+        }
     }
 }

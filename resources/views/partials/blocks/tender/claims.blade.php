@@ -24,12 +24,12 @@
                                 <div class="m-10 grey-light size12 question-date">Дата подання: {{date('d.m.Y H:i', strtotime($complaint->dateSubmitted))}}</div>
                             @endif
                             
-                            <div class="margin-bottom margin-top"><strong>{{$complaint->title}}</strong></div>
+                            <div class="margin-bottom margin-top"><strong>{{htmlentities($complaint->title)}}</strong></div>
                             
                             @if (!empty($complaint->description))
                                 <div class="m-10 description-wr{{mb_strlen($complaint->description)>350?' croped':' open'}}">
                                     <div class="description">
-                                        {!!nl2br($complaint->description)!!}
+                                        {!!nl2br(htmlentities($complaint->description))!!}
                                     </div>
                                     @if (mb_strlen($complaint->description)>350)
                                         <a class="search-form--open"><i class="sprite-arrow-down"></i>

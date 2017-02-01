@@ -70,6 +70,13 @@
             $bids=$__item->__bids;
         else
             $bids=[];
+
+        $award=false;
+        if(!empty($lot->__active_award))
+            $award=$lot->__active_award;
+        elseif(!empty($__item->__active_award))
+            $award=$__item->__active_award;
+
     ?>
 
     <table cellpadding="5" cellspacing="0" border="0" width="100%">
@@ -80,7 +87,7 @@
                     @if(in_array($__item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdEU', 'aboveThresholdUA.defense']))
                         {{!empty($__item->enquiryPeriod) ? date('d.m.Y H:i', strtotime($__item->enquiryPeriod->startDate)) : 'відсутня'}}
                     @elseif(in_array($__item->procurementMethodType, ['negotiation', 'negotiation.quick']))
-                        {{!empty($__item->__active_award->complaintPeriod->startDate) ? date('d.m.Y H:i', strtotime($__item->__active_award->complaintPeriod->startDate)) : 'відсутня'}}
+                        {{!empty($award->complaintPeriod->startDate) ? date('d.m.Y H:i', strtotime($award->complaintPeriod->startDate)) : 'відсутня'}}
                     @endif
                 </strong>
             </td>
@@ -90,7 +97,13 @@
             <td>
                 <strong>
                     @if(in_array($__item->procurementMethodType, ['aboveThresholdUA', 'aboveThresholdEU', 'aboveThresholdUA.defense']))
-                        {{sizeof($bids)}}
+                        @if(empty($bids) && !empty($__item->__eu_bids))
+                            {{ sizeof($__item->__eu_bids) }}
+                        @else                    
+                            {{ sizeof($bids) }}
+                        @endif
+                    @elseif(in_array($__item->procurementMethodType, ['negotiation', 'negotiation.quick']) && !empty($lot) && empty($lot->awards) && !empty($__item->__unique_awards))
+                        {{ $__item->__unique_awards }}
                     @elseif(in_array($__item->procurementMethodType, ['negotiation', 'negotiation.quick']))
                         {{!empty($lot) ? (int) (!empty($lot->__unique_awards) ? $lot->__unique_awards : 0) : $__item->__unique_awards}}
                     @endif
@@ -106,13 +119,6 @@
             <td>{{$n++}}. Ціна пропозицій учасника після закінчення аукціону</td>
             <td>{{$n++}}. Інформація про наявність і відповідність установленим законодавством вимогам документів, що підтверджують відповідність учасників кваліфікаційним критеріям згідно зі статтею 16 Закону України “Про публічні закупівлі”, та наявність/відсутність обставин, установлених статтею 17 цього Закону</td>
         </tr>    
-        <?php
-            $award=false;
-            if(!empty($lot->__active_award))
-                $award=$lot->__active_award;
-            elseif(!empty($__item->__active_award))
-                $award=$__item->__active_award;
-        ?>    
         @if($__item->procurementMethod=='limited' && !empty($award))
         	<tr valign="top">
                 <td>
@@ -133,6 +139,9 @@
                 </td>
                 <td>
                     <strong>
+                        @if(!empty($award->value))
+                            {{str_replace('.00', '', number_format($award->value->amount, 2, '.', ' '))}}  {{$award->value->currency}}{{$award->value->valueAddedTaxIncluded?trans('tender.vat'):''}}
+                        @endif
                     </strong>
                 </td>
                 <td>
@@ -261,7 +270,6 @@
         @endif        
     </table>
     <br>
-
     <table cellpadding="5" cellspacing="0" border="0" width="100%">
         <tr valign="top">
             <td width="302">{{$n++}}. Дата оприлюднення повідомлення про намір укласти договір:</td>
@@ -284,11 +292,26 @@
         <tr valign="top">
             <td width="302">{{$n++}}. Підстави для прийняття рішення про неукладення договору про закупівлю (у разі якщо в результаті проведення торгів не було укладено договір про закупівлю):</td>
             <td>
+                <?php
+                    $__cancellations=false;
+                    if(!empty($lot->__cancellations))
+                        $__cancellations=$lot->__cancellations;
+                    elseif(!empty($__item->__cancellations))
+                        $__cancellations=$__item->__cancellations;
+                ?>
                 @if(in_array($item->status, ['cancelled', 'unsuccessful']))
-                    @if($lot->status=='cancelled' && !empty($lot->__cancellations))
-                        @foreach($lot->__cancellations as $cancellation)
+                    @if($lot->status=='cancelled' && !empty($__cancellations))
+                        @foreach($__cancellations as $k=>$cancellation)
                             @if(!empty($cancellation->reason))
-                                <div>{{$cancellation->reason}}</div>
+                                @if($k==0)
+                                    <div>{{nl2br(trim(strip_tags($cancellation->reason)))}}</div>
+                                @else
+                                    </td></tr>
+                                    <tr valign="top">
+                                        <td width="302"></td>
+                                        <td>
+                                            <div>{{nl2br(trim(strip_tags($cancellation->reason)))}}</div>
+                                @endif
                             @endif
                         @endforeach
                     @elseif(in_array($item->procurementMethodType, ['aboveThresholdEU', 'aboveThresholdUA', 'aboveThresholdUA.defense', 'competitiveDialogueUA.stage2', 'competitiveDialogueEU.stage2']) && !empty($item->__unsuccessful_awards))

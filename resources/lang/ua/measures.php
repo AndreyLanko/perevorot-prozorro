@@ -14,6 +14,21 @@
                 ];
             }
         }
+        
+        if(empty($out['KWT'])){
+            $out['KWT']=[
+                'symbol' => 'кВт',
+                'name' => 'кВт'
+            ];
+        }
+
+        if(empty($out['K3'])){
+            $out['K3']=[
+                'symbol' => 'кВАр/год',
+                'name' => 'кВАр/год'
+            ];
+        }
+        
 
         return $out;
     });

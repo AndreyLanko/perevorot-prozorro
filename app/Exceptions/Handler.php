@@ -26,7 +26,9 @@ class Handler extends ExceptionHandler {
 	 */
 	public function report(Exception $e)
 	{
-        	$url=Request::url();
+    	return parent::report($e);
+
+        $url=Request::url();
 
         Log::info(Request::method().' '.$url);
 

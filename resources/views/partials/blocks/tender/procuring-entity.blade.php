@@ -53,6 +53,27 @@
                                 </td>
                             </tr>
                         @endif
+                        @if (!empty($item->procuringEntity->additionalContactPoints))
+                            <tr>
+                                <td class="col-sm-4"><strong>Додаткові контактні особи:</strong></td>
+                                <td class="col-sm-6">
+                                    @foreach($item->procuringEntity->additionalContactPoints as $point)
+                                        @if (!empty($point->name))
+                                            {{$point->name}}<br>
+                                        @endif
+                                        @if (!empty($point->name_en))
+                                            {{$point->name_en}}<br>
+                                        @endif
+                                        @if (!empty($point->telephone))
+                                            {{$point->telephone}}<br>
+                                        @endif
+                                        @if (!empty($point->email))
+                                            <a href="mailto:{{$point->email}}">{{$point->email}}</a><br>
+                                        @endif
+                                    @endforeach
+                                </td>
+                            </tr>
+                        @endif
                         @if(!empty($item->procuringEntity->identifier->legalName_en))
                             <tr>
                                 <td></td>
@@ -164,7 +185,7 @@
                     @if (!empty($item->procuringEntity->address))
                         <tr>
                             <td class="col-sm-4"><strong>{{trans('tender.customer_addr')}}:</strong></td>
-                            <td class="col-sm-6">{{!empty($item->procuringEntity->address->postalCode) ? $item->procuringEntity->address->postalCode.', ': ''}}{{$item->procuringEntity->address->countryName}}, {{!empty($item->procuringEntity->address->region) ? trim(str_replace(substr(trans('tender.region'), 0, -2), '', $item->procuringEntity->address->region)).trans('tender.region') : ''}}{{!empty($item->procuringEntity->address->locality) ? $item->procuringEntity->address->locality.', ' : ''}}{{!empty($item->procuringEntity->address->streetAddress) ? $item->procuringEntity->address->streetAddress : ''}}</td>
+                            <td class="col-sm-6">{{!empty($item->procuringEntity->address->postalCode) ? $item->procuringEntity->address->postalCode.', ': ''}}{{$item->procuringEntity->address->countryName}}, {{!empty($item->procuringEntity->address->region) ? trim(str_replace([substr(trans('tender.region'), 0, -2), 'область'], ['', ''], $item->procuringEntity->address->region)).trans('tender.region') : ''}}{{!empty($item->procuringEntity->address->locality) ? $item->procuringEntity->address->locality.', ' : ''}}{{!empty($item->procuringEntity->address->streetAddress) ? $item->procuringEntity->address->streetAddress : ''}}</td>
                         </tr>
                     @endif
                     @if (!empty($item->procuringEntity->contactPoint))

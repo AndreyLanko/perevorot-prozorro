@@ -108,7 +108,7 @@
                                 </strong>
                             </div>
                             <br>
-                            @if(!empty($item->__items))
+                            @if(!empty($item->__items) || !empty($item->classification))
                                 <div class="margin-bottom">4. Коди відповідних класифікаторів предмета закупівлі:</div>
                                 @foreach($item->__items as $one)
                                     <div class="margin-bottom">
@@ -120,7 +120,14 @@
                                     </div>
                                 @endforeach
                                 @if($item->classification)
-                                    @foreach($item->classification as $one)
+                                    <?php
+                                        $classification=[];
+                                        
+                                        foreach($item->classification as $class) {
+                                            $classification[$class->id] = $class;
+                                        }
+                                    ?>
+                                    @foreach($classification as $one)
                                         <div class="tender--description--text description" style="margin-left:20px;">
                                            {{trans('scheme.'.$one->scheme)}}: {{$one->id}} — {!!nl2br($one->description)!!}
                                         </div>

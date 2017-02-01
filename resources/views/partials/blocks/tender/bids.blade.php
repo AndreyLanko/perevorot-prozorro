@@ -41,7 +41,7 @@
                             <td>
                                 @if(!empty($item->__initial_bids[$bid->id]))
                                     {{str_replace('.00', '', number_format($item->__initial_bids[$bid->id], 2, '.', ' '))}}
-                                    <div class="td-small grey-light">{{$bid->value->currency}}{{$bid->value->valueAddedTaxIncluded?trans('tender.vat'):''}}</div>                                            
+                                    <div class="td-small grey-light">@if(!empty($bid->value)) {{ $bid->value->currency }}{{$bid->value->valueAddedTaxIncluded?trans('tender.vat'):''}}@else no value @endif</div>                                            
                                 @elseif(!empty($bid->value))
                                     {{str_replace('.00', '', number_format($bid->value->amount, 2, '.', ' '))}} 
                                     <div class="td-small grey-light">{{$bid->value->currency}}{{$bid->value->valueAddedTaxIncluded?trans('tender.vat'):''}}</div>                                            
@@ -61,9 +61,9 @@
                                     <div class="td-small grey-light">{{$item->bids_values[$k]->value->currency}}{{$item->bids_values[$k]->value->valueAddedTaxIncluded?trans('tender.vat'):''}}</div>                                            
                                 @endif
                             </td>
-                            @if($item->__features_price<1)
-                                <td>{{$bid->__featured_coef}}</td>
-                                <td class="1">{{$bid->__featured_price}}</td>
+                            @if(intval($item->__features_price)<1)
+                                <td>{{!is_object($bid->__featured_coef) ? $bid->__featured_coef : '—' }}</td>
+                                <td class="1">{{!is_object($bid->__featured_price) ? $bid->__featured_price : '—' }}</td>
                             @endif
                             <td>
                                 @if(!empty($bid->documents))
@@ -87,8 +87,8 @@
                                 </h4>
                                 @foreach($bid->__documents_public as $document)
                                     <div class="document-info">
-                                        <div class="document-date">{{date('d.m.Y H:i', strtotime($document->dateModified))}}</div>
-                                        <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
+                                        <div class="document-date" style="{{ !empty($document->stroked) ? "padding-left:10px;text-decoration: line-through;":"" }}">{{date('d.m.Y H:i', strtotime($document->dateModified))}}</div>
+                                        <a href="{{$document->url}}" target="_blank" class="document-name" style="{{ !empty($document->stroked) ? "padding-left:10px;text-decoration: line-through;":"" }}">{{$document->title}}</a>
                                     </div>
                                 @endforeach
                             @endif    
@@ -155,8 +155,8 @@
                                     </h4>
                                     @foreach($bid->__documents_public as $document)
                                         <div class="document-info">
-                                            <div class="document-date">{{date('d.m.Y H:i', strtotime($document->dateModified))}}</div>
-                                            <a href="{{$document->url}}" target="_blank" class="document-name">{{$document->title}}</a>
+                                            <div class="document-date" style="{{ !empty($document->stroked) ? "padding-left:10px;text-decoration: line-through;":"" }}">{{date('d.m.Y H:i', strtotime($document->dateModified))}}</div>
+                                            <a href="{{$document->url}}" target="_blank" class="document-name" style="{{ !empty($document->stroked) ? "padding-left:10px;text-decoration: line-through;":"" }}">{{$document->title}}</a>
                                         </div>
                                     @endforeach
                                 </div>

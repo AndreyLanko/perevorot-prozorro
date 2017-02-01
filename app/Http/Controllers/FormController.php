@@ -134,6 +134,7 @@ class FormController extends BaseController
 
                 $query[$k]='dkpp_like='.$dkpp[0];
             }
+/*
             elseif(substr($q, 0, 4)=='tid=')
             {
                 $url=explode('=', $q, 2);
@@ -148,6 +149,7 @@ class FormController extends BaseController
 
                 $query[$k]='pid_like='.$tid[0];
             }
+*/
             elseif(substr($q, 0, 4)=='cpv=')
             {
                 $url=explode('=', $q, 2);

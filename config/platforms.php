@@ -161,8 +161,8 @@ return [
 		'type2'=>false,
 		'level1'=>true,
 		'level2'=>true,
-		'level3'=>false,
-		'level4'=>false,		
+		'level3'=>true,
+		'level4'=>true,		
 	],
 	[
 		'name'=>'Open Tender закупівлі',
@@ -189,8 +189,8 @@ return [
 		'type2'=>false,
 		'level1'=>true,
 		'level2'=>true,
-		'level3'=>false,
-		'level4'=>false,		
+		'level3'=>true,
+		'level4'=>true,		
 	],	
     [
 		'name'=>'UPETEM',
