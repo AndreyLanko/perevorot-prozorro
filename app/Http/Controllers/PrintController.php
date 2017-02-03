@@ -102,9 +102,12 @@ class PrintController extends BaseController
 
         array_map(function($item){
             $item->__kekv=new \StdClass();
-            $item->__kekv=array_where($item->additionalClassifications, function($key, $classification){
-                return $classification->scheme=='КЕКВ';
-            });
+
+            if(!empty($item->additionalClassifications)){
+                $item->__kekv=array_where($item->additionalClassifications, function($key, $classification){
+                    return $classification->scheme=='КЕКВ';
+                });
+            }
         }, $items);
 
         $page=app('App\Http\Controllers\PageController');

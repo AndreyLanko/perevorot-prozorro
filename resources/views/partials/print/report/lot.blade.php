@@ -125,6 +125,8 @@
                     <strong>
                     	@if(!empty($award->suppliers[0]->identifier->legalName))
                     		{{ $award->suppliers[0]->identifier->legalName }}
+                    	@elseif(!empty($award->suppliers[0]->name))
+                    		{{ $award->suppliers[0]->name }}
                     	@elseif(!empty($__item->__active_award->suppliers[0]->name))
 	                    	{{ $award->suppliers[0]->name }}
 	                    @else
