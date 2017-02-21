@@ -71,7 +71,11 @@
         else
             $bids=[];
 
+        if(empty($bids) && !empty($lot->__eu_bids))
+            $bids=$lot->__eu_bids;
+
         $award=false;
+
         if(!empty($lot->__active_award))
             $award=$lot->__active_award;
         elseif(!empty($__item->__active_award))

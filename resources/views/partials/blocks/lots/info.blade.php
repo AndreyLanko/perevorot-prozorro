@@ -59,7 +59,7 @@
                             <div class="tender--description--text description{{mb_strlen($item->description_en)>350?' croped':' open'}}">
                                 Description: {!!nl2br($item->description_en)!!}
                             </div>
-                            @if (mb_strlen($item->description)>350)
+                            @if (mb_strlen($item->description_en)>350)
                                 <a class="search-form--open" href="">
                                     <i class="sprite-arrow-right"></i>
                                     <span>{{trans('interface.expand')}}</span>

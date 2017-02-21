@@ -1591,7 +1591,7 @@ class PageController extends BaseController
                         $lot->__bids=[];
                         $lot->bids_values=new \StdClass();
                         $lot->bids_values=[];
-    
+
                         foreach($tender_bids as $bid)
                         {
                             $lot_bid=false;
@@ -1634,7 +1634,7 @@ class PageController extends BaseController
                                 $bid->value=!empty($bid_value->value) ? clone $bid_value->value : false;
     
                                 $cloned_bid=clone $bid;
-    
+
                                 $cloned_bid->__documents_public=!empty($cloned_bid->__documents_public) ? array_where($cloned_bid->__documents_public, function($key, $document) use ($lot){
                                     return $document->documentOf=='tender' || (($document->documentOf=='lot' || $document->documentOf=='item') && $document->relatedItem==$lot->id);
                                 }):[];
@@ -1642,11 +1642,11 @@ class PageController extends BaseController
                                 $cloned_bid->__documents_confident=!empty($cloned_bid->__documents_confident) ? array_where($cloned_bid->__documents_confident, function($key, $document) use ($lot){
                                     return $document->documentOf=='tender' || (($document->documentOf=='lot' || $document->documentOf=='item') && $document->relatedItem==$lot->id);
                                 }):[];
-                                
+
                                 $lot->__bids[]=$cloned_bid;
                             }
                         }
-    
+
                         foreach($lot->__bids as $__bid)
                             $__bid->__award=null;
     

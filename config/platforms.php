@@ -110,9 +110,9 @@ return [
     [
 		'name'=>'Brizol.net',
 		'slug'=>'brizol',
-		'href'=>'https://www.brizol.net/tenders/view/{tenderID}',
-		'public'=>'https://www.brizol.net/',
-		'disabled'=>true,
+		'href'=>'https://www.brizol.net/tender/view/{tenderID}',
+		'public'=>'https://www.brizol.net/register',
+		'disabled'=>false,
 		'contractor'=>true,
 		'tender'=>false,
 		'type1'=>false,
