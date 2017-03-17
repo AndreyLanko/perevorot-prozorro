@@ -273,6 +273,32 @@
                     </tr>
                 @endif
             @endforeach
+
+            @if ($__item->procurementMethodType=='aboveThresholdEU')
+                <?php
+                    $b=array_where($bids, function($k, $bid){
+                        return $bid->status=='unsuccessful';
+                    });
+                ?>
+                @if (!$q && $b)
+                    @foreach($b as $one)
+                        <tr valign="top">
+                            <td>
+                                <strong>
+                                    @if(!empty($one->tenderers[0]->identifier->legalName))
+                                        {{$one->tenderers[0]->identifier->legalName}}<br>
+                                    @elseif(!empty($one->tenderers[0]->name))
+                                        {{$one->tenderers[0]->name}}<br>
+                                    @endif
+                                </strong>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    @endforeach
+                @endif
+            @endif
         @endif        
     </table>
     <br>

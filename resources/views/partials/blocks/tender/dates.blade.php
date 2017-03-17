@@ -42,14 +42,14 @@
                     @if (!empty($item->value->amount))
                         <tr>
                             <td class="col-sm-8"><strong>Очікувана вартість:</strong></td>
-                            <td class="col-sm-4">{{number_format($item->value->amount, 0, '', ' ')}} {{$item->value->currency}} {{!empty($item->value->valueAddedTaxIncluded)?'з ПДВ':'без ПДВ'}}</td>
+                            <td class="col-sm-4">{{str_replace('.00', '', number_format($item->value->amount, 2, '.', ' '))}} {{$item->value->currency}} {{!empty($item->value->valueAddedTaxIncluded)?'з ПДВ':'без ПДВ'}}</td>
                         </tr>
                     @endif
 
                     @if (!empty($item->guarantee) && (int) $item->guarantee->amount>0)
                         <tr>
                             <td class="col-sm-8"><strong>Вид тендерного забезпечення:</strong></td>
-                            <td class="col-sm-4">Електронна банківська гарантія</td>
+                            <td class="col-sm-4">Електронна гарантія</td>
                         </tr>
                         <tr>
                             <td class="col-sm-8"><strong>Сума тендерного забезпечення:</strong></td>

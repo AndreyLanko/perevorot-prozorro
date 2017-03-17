@@ -102,6 +102,7 @@
                     <div class="row">
                         <div class="col-sm-9">
                             <h3>Інформація про предмет закупівлі</h3>
+
                             <div>3. Конкретна назва предмета закупівлі:
                                 <strong>
                                     {{$item->budget->description}}@if(!empty($item->items)), {{implode(', ', array_pluck($item->items, 'description'))}}@endif
@@ -110,6 +111,7 @@
                             <br>
                             @if(!empty($item->__items) || !empty($item->classification))
                                 <div class="margin-bottom">4. Коди відповідних класифікаторів предмета закупівлі:</div>
+
                                 @foreach($item->__items as $one)
                                     <div class="margin-bottom">
                                         <div class="description-wr">

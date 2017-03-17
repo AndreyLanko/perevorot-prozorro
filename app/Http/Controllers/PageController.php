@@ -2124,7 +2124,7 @@ class PageController extends BaseController
             $name='Переговорна процедура';
 
         if($item->procurementMethod=='limited' && $item->procurementMethodType=='negotiation.quick')
-            $name='Переговорна процедура за нагальною потребою';
+            $name='Скорочена переговорна процедура';
 
         if($item->procurementMethodType=='')
             $name='Без застосування електронної системи';

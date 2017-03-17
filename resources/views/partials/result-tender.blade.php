@@ -41,7 +41,7 @@
 					--}}
 					<div class="items-list--item--price">
 						<span class="price-description">{{trans('tender.wait_sum')}}</span>
-						{{number_format($item->value->amount, 0, '', ' ')}}
+						{{str_replace('.00', '', number_format($item->value->amount, 2, '.', ' '))}}
 						<span class="uah">{{$item->value->currency}}</span>
 					</div>
 					@if (!empty($item->enquiryPeriod->startDate))

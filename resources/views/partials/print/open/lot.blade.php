@@ -54,7 +54,7 @@
                     </td>
                     <td>
                         @if(!empty($one->deliveryAddress->streetAddress))
-                            {{$one->deliveryAddress->postalCode}}, {{$one->deliveryAddress->region}}, {{$one->deliveryAddress->locality}}, {{$one->deliveryAddress->streetAddress}}
+                            {{$one->deliveryAddress->postalCode}}, {{!empty($one->deliveryAddress->countryName) ? $one->deliveryAddress->countryName.', ' : '' }}{{$one->deliveryAddress->region}}, {{$one->deliveryAddress->locality}}, {{$one->deliveryAddress->streetAddress}}
                         @else
                             Відсутнє
                         @endif
@@ -122,7 +122,7 @@
         </tr>
         <tr valign="top">
             <td>{{$n++}}. Вид забезпечення тендерних пропозиції (якщо замовник вимагає його надати):</td>
-            <td><strong>{{(!empty($guarantee) && (int)$guarantee->amount>0) ? 'Електронна банківська гарантія' : 'відсутній' }}</strong></td>
+            <td><strong>{{(!empty($guarantee) && (int)$guarantee->amount>0) ? 'Електронна гарантія' : 'відсутній' }}</strong></td>
         </tr>
         <?php
             $auctionPeriod=false;

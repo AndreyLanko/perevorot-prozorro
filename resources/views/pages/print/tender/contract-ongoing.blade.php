@@ -129,12 +129,16 @@
         <tr>
             <td width="302">{{$n++}}. Строк дії договору:</td>
             <td><strong>
-	            @if(!empty($item->__contract_ongoing->period->startDate))
-		            {{date('d.m.Y', strtotime($item->__contract_ongoing->period->startDate))}}
+	            @if(!empty($item->__contract_ongoing->period->startDate) || (!empty($item->__contract_ongoing->period->endDate)))
+	                @if(!empty($item->__contract_ongoing->period->startDate))
+    		            {{date('d.m.Y', strtotime($item->__contract_ongoing->period->startDate))}}
+                    @else
+                        не вказанa
+                    @endif
 		            @if(!empty($item->__contract_ongoing->period->endDate))
 		                — {{date('d.m.Y', strtotime($item->__contract_ongoing->period->endDate))}}
                     @else
-                        відсутня
+                        — не вказанa
 		            @endif
 		        @else
 		        	Дата початку дії договору не вказана

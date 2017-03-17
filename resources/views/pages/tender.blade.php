@@ -210,7 +210,8 @@
 
                                 {{--Запитання до лоту--}}
                                 @include('partials/blocks/tender/questions', [
-                                    'item'=>$lot
+                                    'item'=>$lot,
+                                    'tender'=>$item
                                 ])
                                 
                                 {{--Вимоги про усунення порушення до лоту--}}

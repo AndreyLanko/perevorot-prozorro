@@ -31,7 +31,7 @@
             <p>Номер плану: {{$item->planID}}</p>
             <p>Опубліковано: {{date('d.m.Y', $item->__planDate)}}</p>
             @if($item->__dateModified)
-                <p>Змінено: {{date('d.m.Y'), strtotime($item->dateModified)}}</p>
+                <p>Змінено: {{$item->__dateModified_date}}</p>
             @endif
         </td>
     </tr>            

@@ -97,7 +97,11 @@ class PrintController extends BaseController
 
         array_map(function($item){
             $item->__dateModified=new \StdClass();
+
+            $date=new \Datetime($item->dateModified);
+
             $item->__dateModified=date('d.m.Y', $item->__planDate)!=date('d.m.Y', strtotime($item->dateModified)) ? true : false;
+            $item->__dateModified_date=$date->format('d.m.Y');
         }, $items);
 
         array_map(function($item){

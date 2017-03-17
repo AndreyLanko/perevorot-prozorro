@@ -25,7 +25,7 @@
                     
                     @if (!empty($item->value))
                         <div>
-                            Очікувана вартість: <strong>{{number_format($item->value->amount, 0, '', ' ')}} <span class="small">{{$item->value->currency}}</span></strong>
+                            Очікувана вартість: <strong>{{str_replace('.00', '', number_format($item->value->amount, 2, '.', ' '))}} <span class="small">{{$item->value->currency}}</span></strong>
                             @if($item->value->valueAddedTaxIncluded)
                                 з ПДВ
                             @else
@@ -35,7 +35,7 @@
                     @endif
 
                     @if (!empty($item->minimalStep))
-                        <div>Мінімальний крок аукціону: <strong>{{number_format($item->minimalStep->amount, 0, '', ' ')}} <span class="small">{{$item->minimalStep->currency}}</span></strong>
+                        <div>Мінімальний крок аукціону: <strong>{{str_replace('.00', '', number_format($item->minimalStep->amount, 2, '.', ' '))}} <span class="small">{{$item->minimalStep->currency}}</span></strong>
                             @if($item->minimalStep->valueAddedTaxIncluded)
                                 з ПДВ
                             @else
@@ -44,9 +44,8 @@
                         </div>
                     @endif
 
-
                     @if (!empty($item->guarantee) && (int) $item->guarantee->amount>0)
-                        <div>Вид тендерного забезпечення: <strong>Електронна банківська гарантія</strong></div>
+                        <div>Вид тендерного забезпечення: <strong>Електронна гарантія</strong></div>
                         <div>Сума тендерного забезпечення: <strong>{{str_replace('.00', '', number_format($item->guarantee->amount, 2, '.', ' '))}} {{$item->guarantee->currency}}</strong></div>
                     @else
                         <div>Вид тендерного забезпечення: <strong>Відсутній</strong></div>
@@ -71,7 +70,7 @@
                     <div>Current status: {{trans('tender.lot_status_en.'.$item->status)}}</div>
                     @if (!empty($item->value))
                         <div>
-                            Estimated total value: <strong>{{number_format($item->value->amount, 0, '', ' ')}} <span class="small">{{$item->value->currency}}</span></strong>
+                            Estimated total value: <strong>{{str_replace('.00', '', number_format($item->value->amount, 2, '.', ' '))}} <span class="small">{{$item->value->currency}}</span></strong>
                             @if($item->value->valueAddedTaxIncluded)
                                 including VAT
                             @else
@@ -80,7 +79,7 @@
                         </div>
                     @endif
                     @if (!empty($item->minimalStep))
-                        <div>Minimal lowering step: <strong>{{number_format($item->minimalStep->amount, 0, '', ' ')}} <span class="small">{{$item->minimalStep->currency}}</span></strong>
+                        <div>Minimal lowering step: <strong>{{str_replace('.00', '', number_format($item->minimalStep->amount, 2, '.', ' '))}} <span class="small">{{$item->minimalStep->currency}}</span></strong>
                             @if($item->minimalStep->valueAddedTaxIncluded)
                                 including VAT
                             @else
@@ -139,7 +138,7 @@
                     <div>Current status: {{trans('tender.lot_status.'.$item->status)}}</div>
                     @if (!empty($item->value))
                         <div>
-                            Estimated total value: <strong>{{number_format($item->value->amount, 0, '', ' ')}} <span class="small">{{$item->value->currency}}</span></strong>
+                            Estimated total value: <strong>{{str_replace('.00', '', number_format($item->value->amount, 2, '.', ' '))}} <span class="small">{{$item->value->currency}}</span></strong>
                             @if($item->value->valueAddedTaxIncluded)
                                 including VAT
                             @else
@@ -148,7 +147,7 @@
                         </div>
                     @endif
                     @if (!empty($item->minimalStep))
-                        <div>Minimal lowering step: <strong>{{number_format($item->minimalStep->amount, 0, '', ' ')}} <span class="small">{{$item->minimalStep->currency}}</span></strong>
+                        <div>Minimal lowering step: <strong>{{str_replace('.00', '', number_format($item->minimalStep->amount, 2, '.', ' '))}} <span class="small">{{$item->minimalStep->currency}}</span></strong>
                             @if($item->minimalStep->valueAddedTaxIncluded)
                                 including VAT
                             @else
@@ -207,7 +206,7 @@
                 <div>Статус: {{trans('tender.lot_status.'.$item->status)}}</div>
                 @if (!empty($item->value))
                     <div>
-                        Очікувана вартість: <strong>{{number_format($item->value->amount, 0, '', ' ')}} <span class="small">{{$item->value->currency}}</span></strong>
+                        Очікувана вартість: <strong>{{str_replace('.00', '', number_format($item->value->amount, 2, '.', ' '))}} <span class="small">{{$item->value->currency}}</span></strong>
                         @if($item->value->valueAddedTaxIncluded)
                             з ПДВ
                         @else
@@ -216,7 +215,7 @@
                     </div>
                 @endif
                 @if (!empty($item->minimalStep))
-                    <div>Мінімальний крок аукціону: <strong>{{number_format($item->minimalStep->amount, 0, '', ' ')}} <span class="small">{{$item->minimalStep->currency}}</span></strong>
+                    <div>Мінімальний крок аукціону: <strong>{{str_replace('.00', '', number_format($item->minimalStep->amount, 2, '.', ' '))}} <span class="small">{{$item->minimalStep->currency}}</span></strong>
                         @if($item->minimalStep->valueAddedTaxIncluded)
                             з ПДВ
                         @else
@@ -225,7 +224,7 @@
                     </div>
                 @endif
                 @if (!empty($item->guarantee) && (int) $item->guarantee->amount>0)
-                    <div>Вид тендерного забезпечення: <strong>Електронна банківська гарантія</strong></div>
+                    <div>Вид тендерного забезпечення: <strong>Електронна гарантія</strong></div>
                     <div>Сума тендерного забезпечення: <strong>{{str_replace('.00', '', number_format($item->guarantee->amount, 2, '.', ' '))}} {{$item->guarantee->currency}}</strong></div>
                 @else
                     <div>Вид тендерного забезпечення: <strong>Відсутній</strong></div>
